@@ -442,6 +442,27 @@
             letter-spacing: -0.05em;
         }
 
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px;
+        }
+
+        .cert-image {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
         .floating-card {
             position: absolute;
             background: var(--bg-card);
@@ -1536,7 +1557,7 @@
                 <div class="hero-image-container">
                     <div class="hero-image-frame">
                         <div class="profile-visual">
-                            <img src="hero.jpg" alt="Narendranath Edara" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">
+                            <img src="hero.jpg" alt="Narendranath Edara" class="profile-image">
                         </div>
                     </div>
                     <div class="floating-card floating-card-1">
@@ -1565,7 +1586,7 @@
                 <div class="about-image-container">
                     <div class="about-card">
                         <div class="about-visual">
-                            <span class="about-initials">NE</span>
+                            <img src="hero.jpg" alt="Narendranath Edara" class="about-image">
                         </div>
                         <div class="about-social">
                             <a href="https://linkedin.com/in/narendranathe" target="_blank" class="social-link" title="LinkedIn">
@@ -2096,6 +2117,20 @@
             <div class="cert-grid">
                 <div class="cert-card">
                     <div class="cert-icon">
+                        <img src="images/certifications/DP-700 logo.jpg" alt="DP-700" class="cert-image">
+                    </div>
+                    <h4 class="cert-title">DP-700: Fabric Data Engineer Associate</h4>
+                    <p class="cert-issuer">Microsoft</p>
+                </div>
+                <div class="cert-card">
+                    <div class="cert-icon">
+                        <img src="images/certifications/Azure AI certification logo.jpg" alt="Azure AI" class="cert-image">
+                    </div>
+                    <h4 class="cert-title">Azure AI Fundamentals</h4>
+                    <p class="cert-issuer">Microsoft</p>
+                </div>
+                <div class="cert-card">
+                    <div class="cert-icon">
                         <i class="fab fa-microsoft"></i>
                     </div>
                     <h4 class="cert-title">Data Warehouse in Microsoft Fabric</h4>
@@ -2114,20 +2149,6 @@
                     </div>
                     <h4 class="cert-title">Jira Fundamentals Badge</h4>
                     <p class="cert-issuer">Atlassian</p>
-                </div>
-                <div class="cert-card">
-                    <div class="cert-icon">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <h4 class="cert-title">ChatGPT Prompt Engineering</h4>
-                    <p class="cert-issuer">DeepLearning.AI</p>
-                </div>
-                <div class="cert-card">
-                    <div class="cert-icon">
-                        <i class="fab fa-google"></i>
-                    </div>
-                    <h4 class="cert-title">Google Sheets Essential Training</h4>
-                    <p class="cert-issuer">Google</p>
                 </div>
                 <div class="cert-card">
                     <div class="cert-icon">
