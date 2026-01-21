@@ -650,6 +650,9 @@
             display: flex;
             justify-content: center;
             gap: 1rem;
+            margin-top: 1.5rem;
+            position: relative;
+            z-index: 20;
         }
 
         .social-link {
@@ -663,6 +666,9 @@
             color: var(--text-secondary);
             text-decoration: none;
             transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            z-index: 10;
         }
 
         .social-link:hover {
@@ -1007,6 +1013,16 @@
             overflow: hidden;
         }
 
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+        }
+
         .project-image::before {
             content: '';
             position: absolute;
@@ -1022,6 +1038,30 @@
             color: var(--accent-primary);
             position: relative;
             z-index: 1;
+        }
+
+        .project-github-link {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255,255,255,0.9);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            text-decoration: none;
+            z-index: 3;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .project-github-link:hover {
+            background: var(--accent-primary);
+            color: white;
+            transform: scale(1.1);
         }
 
         .project-content {
@@ -1097,6 +1137,54 @@
             border: 1px solid var(--border-color);
             transition: var(--transition);
             text-align: center;
+        }
+
+        .cert-card-featured {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--accent-light) 100%);
+            border: 2px solid var(--accent-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cert-card-featured::before {
+            content: '★';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            color: var(--accent-warm);
+            font-size: 1rem;
+        }
+
+        .cert-badge-container {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .cert-badge-svg {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto;
+            display: block;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+        }
+
+        .cert-badge-label {
+            display: inline-block;
+            background: var(--accent-primary);
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .cert-year {
+            font-size: 0.75rem;
+            color: var(--accent-primary);
+            font-weight: 600;
+            margin-top: 0.25rem;
         }
 
         .cert-card:hover {
@@ -1574,7 +1662,7 @@
                 <div class="hero-image-container">
                     <div class="hero-image-frame">
                         <div class="profile-visual">
-                            <img src="images/hero2.jpg" alt="Narendranath Edara" class="profile-image" onerror="this.src='images/hero2.jpg'; this.onerror=function(){this.src='images/hero.jpg'; this.onerror=function(){this.style.display='none'; var initials=document.createElement('span'); initials.className='profile-initials'; initials.textContent='NE'; this.parentElement.appendChild(initials);};};">
+                            <img src="PP.jpg" alt="Narendranath Edara" class="profile-image" onerror="this.src='hero.jpg'; this.onerror=function(){this.src='hero-2.JPG'; this.onerror=function(){this.style.display='none'; var initials=document.createElement('span'); initials.className='profile-initials'; initials.textContent='NE'; this.parentElement.appendChild(initials);};};">
                         </div>
                     </div>
                     <div class="floating-card floating-card-1">
@@ -1926,13 +2014,18 @@
                 <!-- Project 1 -->
                 <div class="project-card">
                     <div class="project-image">
+                        <a href="https://github.com/narendranathe/portfolio-risk-analytics" target="_blank" class="project-github-link" title="View on GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
                         <i class="fas fa-chart-line"></i>
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">Real-Time Portfolio Risk Analytics</h3>
                         <p class="project-description">
-                            Built a real-time portfolio risk analytics platform processing 15,000+ market records 
-                            with sub-5-second latency, featuring FastAPI backend, Streamlit dashboard, and comprehensive VaR calculations.
+                            <strong>Data Engineering Foundation:</strong> Built end-to-end streaming data pipelines with Apache Kafka (47.8 TPS) 
+                            and Spark Structured Streaming for 5-second windowed aggregations. <strong>ML Integration:</strong> VaR calculations 
+                            at 95% and 99% confidence levels with historical simulation methodology. <strong>Production-Ready:</strong> 
+                            FastAPI REST API, Streamlit dashboard, and containerized infrastructure.
                         </p>
                         <div class="project-stats">
                             <div class="project-stat">
@@ -1949,9 +2042,9 @@
                             </div>
                         </div>
                         <div class="project-tags">
+                            <span class="project-tag">Kafka</span>
+                            <span class="project-tag">Spark</span>
                             <span class="project-tag">FastAPI</span>
-                            <span class="project-tag">Streamlit</span>
-                            <span class="project-tag">PostgreSQL</span>
                             <span class="project-tag">Docker</span>
                         </div>
                     </div>
@@ -1960,13 +2053,19 @@
                 <!-- Project 2 -->
                 <div class="project-card">
                     <div class="project-image">
+                        <a href="https://github.com/narendranathe/fraud-detection-ml-platform" target="_blank" class="project-github-link" title="View on GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <img src="https://raw.githubusercontent.com/narendranathe/fraud-detection-ml-platform/main/grafana%20dashboard%20picture.jpg" alt="Grafana Dashboard" onerror="this.style.display='none';">
                         <i class="fas fa-shield-alt"></i>
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">Real-Time Fraud Detection Platform</h3>
                         <p class="project-description">
-                            Comprehensive ML platform using Apache Kafka, FastAPI, and PostgreSQL demonstrating 
-                            enterprise-level engineering with sub-millisecond prediction latency.
+                            <strong>ML Engineering Showcase:</strong> Production-grade ML platform with Apache Kafka event streaming (100+ TPS), 
+                            LightGBM classifier, and MLflow experiment tracking. <strong>Data Pipeline:</strong> End-to-end pipeline from ingestion 
+                            to prediction with exactly-once processing. <strong>DevOps:</strong> Prometheus + Grafana monitoring, 
+                            containerized infrastructure, and Airflow orchestration.
                         </p>
                         <div class="project-stats">
                             <div class="project-stat">
@@ -1978,15 +2077,15 @@
                                 <div class="project-stat-label">Latency</div>
                             </div>
                             <div class="project-stat">
-                                <div class="project-stat-value">ML</div>
+                                <div class="project-stat-value">MLOps</div>
                                 <div class="project-stat-label">Pipeline</div>
                             </div>
                         </div>
                         <div class="project-tags">
                             <span class="project-tag">Kafka</span>
+                            <span class="project-tag">MLflow</span>
                             <span class="project-tag">FastAPI</span>
-                            <span class="project-tag">ML</span>
-                            <span class="project-tag">Docker</span>
+                            <span class="project-tag">Grafana</span>
                         </div>
                     </div>
                 </div>
@@ -1994,13 +2093,18 @@
                 <!-- Project 3 -->
                 <div class="project-card">
                     <div class="project-image">
+                        <a href="https://github.com/narendranathe/Sentiment_Analysis" target="_blank" class="project-github-link" title="View on GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
                         <i class="fas fa-comments"></i>
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">Sentiment Analysis Research Platform</h3>
                         <p class="project-description">
-                            Advanced NLP platform analyzing Yelp and TripAdvisor reviews using VADER, RoBERTa 
-                            transformers, and clustering algorithms. Published research findings.
+                            <strong>NLP Research:</strong> Comparative analysis of sentiment classification methods including VADER lexicon 
+                            and RoBERTa transformers on Yelp/TripAdvisor reviews. <strong>ML Pipeline:</strong> Full preprocessing pipeline 
+                            with text cleaning, feature extraction, and model evaluation. <strong>Research Publication:</strong> 
+                            Published findings on ensemble approach combining rule-based and deep learning methods.
                         </p>
                         <div class="project-stats">
                             <div class="project-stat">
@@ -2017,9 +2121,9 @@
                             </div>
                         </div>
                         <div class="project-tags">
+                            <span class="project-tag">Hugging Face</span>
                             <span class="project-tag">NLTK</span>
                             <span class="project-tag">spaCy</span>
-                            <span class="project-tag">Hugging Face</span>
                             <span class="project-tag">K-Means</span>
                         </div>
                     </div>
@@ -2033,8 +2137,10 @@
                     <div class="project-content">
                         <h3 class="project-title">AI-Powered Analytics Platform</h3>
                         <p class="project-description">
-                            Built AI agents that democratize data access, eliminating schema complexity for 
-                            both technical and non-technical teams with natural language querying.
+                            <strong>Enterprise Data Engineering:</strong> Architected semantic layer over complex multi-schema 
+                            SQL Server data warehouse enabling natural language querying. <strong>AI Integration:</strong> Built 
+                            AI agents that translate business questions into optimized SQL, reducing report development overhead 
+                            by 40%. <strong>Production Impact:</strong> Accelerated SDLC from 3 months to 14 days (21× improvement).
                         </p>
                         <div class="project-stats">
                             <div class="project-stat">
@@ -2062,33 +2168,38 @@
                 <!-- Project 5 -->
                 <div class="project-card">
                     <div class="project-image">
-                        <i class="fas fa-heartbeat"></i>
+                        <a href="https://github.com/narendranathe/Game-downloads-prediction-Poppy-Play-Time-Ch.2" target="_blank" class="project-github-link" title="View on GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <i class="fas fa-gamepad"></i>
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">Healthcare Predictive Modeling</h3>
+                        <h3 class="project-title">Game Downloads Prediction (R)</h3>
                         <p class="project-description">
-                            Supervised learning project predicting condition severity from symptoms using 
-                            KNN, SVM, Decision Trees, Logistic Regression, and Naive Bayes.
+                            <strong>Statistical Modeling:</strong> Time series forecasting of mobile game downloads using R, 
+                            comparing ARIMA, exponential smoothing, and regression models. <strong>Data Pipeline:</strong> 
+                            Automated data collection and preprocessing pipeline. <strong>Business Impact:</strong> 
+                            Actionable insights for marketing campaign timing and inventory planning.
                         </p>
                         <div class="project-stats">
                             <div class="project-stat">
-                                <div class="project-stat-value">5</div>
-                                <div class="project-stat-label">Algorithms</div>
+                                <div class="project-stat-value">3+</div>
+                                <div class="project-stat-label">Models</div>
                             </div>
                             <div class="project-stat">
-                                <div class="project-stat-value">High</div>
-                                <div class="project-stat-label">Accuracy</div>
+                                <div class="project-stat-value">R</div>
+                                <div class="project-stat-label">Language</div>
                             </div>
                             <div class="project-stat">
-                                <div class="project-stat-value">Full</div>
-                                <div class="project-stat-label">Pipeline</div>
+                                <div class="project-stat-value">Time</div>
+                                <div class="project-stat-label">Series</div>
                             </div>
                         </div>
                         <div class="project-tags">
-                            <span class="project-tag">Scikit-learn</span>
-                            <span class="project-tag">Pandas</span>
-                            <span class="project-tag">NumPy</span>
-                            <span class="project-tag">Matplotlib</span>
+                            <span class="project-tag">R</span>
+                            <span class="project-tag">Time Series</span>
+                            <span class="project-tag">ARIMA</span>
+                            <span class="project-tag">Forecasting</span>
                         </div>
                     </div>
                 </div>
@@ -2096,32 +2207,38 @@
                 <!-- Project 6 -->
                 <div class="project-card">
                     <div class="project-image">
-                        <i class="fas fa-home"></i>
+                        <a href="https://github.com/narendranathe/Web-Scraping" target="_blank" class="project-github-link" title="View on GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <i class="fas fa-spider"></i>
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">Housing Price Regression Analysis</h3>
+                        <h3 class="project-title">Web Scraping & Data Collection</h3>
                         <p class="project-description">
-                            Linear regression models predicting housing prices based on multiple features, 
-                            with comprehensive model evaluation using MSE and R-squared metrics.
+                            <strong>Data Engineering Fundamentals:</strong> Automated data collection pipelines using Python, 
+                            BeautifulSoup, and Selenium for large-scale web scraping. <strong>ETL Pipeline:</strong> 
+                            Data cleaning, transformation, and storage workflows. <strong>Foundation:</strong> 
+                            Core skills enabling data-driven ML projects through reliable data acquisition.
                         </p>
                         <div class="project-stats">
                             <div class="project-stat">
-                                <div class="project-stat-value">R²</div>
-                                <div class="project-stat-label">Optimized</div>
+                                <div class="project-stat-value">Auto</div>
+                                <div class="project-stat-label">Pipeline</div>
                             </div>
                             <div class="project-stat">
-                                <div class="project-stat-value">MSE</div>
-                                <div class="project-stat-label">Evaluated</div>
+                                <div class="project-stat-value">ETL</div>
+                                <div class="project-stat-label">Process</div>
                             </div>
                             <div class="project-stat">
-                                <div class="project-stat-value">Feat</div>
-                                <div class="project-stat-label">Engineering</div>
+                                <div class="project-stat-value">Scale</div>
+                                <div class="project-stat-label">Data</div>
                             </div>
                         </div>
                         <div class="project-tags">
-                            <span class="project-tag">Linear Regression</span>
+                            <span class="project-tag">Python</span>
+                            <span class="project-tag">BeautifulSoup</span>
+                            <span class="project-tag">Selenium</span>
                             <span class="project-tag">Pandas</span>
-                            <span class="project-tag">Seaborn</span>
                         </div>
                     </div>
                 </div>
@@ -2137,26 +2254,70 @@
                 <h2 class="section-title">Certifications</h2>
             </div>
             <div class="cert-grid">
-                <div class="cert-card">
-                    <div class="cert-icon">
-                        <img src="images/certifications/DP-700 logo.jpg" alt="DP-700" class="cert-image" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=&quot;fab fa-microsoft&quot;></i>';">
+                <!-- DP-700 with Microsoft badge styling -->
+                <div class="cert-card cert-card-featured">
+                    <div class="cert-badge-container">
+                        <svg class="cert-badge-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="msGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#0078d4"/>
+                                    <stop offset="100%" style="stop-color:#00bcf2"/>
+                                </linearGradient>
+                            </defs>
+                            <circle cx="50" cy="50" r="48" fill="url(#msGradient)" stroke="#fff" stroke-width="2"/>
+                            <path d="M30 35 L30 50 L45 50 L45 35 Z M55 35 L55 50 L70 50 L70 35 Z M30 55 L30 70 L45 70 L45 55 Z M55 55 L55 70 L70 70 L70 55 Z" fill="#fff"/>
+                        </svg>
+                        <span class="cert-badge-label">CERTIFIED</span>
                     </div>
                     <h4 class="cert-title">DP-700: Fabric Data Engineer Associate</h4>
                     <p class="cert-issuer">Microsoft</p>
+                    <p class="cert-year">2025</p>
                 </div>
-                <div class="cert-card">
-                    <div class="cert-icon">
-                        <img src="images/certifications/Azure AI certification logo.jpg" alt="Azure AI" class="cert-image" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=&quot;fas fa-brain&quot;></i>';">
+                <!-- Azure AI with badge styling -->
+                <div class="cert-card cert-card-featured">
+                    <div class="cert-badge-container">
+                        <svg class="cert-badge-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="aiGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#5c2d91"/>
+                                    <stop offset="100%" style="stop-color:#0078d4"/>
+                                </linearGradient>
+                            </defs>
+                            <circle cx="50" cy="50" r="48" fill="url(#aiGradient)" stroke="#fff" stroke-width="2"/>
+                            <circle cx="50" cy="40" r="12" fill="none" stroke="#fff" stroke-width="3"/>
+                            <path d="M35 55 Q50 70 65 55" fill="none" stroke="#fff" stroke-width="3"/>
+                            <circle cx="35" cy="62" r="5" fill="#fff"/>
+                            <circle cx="65" cy="62" r="5" fill="#fff"/>
+                            <circle cx="50" cy="72" r="5" fill="#fff"/>
+                        </svg>
+                        <span class="cert-badge-label">CERTIFIED</span>
                     </div>
                     <h4 class="cert-title">Azure AI Fundamentals (AI-900)</h4>
                     <p class="cert-issuer">Microsoft</p>
+                    <p class="cert-year">2024</p>
                 </div>
-                <div class="cert-card">
-                    <div class="cert-icon">
-                        <img src="images/certifications/Databricks_Gen_AI_badge.png" alt="Azure AI" class="cert-image" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=&quot;fas fa-brain&quot;></i>';">
+                <!-- Databricks with badge styling -->
+                <div class="cert-card cert-card-featured">
+                    <div class="cert-badge-container">
+                        <svg class="cert-badge-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="dbGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#FF3621"/>
+                                    <stop offset="100%" style="stop-color:#FF6B00"/>
+                                </linearGradient>
+                            </defs>
+                            <circle cx="50" cy="50" r="48" fill="url(#dbGradient)" stroke="#fff" stroke-width="2"/>
+                            <path d="M50 25 L70 38 L70 48 L50 35 Z" fill="#fff"/>
+                            <path d="M50 25 L30 38 L30 48 L50 35 Z" fill="#fff" opacity="0.8"/>
+                            <path d="M50 42 L70 55 L70 65 L50 52 Z" fill="#fff"/>
+                            <path d="M50 42 L30 55 L30 65 L50 52 Z" fill="#fff" opacity="0.8"/>
+                            <path d="M50 59 L70 72 L50 82 L30 72 Z" fill="#fff"/>
+                        </svg>
+                        <span class="cert-badge-label">ACCREDITED</span>
                     </div>
-                    <h4 class="cert-title">Databricks Generative AI Fundamentals</h4>
+                    <h4 class="cert-title">Databricks Lakehouse Fundamentals</h4>
                     <p class="cert-issuer">Databricks</p>
+                    <p class="cert-year">2024</p>
                 </div>
                 <div class="cert-card">
                     <div class="cert-icon">
