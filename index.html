@@ -780,6 +780,13 @@
             color: var(--accent-primary);
         }
 
+        .education-logo-img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
         .education-degree {
             font-family: var(--font-display);
             font-size: 1.35rem;
@@ -902,6 +909,16 @@
             color: var(--accent-primary);
             font-size: 1.25rem;
             flex-shrink: 0;
+        }
+
+        .company-logo-img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border-radius: 12px;
+            flex-shrink: 0;
+            background: var(--bg-card);
+            padding: 4px;
         }
 
         .experience-title {
@@ -1557,7 +1574,7 @@
                 <div class="hero-image-container">
                     <div class="hero-image-frame">
                         <div class="profile-visual">
-                            <img src="hero.jpg" alt="Narendranath Edara" class="profile-image">
+                            <img src="PP.jpg" alt="Narendranath Edara" class="profile-image" onerror="this.src='hero.jpg'; this.onerror=function(){this.src='hero-2.JPG'; this.onerror=function(){this.style.display='none'; var initials=document.createElement('span'); initials.className='profile-initials'; initials.textContent='NE'; this.parentElement.appendChild(initials);};};">
                         </div>
                     </div>
                     <div class="floating-card floating-card-1">
@@ -1586,7 +1603,7 @@
                 <div class="about-image-container">
                     <div class="about-card">
                         <div class="about-visual">
-                            <img src="hero.jpg" alt="Narendranath Edara" class="about-image">
+                            <img src="PP.jpg" alt="Narendranath Edara" class="about-image" onerror="this.src='hero.jpg'; this.onerror=function(){this.src='hero-2.JPG'; this.onerror=function(){this.style.display='none'; var initials=document.createElement('span'); initials.className='about-initials'; initials.textContent='NE'; this.parentElement.appendChild(initials);};};">
                         </div>
                         <div class="about-social">
                             <a href="https://linkedin.com/in/narendranathe" target="_blank" class="social-link" title="LinkedIn">
@@ -1686,7 +1703,7 @@
             <div class="education-grid">
                 <div class="education-card">
                     <div class="education-icon">
-                        <i class="fas fa-graduation-cap"></i>
+                        <img src="images/company/Missouri.png" alt="Missouri S&T" class="education-logo-img" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=&quot;fas fa-graduation-cap&quot;></i>';">
                     </div>
                     <h3 class="education-degree">Master of Science in Information Science & Technology</h3>
                     <p class="education-school">Missouri University of Science and Technology</p>
@@ -1698,7 +1715,7 @@
                 </div>
                 <div class="education-card">
                     <div class="education-icon">
-                        <i class="fas fa-university"></i>
+                        <img src="images/company/gayatri vidya parishad.jpeg" alt="GVP" class="education-logo-img" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=&quot;fas fa-university&quot;></i>';">
                     </div>
                     <h3 class="education-degree">Bachelor of Technology in Mechanical Engineering</h3>
                     <p class="education-school">Gayatri Vidya Parishad College of Engineering</p>
@@ -1728,7 +1745,8 @@
                     <div class="experience-content">
                         <div class="experience-card">
                             <div class="experience-header">
-                                <div class="company-logo">EHR</div>
+                                <img src="images/company/exponenthr.jpeg" alt="ExponentHR" class="company-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'; this.nextElementSibling.innerHTML='EHR';">
+                                <div class="company-logo" style="display:none;">EHR</div>
                                 <div>
                                     <h3 class="experience-title">Data Engineer | SQL Developer</h3>
                                     <p class="experience-company">ExponentHR</p>
@@ -1763,7 +1781,8 @@
                     <div class="experience-content">
                         <div class="experience-card">
                             <div class="experience-header">
-                                <div class="company-logo">MS&T</div>
+                                <img src="images/company/Missouri.png" alt="Missouri S&T" class="company-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'; this.nextElementSibling.innerHTML='MS&T';">
+                                <div class="company-logo" style="display:none;">MS&T</div>
                                 <div>
                                     <h3 class="experience-title">Data Engineer | NLP Engineer</h3>
                                     <p class="experience-company">Missouri University of Science and Technology</p>
@@ -1798,7 +1817,8 @@
                     <div class="experience-content">
                         <div class="experience-card">
                             <div class="experience-header">
-                                <div class="company-logo">C2FO</div>
+                                <img src="images/company/c2fo.png" alt="C2FO" class="company-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'; this.nextElementSibling.innerHTML='C2FO';">
+                                <div class="company-logo" style="display:none;">C2FO</div>
                                 <div>
                                     <h3 class="experience-title">Product Intern | Buyer Funded Early Pay</h3>
                                     <p class="experience-company">C2FO</p>
@@ -1830,7 +1850,8 @@
                     <div class="experience-content">
                         <div class="experience-card">
                             <div class="experience-header">
-                                <div class="company-logo">UD</div>
+                                <img src="images/company/udaan.png" alt="udaan" class="company-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'; this.nextElementSibling.innerHTML='UD';">
+                                <div class="company-logo" style="display:none;">UD</div>
                                 <div>
                                     <h3 class="experience-title">Business Intelligence Analyst | Supply</h3>
                                     <p class="experience-company">udaan.com</p>
@@ -1864,7 +1885,8 @@
                     <div class="experience-content">
                         <div class="experience-card">
                             <div class="experience-header">
-                                <div class="company-logo">ZMT</div>
+                                <img src="images/company/zomato.png" alt="Zomato" class="company-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'; this.nextElementSibling.innerHTML='ZMT';">
+                                <div class="company-logo" style="display:none;">ZMT</div>
                                 <div>
                                     <h3 class="experience-title">Business Analyst</h3>
                                     <p class="experience-company">Zomato</p>
@@ -2117,17 +2139,24 @@
             <div class="cert-grid">
                 <div class="cert-card">
                     <div class="cert-icon">
-                        <img src="images/certifications/DP-700 logo.jpg" alt="DP-700" class="cert-image">
+                        <img src="images/certifications/DP-700 logo.jpg" alt="DP-700" class="cert-image" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=&quot;fab fa-microsoft&quot;></i>';">
                     </div>
                     <h4 class="cert-title">DP-700: Fabric Data Engineer Associate</h4>
                     <p class="cert-issuer">Microsoft</p>
                 </div>
                 <div class="cert-card">
                     <div class="cert-icon">
-                        <img src="images/certifications/Azure AI certification logo.jpg" alt="Azure AI" class="cert-image">
+                        <img src="images/certifications/Azure AI certification logo.jpg" alt="Azure AI" class="cert-image" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=&quot;fas fa-brain&quot;></i>';">
                     </div>
-                    <h4 class="cert-title">Azure AI Fundamentals</h4>
+                    <h4 class="cert-title">Azure AI Fundamentals (AI-900)</h4>
                     <p class="cert-issuer">Microsoft</p>
+                </div>
+                <div class="cert-card">
+                    <div class="cert-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h4 class="cert-title">Databricks Lakehouse Fundamentals</h4>
+                    <p class="cert-issuer">Databricks</p>
                 </div>
                 <div class="cert-card">
                     <div class="cert-icon">
