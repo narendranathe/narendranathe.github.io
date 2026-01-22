@@ -89,7 +89,7 @@ To view a live example, **[click here](https://narendranathe.github.io)**.
 
 ---
 
-## 🎨 Customization
+##  Customization
 
 All customization is done directly in `index.html`. Open it in any text editor and modify:
 
@@ -198,7 +198,7 @@ Add project cards:
 
 ---
 
-## 📁 File Structure
+##  File Structure
 
 ```
 your-repo/
@@ -218,7 +218,7 @@ your-repo/
 
 ---
 
-## 🖼 Adding Images
+##  Adding Images
 
 ### Profile Picture
 - Replace `PP.jpg` with your photo
@@ -238,7 +238,7 @@ your-repo/
 
 ---
 
-## 🎨 Color Customization
+##  Color Customization
 
 The template uses CSS variables for easy theming. Find these in the `<style>` section:
 
@@ -275,7 +275,7 @@ The template uses CSS variables for easy theming. Find these in the `<style>` se
 
 ---
 
-## 📱 Responsive Design
+##  Responsive Design
 
 The template is fully responsive out of the box:
 - **Desktop:** Full layout with sidebar navigation
@@ -286,7 +286,7 @@ No additional configuration needed!
 
 ---
 
-## 🔍 SEO
+##  SEO
 
 The template includes SEO meta tags. Customize them:
 
@@ -307,7 +307,7 @@ The template includes SEO meta tags. Customize them:
 
 ---
 
-## 🚀 Custom Domain (Optional)
+##  Custom Domain (Optional)
 
 1. Purchase a domain (Namecheap, Google Domains, etc.)
 2. Go to **Settings** → **Pages** → **Custom domain**
@@ -321,7 +321,7 @@ The template includes SEO meta tags. Customize them:
 
 ---
 
-## 🐛 Troubleshooting
+##  Troubleshooting
 
 ### Page shows 404
 - Ensure repo is named correctly (`<USERNAME>.github.io` for root domain)
