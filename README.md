@@ -1,7 +1,7 @@
 <br/>
 
 <p align="center">
-  <img src="https://img.icons8.com/fluency/96/portfolio.png" width="80">
+  
 
   <h4 align="center">Portfolio Template for Data & ML Engineers</h4>
 
