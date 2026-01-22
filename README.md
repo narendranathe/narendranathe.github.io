@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://img.icons8.com/fluency/96/portfolio.png" width="80">
 
-  <h4 align="center">Clean, Professional Portfolio Template for Data & ML Engineers</h4>
+  <h4 align="center">Portfolio Template for Data & ML Engineers</h4>
 
   <p align="center">
     <a href="https://github.com/narendranathe/narendranathe.github.io/issues"><img src="https://img.shields.io/github/issues/narendranathe/narendranathe.github.io"/></a>
