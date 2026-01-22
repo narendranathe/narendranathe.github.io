@@ -1565,6 +1565,137 @@
             cursor: pointer;
             color: var(--text-primary);
         }
+
+        /* Research Publications Section */
+        .research-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2.5rem;
+        max-width: 800px;
+        margin: 0 auto;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .research-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(180deg, var(--accent-primary), var(--accent-warm));
+    }
+    
+    .research-card:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-4px);
+    }
+    
+    .research-type {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--accent-light);
+        color: var(--accent-primary);
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 1.25rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .research-type i {
+        font-size: 0.9rem;
+    }
+    
+    .research-title {
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 1rem;
+        line-height: 1.4;
+    }
+    
+    .research-authors {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        margin-bottom: 1.25rem;
+        line-height: 1.6;
+    }
+    
+    .research-authors strong {
+        color: var(--accent-primary);
+        font-weight: 600;
+    }
+    
+    .research-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .research-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+    }
+    
+    .research-meta-item i {
+        color: var(--accent-secondary);
+        width: 16px;
+    }
+    
+    .research-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: var(--accent-primary);
+        color: #fff;
+        padding: 0.875rem 1.75rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: var(--transition);
+    }
+    
+    .research-link:hover {
+        background: var(--accent-secondary);
+        transform: translateX(4px);
+    }
+    
+    .research-link i {
+        transition: var(--transition);
+    }
+    
+    .research-link:hover i {
+        transform: translateX(4px);
+    }
+    
+    @media (max-width: 768px) {
+        .research-card {
+            padding: 1.75rem;
+        }
+        
+        .research-title {
+            font-size: 1.25rem;
+        }
+        
+        .research-meta {
+            gap: 1rem;
+        }
+    }
     </style>
 </head>
 <body>
@@ -1586,6 +1717,7 @@
                     </div>
                 </li>
                 <li><a href="#certifications" class="nav-link">Certifications</a></li>
+                <li><a href="#research" class="nav-link">Research</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
             <div class="mobile-toggle" onclick="toggleMobileNav()">
@@ -1607,6 +1739,7 @@
             <li><a href="#experience" onclick="toggleMobileNav()">Experience</a></li>
             <li><a href="#projects" onclick="toggleMobileNav()">Projects</a></li>
             <li><a href="#certifications" onclick="toggleMobileNav()">Certifications</a></li>
+            <li><a href="#research" onclick="toggleMobileNav()">Research</a></li>
             <li><a href="#achievements" onclick="toggleMobileNav()">Achievements</a></li>
             <li><a href="#contact" onclick="toggleMobileNav()">Contact</a></li>
         </ul>
@@ -2375,6 +2508,42 @@
         </div>
     </section>
 
+    <!-- Research Publications Section -->
+    <section class="section" id="research">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Academic Work</span>
+                <h2 class="section-title">Research Publication</h2>
+            </div>
+            <div class="research-card">
+                <span class="research-type">
+                    <i class="fas fa-scroll"></i> Peer-Reviewed Journal
+                </span>
+                <h3 class="research-title">An Examination of Sentiment Analysis as a Tool for Gathering Visitor Feedback</h3>
+                <p class="research-authors">
+                    Dr. David Bojanic, <strong>Narendranath Edara</strong>, Jane Zhang
+                </p>
+                <div class="research-meta">
+                    <div class="research-meta-item">
+                        <i class="fas fa-book"></i>
+                        <span>Journal of Nonprofit & Public Sector Marketing</span>
+                    </div>
+                    <div class="research-meta-item">
+                        <i class="fas fa-calendar"></i>
+                        <span>2025</span>
+                    </div>
+                    <div class="research-meta-item">
+                        <i class="fas fa-university"></i>
+                        <span>Taylor & Francis</span>
+                    </div>
+                </div>
+                <a href="https://doi.org/10.1080/10495142.2025.2525123" target="_blank" rel="noopener noreferrer" class="research-link">
+                    View Publication <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+                                
     <!-- Achievements Section -->
     <section class="section" id="achievements">
         <div class="container">
