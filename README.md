@@ -205,15 +205,8 @@ your-repo/
 ├── index.html          # Main portfolio page (edit this!)
 ├── README.md           # This file
 ├── LICENSE             # MIT License
-└── images/
-    ├── hero.jpg        # Hero background (optional)
-    ├── PP.jpg          # Profile picture
-    ├── preview.png     # README preview image
-    ├── company/        # Company & university logos
-    │   ├── company1.png
-    │   └── university.png
-    └── certifications/ # Certification badges
-        └── cert1.png
+└── images/             # You can create this directory or use files from cloudflare 
+    
 ```
 
 ---
@@ -221,17 +214,20 @@ your-repo/
 ##  Adding Images
 
 ### Profile Picture
-- Replace `PP.jpg` with your photo
+- Find <!-- Hero Section -->
+- Replace URL between the "" Example: <img src= "URL" >
 - Recommended size: 400x400px
 - Supported formats: `.jpg`, `.jpeg`, `.png`
 
 ### Company Logos
-- Add logos to `images/company/`
+- Find <!-- Experience Section -->
+- Replace URL between the "" Example: <img src= "URL" >
 - Recommended size: 100x100px
 - Use transparent PNG for best results
 
 ### Certification Badges
-- Add badges to `images/certifications/`
+- Find <!-- Certifications Section -->
+- Replace URL between the "" Example: <img src= "URL" >`
 - Download official badges from certification providers
 
 > **Note:** GitHub Pages is case-sensitive! `Company.PNG` ≠ `company.png`
