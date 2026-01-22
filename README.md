@@ -28,7 +28,7 @@
   </a>
 </p>
 
-**DevFolio** is a clean, minimal portfolio template designed for Data Engineers, ML Engineers, and Software Developers. Built with pure HTML, CSS, and JavaScript — no frameworks, no build tools, no dependencies. Just fork, customize, and deploy to GitHub Pages in minutes.
+**DevFolio** is a clean, minimal portfolio template designed for Data Engineers, ML Engineers, and Software Developers. Built with pure HTML, CSS, and JavaScript no frameworks, no build tools, no dependencies. Just fork, customize, and deploy to GitHub Pages in minutes.
 
 **Features:**
 
@@ -61,7 +61,7 @@ To view a live example, **[click here](https://narendranathe.github.io)**.
 
 ---
 
-## 🛠 Installation & Setup
+##  Installation & Setup
 
 ### Option 1: Fork This Repo _(Recommended)_
 
