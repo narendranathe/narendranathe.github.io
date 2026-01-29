@@ -13,13 +13,13 @@ const CONFIG = {
             profileUrl: 'https://medium.com/@narendranathedara'
         },
         devto: {
-            enabled: false,
+            enabled: true,
             username: 'narendranathe',
             feedUrl: 'https://dev.to/feed/narendranathe',
             profileUrl: 'https://dev.to/narendranathe'
         },
         substack: {
-            enabled: false,
+            enabled: true,
             username: 'narendranathe',
             feedUrl: 'https://narendranathe.substack.com/feed',
             profileUrl: 'https://narendranathe.substack.com'
