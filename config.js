@@ -28,28 +28,28 @@ const CONFIG = {
     
     recommendations: [
         {
-            text: "Narendranath is an exceptional data engineer who consistently delivers high-quality solutions. His work on our analytics platform reduced query times by 70% and his proactive approach to problem-solving makes him an invaluable team member.",
-            name: "John Doe",
-            role: "Senior Engineering Manager at ExponentHR",
-            initials: "JD",
+            text: "Naren is a great talent in the product ownership space. He is a critical thinker and understands how to analyze a problem, and convert that problem into a tangible requirements doc. He also understands how to take a data driven approach to tackle features and initiatives. Most importantly, he is a quick and humble learner that loves researching the areas of the business that are new to him. I highly recommend Naren for any product, business analyst, or data analyst roles.",
+            name: "Richard Enright",
+            role: "Lead Product Manager at Harness",
+            initials: "RE",
             avatar: "",
-            linkedin: "https://linkedin.com/in/johndoe"
+            linkedin: "https://www.linkedin.com/in/richard-enright-mba/"
         },
         {
-            text: "Working with Naren was a pleasure. His deep understanding of data pipelines and ability to translate complex requirements into scalable solutions is remarkable. He mentored junior team members and always went above and beyond.",
-            name: "Jane Smith",
-            role: "Data Science Lead at Zomato",
-            initials: "JS",
+            text: "I had the pleasure of working closely with Narendranath for 3+ years and can confidently attest to his outstanding performance and exceptional work ethic. He had keen eye for solving business problems by identifying trends to improve the overall business of the clients and the company as well.Narendranath was always willing to go above and beyond his responsibilities to support the team and the company's overall goals. His positive attitude, professionalism, and strong communication skills made him a pleasure to work with",
+            name: "Snehal Moni",
+            role: "Operations and Policy Analyst at Oregon Health Authority",
+            initials: "SM",
             avatar: "",
-            linkedin: "https://linkedin.com/in/janesmith"
+            linkedin: "https://www.linkedin.com/in/snehal-moni/"
         },
         {
-            text: "Naren's research contributions to our sentiment analysis project were outstanding. His technical expertise combined with his ability to communicate complex findings made our publication possible. Highly recommend!",
-            name: "Dr. David Bojanic",
-            role: "Professor at Missouri S&T",
-            initials: "DB",
+            text: "Narendranath has been an efficient source to the team at all times.He expertly trained himself to adapt to the various sectors of the business and was one of the few people who took up every challenge offered to him.",
+            name: "Pranav Suresh",
+            role: "Business Effectiveness - CIBC",
+            initials: "PS",
             avatar: "",
-            linkedin: "https://linkedin.com/in/davidbojanic"
+            linkedin: "https://www.linkedin.com/in/pranav-s-47356a58/"
         }
     ],
     
