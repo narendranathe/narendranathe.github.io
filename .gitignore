@@ -1,0 +1,13 @@
+# Personal configuration (contains user-specific data)
+config.js
+
+# Keep the template
+!config.template.js
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
