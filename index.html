@@ -1768,6 +1768,509 @@
             gap: 1rem;
         }
     }
+    /* ============================================
+       FEATURED ARTICLES SECTION
+       ============================================ */
+    
+    .featured-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .featured-card {
+        background: var(--bg-card);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-color);
+        transition: var(--transition);
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .featured-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .featured-image {
+        height: 180px;
+        background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent-warm-light) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .featured-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+    
+    .featured-image > i {
+        font-size: 3rem;
+        color: var(--accent-primary);
+        opacity: 0.3;
+    }
+    
+    .featured-source {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: rgba(255,255,255,0.95);
+        padding: 0.4rem 0.85rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        z-index: 2;
+        backdrop-filter: blur(10px);
+    }
+    
+    .featured-source i.fa-medium { color: #000; }
+    .featured-source i.fa-dev { color: #0a0a0a; }
+    
+    .featured-read-time {
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+        background: rgba(0,0,0,0.75);
+        color: white;
+        padding: 0.3rem 0.7rem;
+        border-radius: 12px;
+        font-size: 0.7rem;
+        font-weight: 500;
+        z-index: 2;
+    }
+    
+    .featured-content {
+        padding: 1.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .featured-category {
+        display: inline-block;
+        background: var(--accent-light);
+        color: var(--accent-primary);
+        padding: 0.25rem 0.65rem;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.75rem;
+        align-self: flex-start;
+    }
+    
+    .featured-title {
+        font-family: var(--font-display);
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.75rem;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .featured-description {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 1rem;
+        flex-grow: 1;
+    }
+    
+    .featured-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+    }
+    
+    .featured-date {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+    
+    .featured-read-more {
+        color: var(--accent-primary);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        transition: var(--transition);
+    }
+    
+    .featured-card:hover .featured-read-more {
+        gap: 0.6rem;
+    }
+    
+    /* Loading & Error States */
+    .loading-container,
+    .error-message {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 4rem 2rem;
+    }
+    
+    .loading-spinner {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--text-muted);
+        font-size: 1rem;
+    }
+    
+    .loading-spinner i {
+        font-size: 1.5rem;
+        color: var(--accent-primary);
+    }
+    
+    .error-message i {
+        font-size: 3rem;
+        color: var(--border-color);
+        margin-bottom: 1rem;
+        display: block;
+    }
+    
+    /* Platform Tabs */
+    .platform-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-bottom: 2.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .platform-tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.25rem;
+        border-radius: 50px;
+        border: 2px solid var(--border-color);
+        background: var(--bg-card);
+        color: var(--text-secondary);
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .platform-tab:hover {
+        border-color: var(--accent-primary);
+        color: var(--accent-primary);
+    }
+    
+    .platform-tab.active {
+        background: var(--accent-primary);
+        border-color: var(--accent-primary);
+        color: white;
+    }
+    
+    .platform-tab i {
+        font-size: 1.1rem;
+    }
+    
+    /* CTA Buttons */
+    .section-cta {
+        text-align: center;
+        margin-top: 3rem;
+    }
+    
+    .section-cta a {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: var(--transition);
+    }
+    
+    .btn-platform {
+        background: #000;
+        color: white;
+    }
+    
+    .btn-platform:hover {
+        background: #333;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+    
+    .btn-platform.linkedin {
+        background: #0A66C2;
+    }
+    
+    .btn-platform.linkedin:hover {
+        background: #004182;
+        box-shadow: 0 8px 25px rgba(10, 102, 194, 0.3);
+    }
+    
+    /* ============================================
+       RECOMMENDATIONS CAROUSEL
+       ============================================ */
+    
+    .recommendations-carousel {
+        position: relative;
+        max-width: 900px;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+    
+    .recommendations-track {
+        display: flex;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .recommendation-slide {
+        min-width: 100%;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+    
+    .recommendation-card {
+        background: var(--bg-card);
+        border-radius: 24px;
+        padding: 3rem;
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--border-color);
+        position: relative;
+        text-align: center;
+    }
+    
+    .recommendation-card::before {
+        content: '"';
+        position: absolute;
+        top: 20px;
+        left: 30px;
+        font-family: var(--font-display);
+        font-size: 8rem;
+        color: var(--accent-light);
+        line-height: 1;
+        pointer-events: none;
+        opacity: 0.8;
+    }
+    
+    .recommendation-text {
+        font-size: 1.2rem;
+        color: var(--text-secondary);
+        line-height: 1.9;
+        font-style: italic;
+        margin-bottom: 2.5rem;
+        position: relative;
+        z-index: 1;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .recommendation-author {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.25rem;
+    }
+    
+    .recommendation-avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 1.25rem;
+        overflow: hidden;
+        flex-shrink: 0;
+        box-shadow: var(--shadow-sm);
+    }
+    
+    .recommendation-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .recommendation-info {
+        text-align: left;
+    }
+    
+    .recommendation-name {
+        font-weight: 600;
+        color: var(--text-primary);
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .recommendation-linkedin {
+        color: #0A66C2;
+        font-size: 1.1rem;
+        transition: var(--transition);
+    }
+    
+    .recommendation-linkedin:hover {
+        color: #004182;
+        transform: scale(1.1);
+    }
+    
+    .recommendation-role {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-top: 0.25rem;
+    }
+    
+    /* Carousel Controls */
+    .carousel-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem;
+        margin-top: 2.5rem;
+    }
+    
+    .carousel-btn {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: var(--bg-card);
+        border: 2px solid var(--border-color);
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+    }
+    
+    .carousel-btn:hover {
+        background: var(--accent-primary);
+        color: white;
+        border-color: var(--accent-primary);
+        transform: scale(1.05);
+    }
+    
+    .carousel-dots {
+        display: flex;
+        gap: 0.6rem;
+    }
+    
+    .carousel-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--border-color);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .carousel-dot:hover {
+        background: var(--accent-secondary);
+    }
+    
+    .carousel-dot.active {
+        background: var(--accent-primary);
+        transform: scale(1.2);
+    }
+    
+    /* Progress Bar (Optional) */
+    .carousel-progress {
+        width: 100%;
+        height: 3px;
+        background: var(--border-color);
+        border-radius: 2px;
+        margin-top: 2rem;
+        overflow: hidden;
+    }
+    
+    .carousel-progress-bar {
+        height: 100%;
+        background: var(--accent-primary);
+        border-radius: 2px;
+        width: 0%;
+        transition: width 0.1s linear;
+    }
+    
+    /* Responsive */
+    @media (max-width: 992px) {
+        .featured-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .featured-grid {
+            grid-template-columns: 1fr;
+            max-width: 500px;
+        }
+        
+        .platform-tabs {
+            gap: 0.5rem;
+        }
+        
+        .platform-tab {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+        
+        .recommendation-card {
+            padding: 2rem 1.5rem;
+        }
+        
+        .recommendation-text {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        
+        .recommendation-card::before {
+            font-size: 5rem;
+            top: 10px;
+            left: 15px;
+        }
+        
+        .carousel-controls {
+            gap: 1rem;
+        }
+        
+        .carousel-btn {
+            width: 40px;
+            height: 40px;
+        }
+    }
     </style>
 </head>
 <body>
@@ -1790,6 +2293,8 @@
                 </li>
                 <li><a href="#certifications" class="nav-link">Certifications</a></li>
                 <li><a href="#research" class="nav-link">Research</a></li>
+                <li><a href="#featured" class="dropdown-item">Articles</a></li>
+                <li><a href="#recommendations" class="dropdown-item">Recommendations</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
                 <li><a href="https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf" target="_blank" rel="noopener noreferrer" class="nav-link nav-resume"><i class="fas fa-download"></i> Resume</a></li>
             </ul>
@@ -1814,7 +2319,10 @@
             <li><a href="#certifications" onclick="toggleMobileNav()">Certifications</a></li>
             <li><a href="#research" onclick="toggleMobileNav()">Research</a></li>
             <li><a href="#achievements" onclick="toggleMobileNav()">Achievements</a></li>
+            <li><a href="#featured" onclick="toggleMobileNav()">Articles</a></li>
+            <li><a href="#recommendations" onclick="toggleMobileNav()">Recommendations</a></li>
             <li><a href="#contact" onclick="toggleMobileNav()">Contact</a></li>
+            <li><a href="https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf" target="_blank" rel="noopener noreferrer" class="nav-resume" onclick="toggleMobileNav()"><i class="fas fa-download"></i> Resume</a> </li>
         </ul>
     </div>
 
@@ -2620,6 +3128,80 @@
             </div>
         </div>
     </section>
+
+    <!-- Featured Articles Section -->
+    <section class="section" id="featured">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Insights & Writing</span>
+                <h2 class="section-title">Featured Articles</h2>
+                <p class="section-subtitle">Thoughts on data engineering, ML systems, and career growth</p>
+            </div>
+            
+            <!-- Platform Tabs -->
+            <div class="platform-tabs" id="platformTabs">
+                <!-- Generated dynamically based on config -->
+            </div>
+            
+            <!-- Articles Grid -->
+            <div class="featured-grid" id="featuredGrid">
+                <div class="loading-container">
+                    <div class="loading-spinner">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span>Loading articles...</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CTA Button -->
+            <div class="section-cta">
+                <a href="#" target="_blank" rel="noopener noreferrer" class="btn-platform" id="articlesCtaBtn">
+                    <i class="fab fa-medium"></i> View All Articles
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Recommendations Section -->
+    <section class="section section-alt" id="recommendations">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Testimonials</span>
+                <h2 class="section-title">What Colleagues Say</h2>
+            </div>
+            
+            <div class="recommendations-carousel">
+                <div class="recommendations-track" id="recommendationsTrack">
+                    <!-- Generated dynamically from config -->
+                </div>
+                
+                <!-- Carousel Controls -->
+                <div class="carousel-controls">
+                    <button class="carousel-btn" onclick="moveRecommendation(-1)" aria-label="Previous">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="carousel-dots" id="carouselDots">
+                        <!-- Generated dynamically -->
+                    </div>
+                    <button class="carousel-btn" onclick="moveRecommendation(1)" aria-label="Next">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <!-- Progress Bar -->
+                <div class="carousel-progress">
+                    <div class="carousel-progress-bar" id="carouselProgress"></div>
+                </div>
+            </div>
+            
+            <!-- CTA -->
+            <div class="section-cta">
+                <a href="" target="_blank" rel="noopener noreferrer" class="btn-platform linkedin" id="recommendationsCtaBtn">
+                    <i class="fab fa-linkedin"></i> View All on LinkedIn
+                </a>
+            </div>
+        </div>
+    </section>
                                 
     <!-- Achievements Section -->
     <section class="section" id="achievements">
@@ -2771,5 +3353,449 @@
             observer.observe(el);
         });
     </script>
+                                
+    <!-- Load configuration (create your own from config.template.js) -->
+    <script src="config.js"></script>
+    
+    <!-- Main functionality -->
+    <script>
+    // ============================================
+    // CHECK FOR CONFIG
+    // ============================================
+    
+    if (typeof CONFIG === 'undefined') {
+        console.warn('config.js not found. Please copy config.template.js to config.js and customize it.');
+        
+        // Provide fallback CONFIG for demo purposes
+        var CONFIG = {
+            name: 'Your Name',
+            rss: {
+                medium: { enabled: false },
+                devto: { enabled: false },
+                substack: { enabled: false }
+            },
+            recommendations: [],
+            social: { linkedin: '#' }
+        };
+    }
+    
+    // ============================================
+    // PLATFORM CONFIGURATION
+    // ============================================
+    
+    const PLATFORMS = {
+        medium: {
+            icon: 'fab fa-medium',
+            name: 'Medium',
+            color: '#000'
+        },
+        devto: {
+            icon: 'fab fa-dev',
+            name: 'Dev.to',
+            color: '#0a0a0a'
+        },
+        substack: {
+            icon: 'fas fa-newspaper',
+            name: 'Substack',
+            color: '#ff6719'
+        }
+    };
+    
+    let currentPlatform = null;
+    
+    // ============================================
+    // FEATURED ARTICLES
+    // ============================================
+    
+    function initFeaturedArticles() {
+        const tabsContainer = document.getElementById('platformTabs');
+        const enabledPlatforms = Object.entries(CONFIG.rss).filter(([_, config]) => config.enabled);
+        
+        if (enabledPlatforms.length === 0) {
+            // No platforms enabled - show message
+            document.getElementById('featuredGrid').innerHTML = `
+                <div class="error-message">
+                    <i class="fas fa-cog"></i>
+                    <p>Configure your platforms in config.js</p>
+                </div>
+            `;
+            tabsContainer.style.display = 'none';
+            return;
+        }
+        
+        // Generate tabs
+        if (enabledPlatforms.length > 1) {
+            tabsContainer.innerHTML = enabledPlatforms.map(([key, config], index) => `
+                <button class="platform-tab ${index === 0 ? 'active' : ''}" 
+                        onclick="switchPlatform('${key}')" 
+                        data-platform="${key}">
+                    <i class="${PLATFORMS[key].icon}"></i> ${PLATFORMS[key].name}
+                </button>
+            `).join('');
+        } else {
+            tabsContainer.style.display = 'none';
+        }
+        
+        // Load first enabled platform
+        currentPlatform = enabledPlatforms[0][0];
+        loadArticles(currentPlatform);
+    }
+    
+    async function loadArticles(platform) {
+        const grid = document.getElementById('featuredGrid');
+        const ctaBtn = document.getElementById('articlesCtaBtn');
+        const config = CONFIG.rss[platform];
+        const platformInfo = PLATFORMS[platform];
+        
+        // Show loading
+        grid.innerHTML = `
+            <div class="loading-container">
+                <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Loading articles from ${platformInfo.name}...</span>
+                </div>
+            </div>
+        `;
+        
+        // Update CTA
+        ctaBtn.href = config.profileUrl;
+        ctaBtn.style.background = platformInfo.color;
+        ctaBtn.innerHTML = `<i class="${platformInfo.icon}"></i> View All on ${platformInfo.name}`;
+        
+        try {
+            const API_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(config.feedUrl)}`;
+            const response = await fetch(API_URL);
+            const data = await response.json();
+            
+            if (data.status === 'ok' && data.items && data.items.length > 0) {
+                renderArticles(data.items.slice(0, 6), platform);
+            } else {
+                showNoArticles(platform);
+            }
+        } catch (error) {
+            console.error('Error fetching articles:', error);
+            showArticleError(platform);
+        }
+    }
+    
+    function renderArticles(articles, platform) {
+        const grid = document.getElementById('featuredGrid');
+        const platformInfo = PLATFORMS[platform];
+        
+        grid.innerHTML = articles.map(article => {
+            // Extract thumbnail
+            let thumbnail = article.thumbnail || '';
+            if (!thumbnail && article.content) {
+                const imgMatch = article.content.match(/<img[^>]+src=["']([^"']+)["']/i);
+                if (imgMatch) thumbnail = imgMatch[1];
+            }
+            
+            // Clean description
+            let description = (article.description || '')
+                .replace(/<[^>]*>/g, '')
+                .replace(/&nbsp;/g, ' ')
+                .trim()
+                .substring(0, 150);
+            
+            // Calculate read time
+            const wordCount = (article.content || article.description || '').split(/\s+/).length;
+            const readTime = Math.max(1, Math.ceil(wordCount / 200));
+            
+            // Format date
+            const formattedDate = new Date(article.pubDate).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            });
+            
+            // Get category
+            const category = (article.categories && article.categories[0]) || 'Article';
+            
+            return `
+                <a href="${article.link}" target="_blank" rel="noopener noreferrer" class="featured-card">
+                    <div class="featured-image">
+                        <span class="featured-source">
+                            <i class="${platformInfo.icon}"></i> ${platformInfo.name}
+                        </span>
+                        ${thumbnail ? `<img src="${thumbnail}" alt="${article.title}" onerror="this.style.display='none';">` : ''}
+                        <i class="fas fa-newspaper"></i>
+                        <span class="featured-read-time">${readTime} min read</span>
+                    </div>
+                    <div class="featured-content">
+                        <span class="featured-category">${category}</span>
+                        <h3 class="featured-title">${article.title}</h3>
+                        <p class="featured-description">${description}${description.length >= 150 ? '...' : ''}</p>
+                        <div class="featured-meta">
+                            <span class="featured-date">
+                                <i class="fas fa-calendar-alt"></i> ${formattedDate}
+                            </span>
+                            <span class="featured-read-more">
+                                Read More <i class="fas fa-arrow-right"></i>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }).join('');
+    }
+    
+    function showNoArticles(platform) {
+        const grid = document.getElementById('featuredGrid');
+        const platformInfo = PLATFORMS[platform];
+        
+        grid.innerHTML = `
+            <div class="error-message">
+                <i class="fas fa-pencil-alt"></i>
+                <p>No articles on ${platformInfo.name} yet.</p>
+                <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-muted);">
+                    Start writing and they'll appear here automatically!
+                </p>
+            </div>
+        `;
+    }
+    
+    function showArticleError(platform) {
+        const grid = document.getElementById('featuredGrid');
+        const config = CONFIG.rss[platform];
+        
+        grid.innerHTML = `
+            <div class="error-message">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>Unable to load articles right now.</p>
+                <p style="margin-top: 1rem;">
+                    <a href="${config.profileUrl}" target="_blank" 
+                       style="color: var(--accent-primary); text-decoration: none; font-weight: 600;">
+                        Visit my profile directly →
+                    </a>
+                </p>
+            </div>
+        `;
+    }
+    
+    function switchPlatform(platform) {
+        if (platform === currentPlatform) return;
+        
+        currentPlatform = platform;
+        
+        // Update tabs
+        document.querySelectorAll('.platform-tab').forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.platform === platform);
+        });
+        
+        // Load articles
+        loadArticles(platform);
+    }
+    
+    // ============================================
+    // RECOMMENDATIONS CAROUSEL
+    // ============================================
+    
+    let currentSlide = 0;
+    let totalSlides = 0;
+    let autoplayInterval = null;
+    let progressInterval = null;
+    const AUTOPLAY_DURATION = 6000; // 6 seconds per slide
+    
+    function initRecommendations() {
+        const track = document.getElementById('recommendationsTrack');
+        const dots = document.getElementById('carouselDots');
+        const ctaBtn = document.getElementById('recommendationsCtaBtn');
+        
+        if (!CONFIG.recommendations || CONFIG.recommendations.length === 0) {
+            document.getElementById('recommendations').style.display = 'none';
+            return;
+        }
+        
+        totalSlides = CONFIG.recommendations.length;
+        
+        // Update CTA
+        ctaBtn.href = CONFIG.social.linkedin + '/details/recommendations/';
+        
+        // Render slides
+        track.innerHTML = CONFIG.recommendations.map(rec => `
+            <div class="recommendation-slide">
+                <div class="recommendation-card">
+                    <p class="recommendation-text">"${rec.text}"</p>
+                    <div class="recommendation-author">
+                        <div class="recommendation-avatar">
+                            ${rec.avatar 
+                                ? `<img src="${rec.avatar}" alt="${rec.name}" onerror="this.style.display='none'; this.parentElement.textContent='${rec.initials}';">` 
+                                : rec.initials}
+                        </div>
+                        <div class="recommendation-info">
+                            <div class="recommendation-name">
+                                ${rec.name}
+                                <a href="${rec.linkedin}" target="_blank" rel="noopener noreferrer" 
+                                   class="recommendation-linkedin" title="View on LinkedIn">
+                                    <i class="fab fa-linkedin"></i>
+                                </a>
+                            </div>
+                            <div class="recommendation-role">${rec.role}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        
+        // Render dots
+        dots.innerHTML = CONFIG.recommendations.map((_, i) => `
+            <span class="carousel-dot ${i === 0 ? 'active' : ''}" 
+                  onclick="goToSlide(${i})" 
+                  aria-label="Go to slide ${i + 1}"></span>
+        `).join('');
+        
+        // Start autoplay
+        startAutoplay();
+        
+        // Pause on hover
+        const carousel = document.querySelector('.recommendations-carousel');
+        carousel.addEventListener('mouseenter', pauseAutoplay);
+        carousel.addEventListener('mouseleave', startAutoplay);
+        
+        // Touch/swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        carousel.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+            pauseAutoplay();
+        }, { passive: true });
+        
+        carousel.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+            startAutoplay();
+        }, { passive: true });
+        
+        function handleSwipe() {
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    moveRecommendation(1); // Swipe left - next
+                } else {
+                    moveRecommendation(-1); // Swipe right - prev
+                }
+            }
+        }
+    }
+    
+    function updateCarousel() {
+        const track = document.getElementById('recommendationsTrack');
+        const dots = document.querySelectorAll('.carousel-dot');
+        
+        track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === currentSlide);
+        });
+        
+        resetProgress();
+    }
+    
+    function moveRecommendation(direction) {
+        currentSlide += direction;
+        
+        if (currentSlide >= totalSlides) {
+            currentSlide = 0;
+        } else if (currentSlide < 0) {
+            currentSlide = totalSlides - 1;
+        }
+        
+        updateCarousel();
+    }
+    
+    function goToSlide(index) {
+        currentSlide = index;
+        updateCarousel();
+        resetAutoplay();
+    }
+    
+    function startAutoplay() {
+        pauseAutoplay();
+        
+        autoplayInterval = setInterval(() => {
+            moveRecommendation(1);
+        }, AUTOPLAY_DURATION);
+        
+        startProgress();
+    }
+    
+    function pauseAutoplay() {
+        clearInterval(autoplayInterval);
+        clearInterval(progressInterval);
+        
+        const progressBar = document.getElementById('carouselProgress');
+        if (progressBar) {
+            progressBar.style.width = '0%';
+        }
+    }
+    
+    function resetAutoplay() {
+        pauseAutoplay();
+        startAutoplay();
+    }
+    
+    function startProgress() {
+        const progressBar = document.getElementById('carouselProgress');
+        if (!progressBar) return;
+        
+        let progress = 0;
+        const increment = 100 / (AUTOPLAY_DURATION / 50); // Update every 50ms
+        
+        progressBar.style.width = '0%';
+        
+        progressInterval = setInterval(() => {
+            progress += increment;
+            progressBar.style.width = `${Math.min(progress, 100)}%`;
+        }, 50);
+    }
+    
+    function resetProgress() {
+        const progressBar = document.getElementById('carouselProgress');
+        if (progressBar) {
+            progressBar.style.transition = 'none';
+            progressBar.style.width = '0%';
+            setTimeout(() => {
+                progressBar.style.transition = 'width 0.1s linear';
+            }, 10);
+        }
+        
+        clearInterval(progressInterval);
+        startProgress();
+    }
+    
+    // ============================================
+    // KEYBOARD NAVIGATION
+    // ============================================
+    
+    document.addEventListener('keydown', (e) => {
+        // Only if recommendations section is in view
+        const recSection = document.getElementById('recommendations');
+        if (!recSection) return;
+        
+        const rect = recSection.getBoundingClientRect();
+        const inView = rect.top < window.innerHeight && rect.bottom > 0;
+        
+        if (inView) {
+            if (e.key === 'ArrowLeft') {
+                moveRecommendation(-1);
+                resetAutoplay();
+            } else if (e.key === 'ArrowRight') {
+                moveRecommendation(1);
+                resetAutoplay();
+            }
+        }
+    });
+    
+    // ============================================
+    // INITIALIZE ON PAGE LOAD
+    // ============================================
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        initFeaturedArticles();
+        initRecommendations();
+    });
+    </script>
+                                
 </body>
 </html>
