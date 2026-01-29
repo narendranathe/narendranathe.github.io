@@ -28,296 +28,343 @@
   </a>
 </p>
 
-**DevFolio** is a clean, minimal portfolio template designed for Data Engineers, ML Engineers, and Software Developers. Built with pure HTML, CSS, and JavaScript no frameworks, no build tools, no dependencies. Just fork, customize, and deploy to GitHub Pages in minutes.
+**DevFolio** is a clean, minimal portfolio template designed for **Data Engineers**, **ML Engineers**, and **Software Developers**. Built with pure HTML, CSS, and JavaScript—no frameworks, no build tools, no dependencies. Just fork, customize, and deploy to GitHub Pages in minutes.
 
-**Features:**
+## ✨ Features
 
-✓ [Zero Dependencies](#-why-this-template)  
-✓ [One-Click Fork & Deploy](#-installation--setup)  
-✓ [Elegant White Theme](#-customization)  
-✓ [Mobile Responsive](#-customization)  
-✓ [SEO Optimized](#seo)  
-✓ [Experience Timeline](#experience)  
-✓ [Skills Section](#skills)  
-✓ [Projects Showcase](#projects)  
-✓ [Certifications Display](#certifications)  
-✓ [Education Section](#education)  
-✓ [Achievements Metrics](#achievements)  
-✓ [Contact Section](#contact)
+| Core Features | Dynamic Content | Security |
+|---------------|-----------------|----------|
+| ✅ Zero Dependencies | ✅ Auto-updating RSS Articles | ✅ Config-based Architecture |
+| ✅ One-Click Fork & Deploy | ✅ Recommendations Carousel | ✅ Personal Data Gitignored |
+| ✅ Elegant White Theme | ✅ Research Publications | ✅ Template for Forkers |
+| ✅ Mobile Responsive | ✅ Resume Download Button | ✅ No API Keys Required |
+| ✅ SEO Optimized | ✅ Platform Switching Tabs | |
 
-To view a live example, **[click here](https://narendranathe.github.io)**.
+### 📦 What's Included
 
----
-
-## ✨ Why This Template?
-
-| Feature | This Template | Other Templates |
-|---------|---------------|-----------------|
-| Build Tools Required | ❌ None | ✅ npm, webpack, etc. |
-| Framework Dependencies | ❌ None | ✅ React, Vue, etc. |
-| Setup Time | ⚡ 5 minutes | 🕐 30+ minutes |
-| Hosting | 🆓 GitHub Pages | May require paid hosting |
-| Customization | 📝 Edit HTML directly | Config files, rebuild |
+- **Hero Section** — Eye-catching intro with floating cards and stats
+- **About Section** — Bio with skills grid and social links
+- **Education** — Academic credentials with GPA badges
+- **Experience Timeline** — Career journey with company logos
+- **Projects Showcase** — Featured work with metrics and GitHub links
+- **Certifications** — Professional credentials with badge styling
+- **Research Publications** — Academic work with DOI links
+- **Featured Articles** — Auto-updating from Medium/Dev.to/Substack via RSS
+- **Recommendations Carousel** — Testimonials with auto-rotation
+- **Achievements** — Key metrics and impact numbers
+- **Contact Section** — Multiple contact methods with resume download
 
 ---
 
-##  Installation & Setup
+## 🚀 Quick Start
 
-### Option 1: Fork This Repo _(Recommended)_
+### Option 1: Fork This Repo (Recommended)
 
-1. **Fork the repo:** Click the **Fork** button at the top right, or [click here](https://github.com/narendranathe/narendranathe.github.io/fork).
-
+1. **Fork the repo** — Click the Fork button at the top right
 2. **Rename your repo:**
-   - For `https://<USERNAME>.github.io`: Rename to `<USERNAME>.github.io`
-   - For `https://<USERNAME>.github.io/portfolio`: Rename to `portfolio`
-
-3. **Enable GitHub Pages:**
-   - Go to **Settings** → **Pages**
-   - Set **Source** to `Deploy from a branch`
-   - Select **Branch:** `main` and folder `/ (root)`
-   - Click **Save**
-
-4. **Wait 2-3 minutes** for deployment. Your site will be live at your GitHub Pages URL!
+   - For `https://<USERNAME>.github.io` → Rename to `<USERNAME>.github.io`
+   - For `https://<USERNAME>.github.io/portfolio` → Rename to `portfolio`
+3. **Create your config file:**
+   ```bash
+   cp config.template.js config.js
+   ```
+4. **Edit `config.js`** with your information (see [Configuration](#-configuration))
+5. **Enable GitHub Pages:**
+   - Go to Settings → Pages
+   - Set Source to "Deploy from a branch"
+   - Select Branch: `main` and folder `/ (root)`
+   - Click Save
+6. **Wait 2-3 minutes** — Your site will be live!
 
 ### Option 2: Download & Upload
 
-1. Click **Code** → **Download ZIP**
+1. Click **Code → Download ZIP**
 2. Extract and edit files locally
-3. Create a new repo named `<USERNAME>.github.io`
-4. Upload all files to the new repo
-5. Enable GitHub Pages in Settings
+3. Create `config.js` from `config.template.js`
+4. Create a new repo named `<USERNAME>.github.io`
+5. Upload all files to the new repo
+6. Enable GitHub Pages in Settings
 
 ---
 
-##  Customization
+## ⚙️ Configuration
 
-All customization is done directly in `index.html`. Open it in any text editor and modify:
-
-### Personal Info
-
-```html
-<!-- Find and replace these values -->
-<title>Your Name | Your Title</title>
-<meta name="description" content="Your description here">
-<meta name="author" content="Your Name">
-```
-
-### Hero Section
-
-```html
-<section class="hero" id="home">
-    <h1>Your Name</h1>
-    <p class="hero-subtitle">Your Title | Your Tagline</p>
-</section>
-```
-
-### Experience
-
-Add or modify experience cards:
-
-```html
-<div class="exp-card">
-    <div class="exp-logo">
-        <img src="images/company/your-company.png" alt="Company">
-    </div>
-    <div class="exp-content">
-        <h4>Your Job Title</h4>
-        <p class="exp-company">Company Name</p>
-        <p class="exp-date">Start Date - End Date</p>
-        <p class="exp-description">Your achievements and responsibilities...</p>
-    </div>
-</div>
-```
-
-### Skills
-
-Modify the skills grid:
-
-```html
-<div class="skill-tag">Python</div>
-<div class="skill-tag">SQL</div>
-<div class="skill-tag">Apache Spark</div>
-<!-- Add more skills -->
-```
-
-### Projects
-
-Add project cards:
-
-```html
-<div class="project-card">
-    <h4>Project Name</h4>
-    <p>Project description...</p>
-    <div class="project-tech">
-        <span>Python</span>
-        <span>Docker</span>
-    </div>
-    <a href="https://github.com/username/project" target="_blank">View Project →</a>
-</div>
-```
-
-### Certifications
-
-```html
-<div class="cert-card">
-    <div class="cert-icon">
-        <i class="fab fa-microsoft"></i>
-    </div>
-    <h4 class="cert-title">Certification Name</h4>
-    <p class="cert-issuer">Issuing Organization</p>
-</div>
-```
-
-### Education
-
-```html
-<div class="edu-card">
-    <img src="images/company/university.png" alt="University">
-    <h4>Degree Name</h4>
-    <p>University Name</p>
-    <p>Year - Year | GPA: X.X</p>
-</div>
-```
-
-### Achievements
-
-```html
-<div class="achievement-card">
-    <div class="achievement-value">99%</div>
-    <div class="achievement-label">Your Achievement</div>
-</div>
-```
-
-### Contact & Social Links
-
-```html
-<a href="mailto:your@email.com">your@email.com</a>
-<a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
-<a href="https://github.com/yourusername" target="_blank">GitHub</a>
-```
-
----
-
-##  File Structure
+### File Structure
 
 ```
-your-repo/
-├── index.html          # Main portfolio page (edit this!)
-├── README.md           # This file
-├── LICENSE             # MIT License
-└── images/             # You can create this directory or use files from cloudflare 
+your-portfolio/
+├── index.html              # Main portfolio page
+├── config.js               # Your personal config (gitignored)
+├── config.template.js      # Template for forkers (committed)
+├── README.md               # This file
+├── LICENSE                 # MIT License
+└── .gitignore              # Ignores config.js
+```
+
+### Setting Up `config.js`
+
+Copy `config.template.js` to `config.js` and customize:
+
+```javascript
+const CONFIG = {
+    name: 'Your Name',
     
+    // RSS Feed Sources (public feeds - no API keys needed)
+    rss: {
+        medium: {
+            enabled: true,  // Set to true to enable
+            username: 'your-medium-username',
+            feedUrl: 'https://medium.com/feed/@your-medium-username',
+            profileUrl: 'https://medium.com/@your-medium-username'
+        },
+        devto: {
+            enabled: false,
+            username: 'your-devto-username',
+            feedUrl: 'https://dev.to/feed/your-devto-username',
+            profileUrl: 'https://dev.to/your-devto-username'
+        },
+        substack: {
+            enabled: false,
+            username: 'your-substack-name',
+            feedUrl: 'https://your-substack-name.substack.com/feed',
+            profileUrl: 'https://your-substack-name.substack.com'
+        }
+    },
+    
+    // Testimonials/Recommendations
+    recommendations: [
+        {
+            text: "Your recommendation text here...",
+            name: "Recommender Name",
+            role: "Their Role at Company",
+            initials: "RN",
+            avatar: "",  // Optional: URL to their photo
+            linkedin: "https://linkedin.com/in/their-profile"
+        }
+    ],
+    
+    // Social Links
+    social: {
+        linkedin: 'https://linkedin.com/in/your-profile',
+        github: 'https://github.com/your-username',
+        email: 'your.email@example.com'
+    }
+};
 ```
 
----
+### Why This Architecture?
 
-##  Adding Images
-
-### Profile Picture
-- Find <!-- Hero Section -->
-- Replace URL between the "" Example: <img src= "URL" >
-- Recommended size: 400x400px
-- Supported formats: `.jpg`, `.jpeg`, `.png`
-
-### Company Logos
-- Find <!-- Experience Section -->
-- Replace URL between the "" Example: <img src= "URL" >
-- Recommended size: 100x100px
-- Use transparent PNG for best results
-
-### Certification Badges
-- Find <!-- Certifications Section -->
-- Replace URL between the "" Example: <img src= "URL" >`
-- Download official badges from certification providers
-
-> **Note:** GitHub Pages is case-sensitive! `Company.PNG` ≠ `company.png`
+| Concern | Solution |
+|---------|----------|
+| **Personal data exposure** | `config.js` is gitignored |
+| **Easy for forkers** | Template file with clear instructions |
+| **No API keys needed** | RSS feeds are public by default |
+| **Auto-updating content** | Articles sync when you publish |
 
 ---
 
-##  Color Customization
+## 🎨 Customization
 
-The template uses CSS variables for easy theming. Find these in the `<style>` section:
+### Personal Information
+
+Edit directly in `index.html`:
+
+```html
+
+Your Name | Your Title
+
+
+
+Hi, I'm Your Name
+```
+
+### Color Scheme
+
+Find CSS variables in `<style>` section:
 
 ```css
 :root {
+    --accent-primary: #2D5A4A;    /* Forest green */
+    --accent-warm: #C4A77D;       /* Gold accent */
     --bg-primary: #FDFCFA;        /* Main background */
-    --bg-secondary: #F7F5F2;      /* Section backgrounds */
-    --text-primary: #1C1C1C;      /* Main text */
-    --text-secondary: #4A4A4A;    /* Secondary text */
-    --accent-primary: #2D5A4A;    /* Primary accent (forest green) */
-    --accent-warm: #C4A77D;       /* Warm accent (gold) */
 }
 ```
 
-### Popular Color Schemes
+**Popular Alternatives:**
 
-**Ocean Blue:**
-```css
---accent-primary: #1e40af;
---accent-warm: #f59e0b;
-```
+| Theme | Primary | Warm |
+|-------|---------|------|
+| Ocean Blue | `#1e40af` | `#f59e0b` |
+| Royal Purple | `#7c3aed` | `#ec4899` |
+| Slate Pro | `#334155` | `#0ea5e9` |
 
-**Royal Purple:**
-```css
---accent-primary: #7c3aed;
---accent-warm: #ec4899;
-```
+### Resume Download
 
-**Slate Professional:**
-```css
---accent-primary: #334155;
---accent-warm: #0ea5e9;
+Host your resume using GitHub Releases:
+
+1. Create a separate repo (e.g., `assets` or use your portfolio repo)
+2. Go to Releases → Create new release
+3. Tag: `resume`, Title: `Resume`
+4. Attach your PDF file
+5. Publish release
+6. Use URL format: `https://github.com/USERNAME/REPO/releases/download/resume/YourName.pdf`
+
+### Adding Images
+
+**Profile Picture:**
+- Recommended size: 400×400px
+- Formats: `.jpg`, `.jpeg`, `.png`
+- Host on GitHub Issues (drag & drop) or use external CDN
+
+**Company Logos:**
+- Recommended size: 100×100px
+- Use transparent PNG for best results
+
+> ⚠️ GitHub Pages is case-sensitive! `Company.PNG` ≠ `company.png`
+
+---
+
+## 📰 Featured Articles (RSS)
+
+Articles auto-update from your blog platforms. No manual updates needed!
+
+### Supported Platforms
+
+| Platform | Feed URL Format |
+|----------|-----------------|
+| Medium | `https://medium.com/feed/@username` |
+| Dev.to | `https://dev.to/feed/username` |
+| Substack | `https://name.substack.com/feed` |
+
+### How It Works
+
+1. Uses free [RSS2JSON](https://rss2json.com) API (no key required)
+2. Fetches latest 6 articles on page load
+3. Displays thumbnail, title, description, read time
+4. Platform tabs for multi-platform support
+
+### Enabling Platforms
+
+In `config.js`, set `enabled: true` for your platforms:
+
+```javascript
+rss: {
+    medium: {
+        enabled: true,  // ← Enable this
+        username: 'narendranathe',
+        // ...
+    }
+}
 ```
 
 ---
 
-##  Responsive Design
+## 💬 Recommendations Carousel
+
+Display testimonials from colleagues with an auto-rotating carousel.
+
+### Features
+
+- ⏱️ Auto-rotation every 6 seconds
+- ⏸️ Pauses on hover
+- 👆 Touch/swipe support for mobile
+- ⌨️ Keyboard navigation (arrow keys)
+- 📊 Progress bar indicator
+
+### Adding Recommendations
+
+In `config.js`:
+
+```javascript
+recommendations: [
+    {
+        text: "Naren is an exceptional engineer who consistently delivers...",
+        name: "John Doe",
+        role: "Engineering Manager at Company",
+        initials: "JD",
+        avatar: "",  // Leave empty to show initials
+        linkedin: "https://linkedin.com/in/johndoe"
+    },
+    // Add more...
+]
+```
+
+---
+
+## 📄 Research Publications
+
+Showcase your academic work:
+
+```html
+
+    
+         Peer-Reviewed Journal
+    
+    Your Paper Title
+    
+        Author 1, Your Name, Author 3
+    
+    
+         Journal Name
+         2025
+    
+    
+        View Publication 
+    
+
+```
+
+---
+
+## 📱 Responsive Design
 
 The template is fully responsive out of the box:
-- **Desktop:** Full layout with sidebar navigation
-- **Tablet:** Adjusted grid layouts
-- **Mobile:** Stacked sections with hamburger menu
+
+| Device | Layout |
+|--------|--------|
+| Desktop | Full layout with dropdown navigation |
+| Tablet | Adjusted grids (2 columns) |
+| Mobile | Stacked sections with hamburger menu |
 
 No additional configuration needed!
 
 ---
 
-##  SEO
+## 🔍 SEO
 
-The template includes SEO meta tags. Customize them:
+Customize meta tags in `<head>`:
 
 ```html
-<head>
-    <title>Your Name | Your Title</title>
-    <meta name="description" content="Your professional summary (150-160 chars)">
-    <meta name="keywords" content="Your, Keywords, Here">
-    <meta name="author" content="Your Name">
-    
-    <!-- Open Graph for social sharing -->
-    <meta property="og:title" content="Your Name | Portfolio">
-    <meta property="og:description" content="Your description">
-    <meta property="og:image" content="https://yourusername.github.io/images/preview.png">
-    <meta property="og:url" content="https://yourusername.github.io">
-</head>
+Your Name | Your Title
+
+
+
+
+
+
+
 ```
 
 ---
 
-##  Custom Domain (Optional)
+## 🌐 Custom Domain (Optional)
 
 1. Purchase a domain (Namecheap, Google Domains, etc.)
-2. Go to **Settings** → **Pages** → **Custom domain**
+2. Go to Settings → Pages → Custom domain
 3. Enter your domain (e.g., `yourname.com`)
 4. Add DNS records at your registrar:
-   - **A Record:** `185.199.108.153`
-   - **A Record:** `185.199.109.153`
-   - **A Record:** `185.199.110.153`
-   - **A Record:** `185.199.111.153`
-   - **CNAME:** `www` → `<USERNAME>.github.io`
+
+| Type | Name | Value |
+|------|------|-------|
+| A | @ | `185.199.108.153` |
+| A | @ | `185.199.109.153` |
+| A | @ | `185.199.110.153` |
+| A | @ | `185.199.111.153` |
+| CNAME | www | `<USERNAME>.github.io` |
 
 ---
 
-##  Troubleshooting
+## 🐛 Troubleshooting
 
 ### Page shows 404
 - Ensure repo is named correctly (`<USERNAME>.github.io` for root domain)
@@ -329,14 +376,15 @@ The template includes SEO meta tags. Customize them:
 - Verify images are committed to the repo
 - Use relative paths (`images/photo.jpg` not `/images/photo.jpg`)
 
+### Articles not loading
+- Check `config.js` exists and has correct usernames
+- Verify your blog platform RSS feed is public
+- Check browser console for errors
+
 ### Changes not showing
 - Hard refresh: `Ctrl + Shift + R` (Windows) or `Cmd + Shift + R` (Mac)
 - Wait 2-3 minutes for GitHub Pages to rebuild
-- Check the **Actions** tab for deployment status
-
-### Fonts not loading
-- Ensure you have internet connectivity
-- Google Fonts are loaded via CDN
+- Check the Actions tab for deployment status
 
 ---
 
@@ -344,21 +392,17 @@ The template includes SEO meta tags. Customize them:
 
 If this template helped you, please consider:
 
-<p>
-<a href="https://github.com/narendranathe/narendranathe.github.io/stargazers">
-  <img src="https://img.shields.io/github/stars/narendranathe/narendranathe.github.io?style=social" alt="Github Star">
-</a>
-</p>
+⭐ **Star this repository**
 
-- ⭐ Star this repository
-- 🍴 Fork and share with others
-- 🐛 Report bugs or suggest features
+🍴 **Fork and share with others**
+
+🐛 **Report bugs or suggest features**
 
 ---
 
 ## 📄 License
 
-[MIT](https://github.com/narendranathe/narendranathe.github.io/blob/main/LICENSE) — Feel free to use this template for personal or commercial projects. Attribution appreciated but not required.
+**MIT** — Feel free to use this template for personal or commercial projects. Attribution appreciated but not required.
 
 ---
 
