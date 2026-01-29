@@ -7,13 +7,13 @@ const CONFIG = {
     
     rss: {
         medium: {
-            enabled: true,
+            enabled: false,
             username: 'narendranathedara',
             feedUrl: 'https://medium.com/feed/@narendranathedara',
             profileUrl: 'https://medium.com/@narendranathedara'
         },
         devto: {
-            enabled: true,
+            enabled: false,
             username: 'narendranathe',
             feedUrl: 'https://dev.to/feed/narendranathe',
             profileUrl: 'https://dev.to/narendranathe'
@@ -36,7 +36,7 @@ const CONFIG = {
             linkedin: "https://www.linkedin.com/in/richard-enright-mba/"
         },
         {
-            text: "I had the pleasure of working closely with Narendranath for 3+ years and can confidently attest to his outstanding performance and exceptional work ethic. He had keen eye for solving business problems by identifying trends to improve the overall business of the clients and the company as well.Narendranath was always willing to go above and beyond his responsibilities to support the team and the company's overall goals. His positive attitude, professionalism, and strong communication skills made him a pleasure to work with",
+            text: "I had the pleasure of working closely with Narendranath for 3+ years and can confidently attest to his outstanding performance and exceptional work ethic. He had keen eye for solving business problems by identifying trends to improve the overall business of the clients and the company as well. Narendranath was always willing to go above and beyond his responsibilities to support the team and the company's overall goals. His positive attitude, professionalism, and strong communication skills made him a pleasure to work with.",
             name: "Snehal Moni",
             role: "Operations and Policy Analyst at Oregon Health Authority",
             initials: "SM",
@@ -44,7 +44,7 @@ const CONFIG = {
             linkedin: "https://www.linkedin.com/in/snehal-moni/"
         },
         {
-            text: "Narendranath has been an efficient source to the team at all times.He expertly trained himself to adapt to the various sectors of the business and was one of the few people who took up every challenge offered to him.",
+            text: "Narendranath has been an efficient source to the team at all times. He expertly trained himself to adapt to the various sectors of the business and was one of the few people who took up every challenge offered to him.",
             name: "Pranav Suresh",
             role: "Business Effectiveness - CIBC",
             initials: "PS",
