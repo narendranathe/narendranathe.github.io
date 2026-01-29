@@ -3364,23 +3364,21 @@
     // ============================================
     // CHECK FOR CONFIG
     // ============================================
-    
     if (typeof CONFIG === 'undefined') {
         console.warn('config.js not found. Please copy config.template.js to config.js and customize it.');
         
         // Provide fallback CONFIG for demo purposes
-        var CONFIG = {
-            name: 'Narendranath Edara',
+        window.CONFIG = {
+            name: 'Your Name',
             rss: {
-                medium: { enabled: true },
-                devto: { enabled: true },
-                substack: { enabled: true }
+                medium: { enabled: false },
+                devto: { enabled: false },
+                substack: { enabled: false }
             },
             recommendations: [],
             social: { linkedin: '#' }
         };
     }
-    
     // ============================================
     // PLATFORM CONFIGURATION
     // ============================================
