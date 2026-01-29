@@ -30,7 +30,7 @@
 
 **DevFolio** is a clean, minimal portfolio template designed for **Data Engineers**, **ML Engineers**, and **Software Developers**. Built with pure HTML, CSS, and JavaScript—no frameworks, no build tools, no dependencies. Just fork, customize, and deploy to GitHub Pages in minutes.
 
-## ✨ Features
+##  Features
 
 | Core Features | Dynamic Content | Security |
 |---------------|-----------------|----------|
@@ -40,7 +40,7 @@
 | ✅ Mobile Responsive | ✅ Resume Download Button | ✅ No API Keys Required |
 | ✅ SEO Optimized | ✅ Platform Switching Tabs | |
 
-### 📦 What's Included
+###  What's Included
 
 - **Hero Section** — Eye-catching intro with floating cards and stats
 - **About Section** — Bio with skills grid and social links
@@ -56,7 +56,7 @@
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Option 1: Fork This Repo (Recommended)
 
@@ -87,7 +87,7 @@
 
 ---
 
-## ⚙️ Configuration
+##  Configuration
 
 ### File Structure
 
@@ -163,7 +163,7 @@ const CONFIG = {
 
 ---
 
-## 🎨 Customization
+##  Customization
 
 ### Personal Information
 
@@ -220,7 +220,7 @@ Host your resume using GitHub Releases:
 - Recommended size: 100×100px
 - Use transparent PNG for best results
 
-> ⚠️ GitHub Pages is case-sensitive! `Company.PNG` ≠ `company.png`
+>  GitHub Pages is case-sensitive! `Company.PNG` ≠ `company.png`
 
 ---
 
@@ -265,11 +265,11 @@ Display testimonials from colleagues with an auto-rotating carousel.
 
 ### Features
 
-- ⏱️ Auto-rotation every 6 seconds
-- ⏸️ Pauses on hover
-- 👆 Touch/swipe support for mobile
-- ⌨️ Keyboard navigation (arrow keys)
-- 📊 Progress bar indicator
+-  Auto-rotation every 6 seconds
+-  Pauses on hover
+-  Touch/swipe support for mobile
+-  Keyboard navigation (arrow keys)
+-  Progress bar indicator
 
 ### Adding Recommendations
 
@@ -291,7 +291,7 @@ recommendations: [
 
 ---
 
-## 📄 Research Publications
+##  Research Publications
 
 Showcase your academic work:
 
@@ -316,7 +316,7 @@ Showcase your academic work:
 
 ---
 
-## 📱 Responsive Design
+##  Responsive Design
 
 The template is fully responsive out of the box:
 
@@ -330,7 +330,7 @@ No additional configuration needed!
 
 ---
 
-## 🔍 SEO
+##  SEO
 
 Customize meta tags in `<head>`:
 
@@ -347,7 +347,7 @@ Your Name | Your Title
 
 ---
 
-## 🌐 Custom Domain (Optional)
+##  Custom Domain (Optional)
 
 1. Purchase a domain (Namecheap, Google Domains, etc.)
 2. Go to Settings → Pages → Custom domain
@@ -364,7 +364,7 @@ Your Name | Your Title
 
 ---
 
-## 🐛 Troubleshooting
+##  Troubleshooting
 
 ### Page shows 404
 - Ensure repo is named correctly (`<USERNAME>.github.io` for root domain)
@@ -388,19 +388,19 @@ Your Name | Your Title
 
 ---
 
-## 💖 Support
+##  Support
 
 If this template helped you, please consider:
 
-⭐ **Star this repository**
+ **Star this repository**
 
-🍴 **Fork and share with others**
+ **Fork and share with others**
 
-🐛 **Report bugs or suggest features**
+ **Report bugs or suggest features**
 
 ---
 
-## 📄 License
+##  License
 
 **MIT** — Feel free to use this template for personal or commercial projects. Attribution appreciated but not required.
 
