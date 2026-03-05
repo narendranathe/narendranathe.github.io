@@ -2537,10 +2537,9 @@
                     <span class="highlight">Narendranath Edara</span>
                 </h1>
                 <p class="hero-subtitle">
-                    I build data infrastructure that thinks for itself — CDC pipelines that cut
-                    ETL runtimes by 73%, AI agents that eliminated 15+ hrs/sprint of manual work,
-                    and zero-cost job platforms scraping 109 companies every 5 minutes.
-                    From Kafka to LLMs, I close the gap between raw data and decisions that matter.
+                    Senior Data Engineer with production receipts: 73% faster ETL, $4M saved,
+                    98% uptime on enterprise payroll systems.
+                    I build platforms that run themselves, then go home and ship tools like JobScout.
                 </p>
                 <div class="hero-stats">
                     <div class="stat-item">
@@ -2636,15 +2635,15 @@
                     <span class="section-label">About Me</span>
                     <h3>Data Engineer. Systems Thinker. Builder.</h3>
                     <p>
-                        I started in analytics — building search engines at Zomato, forecasting inventory at Udaan —
-                        and over time migrated fully into engineering the infrastructure that makes analytics possible at scale.
+                        I started in analytics, building search engines at Zomato and forecasting supply at Udaan,
+                        then moved fully into engineering the infrastructure that makes analytics possible at scale.
                         Today I design <strong>streaming data platforms, AI automation agents, and self-healing pipelines</strong>
                         that run without hand-holding.
                     </p>
                     <p>
                         At <strong>ExponentHR</strong> I reengineered CDC-based ETL to cut batch runtimes from 30 min to under 8 min,
                         compressed deployment cycles from 3 months to 14 days with CI/CD automation, and shipped AI agents
-                        that eliminated 15+ hours of manual sprint work — all while maintaining <strong>98% uptime</strong> on production payroll systems.
+                        that eliminated 15+ hours of manual sprint work, all while maintaining <strong>98% uptime</strong> on production payroll systems.
                     </p>
                     <p>
                         Outside work I build production systems that scratch my own itch: <strong>JobScout</strong> scrapes
@@ -2822,7 +2821,7 @@
                             <ul class="experience-description">
                                 <li>Engineered <strong>Azure AI Anomaly Detector pipelines</strong> with optimal algorithm selection per time-series data type, achieving <strong>95%+ detection accuracy</strong> and cutting non-actionable alerts from ~250/week to near-zero</li>
                                 <li>Designed configurable <strong>REST APIs</strong> with dynamic sensitivity thresholds, reducing false positives by <strong>40%</strong> and improving alert signal-to-noise from 1:5 to 1:1.2</li>
-                                <li>Deployed on <strong>Azure Kubernetes Service (AKS)</strong> with HPA auto-scaling, consolidating 20 nodes → 4–8 nodes and saving <strong>$3,200/month</strong> in Azure compute costs</li>
+                                <li>Deployed on <strong>Azure Kubernetes Service (AKS)</strong> with HPA auto-scaling, consolidating 20 nodes to 4-8 nodes and saving <strong>$3,200/month</strong> in Azure compute costs</li>
                                 <li>Applied TF-IDF, PCA, and K-Means/DBSCAN clustering to Yelp/TripAdvisor review corpora; co-authored peer-reviewed paper published in <strong>Taylor & Francis 2025</strong></li>
                                 <li>Built Power BI dashboards surfacing anomaly insights to non-technical campus stakeholders, boosting CPU utilization from 12% → 64% through informed workload decisions</li>
                             </ul>
@@ -3123,7 +3122,7 @@
                         <i class="fas fa-search"></i>
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">JobScout — Automated Job Discovery Platform</h3>
+                        <h3 class="project-title">JobScout: Automated Job Discovery Platform</h3>
                         <p class="project-description">
                             <strong>Zero-cost production platform</strong> scraping 109 company career pages across 6 ATS platforms (Workday, Greenhouse, Lever, iCIMS, Taleo, SmartRecruiters) every 5 minutes. <strong>Multi-signal relevance engine</strong> scores jobs on skills, location, experience level, and H1B sponsorship. <strong>95+ tailored resumes</strong> indexed with TF-IDF cosine similarity — best-match auto-selected per job. Instant Discord + Telegram alerts for dream roles. Full application lifecycle tracker.
                         </p>
@@ -3162,7 +3161,7 @@
                         <i class="fas fa-robot"></i>
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">AutoApply AI — Chrome Extension + AI Backend</h3>
+                        <h3 class="project-title">AutoApply AI: Chrome Extension + AI Backend</h3>
                         <p class="project-description">
                             <strong>AI job application assistant</strong> combining a Chrome MV3 extension with a FastAPI backend on Fly.io + Supabase + Upstash Redis. <strong>5-provider LLM chain</strong>: Anthropic Claude → OpenAI → Kimi → Ollama → keyword fallback — zero-downtime AI regardless of provider outages. <strong>TF-IDF cosine similarity engine</strong> matches job descriptions to the best resume from a 95+ PDF vault. Full auth via Clerk RS256 JWT. CI/CD via GitHub Actions.
                         </p>
@@ -3455,7 +3454,7 @@
                 <p class="contact-intro">
                     I'm actively looking for <strong>Senior Data Engineer</strong>, <strong>ML Engineer</strong>, and
                     <strong>AI Platform Engineer</strong> roles where the problems are hard and the data is messier than the docs say.
-                    If you're building something that requires real engineering — not just dashboard wiring —
+                    If you're building something that requires real engineering (not just dashboard wiring),
                     I'd genuinely love to talk. Response time is under 24 hours.
                 </p>
                 <div class="contact-cards">
@@ -3732,8 +3731,9 @@
         document.getElementById('debugOverlay').style.display = 'flex';
     }
 
-    // ── STEP 4: Status Badge (reads from CONFIG) ───────────────────
-    (function() {
+    // ── STEP 4: Status Badge (reads from CONFIG after it loads) ────
+    // Wrapped in setTimeout so config.js is guaranteed parsed first
+    setTimeout(function() {
         var cfg = (typeof CONFIG !== 'undefined' && CONFIG.status) ? CONFIG.status : null;
         var badge = document.getElementById('statusBadge');
         if (!cfg || !cfg.available) { if (badge) badge.style.display = 'none'; return; }
@@ -3745,37 +3745,41 @@
                 return '<div class="status-tooltip-row"><strong>' + d.label + ':</strong> ' + d.value + '</div>';
             }).join('');
         }
-    })();
+    }, 0);
 
-    // ── STEP 4: Hero Terminal Animation (reads from CONFIG) ────────
+    // ── STEP 4: Hero Terminal Animation ────────────────────────────
+    // CONFIG.terminal is read inside the timeout so config.js is loaded by then
     (function() {
-        var lines = (typeof CONFIG !== 'undefined' && Array.isArray(CONFIG.terminal))
-            ? CONFIG.terminal
-            : [{ type: 'cmd', text: 'echo "Add terminal lines to config.js"' }];
         var body = document.getElementById('terminalBody');
         if (!body) return;
-        var i = 0;
-        function addLine() {
-            if (i >= lines.length) {
-                var cur = document.createElement('span');
-                cur.className = 't-cursor';
-                body.appendChild(cur);
-                return;
+        setTimeout(function() {
+            var lines = (typeof CONFIG !== 'undefined' && Array.isArray(CONFIG.terminal))
+                ? CONFIG.terminal
+                : [{ type: 'cmd', text: 'python pipeline.py --env prod' },
+                   { type: 'output', text: '[OK] Pipeline complete' }];
+            var i = 0;
+            function addLine() {
+                if (i >= lines.length) {
+                    var cur = document.createElement('span');
+                    cur.className = 't-cursor';
+                    body.appendChild(cur);
+                    return;
+                }
+                var ln = lines[i++];
+                var row = document.createElement('div');
+                row.className = 'terminal-line';
+                if (ln.type === 'cmd') {
+                    row.innerHTML = '<span class="t-prompt">$</span><span class="t-cmd"> ' + ln.text + '</span>';
+                } else if (ln.type === 'output') {
+                    row.innerHTML = '<span class="t-output">' + ln.text + '</span>';
+                } else {
+                    row.innerHTML = '<span class="t-warn">' + ln.text + '</span>';
+                }
+                body.appendChild(row);
+                setTimeout(addLine, ln.type === 'cmd' ? 700 : 380);
             }
-            var ln = lines[i++];
-            var row = document.createElement('div');
-            row.className = 'terminal-line';
-            if (ln.type === 'cmd') {
-                row.innerHTML = '<span class="t-prompt">$</span><span class="t-cmd"> ' + ln.text + '</span>';
-            } else if (ln.type === 'output') {
-                row.innerHTML = '<span class="t-output">' + ln.text + '</span>';
-            } else {
-                row.innerHTML = '<span class="t-warn">' + ln.text + '</span>';
-            }
-            body.appendChild(row);
-            setTimeout(addLine, ln.type === 'cmd' ? 600 : 300);
-        }
-        setTimeout(addLine, 1500);
+            addLine();
+        }, 900);
     })();
     </script>
 

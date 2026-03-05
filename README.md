@@ -2,7 +2,6 @@
   <h2 align="center">DevFolio — Portfolio Template for Data & ML Engineers</h2>
   <p align="center">
     <a href="https://github.com/narendranathe/narendranathe.github.io/issues"><img src="https://img.shields.io/github/issues/narendranathe/narendranathe.github.io"/></a>
-    <a href="https://github.com/narendranathe/narendranathe.github.io/stargazers"><img src="https://img.shields.io/github/stars/narendranathe/narendranathe.github.io"/></a>
     <a href="https://github.com/narendranathe/narendranathe.github.io/network/members"><img src="https://img.shields.io/github/forks/narendranathe/narendranathe.github.io"/></a>
     <a href="https://github.com/narendranathe/narendranathe.github.io/blob/main/LICENSE"><img src="https://img.shields.io/github/license/narendranathe/narendranathe.github.io"/></a>
   </p>
