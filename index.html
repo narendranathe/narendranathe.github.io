@@ -82,6 +82,195 @@
             border-radius: 4px;
         }
 
+        /* ── Status Badge ─────────────────────────────────────────── */
+        .status-dot {
+            display: inline-block;
+            width: 8px; height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            margin-right: 8px;
+            box-shadow: 0 0 0 0 rgba(34,197,94,0.7);
+            animation: statusPulse 2s infinite;
+            flex-shrink: 0;
+        }
+        @keyframes statusPulse {
+            0%   { box-shadow: 0 0 0 0 rgba(34,197,94,0.7); }
+            70%  { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+            100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+        }
+        .hero-badge { position: relative; cursor: default; display: flex; align-items: center; }
+        .status-tooltip {
+            display: none;
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px 16px;
+            min-width: 260px;
+            box-shadow: var(--shadow-md);
+            z-index: 100;
+            font-size: 0.82rem;
+            line-height: 2;
+        }
+        .hero-badge:hover .status-tooltip { display: block; }
+        .status-tooltip-row { color: var(--text-secondary); }
+
+        /* ── Hero Terminal ─────────────────────────────────────────── */
+        .hero-terminal {
+            background: #0d1117;
+            border-radius: 10px;
+            width: 100%;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            overflow: hidden;
+            border: 1px solid #30363d;
+        }
+        .terminal-bar {
+            background: #161b22;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid #30363d;
+        }
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .t-red    { background: #ff5f57; }
+        .t-yellow { background: #febc2e; }
+        .t-green  { background: #28c840; }
+        .terminal-title { margin-left: 8px; color: #8b949e; font-size: 0.7rem; }
+        .terminal-body { padding: 12px; min-height: 90px; color: #e6edf3; line-height: 1.8; }
+        .terminal-line { display: flex; gap: 6px; }
+        .t-prompt { color: #58a6ff; }
+        .t-cmd    { color: #e6edf3; }
+        .t-output { color: #3fb950; padding-left: 2px; }
+        .t-warn   { color: #d29922; padding-left: 2px; }
+        .t-cursor { display: inline-block; width: 8px; height: 14px; background: #58a6ff; animation: blink 1s step-end infinite; vertical-align: middle; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* ── Command Palette ───────────────────────────────────────── */
+        .cmd-palette-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(4px);
+            z-index: 9998;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 15vh;
+        }
+        .cmd-palette-box {
+            width: min(640px, 90vw);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.25);
+            overflow: hidden;
+        }
+        .cmd-palette-header {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+            gap: 10px;
+        }
+        .cmd-palette-icon { color: var(--accent-primary); font-size: 0.9rem; }
+        .cmd-palette-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            background: transparent;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+        }
+        .cmd-palette-esc {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+        .cmd-palette-results { max-height: 320px; overflow-y: auto; }
+        .cmd-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 16px; cursor: pointer;
+            transition: background 0.15s;
+            border-bottom: 1px solid var(--bg-secondary);
+        }
+        .cmd-item:hover, .cmd-item.active { background: var(--accent-light); }
+        .cmd-item-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--accent-light); display: flex; align-items: center; justify-content: center; color: var(--accent-primary); font-size: 0.85rem; flex-shrink: 0; }
+        .cmd-item-label { font-weight: 500; font-size: 0.9rem; color: var(--text-primary); }
+        .cmd-item-sub   { font-size: 0.75rem; color: var(--text-muted); }
+        .cmd-palette-footer {
+            padding: 8px 16px;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            display: flex; gap: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+        .cmd-palette-footer kbd {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+            padding: 1px 5px;
+            font-size: 0.68rem;
+        }
+
+        /* ── Debug Overlay (Konami) ────────────────────────────────── */
+        .debug-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .debug-box {
+            width: min(620px, 90vw);
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            overflow: hidden;
+            font-family: var(--font-mono);
+        }
+        .debug-header {
+            background: #161b22;
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #30363d;
+        }
+        .debug-title { color: #8b949e; font-size: 0.8rem; }
+        .debug-close { color: #8b949e; cursor: pointer; font-size: 1.2rem; line-height: 1; }
+        .debug-close:hover { color: #e6edf3; }
+        .debug-pre {
+            padding: 20px;
+            color: #3fb950;
+            font-size: 0.8rem;
+            line-height: 1.7;
+            white-space: pre;
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .debug-pre .k { color: #58a6ff; }
+        .debug-pre .s { color: #a5d6ff; }
+        .debug-pre .n { color: #ff7b72; }
+        .debug-pre .p { color: #e6edf3; }
+        .debug-footer {
+            padding: 10px 16px;
+            font-size: 0.72rem;
+            color: #8b949e;
+            border-top: 1px solid #30363d;
+            text-align: center;
+        }
+
         /* Navigation */
         .navbar {
             position: fixed;
@@ -2308,6 +2497,9 @@
         </div>
     </nav>
 
+    <!-- Scroll Progress Bar -->
+    <div id="scrollProgress" style="position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,var(--accent-primary),var(--accent-warm));z-index:9999;transition:width 0.1s linear;"></div>
+
     <!-- Mobile Navigation -->
     <div class="mobile-nav" id="mobileNav">
         <div class="mobile-close" onclick="toggleMobileNav()">
@@ -2332,9 +2524,15 @@
     <section class="hero" id="home">
         <div class="hero-container">
             <div class="hero-content">
-                <div class="hero-badge">
-                    <i class="fas fa-circle"></i>
-                    Open to Data Engineer & ML Engineer Opportunities
+                <div class="hero-badge" id="statusBadge" title="Click for details">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Available · Senior DE / ML Engineer · Dallas TX or Remote</span>
+                    <div class="status-tooltip">
+                        <div class="status-tooltip-row"><strong>Status:</strong> Actively interviewing</div>
+                        <div class="status-tooltip-row"><strong>Response:</strong> &lt; 24 hours</div>
+                        <div class="status-tooltip-row"><strong>Visa:</strong> H1B transfer</div>
+                        <div class="status-tooltip-row"><strong>Target:</strong> Senior DE · ML Eng · AI Platform</div>
+                    </div>
                 </div>
                 <h1 class="hero-title">
                     Hi, I'm<br>
@@ -2385,11 +2583,20 @@
                             <img src="https://github.com/user-attachments/assets/ce009ed4-be8a-47d1-ba3e-4d45e87b38d8" alt="Narendranath Edara" class="profile-image" onerror="this.src='https://github.com/user-attachments/assets/a31266a6-37af-4717-b031-de03ae6058a9'; this.onerror=function(){this.src='https://github.com/user-attachments/assets/ce009ed4-be8a-47d1-ba3e-4d45e87b38d8'; this.onerror=function(){this.style.display='none'; var initials=document.createElement('span'); initials.className='profile-initials'; initials.textContent='NE'; this.parentElement.appendChild(initials);};};">
                         </div>
                     </div>
+                    <div class="hero-terminal" id="heroTerminal">
+                        <div class="terminal-bar">
+                            <span class="terminal-dot t-red"></span>
+                            <span class="terminal-dot t-yellow"></span>
+                            <span class="terminal-dot t-green"></span>
+                            <span class="terminal-title">pipeline.py</span>
+                        </div>
+                        <div class="terminal-body" id="terminalBody"></div>
+                    </div>
                     <div class="floating-card floating-card-1">
                         <i class="fas fa-database"></i>
                         <div class="floating-card-text">
                             <div class="floating-card-title">Data Engineer</div>
-                            <div class="floating-card-subtitle">5+ Years Experience</div>
+                            <div class="floating-card-subtitle">4+ Years Experience</div>
                         </div>
                     </div>
                     <div class="floating-card floating-card-2">
@@ -2600,8 +2807,8 @@
                 <!-- Missouri S&T -->
                 <div class="experience-item">
                     <div class="experience-date">
-                        <div class="experience-period">Jan 2023 - Jul 2024</div>
-                        <div class="experience-duration">1.5 Years</div>
+                        <div class="experience-period">Aug 2023 - Jul 2024</div>
+                        <div class="experience-duration">1 Year</div>
                     </div>
                     <div class="experience-content">
                         <div class="experience-card">
@@ -2615,13 +2822,11 @@
                                 </div>
                             </div>
                             <ul class="experience-description">
-                                <li>Engineered <strong>Azure AI Anomaly Detector pipelines</strong> using optimal algorithms for diverse time-series data, achieving <strong>95%+ detection accuracy</strong> and enabling proactive alerting</li>
-                                <li>Designed configurable <strong>REST APIs</strong> with customizable sensitivity thresholds, enabling dynamic anomaly detection tuning and reducing false positives by <strong>40%</strong></li>
-                                <li>Deployed anomaly detection services on <strong>Azure Kubernetes Service (AKS)</strong> with auto-scaling policies, ensuring <strong>99.9% availability</strong> and <strong>50% infrastructure cost reduction</strong></li>
-                                <li>Published research on <strong>sentiment analysis</strong> as a tool for gathering visitor insights using NLTK, spaCy, and Hugging Face transformers</li>
-                                <li>Applied TF-IDF, PCA, and clustering techniques (K-Means, DBSCAN) to segment review data for strategic insights</li><li>Spearheaded sentiment analysis using NLTK, spaCy, and Hugging Face's VADER for the Nixon Library, translating complex data into strategic insights</li>
-                                <li>Created dynamic Power BI visualizations supporting strategic initiatives</li>
-                                <li>Published research on sentiment analysis as a tool for gathering visitor insights from online review sites</li>
+                                <li>Engineered <strong>Azure AI Anomaly Detector pipelines</strong> with optimal algorithm selection per time-series data type, achieving <strong>95%+ detection accuracy</strong> and cutting non-actionable alerts from ~250/week to near-zero</li>
+                                <li>Designed configurable <strong>REST APIs</strong> with dynamic sensitivity thresholds, reducing false positives by <strong>40%</strong> and improving alert signal-to-noise from 1:5 to 1:1.2</li>
+                                <li>Deployed on <strong>Azure Kubernetes Service (AKS)</strong> with HPA auto-scaling, consolidating 20 nodes → 4–8 nodes and saving <strong>$3,200/month</strong> in Azure compute costs</li>
+                                <li>Applied TF-IDF, PCA, and K-Means/DBSCAN clustering to Yelp/TripAdvisor review corpora; co-authored peer-reviewed paper published in <strong>Taylor & Francis 2025</strong></li>
+                                <li>Built Power BI dashboards surfacing anomaly insights to non-technical campus stakeholders, boosting CPU utilization from 12% → 64% through informed workload decisions</li>
                             </ul>
                             <div class="experience-tags">
                                 <span class="exp-tag">Azure AI</span>
@@ -2653,11 +2858,10 @@
                                 </div>
                             </div>
                             <ul class="experience-description">
-                                <li>Utilized <strong>SQL for deep data analysis</strong> on financial transaction patterns, enhancing product development and user segmentation</li>
-                                <li>Achieved <strong>50% reduction in resource allocation</strong> time by authoring data-driven Product Requirement Documents</li>
-                                <li>Segmented user journeys using <strong>data analytics</strong> to develop targeted product roadmaps for FinTech solutions</li>
-                                <li>Segmented user journeys and developed targeted product roadmaps for various user segments</li>
-                                <li>Collaborated with cross-functional teams to craft user-centric preferred offers tool</li>
+                                <li>Conducted <strong>SQL analysis</strong> of B2B financial transaction patterns to identify user behavior trends and inform product prioritization</li>
+                                <li>Authored data-driven PRDs that reduced development resource allocation time by <strong>50%</strong> by eliminating spec ambiguity across cross-functional teams</li>
+                                <li>Segmented user journeys across FinTech user types using data analytics to build targeted roadmaps for the preferred offers tool</li>
+                                <li>Earned <strong>CSPO certification</strong> (Scrum Alliance) while collaborating with engineering, design, and business stakeholders in agile sprints</li>
                             </ul>
                             <div class="experience-tags">
                                 <span class="exp-tag">SQL</span>
@@ -2908,81 +3112,79 @@
                     </div>
                 </div>
 
-                <!-- Project 5 -->
+                <!-- Project 5 — JobScout -->
                 <div class="project-card">
                     <div class="project-image">
-                        <a href="https://github.com/narendranathe/Game-downloads-prediction-Poppy-Play-Time-Ch.2" target="_blank" class="project-github-link" title="View on GitHub">
+                        <a href="https://github.com/narendranathe/job-scout" target="_blank" class="project-github-link" title="View on GitHub">
                             <i class="fab fa-github"></i>
                         </a>
-                        <img src="https://raw.githubusercontent.com/narendranathe/Game-downloads-prediction-Poppy-Play-Time-Ch.2/main/images/twitter%20vs%20twitch%20followers.png" alt="twitter vs twitch followers correlation" onerror="this.style.display='none';">
-                        <i class="fas fa-gamepad"></i>
+                        <img src="https://raw.githubusercontent.com/narendranathe/job-scout/main/frontend/src/assets/logo.svg" alt="JobScout" onerror="this.style.display='none';">
+                        <i class="fas fa-search"></i>
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">Game Downloads Prediction (R)</h3>
+                        <h3 class="project-title">JobScout — Automated Job Discovery Platform</h3>
                         <p class="project-description">
-                            <strong>Statistical Modeling:</strong> Time series forecasting of mobile game downloads using R, 
-                            comparing ARIMA, exponential smoothing, and regression models. <strong>Data Pipeline:</strong> 
-                            Automated data collection and preprocessing pipeline. <strong>Business Impact:</strong> 
-                            Actionable insights for marketing campaign timing and inventory planning.
+                            <strong>Zero-cost production platform</strong> scraping 109 company career pages across 6 ATS platforms (Workday, Greenhouse, Lever, iCIMS, Taleo, SmartRecruiters) every 5 minutes. <strong>Multi-signal relevance engine</strong> scores jobs on skills, location, experience level, and H1B sponsorship. <strong>95+ tailored resumes</strong> indexed with TF-IDF cosine similarity — best-match auto-selected per job. Instant Discord + Telegram alerts for dream roles. Full application lifecycle tracker.
                         </p>
                         <div class="project-stats">
                             <div class="project-stat">
-                                <div class="project-stat-value">3+</div>
-                                <div class="project-stat-label">Models</div>
+                                <div class="project-stat-value">109</div>
+                                <div class="project-stat-label">Companies</div>
                             </div>
                             <div class="project-stat">
-                                <div class="project-stat-value">R</div>
-                                <div class="project-stat-label">Language</div>
+                                <div class="project-stat-value">5min</div>
+                                <div class="project-stat-label">Scrape Cycle</div>
                             </div>
                             <div class="project-stat">
-                                <div class="project-stat-value">Time</div>
-                                <div class="project-stat-label">Series</div>
+                                <div class="project-stat-value">95+</div>
+                                <div class="project-stat-label">Resumes</div>
                             </div>
                         </div>
                         <div class="project-tags">
-                            <span class="project-tag">R</span>
-                            <span class="project-tag">Time Series</span>
-                            <span class="project-tag">ARIMA</span>
-                            <span class="project-tag">Forecasting</span>
+                            <span class="project-tag">FastAPI</span>
+                            <span class="project-tag">React</span>
+                            <span class="project-tag">TF-IDF</span>
+                            <span class="project-tag">SQLite</span>
+                            <span class="project-tag">GitHub Actions</span>
+                        </div>
+                        <div style="margin-top:0.75rem;">
+                            <a href="https://narendranathe.github.io/job-scout" target="_blank" rel="noopener noreferrer" style="font-size:0.8rem;color:var(--accent-primary);font-weight:600;text-decoration:none;">
+                                <i class="fas fa-external-link-alt"></i> Live Demo
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Project 6 -->
+                <!-- Project 6 — AutoApply AI -->
                 <div class="project-card">
                     <div class="project-image">
-                        <a href="https://github.com/narendranathe/Web-Scraping" target="_blank" class="project-github-link" title="View on GitHub">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <i class="fas fa-spider"></i>
+                        <i class="fas fa-robot"></i>
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">Web Scraping & Data Collection</h3>
+                        <h3 class="project-title">AutoApply AI — Chrome Extension + AI Backend</h3>
                         <p class="project-description">
-                            <strong>Data Engineering Fundamentals:</strong> Automated data collection pipelines using Python, 
-                            BeautifulSoup, and Selenium for large-scale web scraping. <strong>ETL Pipeline:</strong> 
-                            Data cleaning, transformation, and storage workflows. <strong>Foundation:</strong> 
-                            Core skills enabling data-driven ML projects through reliable data acquisition.
+                            <strong>AI job application assistant</strong> combining a Chrome MV3 extension with a FastAPI backend on Fly.io + Supabase + Upstash Redis. <strong>5-provider LLM chain</strong>: Anthropic Claude → OpenAI → Kimi → Ollama → keyword fallback — zero-downtime AI regardless of provider outages. <strong>TF-IDF cosine similarity engine</strong> matches job descriptions to the best resume from a 95+ PDF vault. Full auth via Clerk RS256 JWT. CI/CD via GitHub Actions.
                         </p>
                         <div class="project-stats">
                             <div class="project-stat">
-                                <div class="project-stat-value">Auto</div>
-                                <div class="project-stat-label">Pipeline</div>
+                                <div class="project-stat-value">5</div>
+                                <div class="project-stat-label">LLM Providers</div>
                             </div>
                             <div class="project-stat">
-                                <div class="project-stat-value">ETL</div>
-                                <div class="project-stat-label">Process</div>
+                                <div class="project-stat-value">MV3</div>
+                                <div class="project-stat-label">Chrome Ext</div>
                             </div>
                             <div class="project-stat">
-                                <div class="project-stat-value">Scale</div>
-                                <div class="project-stat-label">Data</div>
+                                <div class="project-stat-value">Live</div>
+                                <div class="project-stat-label">Production</div>
                             </div>
                         </div>
                         <div class="project-tags">
-                            <span class="project-tag">Python</span>
-                            <span class="project-tag">BeautifulSoup</span>
-                            <span class="project-tag">Selenium</span>
-                            <span class="project-tag">Pandas</span>
+                            <span class="project-tag">FastAPI</span>
+                            <span class="project-tag">PostgreSQL</span>
+                            <span class="project-tag">Redis</span>
+                            <span class="project-tag">LangChain</span>
+                            <span class="project-tag">Fly.io</span>
                         </div>
                     </div>
                 </div>
@@ -3230,8 +3432,8 @@
                     <div class="achievement-label">System Uptime SLA</div>
                 </div>
                 <div class="achievement-card">
-                    <div class="achievement-value">45%</div>
-                    <div class="achievement-label">Release Cycle Reduction</div>
+                    <div class="achievement-value">85%</div>
+                    <div class="achievement-label">Faster Deployments</div>
                 </div>
                 <div class="achievement-card">
                     <div class="achievement-value">4.0</div>
@@ -3356,6 +3558,241 @@
         });
     </script>
                                 
+    <!-- Command Palette (Cmd+K / Ctrl+K) -->
+    <div id="cmdPalette" class="cmd-palette-overlay" style="display:none;" onclick="closeCmdPalette(event)">
+        <div class="cmd-palette-box">
+            <div class="cmd-palette-header">
+                <i class="fas fa-terminal cmd-palette-icon"></i>
+                <input type="text" id="cmdInput" class="cmd-palette-input" placeholder="Navigate to... (try 'projects', 'contact', 'resume')" autocomplete="off" oninput="filterCmdItems(this.value)">
+                <kbd class="cmd-palette-esc">esc</kbd>
+            </div>
+            <div class="cmd-palette-results" id="cmdResults"></div>
+            <div class="cmd-palette-footer">
+                <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+                <span><kbd>↵</kbd> select</span>
+                <span><kbd>esc</kbd> close</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Konami / Debug Overlay -->
+    <div id="debugOverlay" class="debug-overlay" style="display:none;" onclick="this.style.display='none'">
+        <div class="debug-box">
+            <div class="debug-header">
+                <span class="debug-title">// debug mode — metrics.json</span>
+                <span class="debug-close" onclick="document.getElementById('debugOverlay').style.display='none'">&times;</span>
+            </div>
+            <pre class="debug-pre" id="debugPre"></pre>
+            <div class="debug-footer">click anywhere to close &nbsp;·&nbsp; easter egg found 🎉</div>
+        </div>
+    </div>
+
+    <script>
+    // ── STEP 3: Scroll Progress Bar ─────────────────────────────────
+    (function() {
+        var bar = document.getElementById('scrollProgress');
+        window.addEventListener('scroll', function() {
+            var scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            bar.style.width = Math.min(scrolled, 100) + '%';
+        }, { passive: true });
+    })();
+
+    // ── STEP 3: Achievement Counter Animation ───────────────────────
+    function animateCounter(el, target, suffix) {
+        var startTime = null;
+        var duration = 1800;
+        var isFloat = target % 1 !== 0;
+        function step(ts) {
+            if (!startTime) startTime = ts;
+            var progress = Math.min((ts - startTime) / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            var val = isFloat ? (eased * target).toFixed(1) : Math.floor(eased * target);
+            el.textContent = val + suffix;
+            if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+    }
+
+    var achievementObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting && !entry.target.dataset.counted) {
+                entry.target.dataset.counted = '1';
+                var raw = entry.target.dataset.value;
+                var suffix = entry.target.dataset.suffix || '';
+                if (raw) animateCounter(entry.target, parseFloat(raw), suffix);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.achievement-value').forEach(function(el) {
+        var text = el.textContent.trim();
+        var match = text.match(/^([0-9.]+)(.*)$/);
+        if (match) {
+            el.dataset.value = match[1];
+            el.dataset.suffix = match[2];
+            achievementObserver.observe(el);
+        }
+    });
+
+    // ── STEP 2: Command Palette ─────────────────────────────────────
+    var CMD_ITEMS = [
+        { icon: 'fas fa-user', label: 'About Me',       sub: 'Background and skills',          href: '#about' },
+        { icon: 'fas fa-briefcase', label: 'Experience', sub: 'ExponentHR · Missouri S&T · Zomato', href: '#experience' },
+        { icon: 'fas fa-rocket', label: 'Projects',     sub: 'JobScout · Fraud Detection · Risk Analytics', href: '#projects' },
+        { icon: 'fas fa-graduation-cap', label: 'Education', sub: 'Missouri S&T · GVP',        href: '#education' },
+        { icon: 'fas fa-certificate', label: 'Certifications', sub: 'DP-700 · AI-900 · Databricks', href: '#certifications' },
+        { icon: 'fas fa-scroll', label: 'Research',     sub: 'Taylor & Francis 2025 publication', href: '#research' },
+        { icon: 'fas fa-trophy', label: 'Achievements',  sub: '$4M saved · 21× faster SDLC',   href: '#achievements' },
+        { icon: 'fas fa-quote-left', label: 'Recommendations', sub: 'What colleagues say',     href: '#recommendations' },
+        { icon: 'fas fa-envelope', label: 'Contact',    sub: 'edara.narendranath@gmail.com',    href: '#contact' },
+        { icon: 'fas fa-download', label: 'Download Resume', sub: 'PDF — latest version',
+          href: 'https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf', external: true },
+        { icon: 'fab fa-linkedin', label: 'LinkedIn',   sub: 'linkedin.com/in/narendranathe',
+          href: 'https://linkedin.com/in/narendranathe', external: true },
+        { icon: 'fab fa-github',   label: 'GitHub',     sub: 'github.com/narendranathe',
+          href: 'https://github.com/narendranathe', external: true },
+    ];
+    var cmdActiveIdx = 0;
+
+    function renderCmdItems(items) {
+        var el = document.getElementById('cmdResults');
+        if (!items.length) { el.innerHTML = '<div style="padding:20px 16px;color:var(--text-muted);font-size:0.9rem;">No results found</div>'; return; }
+        el.innerHTML = items.map(function(item, i) {
+            return '<div class="cmd-item' + (i === 0 ? ' active' : '') + '" data-href="' + item.href + '" data-external="' + (item.external ? '1' : '') + '" onclick="executeCmdItem(this)">'
+                 + '<div class="cmd-item-icon"><i class="' + item.icon + '"></i></div>'
+                 + '<div><div class="cmd-item-label">' + item.label + '</div><div class="cmd-item-sub">' + item.sub + '</div></div>'
+                 + '</div>';
+        }).join('');
+        cmdActiveIdx = 0;
+    }
+
+    function filterCmdItems(q) {
+        var filtered = CMD_ITEMS.filter(function(it) {
+            return it.label.toLowerCase().includes(q.toLowerCase()) || it.sub.toLowerCase().includes(q.toLowerCase());
+        });
+        renderCmdItems(filtered.length ? filtered : q ? [] : CMD_ITEMS);
+        cmdActiveIdx = 0;
+    }
+
+    function executeCmdItem(el) {
+        var href = el.dataset.href;
+        var isExternal = el.dataset.external === '1';
+        closeCmdPalette();
+        if (isExternal) { window.open(href, '_blank'); return; }
+        var target = document.querySelector(href);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function openCmdPalette() {
+        var overlay = document.getElementById('cmdPalette');
+        overlay.style.display = 'flex';
+        renderCmdItems(CMD_ITEMS);
+        setTimeout(function() { document.getElementById('cmdInput').focus(); }, 50);
+    }
+
+    function closeCmdPalette(e) {
+        if (e && e.target !== document.getElementById('cmdPalette')) return;
+        document.getElementById('cmdPalette').style.display = 'none';
+        document.getElementById('cmdInput').value = '';
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openCmdPalette(); return; }
+        if (e.key === 'Escape') { document.getElementById('cmdPalette').style.display = 'none'; return; }
+        var overlay = document.getElementById('cmdPalette');
+        if (overlay.style.display === 'none') return;
+        var items = overlay.querySelectorAll('.cmd-item');
+        if (!items.length) return;
+        if (e.key === 'ArrowDown') { e.preventDefault(); items[cmdActiveIdx].classList.remove('active'); cmdActiveIdx = (cmdActiveIdx + 1) % items.length; items[cmdActiveIdx].classList.add('active'); items[cmdActiveIdx].scrollIntoView({ block: 'nearest' }); }
+        if (e.key === 'ArrowUp')   { e.preventDefault(); items[cmdActiveIdx].classList.remove('active'); cmdActiveIdx = (cmdActiveIdx - 1 + items.length) % items.length; items[cmdActiveIdx].classList.add('active'); items[cmdActiveIdx].scrollIntoView({ block: 'nearest' }); }
+        if (e.key === 'Enter') { executeCmdItem(items[cmdActiveIdx]); }
+    });
+
+    // ── STEP 2: Konami Code → Debug Overlay ────────────────────────
+    var KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    var konamiPos = 0;
+    document.addEventListener('keydown', function(e) {
+        if (e.key === KONAMI[konamiPos]) { konamiPos++; if (konamiPos === KONAMI.length) { konamiPos = 0; showDebugOverlay(); } }
+        else { konamiPos = e.key === KONAMI[0] ? 1 : 0; }
+    });
+
+    function showDebugOverlay() {
+        var data = {
+            identity: { name: 'Narendranath Edara', location: 'Dallas TX', visa: 'H1B transfer' },
+            experience_years: 4,
+            current_role: 'Data Engineer @ ExponentHR',
+            gpa: 4.0,
+            metrics: {
+                sdlc_speedup:         '3 months → 14 days (21×)',
+                etl_runtime:          '~30 min → <8 min (73% faster)',
+                query_latency:        '12s → 4s (67% faster)',
+                compute_cost_cut:     '~67%',
+                support_tickets:      '-40%',
+                anomaly_accuracy:     '95%+',
+                false_positives:      '-40%',
+                azure_savings:        '$3,200/month',
+                node_consolidation:   '20 nodes → 4-8 nodes',
+                udaan_savings:        '$4M annual',
+                fulfillment_rate:     '99.3%',
+                zomato_market_share:  '+9%',
+                fraud_tps:            '100+ TPS at <1ms P99',
+                portfolio_analytics:  '47.8 TPS, <5s VaR'
+            },
+            projects: ['JobScout (live)', 'AutoApply AI (production)', 'Fraud Detection Platform', 'Portfolio Risk Analytics'],
+            certifications: ['DP-700 Microsoft Fabric', 'AI-900 Azure AI', 'Databricks GenAI', 'CSPO'],
+            publication: 'Taylor & Francis 2025 — DOI: 10.1080/10495142.2025.2525123',
+            easter_egg: true
+        };
+        var json = JSON.stringify(data, null, 2);
+        var highlighted = json
+            .replace(/"([^"]+)":/g, '<span class="k">"$1"</span>:')
+            .replace(/: "([^"]+)"/g, ': <span class="s">"$1"</span>')
+            .replace(/: ([0-9.]+)/g, ': <span class="n">$1</span>')
+            .replace(/: (true|false)/g, ': <span class="n">$1</span>');
+        document.getElementById('debugPre').innerHTML = highlighted;
+        document.getElementById('debugOverlay').style.display = 'flex';
+    }
+
+    // ── STEP 4: Hero Terminal Animation ────────────────────────────
+    (function() {
+        var lines = [
+            { type: 'cmd',    text: 'python scrape.py --companies 109 --interval 5m' },
+            { type: 'output', text: '[✓] Workday · Greenhouse · Lever · iCIMS scraped' },
+            { type: 'output', text: '[✓] 173 jobs indexed  · 12 new · 0 errors' },
+            { type: 'cmd',    text: 'python score.py --threshold 0.65' },
+            { type: 'output', text: '[✓] 3 dream-company matches  →  alerts fired' },
+            { type: 'cmd',    text: 'git push origin main' },
+            { type: 'warn',   text: '✓  CI passed  ·  deployed to GitHub Pages' },
+        ];
+        var body = document.getElementById('terminalBody');
+        if (!body) return;
+        var i = 0;
+        function addLine() {
+            if (i >= lines.length) {
+                // blink cursor at end
+                var cur = document.createElement('span');
+                cur.className = 't-cursor';
+                body.appendChild(cur);
+                return;
+            }
+            var ln = lines[i++];
+            var row = document.createElement('div');
+            row.className = 'terminal-line';
+            if (ln.type === 'cmd') {
+                row.innerHTML = '<span class="t-prompt">$</span><span class="t-cmd"> ' + ln.text + '</span>';
+            } else if (ln.type === 'output') {
+                row.innerHTML = '<span class="t-output">' + ln.text + '</span>';
+            } else {
+                row.innerHTML = '<span class="t-warn">' + ln.text + '</span>';
+            }
+            body.appendChild(row);
+            setTimeout(addLine, ln.type === 'cmd' ? 600 : 300);
+        }
+        // Start after 1.5s delay so hero loads first
+        setTimeout(addLine, 1500);
+    })();
+    </script>
+
     <!-- Load configuration (create your own from config.template.js) -->
     <script src="config.js"></script>
     
