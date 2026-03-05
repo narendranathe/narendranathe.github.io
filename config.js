@@ -9,24 +9,24 @@ const CONFIG = {
     // ── Availability Badge ─────────────────────────────────────────
     status: {
         available: true,
-        tagline: 'Available · Senior DE / ML Engineer · Dallas TX or Remote',
+        tagline: 'Senior Data Engineer · Dallas TX or Remote',
         details: [
-            { label: 'Status',   value: 'Actively interviewing' },
             { label: 'Response', value: '< 24 hours' },
-            { label: 'Visa',     value: 'H1B transfer' },
-            { label: 'Target',   value: 'Senior DE · ML Eng · AI Platform' }
+            { label: 'Visa',     value: 'H1B Transfer' },
+            { label: 'Focus',    value: 'DE · ML Eng · AI Platform' },
+            { label: 'Location', value: 'Dallas TX or Remote' }
         ]
     },
 
     // ── Hero Terminal Animation ────────────────────────────────────
     terminal: [
-        { type: 'cmd',    text: 'python scrape.py --companies 109 --interval 5m' },
-        { type: 'output', text: '[✓] Workday · Greenhouse · Lever · iCIMS scraped' },
-        { type: 'output', text: '[✓] 173 jobs indexed  · 12 new · 0 errors' },
-        { type: 'cmd',    text: 'python score.py --threshold 0.65' },
-        { type: 'output', text: '[✓] 3 dream-company matches  →  alerts fired' },
-        { type: 'cmd',    text: 'git push origin main' },
-        { type: 'warn',   text: '✓  CI passed  ·  deployed to GitHub Pages' },
+        { type: 'cmd',    text: 'python data_quality.py --env prod' },
+        { type: 'output', text: '[✓] Schema valid · nulls handled · duplicates dropped' },
+        { type: 'output', text: '[!] Found 1 anomaly: someone stored NULL as a string' },
+        { type: 'cmd',    text: 'git blame pipeline.py | grep "NULL as string"' },
+        { type: 'output', text: '   → past me. we don\'t talk about it.' },
+        { type: 'cmd',    text: 'pytest tests/ --cov=pipeline' },
+        { type: 'warn',   text: '✓  143 passed  ·  0 failed  ·  coverage: 94%' },
     ],
 
     // ── Konami Code Easter Egg ─────────────────────────────────────
@@ -42,7 +42,7 @@ const CONFIG = {
         anomaly_accuracy:      '95%+',
         false_positives:       '-40%',
         azure_savings:         '$3,200/month',
-        node_consolidation:    '20 nodes → 4–8 nodes',
+        node_consolidation:    '20 nodes to 4-8 nodes',
         udaan_savings:         '$4M annual',
         fulfillment_rate:      '99.3%',
         zomato_market_share:   '+9%',
