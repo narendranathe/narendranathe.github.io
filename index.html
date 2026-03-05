@@ -102,17 +102,20 @@
         .status-tooltip {
             display: none;
             position: absolute;
-            top: calc(100% + 10px);
-            left: 0;
+            top: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 10px;
             padding: 12px 16px;
             min-width: 260px;
+            max-width: 90vw;
             box-shadow: var(--shadow-md);
-            z-index: 100;
+            z-index: 200;
             font-size: 0.82rem;
             line-height: 2;
+            white-space: nowrap;
         }
         .hero-badge:hover .status-tooltip { display: block; }
         .status-tooltip-row { color: var(--text-secondary); }
@@ -122,7 +125,7 @@
             background: #0d1117;
             border-radius: 10px;
             width: 100%;
-            margin-bottom: 1.5rem;
+            margin-top: 1.25rem;
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
             font-family: var(--font-mono);
             font-size: 0.75rem;
@@ -2524,36 +2527,32 @@
     <section class="hero" id="home">
         <div class="hero-container">
             <div class="hero-content">
-                <div class="hero-badge" id="statusBadge" title="Click for details">
+                <div class="hero-badge" id="statusBadge" title="Availability status">
                     <span class="status-dot"></span>
-                    <span class="status-text">Available · Senior DE / ML Engineer · Dallas TX or Remote</span>
-                    <div class="status-tooltip">
-                        <div class="status-tooltip-row"><strong>Status:</strong> Actively interviewing</div>
-                        <div class="status-tooltip-row"><strong>Response:</strong> &lt; 24 hours</div>
-                        <div class="status-tooltip-row"><strong>Visa:</strong> H1B transfer</div>
-                        <div class="status-tooltip-row"><strong>Target:</strong> Senior DE · ML Eng · AI Platform</div>
-                    </div>
+                    <span class="status-text" id="statusText"></span>
+                    <div class="status-tooltip" id="statusTooltip"></div>
                 </div>
                 <h1 class="hero-title">
                     Hi, I'm<br>
                     <span class="highlight">Narendranath Edara</span>
                 </h1>
                 <p class="hero-subtitle">
-                    Data Engineer building scalable analytics platforms and AI automation solutions. 
-                    I transform complex data challenges into production-grade systems that deliver 
-                    intelligence directly to users.
+                    I build data infrastructure that thinks for itself — CDC pipelines that cut
+                    ETL runtimes by 73%, AI agents that eliminated 15+ hrs/sprint of manual work,
+                    and zero-cost job platforms scraping 109 companies every 5 minutes.
+                    From Kafka to LLMs, I close the gap between raw data and decisions that matter.
                 </p>
                 <div class="hero-stats">
                     <div class="stat-item">
-                        <div class="stat-value">21×</div>
-                        <div class="stat-label">Faster SDLC</div>
+                        <div class="stat-value">85%</div>
+                        <div class="stat-label">Faster Deploys</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">40%</div>
-                        <div class="stat-label">Overhead Reduced</div>
+                        <div class="stat-value">$4M</div>
+                        <div class="stat-label">Annual Savings</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">99.99%</div>
+                        <div class="stat-value">98%</div>
                         <div class="stat-label">Uptime SLA</div>
                     </div>
                     <div class="stat-item">
@@ -2583,15 +2582,6 @@
                             <img src="https://github.com/user-attachments/assets/ce009ed4-be8a-47d1-ba3e-4d45e87b38d8" alt="Narendranath Edara" class="profile-image" onerror="this.src='https://github.com/user-attachments/assets/a31266a6-37af-4717-b031-de03ae6058a9'; this.onerror=function(){this.src='https://github.com/user-attachments/assets/ce009ed4-be8a-47d1-ba3e-4d45e87b38d8'; this.onerror=function(){this.style.display='none'; var initials=document.createElement('span'); initials.className='profile-initials'; initials.textContent='NE'; this.parentElement.appendChild(initials);};};">
                         </div>
                     </div>
-                    <div class="hero-terminal" id="heroTerminal">
-                        <div class="terminal-bar">
-                            <span class="terminal-dot t-red"></span>
-                            <span class="terminal-dot t-yellow"></span>
-                            <span class="terminal-dot t-green"></span>
-                            <span class="terminal-title">pipeline.py</span>
-                        </div>
-                        <div class="terminal-body" id="terminalBody"></div>
-                    </div>
                     <div class="floating-card floating-card-1">
                         <i class="fas fa-database"></i>
                         <div class="floating-card-text">
@@ -2603,9 +2593,18 @@
                         <i class="fas fa-brain"></i>
                         <div class="floating-card-text">
                             <div class="floating-card-title">ML Engineer</div>
-                            <div class="floating-card-subtitle">NLP & Analytics</div>
+                            <div class="floating-card-subtitle">NLP · AI Agents · LLMs</div>
                         </div>
                     </div>
+                </div>
+                <div class="hero-terminal" id="heroTerminal">
+                    <div class="terminal-bar">
+                        <span class="terminal-dot t-red"></span>
+                        <span class="terminal-dot t-yellow"></span>
+                        <span class="terminal-dot t-green"></span>
+                        <span class="terminal-title">pipeline.py</span>
+                    </div>
+                    <div class="terminal-body" id="terminalBody"></div>
                 </div>
             </div>
         </div>
@@ -2635,30 +2634,29 @@
                 </div>
                 <div class="about-content">
                     <span class="section-label">About Me</span>
-                    <h3>Building Intelligence at Scale</h3>
+                    <h3>Data Engineer. Systems Thinker. Builder.</h3>
                     <p>
-                        Data Engineer with expertise in <strong>designing and deploying scalable data platforms</strong>. 
-                        Passionate about leveraging AI to tackle complex challenges. Specialized in transforming 
-                        fragmented data ecosystems into unified analytics infrastructure that enables cross-functional 
-                        teams to drive data-driven decision making.
+                        I started in analytics — building search engines at Zomato, forecasting inventory at Udaan —
+                        and over time migrated fully into engineering the infrastructure that makes analytics possible at scale.
+                        Today I design <strong>streaming data platforms, AI automation agents, and self-healing pipelines</strong>
+                        that run without hand-holding.
                     </p>
                     <p>
-                        With a <strong>Master's degree in Information Science & Technology</strong> from Missouri 
-                        University of Science and Technology (4.0 GPA), I combine engineering depth with business 
-                        acumen. My experience spans from <strong>Zomato</strong> in India 
-                        to <strong>ExponentHR</strong> in the US, giving me a unique 
-                        perspective on data challenges at scale.
+                        At <strong>ExponentHR</strong> I reengineered CDC-based ETL to cut batch runtimes from 30 min to under 8 min,
+                        compressed deployment cycles from 3 months to 14 days with CI/CD automation, and shipped AI agents
+                        that eliminated 15+ hours of manual sprint work — all while maintaining <strong>98% uptime</strong> on production payroll systems.
                     </p>
                     <p>
-                        Recently, I've focused on <strong>MLOps and AI automation</strong>, building end-to-end ML pipelines 
-                        with Spark, Kafka, and Airflow, and designing AI agents that democratize data access 
-                        for technical and non-technical teams alike.
+                        Outside work I build production systems that scratch my own itch: <strong>JobScout</strong> scrapes
+                        109 companies every 5 minutes and auto-matches jobs to 95+ tailored resumes, and
+                        <strong>AutoApply AI</strong> chains 5 LLM providers behind a Chrome extension so I never hit a rate limit.
+                        I hold a <strong>4.0 GPA Master's</strong> from Missouri S&T and a peer-reviewed publication in Taylor & Francis 2025.
                     </p>
-                    
+
                     <div class="about-highlight">
                         <p>
                             <i class="fas fa-bolt"></i>&nbsp;&nbsp;
-                            Reduced SDLC from 3 months to 14 days (21× faster) through architectural design, Adopting Agile Project management and DevOps automation.
+                            Currently at ExponentHR · Open to Senior Data Engineer, ML Engineer, and AI Platform roles · Dallas TX or Remote
                         </p>
                     </div>
 
@@ -3079,10 +3077,13 @@
                 <!-- Project 4 -->
                 <div class="project-card">
                     <div class="project-image">
+                        <a href="https://linkedin.com/in/narendranathe" target="_blank" class="project-github-link" title="View on LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
                         <i class="fas fa-robot"></i>
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">AI-Powered Analytics Platform</h3>
+                        <h3 class="project-title">AI-Powered Analytics Platform <span style="font-size:0.7rem;color:var(--text-muted);font-weight:400;">(Enterprise · ExponentHR)</span></h3>
                         <p class="project-description">
                             <strong>Enterprise Data Engineering:</strong> Architected semantic layer over complex multi-schema 
                             SQL Server data warehouse enabling natural language querying. <strong>AI Integration:</strong> Built 
@@ -3416,28 +3417,28 @@
             </div>
             <div class="achievements-grid">
                 <div class="achievement-card">
-                    <div class="achievement-value">21×</div>
-                    <div class="achievement-label">Faster SDLC Delivery</div>
-                </div>
-                <div class="achievement-card">
-                    <div class="achievement-value">200%</div>
-                    <div class="achievement-label">Revenue Growth at Zomato</div>
-                </div>
-                <div class="achievement-card">
-                    <div class="achievement-value">$4M</div>
-                    <div class="achievement-label">Annual Savings at Udaan</div>
-                </div>
-                <div class="achievement-card">
-                    <div class="achievement-value">99.99%</div>
-                    <div class="achievement-label">System Uptime SLA</div>
-                </div>
-                <div class="achievement-card">
                     <div class="achievement-value">85%</div>
                     <div class="achievement-label">Faster Deployments</div>
                 </div>
                 <div class="achievement-card">
+                    <div class="achievement-value">$4M</div>
+                    <div class="achievement-label">Annual Savings · Udaan</div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-value">98%</div>
+                    <div class="achievement-label">Production Uptime SLA</div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-value">100+</div>
+                    <div class="achievement-label">TPS · ML Pipeline</div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-value">73%</div>
+                    <div class="achievement-label">Faster ETL Runtime</div>
+                </div>
+                <div class="achievement-card">
                     <div class="achievement-value">4.0</div>
-                    <div class="achievement-label">Master's GPA</div>
+                    <div class="achievement-label">Master's GPA · Missouri S&T</div>
                 </div>
             </div>
         </div>
@@ -3452,9 +3453,10 @@
             </div>
             <div class="contact-container">
                 <p class="contact-intro">
-                    I'm actively exploring <strong>Data Engineer</strong> and <strong>ML Engineer</strong> opportunities 
-                    where I can build next-generation analytics and AI platforms. If you share a passion for 
-                    building systems that matter, I'd love to connect!
+                    I'm actively looking for <strong>Senior Data Engineer</strong>, <strong>ML Engineer</strong>, and
+                    <strong>AI Platform Engineer</strong> roles where the problems are hard and the data is messier than the docs say.
+                    If you're building something that requires real engineering — not just dashboard wiring —
+                    I'd genuinely love to talk. Response time is under 24 hours.
                 </p>
                 <div class="contact-cards">
                     <div class="contact-card">
@@ -3717,32 +3719,9 @@
     });
 
     function showDebugOverlay() {
-        var data = {
-            identity: { name: 'Narendranath Edara', location: 'Dallas TX', visa: 'H1B transfer' },
-            experience_years: 4,
-            current_role: 'Data Engineer @ ExponentHR',
-            gpa: 4.0,
-            metrics: {
-                sdlc_speedup:         '3 months → 14 days (21×)',
-                etl_runtime:          '~30 min → <8 min (73% faster)',
-                query_latency:        '12s → 4s (67% faster)',
-                compute_cost_cut:     '~67%',
-                support_tickets:      '-40%',
-                anomaly_accuracy:     '95%+',
-                false_positives:      '-40%',
-                azure_savings:        '$3,200/month',
-                node_consolidation:   '20 nodes → 4-8 nodes',
-                udaan_savings:        '$4M annual',
-                fulfillment_rate:     '99.3%',
-                zomato_market_share:  '+9%',
-                fraud_tps:            '100+ TPS at <1ms P99',
-                portfolio_analytics:  '47.8 TPS, <5s VaR'
-            },
-            projects: ['JobScout (live)', 'AutoApply AI (production)', 'Fraud Detection Platform', 'Portfolio Risk Analytics'],
-            certifications: ['DP-700 Microsoft Fabric', 'AI-900 Azure AI', 'Databricks GenAI', 'CSPO'],
-            publication: 'Taylor & Francis 2025 — DOI: 10.1080/10495142.2025.2525123',
-            easter_egg: true
-        };
+        var data = (typeof CONFIG !== 'undefined' && CONFIG.metrics)
+            ? CONFIG.metrics
+            : { easter_egg: true, note: 'Add a metrics object to config.js' };
         var json = JSON.stringify(data, null, 2);
         var highlighted = json
             .replace(/"([^"]+)":/g, '<span class="k">"$1"</span>:')
@@ -3753,23 +3732,31 @@
         document.getElementById('debugOverlay').style.display = 'flex';
     }
 
-    // ── STEP 4: Hero Terminal Animation ────────────────────────────
+    // ── STEP 4: Status Badge (reads from CONFIG) ───────────────────
     (function() {
-        var lines = [
-            { type: 'cmd',    text: 'python scrape.py --companies 109 --interval 5m' },
-            { type: 'output', text: '[✓] Workday · Greenhouse · Lever · iCIMS scraped' },
-            { type: 'output', text: '[✓] 173 jobs indexed  · 12 new · 0 errors' },
-            { type: 'cmd',    text: 'python score.py --threshold 0.65' },
-            { type: 'output', text: '[✓] 3 dream-company matches  →  alerts fired' },
-            { type: 'cmd',    text: 'git push origin main' },
-            { type: 'warn',   text: '✓  CI passed  ·  deployed to GitHub Pages' },
-        ];
+        var cfg = (typeof CONFIG !== 'undefined' && CONFIG.status) ? CONFIG.status : null;
+        var badge = document.getElementById('statusBadge');
+        if (!cfg || !cfg.available) { if (badge) badge.style.display = 'none'; return; }
+        var textEl = document.getElementById('statusText');
+        var tooltipEl = document.getElementById('statusTooltip');
+        if (textEl) textEl.textContent = cfg.tagline || 'Available';
+        if (tooltipEl && cfg.details) {
+            tooltipEl.innerHTML = cfg.details.map(function(d) {
+                return '<div class="status-tooltip-row"><strong>' + d.label + ':</strong> ' + d.value + '</div>';
+            }).join('');
+        }
+    })();
+
+    // ── STEP 4: Hero Terminal Animation (reads from CONFIG) ────────
+    (function() {
+        var lines = (typeof CONFIG !== 'undefined' && Array.isArray(CONFIG.terminal))
+            ? CONFIG.terminal
+            : [{ type: 'cmd', text: 'echo "Add terminal lines to config.js"' }];
         var body = document.getElementById('terminalBody');
         if (!body) return;
         var i = 0;
         function addLine() {
             if (i >= lines.length) {
-                // blink cursor at end
                 var cur = document.createElement('span');
                 cur.className = 't-cursor';
                 body.appendChild(cur);
@@ -3788,7 +3775,6 @@
             body.appendChild(row);
             setTimeout(addLine, ln.type === 'cmd' ? 600 : 300);
         }
-        // Start after 1.5s delay so hero loads first
         setTimeout(addLine, 1500);
     })();
     </script>
