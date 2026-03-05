@@ -2529,8 +2529,13 @@
             <div class="hero-content">
                 <div class="hero-badge" id="statusBadge" title="Availability status">
                     <span class="status-dot"></span>
-                    <span class="status-text" id="statusText"></span>
-                    <div class="status-tooltip" id="statusTooltip"></div>
+                    <span class="status-text" id="statusText">Available · Senior DE / ML Engineer · Dallas TX or Remote</span>
+                    <div class="status-tooltip" id="statusTooltip">
+                        <div class="status-tooltip-row"><strong>Status:</strong> Actively interviewing</div>
+                        <div class="status-tooltip-row"><strong>Response:</strong> &lt; 24 hours</div>
+                        <div class="status-tooltip-row"><strong>Visa:</strong> H1B transfer</div>
+                        <div class="status-tooltip-row"><strong>Target:</strong> Senior DE · ML Eng · AI Platform</div>
+                    </div>
                 </div>
                 <h1 class="hero-title">
                     Hi, I'm<br>
@@ -3076,38 +3081,39 @@
                 <!-- Project 4 -->
                 <div class="project-card">
                     <div class="project-image">
-                        <a href="https://linkedin.com/in/narendranathe" target="_blank" class="project-github-link" title="View on LinkedIn">
-                            <i class="fab fa-linkedin"></i>
+                        <a href="https://github.com/narendranathe/Game-downloads-prediction-Poppy-Play-Time-Ch.2" target="_blank" class="project-github-link" title="View on GitHub">
+                            <i class="fab fa-github"></i>
                         </a>
-                        <i class="fas fa-robot"></i>
+                        <img src="https://raw.githubusercontent.com/narendranathe/Game-downloads-prediction-Poppy-Play-Time-Ch.2/main/images/twitter%20vs%20twitch%20followers.png" alt="twitter vs twitch followers correlation" onerror="this.style.display='none';">
+                        <i class="fas fa-gamepad"></i>
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">AI-Powered Analytics Platform <span style="font-size:0.7rem;color:var(--text-muted);font-weight:400;">(Enterprise · ExponentHR)</span></h3>
+                        <h3 class="project-title">Game Downloads Prediction (R)</h3>
                         <p class="project-description">
-                            <strong>Enterprise Data Engineering:</strong> Architected semantic layer over complex multi-schema 
-                            SQL Server data warehouse enabling natural language querying. <strong>AI Integration:</strong> Built 
-                            AI agents that translate business questions into optimized SQL, reducing report development overhead 
-                            by 40%. <strong>Production Impact:</strong> Accelerated SDLC from 3 months to 14 days (21× improvement).
+                            <strong>Statistical Modeling:</strong> Time series forecasting of mobile game downloads using R,
+                            comparing ARIMA, exponential smoothing, and regression models. <strong>Data Pipeline:</strong>
+                            Automated data collection and preprocessing pipeline. <strong>Business Impact:</strong>
+                            Actionable insights for marketing campaign timing and inventory planning.
                         </p>
                         <div class="project-stats">
                             <div class="project-stat">
-                                <div class="project-stat-value">40%</div>
-                                <div class="project-stat-label">Overhead Cut</div>
+                                <div class="project-stat-value">3+</div>
+                                <div class="project-stat-label">Models</div>
                             </div>
                             <div class="project-stat">
-                                <div class="project-stat-value">21×</div>
-                                <div class="project-stat-label">Faster SDLC</div>
+                                <div class="project-stat-value">R</div>
+                                <div class="project-stat-label">Language</div>
                             </div>
                             <div class="project-stat">
-                                <div class="project-stat-value">AI</div>
-                                <div class="project-stat-label">Agents</div>
+                                <div class="project-stat-value">Time</div>
+                                <div class="project-stat-label">Series</div>
                             </div>
                         </div>
                         <div class="project-tags">
-                            <span class="project-tag">Azure</span>
-                            <span class="project-tag">Power BI</span>
-                            <span class="project-tag">SQL Server</span>
-                            <span class="project-tag">SSIS</span>
+                            <span class="project-tag">R</span>
+                            <span class="project-tag">Time Series</span>
+                            <span class="project-tag">ARIMA</span>
+                            <span class="project-tag">Forecasting</span>
                         </div>
                     </div>
                 </div>
@@ -3158,6 +3164,9 @@
                 <!-- Project 6 — AutoApply AI -->
                 <div class="project-card">
                     <div class="project-image">
+                        <a href="https://github.com/narendranathe/autoapply-ai" target="_blank" class="project-github-link" title="View on GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
                         <i class="fas fa-robot"></i>
                     </div>
                     <div class="project-content">
@@ -3428,8 +3437,8 @@
                     <div class="achievement-label">Production Uptime SLA</div>
                 </div>
                 <div class="achievement-card">
-                    <div class="achievement-value">100+</div>
-                    <div class="achievement-label">TPS · ML Pipeline</div>
+                    <div class="achievement-value">95%+</div>
+                    <div class="achievement-label">Anomaly Detection Accuracy</div>
                 </div>
                 <div class="achievement-card">
                     <div class="achievement-value">73%</div>
@@ -3890,12 +3899,33 @@
         ctaBtn.innerHTML = `<i class="${platformInfo.icon}"></i> View All on ${platformInfo.name}`;
         
         try {
-            const API_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(config.feedUrl)}`;
-            const response = await fetch(API_URL);
-            const data = await response.json();
-            
+            // Primary: rss2json
+            const API_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(config.feedUrl)}&count=6`;
+            let response = await fetch(API_URL);
+            let data = await response.json();
+
             if (data.status === 'ok' && data.items && data.items.length > 0) {
                 renderArticles(data.items.slice(0, 6), platform);
+                return;
+            }
+
+            // Fallback: corsproxy.io + manual RSS parse
+            const proxyUrl = `https://corsproxy.io/?url=${encodeURIComponent(config.feedUrl)}`;
+            response = await fetch(proxyUrl);
+            const xmlText = await response.text();
+            const parser = new DOMParser();
+            const xml = parser.parseFromString(xmlText, 'text/xml');
+            const items = Array.from(xml.querySelectorAll('item')).slice(0, 6).map(item => ({
+                title:       item.querySelector('title')?.textContent || '',
+                link:        item.querySelector('link')?.textContent || '',
+                description: item.querySelector('description')?.textContent || '',
+                content:     item.querySelector('content\\:encoded, encoded')?.textContent || item.querySelector('description')?.textContent || '',
+                pubDate:     item.querySelector('pubDate')?.textContent || '',
+                categories:  Array.from(item.querySelectorAll('category')).map(c => c.textContent),
+                thumbnail:   item.querySelector('enclosure')?.getAttribute('url') || ''
+            }));
+            if (items.length > 0) {
+                renderArticles(items, platform);
             } else {
                 showNoArticles(platform);
             }
