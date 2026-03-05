@@ -2673,8 +2673,9 @@
                                     <span class="skill-tag">Python</span>
                                     <span class="skill-tag">SQL</span>
                                     <span class="skill-tag">T-SQL</span>
-                                    <span class="skill-tag">R</span>
                                     <span class="skill-tag">PySpark</span>
+                                    <span class="skill-tag">Bash</span>
+                                    <span class="skill-tag">R</span>
                                 </div>
                             </div>
                             <div class="skill-category">
@@ -2683,39 +2684,47 @@
                                     <span class="skill-tag">Apache Spark</span>
                                     <span class="skill-tag">Kafka</span>
                                     <span class="skill-tag">Databricks</span>
-                                    <span class="skill-tag">SSIS</span>
                                     <span class="skill-tag">Airflow</span>
+                                    <span class="skill-tag">Delta Lake</span>
                                     <span class="skill-tag">ETL/ELT</span>
-                                    <span class="skill-tag">Medallion Architecture</span>
-                                </div>
-                            </div>
-                             <div class="skill-category">
-                                <div class="skill-category-title">MLOps & ML</div>
-                                <div class="skill-tags">
-                                    <span class="skill-tag">MLflow</span>
-                                    <span class="skill-tag">Feature Engineering</span>
-                                    <span class="skill-tag">LangChain</span>
-                                    <span class="skill-tag">RAG</span>
+                                    <span class="skill-tag">Data Modeling</span>
+                                    <span class="skill-tag">SSIS</span>
                                 </div>
                             </div>
                             <div class="skill-category">
-                                <div class="skill-category-title">Cloud & DevOps</div>
+                                <div class="skill-category-title">Cloud & Infrastructure</div>
                                 <div class="skill-tags">
-                                    <span class="skill-tag">Azure</span>
+                                    <span class="skill-tag">Azure (AKS, DevOps)</span>
                                     <span class="skill-tag">Microsoft Fabric</span>
-                                    <span class="skill-tag">AWS</span>
+                                    <span class="skill-tag">AWS (S3)</span>
                                     <span class="skill-tag">Docker</span>
                                     <span class="skill-tag">Kubernetes</span>
                                     <span class="skill-tag">CI/CD</span>
+                                    <span class="skill-tag">Git</span>
                                 </div>
                             </div>
                             <div class="skill-category">
-                                <div class="skill-category-title">ML & Analytics</div>
+                                <div class="skill-category-title">ML & AI</div>
                                 <div class="skill-tags">
-                                    <span class="skill-tag">FastAPI</span>
+                                    <span class="skill-tag">MLflow</span>
+                                    <span class="skill-tag">LangChain</span>
+                                    <span class="skill-tag">RAG</span>
+                                    <span class="skill-tag">Feature Engineering</span>
+                                    <span class="skill-tag">Model Serving</span>
                                     <span class="skill-tag">NLTK</span>
                                     <span class="skill-tag">spaCy</span>
+                                </div>
+                            </div>
+                            <div class="skill-category">
+                                <div class="skill-category-title">Tools & Observability</div>
+                                <div class="skill-tags">
+                                    <span class="skill-tag">FastAPI</span>
                                     <span class="skill-tag">Power BI</span>
+                                    <span class="skill-tag">DAX</span>
+                                    <span class="skill-tag">Elasticsearch</span>
+                                    <span class="skill-tag">Prometheus</span>
+                                    <span class="skill-tag">Grafana</span>
+                                    <span class="skill-tag">Streamlit</span>
                                 </div>
                             </div>
                         </div>
@@ -2786,20 +2795,19 @@
                                 </div>
                             </div>
                             <ul class="experience-description">
-                                <li>Architected <strong>AI-powered embedded analytics platform</strong> on Microsoft Fabric, migrating legacy SQL to DAX-based semantic models, reducing client support volume by <strong>40%</strong> and improving query performance by <strong>3×</strong></li>
-                                <li>Owned end-to-end <strong>CI/CD infrastructure</strong>, compressing deployment cycles from 3 months to 14 days (<strong>85% faster</strong>), ensuring consistent data delivery to SSRS and Power BI systems</li>
-                                <li>Reengineered <strong>CDC-based SSIS ETL pipelines</strong> to process incremental changes, reducing runtime by <strong>70%</strong> and cutting compute costs by <strong>30%</strong> while maintaining data freshness SLAs</li>
-                                <li>Optimized SQL Server OLAP performance through <strong>star schema redesign</strong> (Dim & Fact modeling) and index tuning, reducing query latency by <strong>20%</strong></li>
-                                <li>Designed <strong>AI-driven automation agents</strong> integrating Git and Azure DevOps OData APIs, eliminating 15+ hours/sprint of manual reporting</li>
-                                <li>Led production recovery using containerized AAG failover, restoring systems in <1 hour and sustaining <strong>99.99% uptime SLA</strong></li>
+                                <li>Architected governed <strong>semantic layer on Microsoft Fabric</strong> with DAX metrics and AI agents translating business questions to SQL, cutting support tickets by <strong>~40%</strong> and query response from <strong>12s to under 4s</strong></li>
+                                <li>Compressed deployment cycles from <strong>3 months to 14 days</strong> by owning CI/CD end-to-end through Azure DevOps, restructuring cross-team handoffs that accounted for 11 weeks of idle time</li>
+                                <li>Reengineered <strong>CDC-based ETL</strong> from full-table reloads to incremental capture with merge upserts, cutting batch runtime from <strong>~30 min to under 8 min</strong> and compute costs by <strong>~67%</strong> by eliminating full-table I/O and data shuffling</li>
+                                <li>Engineered one-click <strong>Azure DevOps pipeline</strong> with idempotent provisioning for Contained AAG databases (restore, security, recovery, listener validation, CDC), eliminating <strong>~1 hour per request</strong> across 20+ daily copy-downs</li>
+                                <li>Owned payroll-critical database recovery using <strong>containerized AAG failover</strong>, maintaining <strong>98% uptime SLA</strong> with sub-hour restore targets including CDC capture job recovery after failover events</li>
                             </ul>
                             <div class="experience-tags">
-                                <span class="exp-tag">SQL Server</span>
-                                <span class="exp-tag">SSIS/CDC</span>
+                                <span class="exp-tag">Microsoft Fabric</span>
+                                <span class="exp-tag">DAX</span>
+                                <span class="exp-tag">CDC/ETL</span>
                                 <span class="exp-tag">Azure DevOps</span>
-                                <span class="exp-tag">Data Modeling</span>
                                 <span class="exp-tag">CI/CD</span>
-                                <span class="exp-tag">Power BI</span>
+                                <span class="exp-tag">SQL Server</span>
                                 <span class="exp-tag">AI Agents</span>
                             </div>
                         </div>
@@ -2824,19 +2832,17 @@
                                 </div>
                             </div>
                             <ul class="experience-description">
-                                <li>Engineered <strong>Azure AI Anomaly Detector pipelines</strong> with optimal algorithm selection per time-series data type, achieving <strong>95%+ detection accuracy</strong> and cutting non-actionable alerts from ~250/week to near-zero</li>
-                                <li>Designed configurable <strong>REST APIs</strong> with dynamic sensitivity thresholds, reducing false positives by <strong>40%</strong> and improving alert signal-to-noise from 1:5 to 1:1.2</li>
-                                <li>Deployed on <strong>Azure Kubernetes Service (AKS)</strong> with HPA auto-scaling, consolidating 20 nodes to 4-8 nodes and saving <strong>$3,200/month</strong> in Azure compute costs</li>
-                                <li>Applied TF-IDF, PCA, and K-Means/DBSCAN clustering to Yelp/TripAdvisor review corpora; co-authored peer-reviewed paper published in <strong>Taylor & Francis 2025</strong></li>
-                                <li>Built Power BI dashboards surfacing anomaly insights to non-technical campus stakeholders, boosting CPU utilization from 12% → 64% through informed workload decisions</li>
+                                <li>Engineered <strong>Azure AI Anomaly Detector pipelines</strong> selecting optimal algorithms per time-series profile, achieving <strong>95%+ accuracy</strong> — caught a production memory leak 4 hours before outage</li>
+                                <li>Implemented tunable thresholds per service, filtering <strong>~250 weekly non-actionable P3 alerts</strong>, moving signal-to-noise from 1:5 to 1:1.2 — ended alert blindness during on-call rotations</li>
+                                <li>Migrated from static D-Series VMs to <strong>AKS with HPA</strong>, raising CPU utilization <strong>12% to 64%</strong>, consolidating 20 nodes to 4-8 dynamic, cutting monthly Azure spend by <strong>$3,200</strong></li>
                             </ul>
                             <div class="experience-tags">
                                 <span class="exp-tag">Azure AI</span>
-                                <span class="exp-tag">Kubernetes</span>
+                                <span class="exp-tag">AKS/HPA</span>
                                 <span class="exp-tag">Python</span>
-                                <span class="exp-tag">Hugging Face</span>
-                                <span class="exp-tag">Power BI</span>
-                                <span class="exp-tag">ML</span>
+                                <span class="exp-tag">REST API</span>
+                                <span class="exp-tag">Anomaly Detection</span>
+                                <span class="exp-tag">Kubernetes</span>
                             </div>
                         </div>
                     </div>
@@ -2928,19 +2934,16 @@
                                 </div>
                             </div>
                             <ul class="experience-description">
-                                <li>Designed <strong>real-time data analytics platform</strong> for eCommerce and competitor insights, directly contributing to <strong>9% increase in market share</strong> and enabling data-driven pricing strategies</li>
-                                <li>Optimized <strong>search relevance algorithms</strong> using ranking models and contextual signals, improving search-to-conversion rates across millions of queries</li>
-                                <li>Built <strong>Elasticsearch-powered enterprise search engine</strong> indexing 100K+ documents with intelligent ranking, reducing Support Desk workload by <strong>80%</strong></li>
-                                <li>Created dashboards to visualize discount strategies and conducted <strong>A/B testing</strong> on marketing campaigns to drive revenue</li>
-                                <li>Awarded <strong>"Meal for One Champion"</strong> for exceptional contributions to order growth and cost reduction</li>
+                                <li>Built <strong>real-time competitor analytics platform</strong> tracking pricing, delivery times, and coverage, feeding pricing changes that contributed to <strong>9% market share gain</strong> in contested metros</li>
+                                <li>Optimized <strong>search relevance</strong> with ranking models using contextual signals (time, location, cuisine affinity), improving search-to-conversion across millions of daily queries</li>
+                                <li>Built <strong>Elasticsearch enterprise search</strong> indexing 100K+ documents, reducing Support Desk volume by <strong>~80%</strong> through self-serve query resolution</li>
                             </ul>
                             <div class="experience-tags">
-                                 <span class="exp-tag">Elasticsearch</span>
+                                <span class="exp-tag">Elasticsearch</span>
                                 <span class="exp-tag">SQL</span>
+                                <span class="exp-tag">Competitor Analytics</span>
                                 <span class="exp-tag">Ranking Models</span>
-                                <span class="exp-tag">A/B Testing</span>
-                                <span class="exp-tag">Real-time Analytics</span>
-                                <span class="exp-tag">Agile</span>
+                                <span class="exp-tag">Search</span>
                             </div>
                         </div>
                     </div>
