@@ -9,48 +9,51 @@ const CONFIG = {
     // ── Availability Badge ─────────────────────────────────────────
     status: {
         available: true,
-        tagline: 'Senior Data Engineer · Dallas TX or Remote',
+        tagline: 'AI Platform Engineer · Senior Data Engineer · Dallas TX or Remote',
         details: [
             { label: 'Response', value: '< 24 hours' },
             { label: 'Visa',     value: 'H1B Transfer' },
-            { label: 'Focus',    value: 'DE · ML Eng · AI Platform' },
+            { label: 'Focus',    value: 'AI Platform · Senior DE · ML Eng' },
             { label: 'Location', value: 'Dallas TX or Remote' }
         ]
     },
 
     // ── Hero Terminal Animation ────────────────────────────────────
     terminal: [
-        { type: 'cmd',    text: 'python data_quality.py --env prod' },
-        { type: 'output', text: '[✓] Schema valid · nulls handled · duplicates dropped' },
-        { type: 'output', text: '[!] Found 1 anomaly: someone stored NULL as a string' },
-        { type: 'cmd',    text: 'git blame pipeline.py | grep "NULL as string"' },
-        { type: 'output', text: '   → past me. we don\'t talk about it.' },
-        { type: 'cmd',    text: 'pytest tests/ --cov=pipeline' },
-        { type: 'warn',   text: '✓  143 passed  ·  0 failed  ·  coverage: 94%' },
+        { type: 'cmd',    text: 'python nl_engine.py --query "overtime by dept Q4"' },
+        { type: 'output', text: '[FAISS] Classified: Payroll + Expenses (0.94 confidence)' },
+        { type: 'output', text: '[Claude] SQL plan generated: 4 tables, 2 joins, RLS enforced' },
+        { type: 'cmd',    text: 'POST /admin/reload-domain/pto' },
+        { type: 'output', text: '[OK] PTO hot-reloaded. 0 restarts. 400 clients updated.' },
+        { type: 'cmd',    text: 'pytest tests/test_semantic_catalog.py -v' },
+        { type: 'warn',   text: '✓  89 passed  ·  0 failed  ·  coverage: 97%' },
     ],
 
     // ── Konami Code Easter Egg ─────────────────────────────────────
     metrics: {
         experience_years:      4,
-        current_role:          'Data Engineer @ ExponentHR',
+        current_role:          'AI Platform Engineer + Data Engineer @ ExponentHR',
+        enterprise_clients:    400,
+        catalog_columns:       '6000+',
         gpa:                   4.0,
-        sdlc_speedup:          '3 months → 14 days (21×)',
-        etl_runtime:           '~30 min → <8 min (73% faster)',
-        query_latency:         '12s → 4s (67% faster)',
-        compute_cost_cut:      '~67%',
+        sdlc_speedup:          '3 months to 14 days',
+        etl_runtime:           '~30 min to under 8 min (67% faster)',
+        compute_cost_cut:      '67%',
+        query_latency:         '12s to 4s',
         support_tickets:       '-40%',
+        ats_adapters:          11,
+        llm_providers:         5,
         anomaly_accuracy:      '95%+',
-        false_positives:       '-40%',
         azure_savings:         '$3,200/month',
         node_consolidation:    '20 nodes to 4-8 nodes',
         udaan_savings:         '$4M annual',
         fulfillment_rate:      '99.3%',
         zomato_market_share:   '+9%',
-        fraud_tps:             '100+ TPS at <1ms P99',
-        portfolio_analytics:   '47.8 TPS, <5s VaR latency',
+        fraud_tps:             '100+ TPS at sub-ms P99',
+        portfolio_analytics:   '47.8 TPS, under 5s VaR latency',
         jobscout_companies:    109,
         jobscout_resumes:      '95+',
-        publication:           'Taylor & Francis 2025 — DOI: 10.1080/10495142.2025.2525123',
+        publication:           'Taylor and Francis 2025, DOI: 10.1080/10495142.2025.2525123',
         easter_egg:            true
     },
 
