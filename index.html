@@ -1514,6 +1514,98 @@
             text-decoration: underline;
         }
 
+        .proof-strip {
+            padding: 0 2rem 2rem;
+        }
+
+        .proof-strip-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .proof-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+        }
+
+        .proof-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .proof-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .proof-card-head {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.85rem;
+        }
+
+        .proof-card-head i {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: var(--accent-light);
+            color: var(--accent-primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .proof-card h3 {
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .proof-card p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            margin-bottom: 1rem;
+        }
+
+        .proof-metric {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--accent-primary);
+            line-height: 1;
+            margin-bottom: 0.35rem;
+        }
+
+        .proof-label {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.9rem;
+        }
+
+        .proof-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .proof-links a {
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .proof-links a:hover {
+            text-decoration: underline;
+        }
+
         /* Certifications Section */
         .cert-grid {
             display: grid;
@@ -1852,6 +1944,10 @@
             .platform-flow {
                 grid-template-columns: repeat(2, 1fr);
             }
+
+            .proof-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
             
             .cert-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -1897,6 +1993,14 @@
             }
 
             .platform-flow {
+                grid-template-columns: 1fr;
+            }
+
+            .proof-strip {
+                padding: 0 1.5rem 2rem;
+            }
+
+            .proof-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -2813,6 +2917,66 @@
                         <span class="terminal-title">pipeline.py</span>
                     </div>
                     <div class="terminal-body" id="terminalBody"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="proof-strip" id="proof">
+        <div class="proof-strip-container">
+            <div class="proof-grid">
+                <div class="proof-card">
+                    <div class="proof-card-head">
+                        <i class="fas fa-building"></i>
+                        <h3>Enterprise AI Platform</h3>
+                    </div>
+                    <div class="proof-metric">400</div>
+                    <div class="proof-label">Clients served</div>
+                    <p>Catalog-driven NL-to-SQL platform at ExponentHR with FAISS retrieval, semantic joins, governed SQL generation, and measurable latency and support improvements.</p>
+                    <div class="proof-links">
+                        <a href="#experience">View role context</a>
+                        <a href="#projects">See case summary</a>
+                    </div>
+                </div>
+                <div class="proof-card">
+                    <div class="proof-card-head">
+                        <i class="fas fa-layer-group"></i>
+                        <h3>Flagship Product System</h3>
+                    </div>
+                    <div class="proof-metric">11 + 6</div>
+                    <div class="proof-label">ATS adapters + LLM providers</div>
+                    <p>AutoApply AI is positioned as one workflow product with discovery, tailoring, application automation, retrieval-backed answers, and tracking under a single user-facing platform.</p>
+                    <div class="proof-links">
+                        <a href="https://github.com/narendranathe/autoapply-ai" target="_blank" rel="noopener noreferrer">Open repo</a>
+                        <a href="#projects">See architecture story</a>
+                    </div>
+                </div>
+                <div class="proof-card">
+                    <div class="proof-card-head">
+                        <i class="fas fa-code-branch"></i>
+                        <h3>Reusable Engines</h3>
+                    </div>
+                    <div class="proof-metric">190</div>
+                    <div class="proof-label">Tests in tailoring core</div>
+                    <p>`tailor-resume` and `JobScout` are shown as extracted engines behind the flagship workflow, which reads stronger to hiring teams than three overlapping side products.</p>
+                    <div class="proof-links">
+                        <a href="https://github.com/narendranathe/tailor-resume" target="_blank" rel="noopener noreferrer">tailor-resume</a>
+                        <a href="https://github.com/narendranathe/job-scout" target="_blank" rel="noopener noreferrer">JobScout</a>
+                    </div>
+                </div>
+                <div class="proof-card">
+                    <div class="proof-card-head">
+                        <i class="fas fa-certificate"></i>
+                        <h3>Public Signal</h3>
+                    </div>
+                    <div class="proof-metric">3</div>
+                    <div class="proof-label">Proof channels</div>
+                    <p>Portfolio, GitHub, and publication-backed work all point to the same story: production AI systems, delivery discipline, and platform ownership with public artifacts recruiters can inspect.</p>
+                    <div class="proof-links">
+                        <a href="#research">Publication</a>
+                        <a href="#certifications">Certifications</a>
+                        <a href="https://github.com/narendranathe" target="_blank" rel="noopener noreferrer">GitHub profile</a>
+                    </div>
                 </div>
             </div>
         </div>
