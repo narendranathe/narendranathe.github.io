@@ -2,7 +2,7 @@
 
 Personal portfolio site for Narendranath Edara, a Senior AI Platform Engineer focused on production LLM systems, retrieval pipelines, governed analytics, and backend AI infrastructure.
 
-[Live site](https://narendranathe.github.io) | [LinkedIn](https://www.linkedin.com/in/narenedara/) | [GitHub](https://github.com/narendranathe)
+[Live site](https://narendranathe.github.io) | [LinkedIn](https://www.linkedin.com/in/narendranathe/) | [GitHub](https://github.com/narendranathe)
 
 ## What This Repo Represents
 
@@ -24,11 +24,15 @@ Enterprise analytics platform work centered on catalog-driven NL-to-SQL, semanti
 
 ### AutoApply AI
 
-Full-stack applied AI system for job-search automation with FastAPI, Chrome extension workflows, multi-provider LLM routing, and production-minded architecture.
+Flagship AI workflow platform for discover, tailor, apply, and track, built across FastAPI, Chrome extension workflows, multi-provider LLM routing, and production-minded architecture.
 
 ### tailor-resume
 
-Packaged resume tailoring system with API surfaces, MCP support, testing, and developer tooling that reflects real software distribution concerns.
+Reusable tailoring engine extracted from the flagship workflow, with API surfaces, MCP support, testing, and developer tooling that reflects real software distribution concerns.
+
+### JobScout
+
+Discovery and ranking engine behind the broader AutoApply AI workflow, focused on scraping, scoring, filtering, and alerting.
 
 ### Real-Time Fraud Detection Platform
 
@@ -47,7 +51,8 @@ The site is intentionally simple and fast: no framework, no build step, and no r
 
 - `index.html`: site structure, portfolio sections, copy, and project cards
 - `config.js`: live status badge, terminal widget, metrics, recommendations, and social links
-- `content/posts/`: long-form writing and supporting portfolio content
+- `.github/`: GitHub Pages and automation support for the site
+- `README.md`: repository summary and positioning context
 
 ## Local Preview
 
@@ -59,7 +64,6 @@ This site is deployed through GitHub Pages from the `main` branch.
 
 ## Contact
 
-- Email: `narenedara@gmail.com`
-- LinkedIn: `https://www.linkedin.com/in/narenedara/`
+- Email: `edara.narendranath@gmail.com`
+- LinkedIn: `https://www.linkedin.com/in/narendranathe/`
 - GitHub: `https://github.com/narendranathe`
-

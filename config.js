@@ -32,7 +32,7 @@ const CONFIG = {
     // ── Konami Code Easter Egg ─────────────────────────────────────
     metrics: {
         experience_years:      4,
-        current_role:          'Data Engineer building AI platform systems @ ExponentHR',
+        current_role:          'Data Engineer @ ExponentHR · Current scope: AI platform / applied AI',
         enterprise_clients:    400,
         catalog_columns:       '6000+',
         gpa:                   4.0,

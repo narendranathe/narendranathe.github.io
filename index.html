@@ -15,6 +15,7 @@
     <meta name="twitter:title" content="Narendranath Edara | Senior AI Platform Engineer">
     <meta name="twitter:description" content="Senior AI Platform Engineer building production LLM systems, retrieval pipelines, and governed AI-enabled data products at enterprise scale.">
     <meta name="twitter:image" content="https://github.com/user-attachments/assets/ce009ed4-be8a-47d1-ba3e-4d45e87b38d8">
+    <link rel="canonical" href="https://narendranathe.github.io/">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -553,9 +554,30 @@
         .hero-subtitle {
             font-size: 1.35rem;
             color: var(--text-secondary);
-            margin-bottom: 2rem;
+            margin-bottom: 1.25rem;
             font-weight: 400;
             line-height: 1.6;
+        }
+
+        .hero-proof-list {
+            list-style: none;
+            display: grid;
+            gap: 0.85rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero-proof-item {
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .hero-proof-item i {
+            color: var(--accent-primary);
+            margin-top: 0.3rem;
+            flex-shrink: 0;
         }
 
         .hero-stats {
@@ -1362,6 +1384,136 @@
             color: var(--text-secondary);
         }
 
+        .platform-story {
+            margin-bottom: 2rem;
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--accent-light) 100%);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .platform-story-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 999px;
+            background: rgba(45, 90, 74, 0.08);
+            color: var(--accent-primary);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .platform-story h3 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            margin: 1rem 0 0.75rem;
+        }
+
+        .platform-story p {
+            color: var(--text-secondary);
+            max-width: 860px;
+        }
+
+        .platform-flow {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .platform-step {
+            background: rgba(255,255,255,0.82);
+            border: 1px solid rgba(45, 90, 74, 0.12);
+            border-radius: 16px;
+            padding: 1.25rem;
+        }
+
+        .platform-step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .platform-step h4 {
+            margin-bottom: 0.45rem;
+            font-size: 1rem;
+        }
+
+        .platform-step p {
+            font-size: 0.9rem;
+            line-height: 1.55;
+            margin-bottom: 0.85rem;
+        }
+
+        .platform-step-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+        }
+
+        .platform-step-tags span,
+        .project-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        .platform-step-tags span {
+            background: rgba(45, 90, 74, 0.1);
+            color: var(--accent-primary);
+        }
+
+        .project-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 3;
+            background: rgba(255,255,255,0.94);
+            color: var(--accent-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .project-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            color: var(--accent-primary);
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .project-link:hover {
+            text-decoration: underline;
+        }
+
         /* Certifications Section */
         .cert-grid {
             display: grid;
@@ -1696,6 +1848,10 @@
             .projects-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+
+            .platform-flow {
+                grid-template-columns: repeat(2, 1fr);
+            }
             
             .cert-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -1737,6 +1893,10 @@
             }
             
             .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .platform-flow {
                 grid-template-columns: 1fr;
             }
             
@@ -2570,28 +2730,42 @@
                     </div>
                 </div>
                 <h1 class="hero-title">
-                    Hi, I'm<br>
-                    <span class="highlight">Narendranath Edara</span>
+                    Narendranath Edara<br>
+                    <span class="highlight">Senior AI Platform Engineer</span>
                 </h1>
                 <p class="hero-subtitle">
-                    I build production AI systems: governed NL-to-SQL platforms, retrieval pipelines, and user-facing LLM products. At ExponentHR I architected a catalog-driven NL-to-SQL engine on Microsoft Fabric with FAISS retrieval, Claude Sonnet SQL generation, and a NetworkX semantic graph serving 400 enterprise clients. I also shipped AutoApply AI and tailor-resume across FastAPI, Chrome MV3, RAG, model routing, typed MCP tools, and live deployments.
+                    I build production AI systems: enterprise AI platforms, retrieval pipelines, and backend-heavy LLM products that teams can actually run, govern, and trust.
                 </p>
+                <ul class="hero-proof-list">
+                    <li class="hero-proof-item">
+                        <i class="fas fa-building"></i>
+                        <span><strong>ExponentHR:</strong> architected a catalog-driven NL-to-SQL platform on Microsoft Fabric for <strong>400 enterprise clients</strong> with FAISS retrieval, Claude Sonnet SQL generation, and semantic graph joins.</span>
+                    </li>
+                    <li class="hero-proof-item">
+                        <i class="fas fa-layer-group"></i>
+                        <span><strong>AutoApply AI:</strong> built an end-to-end workflow platform for <strong>discover - tailor - apply - track</strong> across FastAPI, Chrome MV3, RAG, model routing, and live deployments.</span>
+                    </li>
+                    <li class="hero-proof-item">
+                        <i class="fas fa-gears"></i>
+                        <span><strong>Reusable engines:</strong> extracted the tailoring engine into <strong>tailor-resume</strong> and the discovery engine into <strong>JobScout</strong> to make the product more modular and distribution-ready.</span>
+                    </li>
+                </ul>
                 <div class="hero-stats">
                     <div class="stat-item">
                         <div class="stat-value">400</div>
                         <div class="stat-label">Enterprise Clients</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">$4M</div>
-                        <div class="stat-label">Annual Savings</div>
+                        <div class="stat-value">6K+</div>
+                        <div class="stat-label">Catalog Columns</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">98%</div>
-                        <div class="stat-label">Uptime SLA</div>
+                        <div class="stat-value">12s -&gt; 4s</div>
+                        <div class="stat-label">Query Latency</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">4.0</div>
-                        <div class="stat-label">Master's GPA</div>
+                        <div class="stat-value">-67%</div>
+                        <div class="stat-label">ETL Compute Cost</div>
                     </div>
                 </div>
                 <div class="hero-cta">
@@ -2683,7 +2857,8 @@
                     </p>
                     <p>
                         Outside work: <strong>AutoApply AI</strong> spans a Chrome extension, React dashboard, and FastAPI backend with multi-provider routing and retrieval.
-                        <strong>tailor-resume</strong> ships the same AI workflow through CLI, Streamlit, MCP, and PyPI surfaces with strong automated test coverage.
+                        <strong>tailor-resume</strong> is the reusable tailoring engine behind that workflow, shipping through CLI, Streamlit, MCP, and PyPI surfaces with strong automated test coverage.
+                        <strong>JobScout</strong> is the discovery and ranking engine feeding that broader platform.
                         I optimize for systems that are useful, observable, and distribution-aware. I also hold a <strong>4.0 GPA Master's</strong> from Missouri S&amp;T and a peer-reviewed publication in Taylor &amp; Francis 2025.
                     </p>
 
@@ -2698,32 +2873,32 @@
                         <h4>Technical Expertise</h4>
                         <div class="skills-grid">
                             <div class="skill-category">
-                                <div class="skill-category-title">Languages</div>
+                                <div class="skill-category-title">Languages & APIs</div>
                                 <div class="skill-tags">
                                     <span class="skill-tag">Python</span>
                                     <span class="skill-tag">SQL</span>
                                     <span class="skill-tag">T-SQL</span>
+                                    <span class="skill-tag">TypeScript</span>
                                     <span class="skill-tag">PySpark</span>
-                                    <span class="skill-tag">Bash</span>
-                                    <span class="skill-tag">R</span>
+                                    <span class="skill-tag">FastAPI</span>
+                                    <span class="skill-tag">API Design</span>
                                 </div>
                             </div>
                             <div class="skill-category">
-                                <div class="skill-category-title">Agentic AI & LLMs</div>
+                                <div class="skill-category-title">Applied AI & Agents</div>
                                 <div class="skill-tags">
                                     <span class="skill-tag">Claude API</span>
-                                    <span class="skill-tag">Claude Code</span>
+                                    <span class="skill-tag">Model Routing</span>
                                     <span class="skill-tag">MCP Servers</span>
-                                    <span class="skill-tag">Multi-Agent Orchestration</span>
                                     <span class="skill-tag">Tool Use / Function Calling</span>
                                     <span class="skill-tag">Evaluation Loops</span>
                                     <span class="skill-tag">NL-to-SQL</span>
                                     <span class="skill-tag">LLM Integration</span>
-                                    <span class="skill-tag">LangChain</span>
+                                    <span class="skill-tag">Prompt Workflows</span>
                                 </div>
                             </div>
                             <div class="skill-category">
-                                <div class="skill-category-title">Vector & RAG</div>
+                                <div class="skill-category-title">Retrieval & Ranking</div>
                                 <div class="skill-tags">
                                     <span class="skill-tag">FAISS</span>
                                     <span class="skill-tag">pgvector</span>
@@ -2734,16 +2909,17 @@
                                 </div>
                             </div>
                             <div class="skill-category">
-                                <div class="skill-category-title">Data Engineering</div>
+                                <div class="skill-category-title">Data & Distributed Systems</div>
                                 <div class="skill-tags">
                                     <span class="skill-tag">Apache Spark</span>
                                     <span class="skill-tag">Kafka</span>
+                                    <span class="skill-tag">PostgreSQL</span>
                                     <span class="skill-tag">Databricks</span>
                                     <span class="skill-tag">Airflow</span>
                                     <span class="skill-tag">Delta Lake</span>
+                                    <span class="skill-tag">CDC Pipelines</span>
                                     <span class="skill-tag">ETL/ELT</span>
                                     <span class="skill-tag">Data Modeling</span>
-                                    <span class="skill-tag">SSIS</span>
                                 </div>
                             </div>
                             <div class="skill-category">
@@ -2751,7 +2927,6 @@
                                 <div class="skill-tags">
                                     <span class="skill-tag">Microsoft Fabric</span>
                                     <span class="skill-tag">Azure (AKS, DevOps)</span>
-                                    <span class="skill-tag">AWS (S3)</span>
                                     <span class="skill-tag">Docker</span>
                                     <span class="skill-tag">Kubernetes</span>
                                     <span class="skill-tag">CI/CD</span>
@@ -2759,15 +2934,15 @@
                                 </div>
                             </div>
                             <div class="skill-category">
-                                <div class="skill-category-title">ML & Observability</div>
+                                <div class="skill-category-title">ML Platform & Observability</div>
                                 <div class="skill-tags">
                                     <span class="skill-tag">MLflow</span>
-                                    <span class="skill-tag">Feature Engineering</span>
                                     <span class="skill-tag">Model Serving</span>
                                     <span class="skill-tag">Prometheus</span>
                                     <span class="skill-tag">Grafana</span>
-                                    <span class="skill-tag">FastAPI</span>
-                                    <span class="skill-tag">Streamlit</span>
+                                    <span class="skill-tag">RLS / CLS</span>
+                                    <span class="skill-tag">Observability</span>
+                                    <span class="skill-tag">Provider Config</span>
                                 </div>
                             </div>
                         </div>
@@ -2832,8 +3007,9 @@
                                 <img src="https://github.com/user-attachments/assets/8f588639-0463-4d1c-95e6-aba025804099" alt="ExponentHR" class="company-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'; this.nextElementSibling.innerHTML='EHR';">
                                 <div class="company-logo" style="display:none;">EHR</div>
                                 <div>
-                                    <h3 class="experience-title">ML Engineer | Data Engineer</h3>
+                                    <h3 class="experience-title">Data Engineer</h3>
                                     <p class="experience-company">ExponentHR</p>
+                                    <p class="experience-location">Current scope: AI platform / applied AI</p>
                                     <p class="experience-location">Addison, TX</p>
                                 </div>
                             </div>
@@ -2871,8 +3047,9 @@
                                 <img src="https://github.com/user-attachments/assets/5dc864b8-501a-485a-b780-d0fcde01a3de" alt="Missouri S&T" class="company-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'; this.nextElementSibling.innerHTML='MS&T';">
                                 <div class="company-logo" style="display:none;">MS&T</div>
                                 <div>
-                                    <h3 class="experience-title"> ML Engineer | Data Engineer</h3>
+                                    <h3 class="experience-title">Data Engineer</h3>
                                     <p class="experience-company">Missouri University of Science and Technology</p>
+                                    <p class="experience-location">Scope: ML infrastructure / anomaly detection</p>
                                     <p class="experience-location">Rolla, MO</p>
                                 </div>
                             </div>
@@ -3003,57 +3180,64 @@
             <div class="section-header">
                 <span class="section-label">Portfolio</span>
                 <h2 class="section-title">Featured Projects</h2>
-                <p class="section-subtitle">Production-grade systems demonstrating enterprise-level engineering</p>
+                <p class="section-subtitle">Enterprise platform proof, one flagship AI workflow product, and the reusable engines behind it.</p>
             </div>
-            <div class="projects-grid">
-                <!-- Project 1 - AutoApply AI (flagship, leads) -->
-                <div class="project-card">
-                    <div class="project-image">
-                        <a href="https://github.com/narendranathe/autoapply-ai" target="_blank" class="project-github-link" title="View on GitHub">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">AutoApply AI: Multi-LLM Job Application Platform</h3>
-                        <p class="project-description">
-                            <strong>Production AI platform</strong> that combines a FastAPI backend, Chrome MV3 extension, and React dashboard to assist job applications end to end. <strong>Multi-provider model routing</strong> dispatches across Claude, OpenAI, Gemini, Groq, Kimi, Ollama, and fallback logic by question type. <strong>RAG pipeline</strong> with pgvector + TF-IDF grounds answers in prior work history and tailored resumes. Shadow DOM UI isolation, offline queue handling, and 11 ATS adapters make the system reliable on real job sites.
-                        </p>
-                        <div class="project-stats">
-                            <div class="project-stat">
-                                <div class="project-stat-value">11</div>
-                                <div class="project-stat-label">ATS Adapters</div>
-                            </div>
-                            <div class="project-stat">
-                                <div class="project-stat-value">5</div>
-                                <div class="project-stat-label">LLM Providers</div>
-                            </div>
-                            <div class="project-stat">
-                                <div class="project-stat-value">Live</div>
-                                <div class="project-stat-label">Production</div>
-                            </div>
+            <div class="platform-story">
+                <span class="platform-story-kicker"><i class="fas fa-diagram-project"></i> System View</span>
+                <h3>AutoApply AI is the product. tailor-resume and JobScout are the engines.</h3>
+                <p>
+                    The strongest version of this portfolio is not three adjacent job-search projects. It is one end-to-end AI workflow platform with reusable subsystems for discovery, tailoring, application automation, and tracking.
+                </p>
+                <div class="platform-flow">
+                    <div class="platform-step">
+                        <div class="platform-step-number">01</div>
+                        <h4>Discover</h4>
+                        <p>JobScout powers the discovery layer: scraping, ranking, preference matching, and high-signal alerts.</p>
+                        <div class="platform-step-tags">
+                            <span>JobScout</span>
+                            <span>Ranking Engine</span>
                         </div>
-                        <div class="project-tags">
-                            <span class="project-tag">Claude API</span>
-                            <span class="project-tag">MCP Servers</span>
-                            <span class="project-tag">FastAPI</span>
-                            <span class="project-tag">pgvector</span>
-                            <span class="project-tag">RAG</span>
-                            <span class="project-tag">Chrome MV3</span>
-                            <span class="project-tag">Fly.io</span>
+                    </div>
+                    <div class="platform-step">
+                        <div class="platform-step-number">02</div>
+                        <h4>Tailor</h4>
+                        <p>tailor-resume is the extracted tailoring engine: profile parsing, ATS gap analysis, rendering, and reusable delivery surfaces.</p>
+                        <div class="platform-step-tags">
+                            <span>tailor-resume</span>
+                            <span>MCP / PyPI</span>
+                        </div>
+                    </div>
+                    <div class="platform-step">
+                        <div class="platform-step-number">03</div>
+                        <h4>Apply</h4>
+                        <p>AutoApply AI owns the user workflow across the extension, backend APIs, model routing, and form automation.</p>
+                        <div class="platform-step-tags">
+                            <span>AutoApply AI</span>
+                            <span>Chrome + FastAPI</span>
+                        </div>
+                    </div>
+                    <div class="platform-step">
+                        <div class="platform-step-number">04</div>
+                        <h4>Track</h4>
+                        <p>The platform closes the loop with vaults, application state, retrieval-backed answers, and operational visibility.</p>
+                        <div class="platform-step-tags">
+                            <span>RAG</span>
+                            <span>Workflow Platform</span>
                         </div>
                     </div>
                 </div>
-
-                <!-- Project 2 - NL-to-SQL Engine (enterprise AI, NEW card) -->
+            </div>
+            <div class="projects-grid">
+                <!-- Project 1 - ExponentHR NL-to-SQL -->
                 <div class="project-card">
                     <div class="project-image">
+                        <span class="project-badge">Enterprise Platform</span>
                         <i class="fas fa-network-wired"></i>
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">Catalog-Driven NL-to-SQL Engine @ ExponentHR</h3>
                         <p class="project-description">
-                            <strong>Enterprise AI platform</strong> serving 400 clients across six HR domains. <strong>Architecture:</strong> FAISS vector search classifies natural-language intent against a 6,000+ column semantic catalog; Claude Sonnet generates RLS/CLS-enforced T-SQL; NetworkX semantic graph auto-resolves cross-domain joins with zero manual mapping. <strong>Impact:</strong> Cut query latency 12s to 4s, reduced support tickets 40%, ETL runtime 30 min to 8 min (67% compute cost reduction), and collapsed deployment cycles from 3 months to 14 days via hot-reload domain registry.
+                            <strong>Enterprise AI platform</strong> serving 400 clients across six HR domains. <strong>Architecture:</strong> FAISS vector search classifies natural-language intent against a 6,000+ column semantic catalog; Claude Sonnet generates RLS/CLS-enforced T-SQL; a NetworkX semantic graph auto-resolves cross-domain joins with zero manual mapping. <strong>Impact:</strong> query latency fell from 12s to 4s, support tickets dropped 40%, ETL runtime went from ~30 minutes to under 8 minutes, and deployments moved from 3 months to 14 days via hot-reload domain registry.
                         </p>
                         <div class="project-stats">
                             <div class="project-stat">
@@ -3077,23 +3261,69 @@
                             <span class="project-tag">NL-to-SQL</span>
                             <span class="project-tag">Azure DevOps</span>
                         </div>
+                        <div class="project-links">
+                            <a href="#experience" class="project-link"><i class="fas fa-briefcase"></i> Role Context</a>
+                            <a href="#contact" class="project-link"><i class="fas fa-envelope"></i> Request Walkthrough</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 - AutoApply AI -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <span class="project-badge">Flagship Product</span>
+                        <a href="https://github.com/narendranathe/autoapply-ai" target="_blank" class="project-github-link" title="View on GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">AutoApply AI: End-to-End AI Workflow Platform</h3>
+                        <p class="project-description">
+                            <strong>Production AI workflow platform</strong> for discover - tailor - apply - track. It combines a FastAPI backend, Chrome MV3 extension, and React dashboard while hiding internal service boundaries behind one product surface. <strong>Multi-provider model routing</strong> dispatches across Claude, OpenAI, Gemini, Groq, Kimi, Ollama, and fallback logic by question type. <strong>RAG pipeline</strong> with pgvector + TF-IDF grounds answers in prior work history and tailored resumes. Shadow DOM isolation, offline queues, and 11 ATS adapters make it reliable on real job sites.
+                        </p>
+                        <div class="project-stats">
+                            <div class="project-stat">
+                                <div class="project-stat-value">11</div>
+                                <div class="project-stat-label">ATS Adapters</div>
+                            </div>
+                            <div class="project-stat">
+                                <div class="project-stat-value">6</div>
+                                <div class="project-stat-label">LLM Providers</div>
+                            </div>
+                            <div class="project-stat">
+                                <div class="project-stat-value">Live</div>
+                                <div class="project-stat-label">Production</div>
+                            </div>
+                        </div>
+                        <div class="project-tags">
+                            <span class="project-tag">FastAPI</span>
+                            <span class="project-tag">Chrome MV3</span>
+                            <span class="project-tag">pgvector</span>
+                            <span class="project-tag">RAG</span>
+                            <span class="project-tag">Model Routing</span>
+                            <span class="project-tag">Workflow Platform</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/narendranathe/autoapply-ai" target="_blank" rel="noopener noreferrer" class="project-link"><i class="fab fa-github"></i> Repo</a>
+                            <a href="https://github.com/narendranathe/autoapply-ai#architecture" target="_blank" rel="noopener noreferrer" class="project-link"><i class="fas fa-diagram-project"></i> Architecture</a>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Project 3 - tailor-resume -->
                 <div class="project-card">
                     <div class="project-image">
+                        <span class="project-badge">Supporting Engine</span>
                         <a href="https://github.com/narendranathe/tailor-resume" target="_blank" class="project-github-link" title="View on GitHub">
                             <i class="fab fa-github"></i>
                         </a>
                         <i class="fas fa-file-lines"></i>
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">tailor-resume: Resume Tailoring Engine</h3>
+                        <h3 class="project-title">tailor-resume: Tailoring Engine behind AutoApply AI</h3>
                         <p class="project-description">
-                            <strong>Applied AI tooling product</strong> that ships the same resume-tailoring workflow through four surfaces:
-                            CLI, Streamlit app, typed MCP server, and Python package. It performs profile extraction, ATS gap analysis,
-                            and LaTeX rendering with a zero-config core pipeline, hosted MCP delivery, and developer-friendly packaging.
+                            <strong>Reusable tailoring core</strong> extracted from the broader AutoApply AI workflow. It ships the same resume-tailoring pipeline through four surfaces: CLI, Streamlit app, typed MCP server, and Python package. It performs profile extraction, ATS gap analysis, and LaTeX rendering with a zero-config core, hosted MCP delivery, and developer-friendly packaging.
                         </p>
                         <div class="project-stats">
                             <div class="project-stat">
@@ -3117,12 +3347,61 @@
                             <span class="project-tag">LaTeX</span>
                             <span class="project-tag">Fly.io</span>
                         </div>
+                        <div class="project-links">
+                            <a href="https://github.com/narendranathe/tailor-resume" target="_blank" rel="noopener noreferrer" class="project-link"><i class="fab fa-github"></i> Repo</a>
+                            <a href="https://tailor-resume-ai.streamlit.app/" target="_blank" rel="noopener noreferrer" class="project-link"><i class="fas fa-up-right-from-square"></i> Live App</a>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Project 4 - Fraud Detection -->
+                <!-- Project 4 - JobScout -->
                 <div class="project-card">
                     <div class="project-image">
+                        <span class="project-badge">Supporting Engine</span>
+                        <a href="https://github.com/narendranathe/job-scout" target="_blank" class="project-github-link" title="View on GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <img src="https://raw.githubusercontent.com/narendranathe/job-scout/main/frontend/src/assets/logo.svg" alt="JobScout" onerror="this.style.display='none';">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">JobScout: Discovery Engine behind AutoApply AI</h3>
+                        <p class="project-description">
+                            <strong>Discovery and ranking engine</strong> powering the front end of the larger AutoApply AI workflow. It scrapes 109 company career pages across 6 ATS platforms every 5 minutes, scores roles on skills, location, experience, and sponsorship, and surfaces high-signal opportunities with alerts. The long-term boundary is clear: JobScout owns discovery; AutoApply owns the user workflow.
+                        </p>
+                        <div class="project-stats">
+                            <div class="project-stat">
+                                <div class="project-stat-value">109</div>
+                                <div class="project-stat-label">Companies</div>
+                            </div>
+                            <div class="project-stat">
+                                <div class="project-stat-value">5min</div>
+                                <div class="project-stat-label">Scrape Cycle</div>
+                            </div>
+                            <div class="project-stat">
+                                <div class="project-stat-value">95+</div>
+                                <div class="project-stat-label">Resume Matches</div>
+                            </div>
+                        </div>
+                        <div class="project-tags">
+                            <span class="project-tag">FastAPI</span>
+                            <span class="project-tag">React</span>
+                            <span class="project-tag">TF-IDF</span>
+                            <span class="project-tag">SQLite</span>
+                            <span class="project-tag">Ranking Engine</span>
+                            <span class="project-tag">GitHub Actions</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/narendranathe/job-scout" target="_blank" rel="noopener noreferrer" class="project-link"><i class="fab fa-github"></i> Repo</a>
+                            <a href="https://narendranathe.github.io/job-scout" target="_blank" rel="noopener noreferrer" class="project-link"><i class="fas fa-up-right-from-square"></i> Live Demo</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 5 - Fraud Detection -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <span class="project-badge">ML Infrastructure</span>
                         <a href="https://github.com/narendranathe/fraud-detection-ml-platform" target="_blank" class="project-github-link" title="View on GitHub">
                             <i class="fab fa-github"></i>
                         </a>
@@ -3132,9 +3411,7 @@
                     <div class="project-content">
                         <h3 class="project-title">Real-Time Fraud Detection Platform</h3>
                         <p class="project-description">
-                            <strong>Supporting ML infrastructure project</strong> with Apache Kafka event streaming, LightGBM inference,
-                            MLflow experiment tracking, Prometheus + Grafana monitoring, and containerized orchestration. It demonstrates
-                            end-to-end streaming prediction, observability, and backend system ownership.
+                            <strong>Supporting ML infrastructure project</strong> with Apache Kafka event streaming, LightGBM inference, MLflow experiment tracking, Prometheus + Grafana monitoring, and containerized orchestration. It demonstrates end-to-end streaming prediction, observability, and backend system ownership.
                         </p>
                         <div class="project-stats">
                             <div class="project-stat">
@@ -3157,48 +3434,8 @@
                             <span class="project-tag">Grafana</span>
                             <span class="project-tag">Docker</span>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Project 5 - JobScout -->
-                <div class="project-card">
-                    <div class="project-image">
-                        <a href="https://github.com/narendranathe/job-scout" target="_blank" class="project-github-link" title="View on GitHub">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <img src="https://raw.githubusercontent.com/narendranathe/job-scout/main/frontend/src/assets/logo.svg" alt="JobScout" onerror="this.style.display='none';">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">JobScout: Automated Job Discovery Platform</h3>
-                        <p class="project-description">
-                            <strong>Zero-cost production platform</strong> scraping 109 company career pages across 6 ATS platforms (Workday, Greenhouse, Lever, iCIMS, Taleo, SmartRecruiters) every 5 minutes. <strong>Multi-signal relevance engine</strong> scores jobs on skills, location, experience level, and H1B sponsorship. <strong>95+ tailored resumes</strong> indexed with TF-IDF cosine similarity; best-match auto-selected per job. Instant Discord + Telegram alerts for dream roles.
-                        </p>
-                        <div class="project-stats">
-                            <div class="project-stat">
-                                <div class="project-stat-value">109</div>
-                                <div class="project-stat-label">Companies</div>
-                            </div>
-                            <div class="project-stat">
-                                <div class="project-stat-value">5min</div>
-                                <div class="project-stat-label">Scrape Cycle</div>
-                            </div>
-                            <div class="project-stat">
-                                <div class="project-stat-value">95+</div>
-                                <div class="project-stat-label">Resumes</div>
-                            </div>
-                        </div>
-                        <div class="project-tags">
-                            <span class="project-tag">FastAPI</span>
-                            <span class="project-tag">React</span>
-                            <span class="project-tag">TF-IDF</span>
-                            <span class="project-tag">SQLite</span>
-                            <span class="project-tag">GitHub Actions</span>
-                        </div>
-                        <div style="margin-top:0.75rem;">
-                            <a href="https://narendranathe.github.io/job-scout" target="_blank" rel="noopener noreferrer" style="font-size:0.8rem;color:var(--accent-primary);font-weight:600;text-decoration:none;">
-                                <i class="fas fa-external-link-alt"></i> Live Demo
-                            </a>
+                        <div class="project-links">
+                            <a href="https://github.com/narendranathe/fraud-detection-ml-platform" target="_blank" rel="noopener noreferrer" class="project-link"><i class="fab fa-github"></i> Repo</a>
                         </div>
                     </div>
                 </div>
@@ -3510,16 +3747,16 @@
                     <div class="achievement-label">Enterprise Clients · NL-to-SQL Engine</div>
                 </div>
                 <div class="achievement-card">
-                    <div class="achievement-value">$4M</div>
-                    <div class="achievement-label">Annual Savings · Udaan</div>
+                    <div class="achievement-value">6K+</div>
+                    <div class="achievement-label">Catalog Columns · ExponentHR</div>
                 </div>
                 <div class="achievement-card">
-                    <div class="achievement-value">98%</div>
-                    <div class="achievement-label">Production Uptime SLA</div>
+                    <div class="achievement-value">12s -> 4s</div>
+                    <div class="achievement-label">Query Latency · NL-to-SQL</div>
                 </div>
                 <div class="achievement-card">
-                    <div class="achievement-value">95%+</div>
-                    <div class="achievement-label">Anomaly Detection Accuracy</div>
+                    <div class="achievement-value">3 mo -> 14 d</div>
+                    <div class="achievement-label">Release Cycle Compression</div>
                 </div>
                 <div class="achievement-card">
                     <div class="achievement-value">67%</div>
@@ -3530,12 +3767,12 @@
                     <div class="achievement-label">ATS Adapters · AutoApply AI</div>
                 </div>
                 <div class="achievement-card">
-                    <div class="achievement-value">6K+</div>
-                    <div class="achievement-label">Catalog Columns · NL-to-SQL</div>
+                    <div class="achievement-value">100+</div>
+                    <div class="achievement-label">TPS · Fraud Detection Platform</div>
                 </div>
                 <div class="achievement-card">
-                    <div class="achievement-value">4.0</div>
-                    <div class="achievement-label">Master's GPA · Missouri S&T</div>
+                    <div class="achievement-value">190</div>
+                    <div class="achievement-label">Tests · tailor-resume core</div>
                 </div>
             </div>
         </div>
@@ -3550,10 +3787,9 @@
             </div>
             <div class="contact-container">
                 <p class="contact-intro">
-                    With expertise spanning streaming pipelines, cloud-native data platforms, and ML infrastructure,
-                    I focus on systems that deliver measurable outcomes at enterprise scale.
-                    If you're building something meaningful in <strong>Data Engineering</strong>, <strong>ML Engineering</strong>, or
-                    <strong>AI Platform</strong> development, I'm open to the conversation. Response time is under 24 hours.
+                    I focus on backend-heavy AI systems, governed data platforms, and reusable workflow engines that hold up in production.
+                    If your team is hiring for <strong>AI Platform</strong>, <strong>Applied AI</strong>, <strong>Backend AI</strong>, or
+                    <strong>ML Infrastructure</strong> work, I am open to the conversation. Response time is under 24 hours.
                 </p>
                 <div class="contact-cards">
                     <div class="contact-card">
@@ -3737,7 +3973,7 @@
     var CMD_ITEMS = [
         { icon: 'fas fa-user', label: 'About Me',       sub: 'Background and skills',          href: '#about' },
         { icon: 'fas fa-briefcase', label: 'Experience', sub: 'ExponentHR · Missouri S&T · Zomato', href: '#experience' },
-        { icon: 'fas fa-rocket', label: 'Projects',     sub: 'ExponentHR NL-to-SQL · AutoApply AI · tailor-resume · Fraud Detection', href: '#projects' },
+        { icon: 'fas fa-rocket', label: 'Projects',     sub: 'ExponentHR NL-to-SQL · AutoApply AI · JobScout · tailor-resume', href: '#projects' },
         { icon: 'fas fa-graduation-cap', label: 'Education', sub: 'Missouri S&T · GVP',        href: '#education' },
         { icon: 'fas fa-certificate', label: 'Certifications', sub: 'DP-700 · AI-900 · Databricks', href: '#certifications' },
         { icon: 'fas fa-scroll', label: 'Research',     sub: 'Taylor & Francis 2025 publication', href: '#research' },
