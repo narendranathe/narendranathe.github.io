@@ -9,12 +9,12 @@ const CONFIG = {
     // ── Availability Badge ─────────────────────────────────────────
     status: {
         available: true,
-        tagline: 'AI Platform Engineer · Senior Data Engineer · Dallas TX or Remote',
+        tagline: 'Senior AI Platform Engineer · Applied AI Systems · Open to Hybrid/Relocation',
         details: [
             { label: 'Response', value: '< 24 hours' },
             { label: 'Visa',     value: 'H1B Transfer' },
-            { label: 'Focus',    value: 'AI Platform · Senior DE · ML Eng' },
-            { label: 'Location', value: 'Dallas TX or Remote' }
+            { label: 'Focus',    value: 'AI Platform · Applied AI · Backend AI' },
+            { label: 'Location', value: 'Dallas TX · Hybrid / Relocation OK' }
         ]
     },
 
@@ -32,7 +32,7 @@ const CONFIG = {
     // ── Konami Code Easter Egg ─────────────────────────────────────
     metrics: {
         experience_years:      4,
-        current_role:          'AI Platform Engineer + Data Engineer @ ExponentHR',
+        current_role:          'Data Engineer building AI platform systems @ ExponentHR',
         enterprise_clients:    400,
         catalog_columns:       '6000+',
         gpa:                   4.0,
