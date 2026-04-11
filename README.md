@@ -6,7 +6,9 @@ Personal portfolio site for Narendranath Edara, a Senior AI Platform Engineer fo
 
 ## What This Repo Represents
 
-This repository is the public source for my portfolio and career positioning. It is intentionally aligned to the roles I am targeting:
+This repository is the public source for my portfolio and career positioning. The current site is organized as a systems-first homepage with dedicated case-study pages for the strongest public proof.
+
+It is intentionally aligned to the roles I am targeting:
 
 - AI Platform Engineer
 - Applied AI Engineer
@@ -49,10 +51,15 @@ The site is intentionally simple and fast: no framework, no build step, and no r
 
 ## Repository Structure
 
-- `index.html`: site structure, portfolio sections, copy, and project cards
-- `config.js`: live status badge, terminal widget, metrics, recommendations, and social links
+- `index.html`: homepage with thesis, proof, flagship systems, experience, writing, and contact
+- `exponenthr.html`: sanitized enterprise AI platform case study
+- `autoapply-ai.html`: flagship workflow product case study
+- `tailor-resume.html`: extracted engine case study
+- `styles.css`: shared visual system and responsive layout
+- `app.js`: shared header, footer, nav, and interaction behavior
+- `config.js`: shared identity, links, and navigation data
 - `.github/`: GitHub Pages and automation support for the site
-- `README.md`: repository summary and positioning context
+- `docs/superpowers/`: design spec and implementation plan for the rebuild
 
 ## Local Preview
 

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ExponentHR case study: catalog-driven NL-to-SQL, semantic joins, governed SQL generation, and enterprise AI platform work at scale.">
+    <meta name="author" content="Narendranath Edara">
+    <meta property="og:title" content="ExponentHR Case Study | Narendranath Edara">
+    <meta property="og:description" content="Sanitized architecture and outcomes for a governed enterprise NL-to-SQL platform serving 400 clients.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://narendranathe.github.io/exponenthr.html">
+    <title>ExponentHR Case Study | Narendranath Edara</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="case-study" data-nav="work">
+    <div class="page-shell">
+        <header class="site-header" data-site-header></header>
+
+        <main class="main-content">
+            <section class="section">
+                <div class="container case-hero">
+                    <div class="case-hero__frame" data-reveal>
+                        <div class="case-hero__lede">
+                            <span class="section-label">Enterprise AI Platform</span>
+                            <h1>ExponentHR</h1>
+                            <p>
+                                Sanitized case study for a catalog-driven NL-to-SQL platform built on Microsoft Fabric with FAISS retrieval, semantic join resolution, governed SQL generation, and hot-reload domain onboarding.
+                            </p>
+                            <div class="hero__actions">
+                                <a class="button button--primary" href="index.html#systems">Back to systems</a>
+                                <a class="button button--ghost" href="https://www.linkedin.com/in/narendranathe/" target="_blank" rel="noreferrer">LinkedIn -></a>
+                            </div>
+                        </div>
+
+                        <aside class="case-aside">
+                            <div class="case-aside__card">
+                                <div class="case-aside__kicker">Clients served</div>
+                                <div class="case-aside__metric">400</div>
+                            </div>
+                            <div class="case-aside__card">
+                                <div class="case-aside__kicker">Catalog columns</div>
+                                <div class="case-aside__metric">6K+</div>
+                            </div>
+                            <div class="case-aside__card">
+                                <div class="case-aside__kicker">Domain onboarding</div>
+                                <div class="case-aside__metric">~2 days</div>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container case-grid case-grid--split">
+                    <article class="case-section" data-reveal>
+                        <h2>The problem</h2>
+                        <p>
+                            ExponentHR needed an analytics experience that could replace fragile Power BI and DAX workflows with a system that could answer real cross-domain questions without giving up governance or trust.
+                        </p>
+                        <ul class="case-points">
+                            <li>Enterprise clients needed faster answers across payroll, expenses, benefits, and PTO.</li>
+                            <li>Cross-domain joins were hard to maintain manually and easy to break.</li>
+                            <li>Security could not be bolted on later; row-level and column-level rules had to be part of query execution.</li>
+                        </ul>
+                    </article>
+
+                    <article class="case-section" data-reveal>
+                        <h2>What I owned</h2>
+                        <p>
+                            The value of the project was not just model selection. It was system design: retrieval, planning, governance, secure execution, and making new domains onboard without fresh engineering effort each time.
+                        </p>
+                        <ul class="case-points">
+                            <li>Catalog-driven retrieval and semantic classification.</li>
+                            <li>Join resolution through a semantic graph.</li>
+                            <li>Governed SQL generation and validation before execution.</li>
+                            <li>Hot-reload admin patterns that reduced onboarding friction.</li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container">
+                    <article class="case-section" data-reveal>
+                        <h2>Sanitized architecture</h2>
+                        <div class="case-architecture">
+                            <div class="architecture-lane">
+                                <div class="architecture-node">
+                                    <div class="architecture-node__label">Input</div>
+                                    <h3>Natural-language query</h3>
+                                    <p>User intent arrives as a business question, not a BI-specific artifact.</p>
+                                </div>
+                                <div class="architecture-node">
+                                    <div class="architecture-node__label">Retrieval</div>
+                                    <h3>FAISS domain lookup</h3>
+                                    <p>Concept and domain indexes narrow the search space across thousands of HR columns.</p>
+                                </div>
+                                <div class="architecture-node">
+                                    <div class="architecture-node__label">Planning</div>
+                                    <h3>Semantic join resolution</h3>
+                                    <p>Graph-based relationships determine the safest valid path between domains.</p>
+                                </div>
+                                <div class="architecture-node">
+                                    <div class="architecture-node__label">Execution</div>
+                                    <h3>Governed SQL runtime</h3>
+                                    <p>Generated T-SQL is validated, security checked, then executed within platform constraints.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container case-grid case-grid--split">
+                    <article class="case-section" data-reveal>
+                        <h2>Why this reads as platform work</h2>
+                        <ul class="case-points">
+                            <li>Retrieval, planning, execution, and governance are intentionally separated.</li>
+                            <li>Security is part of the runtime path, not just documentation or UI policy.</li>
+                            <li>Hot-reload onboarding moves the platform toward reusable infrastructure instead of one-off project support.</li>
+                        </ul>
+                    </article>
+
+                    <article class="case-section" data-reveal>
+                        <h2>Measured outcomes</h2>
+                        <ul class="case-points">
+                            <li>400 enterprise clients supported.</li>
+                            <li>6K+ catalog columns across multiple HR domains.</li>
+                            <li>About 2 days to onboard new domains without code changes.</li>
+                            <li>A public story that demonstrates enterprise AI ownership without exposing sensitive internals.</li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container case-section" data-reveal>
+                    <h2>Continue through the portfolio</h2>
+                    <div class="case-next-links">
+                        <a class="button button--primary" href="autoapply-ai.html">Next: AutoApply AI</a>
+                        <a class="button button--ghost" href="tailor-resume.html">Then: tailor-resume</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer" data-site-footer></footer>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
