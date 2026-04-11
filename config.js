@@ -9,12 +9,12 @@ const CONFIG = {
     // ── Availability Badge ─────────────────────────────────────────
     status: {
         available: true,
-        tagline: 'Senior AI Platform Engineer · Applied AI Systems · Open to Hybrid/Relocation',
+        tagline: 'Senior AI Platform Engineer | Enterprise AI | Backend AI',
         details: [
-            { label: 'Response', value: '< 24 hours' },
-            { label: 'Visa',     value: 'H1B Transfer' },
-            { label: 'Focus',    value: 'AI Platform · Applied AI · Backend AI' },
-            { label: 'Location', value: 'Dallas TX · Hybrid / Relocation OK' }
+            { label: 'Current',  value: 'ExponentHR NL-to-SQL platform' },
+            { label: 'Flagship', value: 'AutoApply AI workflow platform' },
+            { label: 'Writing',  value: 'Architecture notes on Substack' },
+            { label: 'Visa',     value: 'H1B Transfer' }
         ]
     },
 
@@ -42,7 +42,7 @@ const CONFIG = {
         query_latency:         '12s to 4s',
         support_tickets:       '-40%',
         ats_adapters:          11,
-        llm_providers:         5,
+        llm_providers:         6,
         anomaly_accuracy:      '95%+',
         azure_savings:         '$3,200/month',
         node_consolidation:    '20 nodes to 4-8 nodes',
@@ -51,7 +51,7 @@ const CONFIG = {
         zomato_market_share:   '+9%',
         fraud_tps:             '100+ TPS at sub-ms P99',
         portfolio_analytics:   '47.8 TPS, under 5s VaR latency',
-        jobscout_companies:    109,
+        jobscout_companies:    '130+',
         jobscout_resumes:      '95+',
         publication:           'Taylor and Francis 2025, DOI: 10.1080/10495142.2025.2525123',
         easter_egg:            true
