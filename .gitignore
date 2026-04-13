@@ -11,3 +11,8 @@ config.js
 # OS files
 .DS_Store
 Thumbs.db
+
+# Repo-local superpowers docs
+docs/superpowers/
+specs/*.md
+!specs/README.md
