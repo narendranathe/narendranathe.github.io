@@ -16,6 +16,12 @@ The result should feel like a senior engineer portfolio, not a resume dump and n
 - AI infrastructure
 - AI product engineering with strong platform ownership
 
+## Branch Strategy
+
+Build this hybrid on a dedicated branch from `main`.
+
+This branch is the merge candidate that should eventually go back to `main`, not another side experiment layered on top of the earlier redesign branches.
+
 ## Primary Outcome
 
 The homepage should communicate in under 10 seconds:
@@ -38,6 +44,18 @@ Secondary:
 - senior ICs evaluating technical depth
 
 The site should optimize for recruiter scan speed first, then technical depth through progressive disclosure.
+
+## Hiring Signal Mode
+
+Use a balanced hiring mode.
+
+That means:
+
+- the site should stay portfolio-first, not job-board-first
+- the hero should not read like an `open to work` banner
+- the current-focus strip and supporting proof should still make target role fit obvious
+
+Role fit should be implied through precise system language and current-focus copy rather than explicit pleading for attention.
 
 ## Core Positioning
 
@@ -81,6 +99,7 @@ Use a **hybrid synthesis**.
 - green and gold accent direction
 - clearer `Selected Systems` framing
 - stronger modular story around AutoApply AI, tailor-resume, and JobScout
+- compact icon-led proof lines that make the page feel active and current
 
 ### Keep From `main`
 
@@ -98,6 +117,7 @@ The design should remain:
 - technical
 - premium without luxury cliches
 - bold through typography and composition rather than decoration
+- resume-forward through accent use and placement without becoming visually loud
 
 ### Keep
 
@@ -105,6 +125,7 @@ The design should remain:
 - serif display + clean sans body + mono support font
 - forest green and warm gold accent palette
 - rectangular blocks and split sections
+- resume CTA kept persistently visible in the header with green/gold emphasis
 
 ### Avoid
 
@@ -135,21 +156,21 @@ Current repo-adjacent assets do not provide strong, credible screenshot proof fo
 1. Hero
 2. Measured impact
 3. Selected systems
-4. How I work
-5. Experience highlights
-6. Credibility signals
+4. How I build
+5. Experience
+6. Credentials and signals
 7. Engineering notes
-8. Connect
+8. Contact
 
 Use these exact homepage labels:
 
 - `Measured impact`
 - `Selected systems`
-- `How I work`
-- `Experience highlights`
-- `Credibility signals`
+- `How I build`
+- `Experience`
+- `Credentials and signals`
 - `Engineering notes`
-- `Connect`
+- `Contact`
 
 ### Deep-Dive Pages
 
@@ -184,11 +205,13 @@ Content direction:
 - Recommended headline:
   `Production-grade AI systems for retrieval, workflow automation, and reliable delivery.`
 - Recommended supporting copy:
-  `I build enterprise AI platforms, AI-powered workflow products, and reusable backend engines with measurable impact across retrieval, inference, deployment, and product reliability.`
-- Include a compact current-focus proof list derived from refresh:
-  - ExponentHR platform line
-  - AutoApply AI workflow line
-  - modular engines line
+  `I build enterprise AI platforms, AI-powered workflow products, and reusable backend engines with measurable impact across retrieval, inference, secure data access, deployment, and product reliability.`
+- Include a compact current-focus strip derived from refresh with three short icon-led lines:
+  - `ExponentHR`: catalog-driven NL-to-SQL platform on Microsoft Fabric for 400 enterprise clients
+  - `AutoApply AI`: discover -> tailor -> apply -> track workflow product across FastAPI and Chrome MV3
+  - `Modular engines`: tailoring core and discovery engine extracted so the product could evolve like a platform
+
+The hero copy should use the stronger proof style from `main`, not the weaker abstract phrasing from `feat/portfolio-rebuild-system-map`.
 
 ### 2. Right-Side Hero Panel
 
@@ -208,6 +231,13 @@ Panel structure:
 - `190 tests in tailoring core`
 
 This should read like operational proof, not self-promotion.
+
+Do not use phrases like:
+
+- `proof frame`
+- `true ownership`
+- `supporting trust`
+- `inspect the work, then reach out`
 
 ### 3. Measured Impact
 
@@ -252,7 +282,11 @@ Card structure:
 
 JobScout should be presented as a supporting system beneath the primary three, not as an equal flagship system.
 
-### 5. How I Work
+### 5. How I Build
+
+Rename this section to:
+
+- `How I build`
 
 Add a compact section or subsection that describes operating style instead of generic biography.
 
@@ -265,11 +299,7 @@ Themes:
 
 This replaces softer "about me" framing with recruiter-relevant engineering identity.
 
-### 6. Experience Highlights
-
-Replace `Selected experience` with:
-
-- `Experience highlights`
+### 6. Experience
 
 Keep this section on the homepage, but make it more useful.
 
@@ -290,11 +320,17 @@ Expanded card:
 
 This section should assume the recruiter has already seen the resume and wants deeper context, not repeated bullet spam.
 
-### 7. Credibility Signals
+Recommended rule:
+
+- homepage card should go deeper than the resume, but only one level deeper
+- detailed architecture lives on the system cards and case-study pages
+- experience cards should explain the role context behind the strongest systems
+
+### 7. Credentials and Signals
 
 Replace `Supporting trust` with:
 
-- `Credibility signals`
+- `Credentials and signals`
 
 Keep it short and calm.
 
@@ -322,15 +358,24 @@ Focus the three note cards on:
 - multi-model or provider strategy
 - production lessons from AI workflows
 
-### 9. Connect
+### 9. Contact
 
-Rename `Contact` to:
+Keep the final section label as:
 
-- `Connect`
+- `Contact`
+
+Reason:
+
+- this is faster for recruiter scanning than a softer label
 
 Keep it simple and compact.
 
 Email, LinkedIn, GitHub, and Substack are enough.
+
+Resume should remain visible both:
+
+- in the sticky header
+- in the final contact block
 
 ## Content Sourcing Rules
 
@@ -370,6 +415,18 @@ Frame as:
 
 - discovery and ranking engine feeding the broader workflow platform
 
+## Media Rules
+
+Use real screenshots or short motion only when they improve credibility.
+
+Preferred order:
+
+1. real product screenshot or short clip if it is clean and obviously yours
+2. architecture-style visual that explains the system
+3. abstract visual treatment
+
+Do not add filler media just to make a card look richer.
+
 ## SEO And Discoverability
 
 Use current Google guidance:
@@ -391,7 +448,10 @@ The homepage content should include real role language such as:
 - AI-powered workflows
 - retrieval
 - inference
+- evaluation
 - reliability
+- observability
+- secure data access
 - architecture design decisions
 - measurable impact
 
