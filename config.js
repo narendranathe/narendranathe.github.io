@@ -1,116 +1,43 @@
-// ============================================
-// PORTFOLIO CONFIGURATION - NARENDRANATH EDARA
-// ============================================
-
-const CONFIG = {
-
-    name: 'Narendranath Edara',
-
-    // ── Availability Badge ─────────────────────────────────────────
-    status: {
-        available: true,
-        tagline: 'Senior AI Platform Engineer · Applied AI Systems · Open to Hybrid/Relocation',
-        details: [
-            { label: 'Response', value: '< 24 hours' },
-            { label: 'Visa',     value: 'H1B Transfer' },
-            { label: 'Focus',    value: 'AI Platform · Applied AI · Backend AI' },
-            { label: 'Location', value: 'Dallas TX · Hybrid / Relocation OK' }
-        ]
-    },
-
-    // ── Hero Terminal Animation ────────────────────────────────────
-    terminal: [
-        { type: 'cmd',    text: 'python nl_engine.py --query "overtime by dept Q4"' },
-        { type: 'output', text: '[FAISS] Classified: Payroll + Expenses (0.94 confidence)' },
-        { type: 'output', text: '[Claude] SQL plan generated: 4 tables, 2 joins, RLS enforced' },
-        { type: 'cmd',    text: 'POST /admin/reload-domain/pto' },
-        { type: 'output', text: '[OK] PTO hot-reloaded. 0 restarts. 400 clients updated.' },
-        { type: 'cmd',    text: 'pytest tests/test_semantic_catalog.py -v' },
-        { type: 'warn',   text: '✓  89 passed  ·  0 failed  ·  coverage: 97%' },
-    ],
-
-    // ── Konami Code Easter Egg ─────────────────────────────────────
-    metrics: {
-        experience_years:      4,
-        current_role:          'Data Engineer building AI platform systems @ ExponentHR',
-        enterprise_clients:    400,
-        catalog_columns:       '6000+',
-        gpa:                   4.0,
-        sdlc_speedup:          '3 months to 14 days',
-        etl_runtime:           '~30 min to under 8 min (67% faster)',
-        compute_cost_cut:      '67%',
-        query_latency:         '12s to 4s',
-        support_tickets:       '-40%',
-        ats_adapters:          11,
-        llm_providers:         5,
-        anomaly_accuracy:      '95%+',
-        azure_savings:         '$3,200/month',
-        node_consolidation:    '20 nodes to 4-8 nodes',
-        udaan_savings:         '$4M annual',
-        fulfillment_rate:      '99.3%',
-        zomato_market_share:   '+9%',
-        fraud_tps:             '100+ TPS at sub-ms P99',
-        portfolio_analytics:   '47.8 TPS, under 5s VaR latency',
-        jobscout_companies:    109,
-        jobscout_resumes:      '95+',
-        publication:           'Taylor and Francis 2025, DOI: 10.1080/10495142.2025.2525123',
-        easter_egg:            true
-    },
-
-    // ── RSS Feed Sources ───────────────────────────────────────────
-    rss: {
-        medium: {
-            enabled: false,
-            username: 'narendranathedara',
-            feedUrl: 'https://medium.com/feed/@narendranathedara',
-            profileUrl: 'https://medium.com/@narendranathedara'
-        },
-        devto: {
-            enabled: false,
-            username: 'narendranathe',
-            feedUrl: 'https://dev.to/feed/narendranathe',
-            profileUrl: 'https://dev.to/narendranathe'
-        },
-        substack: {
-            enabled: true,
-            username: 'narendranathe',
-            feedUrl: 'https://narendranathe.substack.com/feed',
-            profileUrl: 'https://narendranathe.substack.com'
-        }
-    },
-
-    // ── Recommendations ────────────────────────────────────────────
-    recommendations: [
-        {
-            text: "Naren is a great talent in the product ownership space. He is a critical thinker and understands how to analyze a problem, and convert that problem into a tangible requirements doc. He also understands how to take a data driven approach to tackle features and initiatives. Most importantly, he is a quick and humble learner that loves researching the areas of the business that are new to him. I highly recommend Naren for any product, business analyst, or data analyst roles.",
-            name: "Richard Enright",
-            role: "Lead Product Manager at Harness",
-            initials: "RE",
-            avatar: "",
-            linkedin: "https://www.linkedin.com/in/richard-enright-mba/"
-        },
-        {
-            text: "I had the pleasure of working closely with Narendranath for 3+ years and can confidently attest to his outstanding performance and exceptional work ethic. He had keen eye for solving business problems by identifying trends to improve the overall business of the clients and the company as well. Narendranath was always willing to go above and beyond his responsibilities to support the team and the company's overall goals. His positive attitude, professionalism, and strong communication skills made him a pleasure to work with.",
-            name: "Snehal Moni",
-            role: "Operations and Policy Analyst at Oregon Health Authority",
-            initials: "SM",
-            avatar: "",
-            linkedin: "https://www.linkedin.com/in/snehal-moni/"
-        },
-        {
-            text: "Narendranath has been an efficient source to the team at all times. He expertly trained himself to adapt to the various sectors of the business and was one of the few people who took up every challenge offered to him.",
-            name: "Pranav Suresh",
-            role: "Business Effectiveness - CIBC",
-            initials: "PS",
-            avatar: "",
-            linkedin: "https://www.linkedin.com/in/pranav-s-47356a58/"
-        }
-    ],
-
-    // ── Social Links ───────────────────────────────────────────────
-    social: {
-        linkedin: 'https://linkedin.com/in/narendranathe',
-        github:   'https://github.com/narendranathe',
-        email:    'edara.narendranath@gmail.com'
+window.PORTFOLIO_CONFIG = {
+  identity: {
+    name: "Narendranath Edara",
+    role: "Senior AI Platform Engineer",
+    headline: "Production AI systems that teams can run, govern, and trust.",
+    summary:
+      "I design enterprise AI platforms, retrieval-backed workflow products, and reusable backend engines with measurable business outcomes.",
+    footerStatement:
+      "Production AI systems, retrieval pipelines, and workflow products with measurable outcomes and clear system boundaries."
+  },
+  links: {
+    home: "index.html",
+    resume:
+      "https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf",
+    linkedin: "https://www.linkedin.com/in/narendranathe/",
+    github: "https://github.com/narendranathe",
+    substack: "https://narendranathe.substack.com",
+    email: "mailto:edara.narendranath@gmail.com",
+    publication: "https://doi.org/10.1080/10495142.2025.2525123"
+  },
+  navigation: [
+    { label: "Work", href: "#systems" },
+    { label: "Experience", href: "#experience" },
+    { label: "Writing", href: "#writing" },
+    { label: "Contact", href: "#contact" }
+  ],
+  caseStudies: [
+    { label: "ExponentHR", href: "exponenthr.html" },
+    { label: "AutoApply AI", href: "autoapply-ai.html" },
+    { label: "tailor-resume", href: "tailor-resume.html" }
+  ],
+  contactLinks: [
+    { label: "Email", href: "mailto:edara.narendranath@gmail.com" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/narendranathe/" },
+    { label: "GitHub", href: "https://github.com/narendranathe" },
+    { label: "Substack", href: "https://narendranathe.substack.com" },
+    {
+      label: "Resume",
+      href:
+        "https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf"
     }
+  ]
 };
