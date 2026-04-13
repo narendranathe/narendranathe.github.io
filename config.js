@@ -2,11 +2,12 @@ window.PORTFOLIO_CONFIG = {
   identity: {
     name: "Narendranath Edara",
     role: "Senior AI Platform Engineer",
-    headline: "Production AI systems that teams can run, govern, and trust.",
+    headline:
+      "Production-grade AI systems for retrieval, workflow automation, and reliable delivery.",
     summary:
-      "I design enterprise AI platforms, retrieval-backed workflow products, and reusable backend engines with measurable business outcomes.",
+      "I build enterprise AI platforms, AI-powered workflow products, and reusable backend engines with measurable impact across retrieval, inference, secure data access, deployment, and product reliability.",
     footerStatement:
-      "Production AI systems, retrieval pipelines, and workflow products with measurable outcomes and clear system boundaries."
+      "Senior AI platform engineering across retrieval, workflow automation, reusable engines, and production delivery."
   },
   links: {
     home: "index.html",
@@ -19,10 +20,11 @@ window.PORTFOLIO_CONFIG = {
     publication: "https://doi.org/10.1080/10495142.2025.2525123"
   },
   navigation: [
-    { label: "Work", href: "#systems" },
+    { label: "Systems", href: "#systems" },
+    { label: "How I Work", href: "#how-i-work" },
     { label: "Experience", href: "#experience" },
-    { label: "Writing", href: "#writing" },
-    { label: "Contact", href: "#contact" }
+    { label: "Notes", href: "#notes" },
+    { label: "Connect", href: "#connect" }
   ],
   caseStudies: [
     { label: "ExponentHR", href: "exponenthr.html" },

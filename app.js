@@ -129,7 +129,7 @@
   function setupExpansions() {
     document.querySelectorAll(".expand-toggle").forEach((button) => {
       button.addEventListener("click", function () {
-        const card = button.closest(".system-card");
+        const card = button.closest(".system-card, .experience-card");
 
         if (!card) {
           return;
