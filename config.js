@@ -114,3 +114,34 @@ const CONFIG = {
         email:    'edara.narendranath@gmail.com'
     }
 };
+
+// Bridge for app.js which expects window.PORTFOLIO_CONFIG
+window.PORTFOLIO_CONFIG = {
+    navigation: [
+        { label: 'What shipped', href: '#proof' },
+        { label: 'Systems',      href: '#systems' },
+        { label: 'Track record', href: '#experience' },
+        { label: 'Writing',      href: '#notes' },
+        { label: 'Connect',      href: '#connect' }
+    ],
+    links: {
+        home:     'index.html',
+        resume:   'https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf',
+        linkedin: 'https://www.linkedin.com/in/narendranathe/',
+        github:   'https://github.com/narendranathe',
+        substack: 'https://narendranathe.substack.com',
+        email:    'mailto:edara.narendranath@gmail.com'
+    },
+    identity: {
+        name:             CONFIG.name,
+        role:             'Senior AI Platform Engineer',
+        footerStatement:  'Senior AI platform engineering across retrieval, workflow automation, reusable engines, and production delivery.'
+    },
+    contactLinks: [
+        { label: 'Email',    href: 'mailto:edara.narendranath@gmail.com' },
+        { label: 'LinkedIn', href: 'https://www.linkedin.com/in/narendranathe/' },
+        { label: 'GitHub',   href: 'https://github.com/narendranathe' },
+        { label: 'Substack', href: 'https://narendranathe.substack.com' },
+        { label: 'Resume',   href: 'https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf' }
+    ]
+};

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Case study: tailor-resume - ATS-optimized resume tailoring engine shipped as CLI, Streamlit app, MCP server, and PyPI package with 190 automated tests.">
+  <meta name="author" content="Narendranath Edara">
+  <meta property="og:title" content="tailor-resume | Narendranath Edara">
+  <meta property="og:description" content="How I extracted a reusable resume tailoring engine from AutoApply AI and shipped it to four distribution surfaces.">
+  <meta property="og:type" content="article">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+  <title>tailor-resume | Narendranath Edara</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Back nav -->
+  <nav class="cs-nav">
+    <a href="index.html" class="cs-nav__back">
+      <i class="fas fa-arrow-left"></i> Back to portfolio
+    </a>
+    <span class="cs-nav__name">narendranathe.github.io</span>
+  </nav>
+
+  <div class="page-shell" style="padding-bottom: 4rem;">
+    <div class="container">
+
+      <!-- Hero -->
+      <section class="cs-hero">
+        <span class="cs-hero__kicker">Reusable Engine</span>
+        <h1>tailor-resume</h1>
+        <p class="cs-hero__summary">
+          Extracted the resume tailoring core from AutoApply AI and shipped it as a standalone engine.
+          190 automated tests, four distribution surfaces (CLI, Streamlit, MCP, PyPI), and hosted on Fly.io.
+          The strongest engineering move was modularization - now the same pipeline powers multiple products.
+        </p>
+        <div class="cs-proof-strip">
+          <span>190 automated tests</span>
+          <span>4 distribution surfaces</span>
+          <span>Single-page output enforced</span>
+          <span>No fabrication guarantee</span>
+          <span>Fly.io + PyPI + Streamlit</span>
+        </div>
+        <div class="cs-links">
+          <a href="https://github.com/narendranathe/tailor-resume" class="text-link" target="_blank" rel="noreferrer">Open repo -&gt;</a>
+          <a href="https://tailor-resume-ai.streamlit.app/" class="text-link" target="_blank" rel="noreferrer">Live demo -&gt;</a>
+        </div>
+        <div style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+          <span class="skill-chip">Python</span>
+          <span class="skill-chip">MCP server</span>
+          <span class="skill-chip">Streamlit</span>
+          <span class="skill-chip">FastAPI</span>
+          <span class="skill-chip">LaTeX</span>
+          <span class="skill-chip">FAISS / pgvector</span>
+          <span class="skill-chip">Fly.io</span>
+          <span class="skill-chip">PyPI</span>
+        </div>
+      </section>
+
+      <!-- Why extract it -->
+      <section class="cs-section">
+        <h2>Why Extract It</h2>
+        <p>
+          The resume tailoring logic inside AutoApply AI was the most reusable piece of the system - and the
+          hardest to test, because it was embedded in the extension flow. Extracting it into a standalone
+          package with a clean interface (parse → gap analysis → render) made it testable in isolation,
+          independently deployable, and usable outside the AutoApply context.
+        </p>
+        <p>
+          The extraction also proved the architecture was right: a pipeline with clear boundaries at each
+          stage is easier to extract than one with implicit dependencies. The 190 tests came from finally
+          having a module boundary to test against.
+        </p>
+      </section>
+
+      <!-- Pipeline -->
+      <section class="cs-section">
+        <h2>Pipeline Architecture</h2>
+
+        <div class="arch-grid" style="margin-top: 1.5rem;">
+          <div class="arch-box">
+            <h4>Step 1: Parse Artifacts</h4>
+            <p>
+              Any resume format in: blob (pasted text), LaTeX, Markdown, LinkedIn PDF, uploaded PDF, DOCX.
+              Three-tier PDF extraction (pdfminer.six for CMR fonts, pypdf for Word-generated, stdlib fallback).
+              OT1 normalization post-processes garbled characters from CMR font decoding. Output: a typed
+              Profile object.
+            </p>
+          </div>
+          <div class="arch-box">
+            <h4>Step 2: Gap Analysis</h4>
+            <p>
+              JD decomposition extracts must-haves and maps them to 10 signal categories
+              (testing_ci_cd, orchestration, ml_ai_platform, etc.). FAISS retrieval finds the strongest
+              matching evidence from the Profile. The ATS Score Estimate (0-100) gates whether to proceed -
+              below 50 means no resume produced, honest ceiling reported.
+            </p>
+          </div>
+          <div class="arch-box">
+            <h4>Step 3: Render LaTeX</h4>
+            <p>
+              Claude rewrites bullets using the STAR formula: "Accomplished X as measured by Y by doing Z."
+              A 3-pass iterative loop converges on a single-page output - the page limit is enforced as a
+              constraint, not a suggestion. PII is injected at render time (never baked into templates).
+              No fabrication: Claude only reframes evidence you provide.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Four surfaces -->
+      <section class="cs-section">
+        <h2>Four Distribution Surfaces</h2>
+        <p>
+          The same pipeline, four interfaces - no code duplication:
+        </p>
+
+        <div class="arch-grid" style="margin-top: 1.5rem;">
+          <div class="arch-box">
+            <h4>CLI + PyPI</h4>
+            <p>
+              <code style="font-family:var(--font-mono);font-size:0.875em;color:var(--accent);">pip install tailor-resume</code>
+              then <code style="font-family:var(--font-mono);font-size:0.875em;color:var(--accent);">tailor-resume --artifact PATH:FORMAT --jd JD_PATH</code>.
+              Zero-config default: core pipeline runs on stdlib only. Cloud features (Pinecone, Supabase)
+              are opt-in extras.
+            </p>
+          </div>
+          <div class="arch-box">
+            <h4>Streamlit + MCP Server</h4>
+            <p>
+              Browser-based UI at tailor-resume-ai.streamlit.app - paste your work history and JD, get a
+              tailored PDF. MCP server on Fly.io exposes 4 typed tools (extract_profile, analyze_gap,
+              render_latex, run_pipeline) for direct use inside Claude Code or any MCP-compatible agent.
+            </p>
+          </div>
+          <div class="arch-box">
+            <h4>Claude Code Skill</h4>
+            <p>
+              The /tailor-resume skill is the interactive mode - conversational, multi-pass, with
+              clarification loops when evidence is weak. This is the highest-quality surface because
+              it can ask for missing metrics rather than guessing. Used by me for actual job applications.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Engineering signal -->
+      <section class="cs-section">
+        <h2>Quality Signal</h2>
+        <p>
+          190 tests with no API keys required - all LLM calls are mocked at the boundary. The test suite
+          includes regression tests (files named <code style="font-family:var(--font-mono);font-size:0.875em;color:var(--accent);">_regression</code>)
+          that capture behavioral quirks as characterization tests. Changing them is a deliberate act,
+          not an accident.
+        </p>
+        <p>
+          ATS-aware claim discipline: the honest ceiling concept means the system will tell you when
+          a role is out of reach given your actual experience - rather than producing a resume that
+          technically passes keyword matching but misrepresents you in a screen. That's the design choice
+          that makes it useful for real job searching rather than just demos.
+        </p>
+      </section>
+
+      <!-- Roadmap -->
+      <section class="cs-section">
+        <h2>Integration Roadmap</h2>
+        <p>
+          Tier 1 is complete: CLI, PyPI, Streamlit, MCP server, Fly.io hosted API. Tier 3 targets
+          direct integration into AutoApply AI - a "Tailor for this job" button in the Chrome extension
+          that calls the tailor-resume API, updates the vault, and re-generates form answers with the
+          new tailored resume as context. JobScout will surface tailor-resume recommendations on job cards
+          via the best-match vault API.
+        </p>
+      </section>
+
+    </div><!-- /container -->
+  </div><!-- /page-shell -->
+
+  <!-- Footer populated by app.js -->
+  <footer id="footer"></footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
