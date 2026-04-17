@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Case study: AutoApply AI - end-to-end job application workflow platform with Chrome MV3 extension, FastAPI backend, 11 ATS adapters, and 6 LLM providers.">
+  <meta name="author" content="Narendranath Edara">
+  <meta property="og:title" content="AutoApply AI | Narendranath Edara">
+  <meta property="og:description" content="How I built an end-to-end AI workflow platform for discover, tailor, apply, and track - live on Fly.io.">
+  <meta property="og:type" content="article">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+  <title>AutoApply AI | Narendranath Edara</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Back nav -->
+  <nav class="cs-nav">
+    <a href="index.html" class="cs-nav__back">
+      <i class="fas fa-arrow-left"></i> Back to portfolio
+    </a>
+    <span class="cs-nav__name">narendranathe.github.io</span>
+  </nav>
+
+  <div class="page-shell" style="padding-bottom: 4rem;">
+    <div class="container">
+
+      <!-- Hero -->
+      <section class="cs-hero">
+        <span class="cs-hero__kicker">Workflow Platform</span>
+        <h1>AutoApply AI</h1>
+        <p class="cs-hero__summary">
+          End-to-end workflow platform for the full job application journey: discover, tailor, apply, and track.
+          A Chrome MV3 extension with Shadow DOM isolation, a FastAPI backend on Fly.io, and a 9-page React dashboard
+          - all serving the same user journey from first job page visit to offer.
+        </p>
+        <div class="cs-proof-strip">
+          <span>11 ATS adapters</span>
+          <span>6 LLM providers</span>
+          <span>40+ backend endpoints</span>
+          <span>9-page dashboard</span>
+          <span>355 backend tests</span>
+          <span>Live on Fly.io</span>
+        </div>
+        <div class="cs-links">
+          <a href="https://github.com/narendranathe/autoapply-ai" class="text-link" target="_blank" rel="noreferrer">Open repo -&gt;</a>
+          <a href="https://autoapply-ai-api.fly.dev/health" class="text-link" target="_blank" rel="noreferrer">Live API -&gt;</a>
+        </div>
+        <div style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+          <span class="skill-chip">FastAPI</span>
+          <span class="skill-chip">Chrome MV3</span>
+          <span class="skill-chip">React + Vite</span>
+          <span class="skill-chip">PostgreSQL</span>
+          <span class="skill-chip">Redis</span>
+          <span class="skill-chip">pgvector / RAG</span>
+          <span class="skill-chip">Clerk Auth</span>
+          <span class="skill-chip">Fly.io</span>
+        </div>
+      </section>
+
+      <!-- Problem -->
+      <section class="cs-section">
+        <h2>The Problem</h2>
+        <p>
+          Applying to jobs at scale requires reading job descriptions, tailoring resumes, filling in identical
+          form fields on every ATS, drafting cover letters, and tracking status across dozens of applications.
+          Each step is manual, repetitive, and context-dependent. At 10 applications per week, this is a
+          part-time job. At 50, it's unsustainable.
+        </p>
+        <p>
+          Existing tools either scraped job boards (no apply step) or auto-filled forms blindly (no tailoring).
+          Nothing connected discovery to tailoring to submission to tracking as one coherent workflow.
+        </p>
+      </section>
+
+      <!-- Architecture -->
+      <section class="cs-section">
+        <h2>System Design</h2>
+
+        <div class="arch-grid" style="margin-top: 1.5rem;">
+          <div class="arch-box">
+            <h4>Product boundary</h4>
+            <p>
+              One workflow product instead of three overlapping apps. The Chrome extension, FastAPI backend,
+              and React dashboard all serve the same user journey: find a job, tailor the resume, apply,
+              track the outcome. State flows one direction through the pipeline.
+            </p>
+          </div>
+          <div class="arch-box">
+            <h4>Extension architecture</h4>
+            <p>
+              Chrome MV3 content script with Shadow DOM isolation - no CSS collisions with host job pages.
+              MutationObserver fires only on form element additions/removals (not cosmetic DOM changes).
+              Offline Queue drains on reconnect. 11 ATS-specific adapters handle Workday, Greenhouse,
+              Lever, Ashby, LinkedIn, and more.
+            </p>
+          </div>
+          <div class="arch-box">
+            <h4>Intelligence layer</h4>
+            <p>
+              Multi-provider LLM cascade: Anthropic - OpenAI - Gemini - Groq - Kimi - Ollama - keyword fallback.
+              Per-category model routing dispatches different question types (why_company, cover_letter, strength)
+              to preferred providers. pgvector retrieval grounds answers in prior work history and past
+              high-reward responses.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Vault -->
+      <section class="cs-section">
+        <h2>The Vault System</h2>
+        <p>
+          Every resume (LaTeX source + rendered PDF), every saved answer, and every application is stored
+          in the Vault. Resumes are stored with ATS scores and TF-IDF/embedding vectors. Answers accumulate
+          a reinforcement learning reward score (0.0-1.0) based on whether the user accepted them as-is,
+          edited them, or regenerated.
+        </p>
+        <p>
+          High-reward answers (score &gt;= 0.8) from the same company or question category are injected
+          into future LLM prompts as style examples - personalization without model fine-tuning.
+          Resume versioning tracks which resume was used for which application, with GitHub commit SHAs
+          as the audit trail.
+        </p>
+      </section>
+
+      <!-- Multi-provider -->
+      <section class="cs-section">
+        <h2>Multi-Provider LLM Routing</h2>
+        <p>
+          A key engineering decision: the system never depends on a single LLM provider being available.
+          The cascade tries providers in priority order. "Enabled" means having an API key - not a separate
+          boolean flag (a design flaw I discovered and fixed in Phase 7). The cascade degrades gracefully
+          to keyword-based answer generation when all providers fail or are unconfigured.
+        </p>
+        <p>
+          Per-category model routing lets users route different question types to different providers.
+          Cover letters go to Claude for quality. Simple fields go to Groq for speed. The routing is
+          stored in chrome.storage.local as <code style="font-family: var(--font-mono); font-size:0.875em; color:var(--accent);">categoryModelRoutes</code>
+          and applied at generation time.
+        </p>
+      </section>
+
+      <!-- Current state -->
+      <section class="cs-section">
+        <h2>Current State &amp; What's Next</h2>
+        <p>
+          Phase 8 is complete: 355 backend tests, 0 TypeScript errors, 9-page dashboard on Vercel,
+          floating panel live on Fly.io. Four P0 security issues are tracked before public launch:
+          an unauthenticated register endpoint, JWT bypass when Clerk URL is unset, offline queue
+          hardcoded to localhost, and CORS wildcard when extension ID is unset.
+        </p>
+        <p>
+          Next: fix the P0 issues, complete Dashboard v2, and wire the tailor-resume API call
+          into the answer generation flow for seamless resume tailoring during application.
+        </p>
+      </section>
+
+    </div><!-- /container -->
+  </div><!-- /page-shell -->
+
+  <!-- Footer populated by app.js -->
+  <footer id="footer"></footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

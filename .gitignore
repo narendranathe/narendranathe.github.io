@@ -11,3 +11,7 @@ config.js
 # OS files
 .DS_Store
 Thumbs.db
+
+# Session / generation artifacts
+gen.py
+.claude-memory.md
