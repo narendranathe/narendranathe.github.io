@@ -1,21 +1,21 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Narendranath Edara - Senior AI Platform Engineer building production LLM systems, retrieval pipelines, and governed AI-enabled data products on Microsoft Fabric, FastAPI, Fly.io, and Azure.">
-  <meta name="keywords" content="Senior AI Platform Engineer, Applied AI Engineer, Backend AI Engineer, Python, FastAPI, FAISS, NL-to-SQL, RAG, Microsoft Fabric, pgvector, Claude API, MCP">
-  <meta name="author" content="Narendranath Edara">
-  <meta property="og:title" content="Narendranath Edara | Senior AI Platform Engineer">
-  <meta property="og:description" content="Production AI systems that teams can run, govern, and trust.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://narendranathe.github.io">
-  <meta property="og:image" content="https://github.com/user-attachments/assets/ce009ed4-be8a-47d1-ba3e-4d45e87b28d8">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Narendranath Edara | Senior AI Platform Engineer">
-  <meta name="twitter:description" content="Production AI systems that teams can run, govern, and trust.">
-  <meta name="twitter:image" content="https://github.com/user-attachments/assets/ce009ed4-be8a-47d1-ba3e-4d45e87b28d8">
-  <link rel="canonical" href="https://narendranathe.github.io">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Narendranath Edara — AI Platform Engineer</title>
+  <meta name="description" content="Building agent infrastructure. AutoApply AI, tailor-resume MCP server, JobScout. Senior AI/Data Engineer in Dallas, TX." />
+  <meta name="author" content="Narendranath Edara" />
+  <meta property="og:title" content="Narendranath Edara — AI Platform Engineer" />
+  <meta property="og:description" content="Agents get useful when someone builds the right engines beneath them." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://narendranathe.github.io/" />
+  <meta property="og:image" content="https://github.com/user-attachments/assets/ce009ed4-be8a-47d1-ba3e-4d45e87b28d8" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet" />
 
   <script type="application/ld+json">
   {
@@ -23,1122 +23,431 @@
     "@type": "Person",
     "name": "Narendranath Edara",
     "jobTitle": "Senior AI Platform Engineer",
-    "url": "https://narendranathe.github.io",
-    "email": "edara.narendranath@gmail.com",
-    "sameAs": [
-      "https://linkedin.com/in/narendranathe",
-      "https://github.com/narendranathe",
-      "https://narendranathe.substack.com"
-    ],
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Dallas",
-      "addressRegion": "TX",
-      "addressCountry": "US"
-    },
-    "knowsAbout": [
-      "AI Platform Engineering", "Applied AI", "Backend AI Engineering",
-      "NL-to-SQL", "RAG", "FAISS", "MCP Servers", "Claude API",
-      "Microsoft Fabric", "FastAPI", "pgvector", "LLM Integration",
-      "Vector Search", "Chrome Extension Development", "Data Engineering"
-    ]
+    "url": "https://narendranathe.github.io/",
+    "sameAs": ["https://github.com/narendranathe","https://substack.com/@narendranathe"],
+    "address": {"@type":"PostalAddress","addressLocality":"Dallas","addressRegion":"TX","addressCountry":"US"}
   }
   </script>
 
-  <!-- Google Fonts: Playfair Display + Source Sans 3 + JetBrains Mono -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome 6.5.1 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-
-  <title>Narendranath Edara | Senior AI Platform Engineer</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body data-page="home">
+<body>
 
-  <!-- Scroll progress bar -->
-  <div id="scroll-progress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#1f4d43,#b78a58);z-index:9999;transition:width 0.1s linear;pointer-events:none;"></div>
+  <!-- Reading progress bar -->
+  <div id="progress" class="progress" aria-hidden="true"></div>
 
-  <div class="page-shell">
+  <!-- Status ticker -->
+  <div class="ticker" role="status" aria-label="Live system status">
+    <div class="ticker__track">
+      <span>190 tests passing &nbsp;&bull;&nbsp; 40+ endpoints live &nbsp;&bull;&nbsp; MCP server running &nbsp;&bull;&nbsp; 130+ sources monitored &nbsp;&bull;&nbsp; 6 LLM providers &nbsp;&bull;&nbsp; H1B transfer ready &nbsp;&bull;&nbsp; Open to Senior AI / Data roles &nbsp;&bull;&nbsp;</span>
+      <span aria-hidden="true">190 tests passing &nbsp;&bull;&nbsp; 40+ endpoints live &nbsp;&bull;&nbsp; MCP server running &nbsp;&bull;&nbsp; 130+ sources monitored &nbsp;&bull;&nbsp; 6 LLM providers &nbsp;&bull;&nbsp; H1B transfer ready &nbsp;&bull;&nbsp; Open to Senior AI / Data roles &nbsp;&bull;&nbsp;</span>
+    </div>
+  </div>
 
-    <!-- ===== HEADER ===== -->
-    <header class="site-header" data-site-header>
-      <div class="container header__inner">
-        <a href="#home" class="header__logo">
-          <span class="header__logo-name">Narendranath Edara</span>
-          <span class="header__logo-role">Senior AI Platform Engineer</span>
-        </a>
-        <nav class="header__nav" aria-label="Main navigation">
-          <a href="#proof" class="header__nav-link">What shipped</a>
-          <a href="#systems" class="header__nav-link">Systems</a>
-          <a href="#experience" class="header__nav-link">Track record</a>
-          <a href="#notes" class="header__nav-link">Writing</a>
-          <a href="#connect" class="header__nav-link">Connect</a>
-        </nav>
-        <a href="https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf" class="btn btn--resume btn--sm" target="_blank" rel="noreferrer">
-          <i class="fas fa-file-pdf"></i> Resume
-        </a>
-        <button class="header__mobile-toggle" aria-label="Toggle navigation" aria-expanded="false">
-          <i class="fas fa-bars"></i>
-        </button>
-      </div>
-      <div class="header__mobile-nav" aria-hidden="true">
-        <a href="#proof" class="header__mobile-link">What shipped</a>
-        <a href="#systems" class="header__mobile-link">Systems</a>
-        <a href="#experience" class="header__mobile-link">Track record</a>
-        <a href="#notes" class="header__mobile-link">Writing</a>
-        <a href="#connect" class="header__mobile-link">Connect</a>
-        <a href="https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf" class="header__mobile-link" target="_blank" rel="noreferrer">Download resume</a>
-      </div>
-    </header>
+  <!-- Navigation -->
+  <header class="nav-wrap" id="nav">
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="nav__brand" href="#top">narendranath<span class="nav__accent">.</span>e</a>
+      <ul class="nav__links" role="list">
+        <li><a href="#systems">Systems</a></li>
+        <li><a href="#graph-section">Graph</a></li>
+        <li><a href="#career">Career</a></li>
+        <li><a href="#writing">Writing</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a class="nav__resume btn btn--gold" href="https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf" target="_blank" rel="noopener">Resume &darr;</a>
+      <button class="nav__burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+    <div class="nav__drawer" id="drawer" aria-hidden="true">
+      <a href="#systems">Systems</a>
+      <a href="#graph-section">Graph</a>
+      <a href="#career">Career</a>
+      <a href="#writing">Writing</a>
+      <a href="#contact">Contact</a>
+      <a href="https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf" target="_blank" rel="noopener">Resume &darr;</a>
+    </div>
+  </header>
 
-    <main>
+  <main id="top">
 
-      <!-- ===== SECTION 1: HERO ===== -->
-      <section class="hero" id="home">
-        <div class="container hero__grid">
+    <!-- ===== HERO ===== -->
+    <section class="hero" aria-labelledby="thesis">
+      <canvas id="particles" aria-hidden="true"></canvas>
 
-          <!-- LEFT: Copy -->
-          <div class="hero__copy" data-reveal>
-            <div class="hero__status">
-              <span class="status-dot"></span>
-              <span>Open to Senior AI Platform / Applied AI roles &middot; H1B Transfer &middot; Dallas TX</span>
+      <div class="hero__inner">
+        <div class="hero__left">
+          <div class="hero__frame">
+            <img
+              src="https://github.com/user-attachments/assets/ce009ed4-be8a-47d1-ba3e-4d45e87b28d8"
+              alt="Portrait of Narendranath Edara"
+              class="hero__photo"
+              loading="eager"
+            />
+          </div>
+          <div class="hero__id mono">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span class="hero__name">Narendranath Edara</span>
+            <span class="hero__sub">Dallas, TX &nbsp;&middot;&nbsp; H1B ready</span>
+          </div>
+        </div>
+
+        <div class="hero__right">
+          <p class="hero__kicker mono">Senior AI Platform Engineer</p>
+          <h1 id="thesis" class="hero__thesis">
+            Agents get useful when someone builds the right engines beneath them.
+          </h1>
+          <div class="hero__systems mono" aria-label="Active systems">
+            <div class="hsys">
+              <span class="live-badge">LIVE</span>
+              <span class="hsys__name">AutoApply AI</span>
+              <span class="hsys__meta">discover &rarr; tailor &rarr; apply &rarr; track</span>
             </div>
-            <h1 class="hero__name">Narendranath<br>Edara</h1>
-            <p class="hero__role">Senior AI Platform Engineer</p>
-            <p class="hero__brief">
-              I build production AI systems in the messy middle between product and infrastructure: retrieval, workflow orchestration, security guardrails, and the boundaries that make AI useful in production instead of impressive only in demos.
-            </p>
-            <ul class="hero__proof-list">
-              <li class="hero__proof-item">
-                <span class="proof-emoji">🏢</span>
-                <span><strong>ExponentHR:</strong> architected a catalog-driven NL-to-SQL platform on Microsoft Fabric for <strong>400 enterprise clients</strong> with FAISS retrieval, governed SQL generation, and semantic joins across HR domains.</span>
-              </li>
-              <li class="hero__proof-item">
-                <span class="proof-emoji">🔄</span>
-                <span><strong>AutoApply AI:</strong> built an end-to-end workflow platform for <strong>discover - tailor - apply - track</strong> across FastAPI, Chrome MV3, retrieval-backed answers, model routing, and live deployments.</span>
-              </li>
-              <li class="hero__proof-item">
-                <span class="proof-emoji">⚙️</span>
-                <span><strong>Modular engines:</strong> extracted the tailoring core into <strong>tailor-resume</strong> and the discovery layer into <strong>JobScout</strong> so the product could evolve as a platform instead of a pile of overlapping tools.</span>
-              </li>
+            <div class="hsys">
+              <span class="live-badge">LIVE</span>
+              <span class="hsys__name">tailor-resume</span>
+              <span class="hsys__meta">CLI &nbsp;&middot;&nbsp; Streamlit &nbsp;&middot;&nbsp; MCP &nbsp;&middot;&nbsp; PyPI</span>
+            </div>
+            <div class="hsys">
+              <span class="live-badge">LIVE</span>
+              <span class="hsys__name">JobScout</span>
+              <span class="hsys__meta">130+ sources &nbsp;&middot;&nbsp; 6 ATS platforms</span>
+            </div>
+          </div>
+          <div class="hero__cta">
+            <a href="#systems" class="btn btn--ghost">Inspect the systems &rarr;</a>
+            <a href="https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf" target="_blank" rel="noopener" class="btn btn--gold">Download Resume &darr;</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__scroll" aria-hidden="true">
+        <span class="mono">scroll</span>
+        <svg width="10" height="18" viewBox="0 0 10 18"><path d="M5 1v12M1 9l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      </div>
+    </section>
+
+    <!-- ===== METRICS BAND ===== -->
+    <div class="metrics-band" aria-label="Key metrics">
+      <div class="metrics-band__inner mono">
+        <span><strong>190</strong> tests</span><span class="sep">&middot;</span>
+        <span><strong>355</strong> backend tests</span><span class="sep">&middot;</span>
+        <span><strong>40+</strong> API endpoints</span><span class="sep">&middot;</span>
+        <span><strong>9-page</strong> dashboard</span><span class="sep">&middot;</span>
+        <span><strong>11</strong> ATS adapters</span><span class="sep">&middot;</span>
+        <span><strong>6</strong> LLM providers</span><span class="sep">&middot;</span>
+        <span><strong>4</strong> distribution surfaces</span><span class="sep">&middot;</span>
+        <span><strong>130+</strong> career pages</span><span class="sep">&middot;</span>
+        <span><strong>6</strong> ATS platforms</span>
+      </div>
+    </div>
+
+    <!-- ===== MCP HEADLINE ===== -->
+    <div class="mcp-moment reveal" aria-label="MCP ecosystem context">
+      <div class="mcp-moment__inner">
+        <p class="eyebrow mono">The infrastructure moment</p>
+        <p class="mcp-stat"><span class="green">97M</span> monthly MCP SDK downloads</p>
+        <p class="mcp-body">In 2025, OpenAI, Google, and Microsoft adopted the Model Context Protocol. The ecosystem reached 10,000+ public servers and 1B+ tool calls per month. Naren was already shipping an MCP server &mdash; not trend-following, but building the infrastructure the industry converged on.</p>
+      </div>
+    </div>
+
+    <!-- ===== SYSTEMS ===== -->
+    <section id="systems" aria-labelledby="systems-head">
+      <div class="section-head">
+        <p class="eyebrow mono">// systems</p>
+        <h2 id="systems-head" class="display-h reveal">Three systems.<br>One thesis.</h2>
+      </div>
+
+      <!-- AutoApply AI -->
+      <article class="moment reveal" id="autoapply">
+        <header class="moment__bar mono">
+          <span class="live-dot" aria-hidden="true"></span>
+          autoapply-ai &nbsp;&middot;&nbsp; PRODUCTION &nbsp;&middot;&nbsp; Fly.io &nbsp;&middot;&nbsp; v2.1
+        </header>
+        <div class="moment__body">
+          <div class="moment__anchor">
+            <div class="big-num">40<span class="green">+</span></div>
+            <div class="big-label mono">API endpoints</div>
+            <ul class="anchor-stats mono">
+              <li><span class="green">190</span> automated tests</li>
+              <li><span class="green">11</span> ATS adapters</li>
+              <li><span class="green">9-page</span> dashboard</li>
+              <li><span class="green">6</span> LLM providers</li>
+              <li><span class="green">4</span> distribution surfaces</li>
             </ul>
-            <div class="hero__actions">
-              <a href="#systems" class="btn btn--primary">View production systems</a>
-              <a href="https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf" class="btn btn--resume" target="_blank" rel="noreferrer">Download resume</a>
-              <a href="#connect" class="btn btn--ghost">Get in touch</a>
-            </div>
           </div>
-
-          <!-- RIGHT: Photo + Metrics -->
-          <aside class="hero__visual" data-reveal>
-            <div class="profile-frame">
-              <img
-                src="https://github.com/user-attachments/assets/ce009ed4-be8a-47d1-ba3e-4d45e87b28d8"
-                alt="Narendranath Edara - Senior AI Platform Engineer"
-                class="profile-photo"
-                onerror="this.src='https://github.com/user-attachments/assets/a31266a6-37af-4717-b031-de03ae6058a9'; this.onerror=function(){ this.style.display='none'; };"
-              >
-              <!-- Floating tech badges -->
-              <div class="tech-badge tech-badge--1">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azure/azure-original.svg" alt="Azure" onerror="this.style.display='none';">
-                <span>Microsoft Fabric &middot; FAISS</span>
-              </div>
-              <div class="tech-badge tech-badge--2">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg" alt="FastAPI" onerror="this.style.display='none';">
-                <span>FastAPI &middot; RAG &middot; Chrome MV3</span>
+          <div class="moment__content">
+            <h3 class="moment__name">AutoApply AI</h3>
+            <p class="moment__lede">The flagship agentic pipeline. Discovers opportunities, tailors every application to the specific role, submits across eleven ATS platforms, and tracks every outcome &mdash; without human intervention. Four surfaces: Chrome extension, web dashboard, API, CLI.</p>
+            <div class="code-block mono" aria-label="LLM cascade">
+              <p class="code-label">Multi-provider LLM cascade &mdash; never goes dark:</p>
+              <div class="cascade">
+                <span>Claude</span><span class="arr">&rarr;</span>
+                <span>OpenAI</span><span class="arr">&rarr;</span>
+                <span>Gemini</span><span class="arr">&rarr;</span>
+                <span>Groq</span><span class="arr">&rarr;</span>
+                <span>Kimi</span><span class="arr">&rarr;</span>
+                <span>Ollama</span><span class="arr">&rarr;</span>
+                <span class="dim">keyword</span>
               </div>
             </div>
-
-            <!-- Metrics -->
-            <div class="metric-strip">
-              <div class="metric-item">
-                <span class="metric-value" data-count="400">400</span>
-                <span class="metric-label">enterprise clients</span>
-              </div>
-              <div class="metric-item">
-                <span class="metric-value">6K+</span>
-                <span class="metric-label">HR catalog columns</span>
-              </div>
-              <div class="metric-item">
-                <span class="metric-value">-67%</span>
-                <span class="metric-label">ETL compute cost</span>
-              </div>
-              <div class="metric-item">
-                <span class="metric-value">12s&rarr;4s</span>
-                <span class="metric-label">query latency</span>
-              </div>
+            <div class="arch-wrap">
+              <button class="arch-btn mono" data-target="aa-trace" aria-expanded="false">[ + ] architecture trace</button>
+              <pre class="arch-trace" id="aa-trace" hidden>
++----------+    +------------+    +----------+    +-----------+
+| JobScout | ->  |  Discover  | ->  |  Tailor  | ->  |   Apply   |
+| 130+ src |    |  (FastAPI) |    | (MCP ->   |    | (11 ATS   |
++----------+    +------+-----+    |  tailor-  |    | adapters) |
+                       |          |  resume)  |    +-----+-----+
+                       |          +-----+-----+          |
+                       |                |                |
+                       +----------------+----------------+
+              +------------------------------------------+
+              |  Track . Supabase . Fly.io . 9-page UI   |
+              +------------------------------------------+</pre>
             </div>
-          </aside>
-
-        </div>
-      </section>
-
-      <!-- ===== SECTION 2: WHAT SHIPPED / HOW IT WAS BUILT ===== -->
-      <section class="section section--alt" id="proof">
-        <div class="container">
-          <div class="proof-split">
-
-            <article class="proof-col" data-reveal>
-              <h2 class="proof-col__title">What shipped</h2>
-              <ol class="kicker-list">
-                <li class="kicker-item">
-                  <span class="kicker">ExponentHR</span>
-                  <p>400 clients supported through a governed NL-to-SQL platform built for real enterprise analytics on Microsoft Fabric.</p>
-                </li>
-                <li class="kicker-item">
-                  <span class="kicker">Semantic catalog</span>
-                  <p>6K+ HR catalog columns mapped into reusable domains for payroll, expenses, benefits, and PTO - enabling hot-reload onboarding in 2 days.</p>
-                </li>
-                <li class="kicker-item">
-                  <span class="kicker">Deployment velocity</span>
-                  <p>Deployment cycles cut from 3 months to 14 days by owning CI/CD end-to-end and eliminating 11 weeks of cross-team idle time.</p>
-                </li>
-                <li class="kicker-item">
-                  <span class="kicker">Always-on product</span>
-                  <p>AutoApply AI runs live on Fly.io with zero cold start, a 9-page React dashboard, and 40+ FastAPI endpoints in production.</p>
-                </li>
-              </ol>
-            </article>
-
-            <article class="proof-col" data-reveal>
-              <h2 class="proof-col__title">How it was built</h2>
-              <ol class="kicker-list">
-                <li class="kicker-item">
-                  <span class="kicker">Retrieval stack</span>
-                  <p>FAISS retrieval, Claude Sonnet SQL generation, and a NetworkX semantic graph for cross-domain join resolution without manual mapping.</p>
-                </li>
-                <li class="kicker-item">
-                  <span class="kicker">Workflow stack</span>
-                  <p>Chrome MV3, FastAPI, PostgreSQL, and Redis orchestrate the full discover - tailor - apply - track lifecycle.</p>
-                </li>
-                <li class="kicker-item">
-                  <span class="kicker">Engine surfaces</span>
-                  <p>CLI, Streamlit, MCP server, PyPI package, and hosted APIs make tailor-resume a real distribution-aware engine.</p>
-                </li>
-                <li class="kicker-item">
-                  <span class="kicker">Infrastructure proof</span>
-                  <p>Kafka, MLflow, Prometheus, and Grafana appear in the surrounding streaming and ML infrastructure work.</p>
-                </li>
-              </ol>
-            </article>
-
           </div>
         </div>
-      </section>
+      </article>
 
-      <!-- ===== SECTION 3: PRODUCTION SYSTEMS ===== -->
-      <section class="section" id="systems">
-        <div class="container">
-
-          <div class="section-head" data-reveal>
-            <span class="section-label">Production systems</span>
-            <h2 class="section-title">Three systems, each with a clear boundary and inspectable work.</h2>
-            <p class="section-subtitle">The story isn't breadth. It's that I build AI systems with measurable outcomes, strong engineering boundaries, and distribution-aware surfaces that other teams can actually use.</p>
+      <!-- tailor-resume -->
+      <article class="moment reveal" id="tailor-resume">
+        <header class="moment__bar mono">
+          <span class="live-dot" aria-hidden="true"></span>
+          tailor-resume &nbsp;&middot;&nbsp; PRODUCTION &nbsp;&middot;&nbsp; PyPI &nbsp;&middot;&nbsp; MCP-native
+        </header>
+        <div class="moment__body moment__body--alt">
+          <div class="moment__anchor">
+            <div class="install-block mono">pip install<br/>tailor-resume</div>
+            <ul class="anchor-stats mono">
+              <li><span class="green">355</span> backend tests</li>
+              <li><span class="green">40+</span> endpoints</li>
+            </ul>
+            <div class="surface-chips">
+              <span class="chip mono">MCP server</span>
+              <span class="chip mono">CLI</span>
+              <span class="chip mono">PyPI</span>
+              <span class="chip mono">Streamlit</span>
+            </div>
           </div>
-
-          <div class="systems-grid">
-
-            <!-- ExponentHR -->
-            <article class="system-card" data-reveal>
-              <div class="system-card__rail">
-                <span class="system-card__type">Enterprise AI Platform</span>
-                <span class="system-card__metric" data-count="400">400</span>
-                <span class="system-card__caption">clients served</span>
-              </div>
-              <div class="system-card__body">
-                <div class="system-card__image">
-                  <img
-                    src="https://github.com/user-attachments/assets/8f588639-0463-4d1c-95e6-aba025804099"
-                    alt="ExponentHR - NL-to-SQL Platform"
-                    onerror="this.style.display='none'; this.parentElement.classList.add('system-card__image-placeholder');"
-                  >
-                </div>
-                <h3 class="system-card__title">ExponentHR NL-to-SQL Platform</h3>
-                <p class="system-card__desc">
-                  Catalog-driven NL-to-SQL analytics engine on Microsoft Fabric. FAISS classifies intent across 6K+ HR columns, Claude Sonnet generates RLS/CLS-governed T-SQL, and NetworkX auto-resolves cross-domain joins. Query latency fell from 12s to 4s, support tickets dropped 40%, and domain onboarding moved from months to 2 days.
-                </p>
-                <div class="system-card__skills">
-                  <span class="skill-chip">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python" onerror="this.style.display='none';">Python
-                  </span>
-                  <span class="skill-chip">FAISS</span>
-                  <span class="skill-chip">Claude Sonnet</span>
-                  <span class="skill-chip">NetworkX</span>
-                  <span class="skill-chip">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/microsoftsqlserver/microsoftsqlserver-original.svg" alt="SQL Server" onerror="this.style.display='none';">SQL Server
-                  </span>
-                  <span class="skill-chip">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azure/azure-original.svg" alt="Azure" onerror="this.style.display='none';">Microsoft Fabric
-                  </span>
-                </div>
-                <div class="system-card__actions">
-                  <button class="expand-btn" type="button" aria-expanded="false" data-original-label="See architecture">See architecture</button>
-                </div>
-                <div class="system-card__expand" hidden>
-                  <div class="arch-grid">
-                    <div class="arch-box">
-                      <h4>Problem I solved</h4>
-                      <p>Replace fragile DAX-heavy analytics across 400 enterprise clients with AI-assisted query generation spanning multiple HR business domains without manual joins.</p>
-                    </div>
-                    <div class="arch-box">
-                      <h4>Architecture I designed</h4>
-                      <p>6-layer pipeline: FAISS concept retrieval &rarr; domain retrieval &rarr; NetworkX semantic join resolution &rarr; schema validation &rarr; Claude Sonnet SQL generation &rarr; RLS/CLS secure execution on Fabric.</p>
-                    </div>
-                    <div class="arch-box">
-                      <h4>Outcomes I own</h4>
-                      <p>400 clients, 6K+ columns, 12s&rarr;4s query latency, -67% ETL compute cost, 3mo&rarr;14 day deployment cycles, new domain onboarding in 2 days with no code changes.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <!-- AutoApply AI -->
-            <article class="system-card" data-reveal>
-              <div class="system-card__rail">
-                <span class="system-card__type">Workflow Platform</span>
-                <span class="system-card__metric">11+6</span>
-                <span class="system-card__caption">ATS adapters + LLM providers</span>
-              </div>
-              <div class="system-card__body">
-                <div class="system-card__image-placeholder system-card__image-placeholder--icon">
-                  <i class="fas fa-robot" style="font-size:2.5rem;color:#1f4d43;opacity:0.4;"></i>
-                </div>
-                <h3 class="system-card__title">AutoApply AI</h3>
-                <p class="system-card__desc">
-                  End-to-end workflow platform for discover - tailor - apply - track. Chrome MV3 extension + FastAPI backend + React dashboard with multi-provider LLM routing (Claude, OpenAI, Gemini, Groq, Kimi, Ollama), retrieval-backed answer vaults, and ATS-specific form adapters deployed live on Fly.io.
-                </p>
-                <div class="system-card__skills">
-                  <span class="skill-chip">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg" alt="FastAPI" onerror="this.style.display='none';">FastAPI
-                  </span>
-                  <span class="skill-chip">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/chrome/chrome-original.svg" alt="Chrome" onerror="this.style.display='none';">Chrome MV3
-                  </span>
-                  <span class="skill-chip">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" onerror="this.style.display='none';">PostgreSQL
-                  </span>
-                  <span class="skill-chip">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg" alt="Redis" onerror="this.style.display='none';">Redis
-                  </span>
-                  <span class="skill-chip">pgvector / RAG</span>
-                  <span class="skill-chip">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="React" onerror="this.style.display='none';">React
-                  </span>
-                </div>
-                <div class="system-card__actions">
-                  <a href="autoapply-ai.html" class="text-link">View case study -&gt;</a>
-                  <a href="https://github.com/narendranathe/autoapply-ai" class="text-link" target="_blank" rel="noreferrer">Open repo -&gt;</a>
-                  <button class="expand-btn" type="button" aria-expanded="false" data-original-label="See architecture">See architecture</button>
-                </div>
-                <div class="system-card__expand" hidden>
-                  <div class="arch-grid">
-                    <div class="arch-box">
-                      <h4>Product boundary</h4>
-                      <p>One workflow product instead of three overlapping apps. The extension, backend, and dashboard all serve the same user journey: find &rarr; tailor &rarr; apply &rarr; track.</p>
-                    </div>
-                    <div class="arch-box">
-                      <h4>System design</h4>
-                      <p>Multi-provider model routing dispatches by question category. pgvector retrieval grounds answers in prior work history. ATS-specific adapters handle Shadow DOM isolation and offline queuing.</p>
-                    </div>
-                    <div class="arch-box">
-                      <h4>Operational proof</h4>
-                      <p>40+ backend endpoints, 9-page dashboard, live deployment on Fly.io, and 11 ATS adapters covering the major job platforms.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <!-- tailor-resume -->
-            <article class="system-card" data-reveal>
-              <div class="system-card__rail">
-                <span class="system-card__type">Reusable Engine</span>
-                <span class="system-card__metric" data-count="190">190</span>
-                <span class="system-card__caption">tests in tailoring core</span>
-              </div>
-              <div class="system-card__body">
-                <div class="system-card__image-placeholder system-card__image-placeholder--icon">
-                  <i class="fas fa-file-lines" style="font-size:2.5rem;color:#1f4d43;opacity:0.4;"></i>
-                </div>
-                <h3 class="system-card__title">tailor-resume</h3>
-                <p class="system-card__desc">
-                  Extracted tailoring core from AutoApply AI - shipped as CLI, Streamlit app, typed MCP server, and PyPI package. 190 automated tests, hosted on Fly.io, and distribution-aware from day one. Shows that the strongest engineering move was modularization.
-                </p>
-                <div class="system-card__skills">
-                  <span class="skill-chip">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python" onerror="this.style.display='none';">Python
-                  </span>
-                  <span class="skill-chip">MCP server</span>
-                  <span class="skill-chip">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/streamlit/streamlit-original.svg" alt="Streamlit" onerror="this.style.display='none';">Streamlit
-                  </span>
-                  <span class="skill-chip">PyPI package</span>
-                  <span class="skill-chip">LaTeX</span>
-                  <span class="skill-chip">Fly.io</span>
-                </div>
-                <div class="system-card__actions">
-                  <a href="tailor-resume.html" class="text-link">View case study -&gt;</a>
-                  <a href="https://github.com/narendranathe/tailor-resume" class="text-link" target="_blank" rel="noreferrer">Open repo -&gt;</a>
-                  <button class="expand-btn" type="button" aria-expanded="false" data-original-label="See architecture">See architecture</button>
-                </div>
-                <div class="system-card__expand" hidden>
-                  <div class="arch-grid">
-                    <div class="arch-box">
-                      <h4>Why it matters</h4>
-                      <p>The strongest engineering move was extracting the tailoring core into a standalone engine. Now it powers AutoApply AI, a MCP plugin, a browser app, and a CLI - from one honest pipeline.</p>
-                    </div>
-                    <div class="arch-box">
-                      <h4>Delivery surfaces</h4>
-                      <p>Claude Code skill, MCP plugin (Fly.io hosted), Streamlit browser app, CLI, and Python package on PyPI - four surfaces from one shared core.</p>
-                    </div>
-                    <div class="arch-box">
-                      <h4>Quality signal</h4>
-                      <p>190 tests and ATS-aware claim discipline signal engineering maturity beyond flashy demos. Parseable by machines, readable by humans.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </article>
-
+          <div class="moment__content">
+            <h3 class="moment__name">tailor-resume</h3>
+            <p class="moment__lede">The engine extracted from AutoApply AI and shipped as its own product. A developer installs it in three minutes and has a production-grade tailoring pipeline. An agent that speaks MCP calls it with zero integration code &mdash; no wrappers, no adapters, no glue.</p>
+            <div class="callout callout--green">
+              <p class="callout__label mono">Why MCP-native matters</p>
+              <p class="callout__body">97M monthly SDK downloads. 10,000+ public servers. 1B+ tool calls per month. Every agent framework built in 2025 speaks MCP. Naren was building MCP servers before most engineers knew the spec existed.</p>
+            </div>
+            <div class="arch-wrap">
+              <button class="arch-btn mono" data-target="tr-trace" aria-expanded="false">[ + ] architecture trace</button>
+              <pre class="arch-trace" id="tr-trace" hidden>
++---------------------+
+|  Any MCP-aware agent |  Claude Desktop . Cursor . custom
++----------+----------+
+           | MCP protocol
+           v
++---------------------+
+|   tailor-resume     |
+|  +-----+ +---+ +--+ |
+|  | MCP | |CLI| |ST| |
+|  +-----+ +---+ +--+ |
++----------+----------+
+           |
+           v
+  tailored resume + cover letter</pre>
+            </div>
           </div>
-
-          <!-- Supporting systems row -->
-          <div class="supporting-row" data-reveal>
-
-            <article class="support-card">
-              <span class="section-label">Discovery engine</span>
-              <h3>JobScout</h3>
-              <p>
-                Job discovery, ranking, alerts, and sponsorship filtering behind the broader AutoApply AI workflow. Monitors 130+ company career pages across 6 ATS platforms and keeps discovery signal clean.
-              </p>
-              <div class="support-card__highlights">
-                <span class="skill-chip">130+ companies</span>
-                <span class="skill-chip">6 ATS platforms</span>
-                <span class="skill-chip">ranking engine</span>
-                <span class="skill-chip">sponsorship-aware</span>
-              </div>
-              <div style="margin-top:0.75rem;">
-                <a href="https://github.com/narendranathe/job-scout" class="text-link" target="_blank" rel="noreferrer">Open repo -&gt;</a>
-              </div>
-            </article>
-
-            <aside class="support-card">
-              <span class="section-label">Additional systems</span>
-              <h3>Supporting work</h3>
-              <ul class="support-list">
-                <li>
-                  <strong>fraud-detection-ml-platform</strong>
-                  <span>100+ TPS, sub-ms P99 latency, Kafka, MLflow, Prometheus, Grafana.</span>
-                </li>
-                <li>
-                  <strong>portfolio-risk-analysis</strong>
-                  <span>Kafka, Spark, VaR pipeline - real-time risk analytics design.</span>
-                </li>
-              </ul>
-            </aside>
-
-          </div>
-
         </div>
-      </section>
+      </article>
 
-      <!-- ===== SECTION 4: ENGINEERING TRACK RECORD ===== -->
-      <section class="section section--alt" id="experience">
-        <div class="container">
-
-          <div class="section-head" data-reveal>
-            <span class="section-label">Engineering track record</span>
-            <h2 class="section-title">Where I built the depth behind the systems.</h2>
+      <!-- JobScout -->
+      <article class="moment reveal" id="jobscout">
+        <header class="moment__bar mono">
+          <span class="live-dot" aria-hidden="true"></span>
+          jobscout &nbsp;&middot;&nbsp; ACTIVE &nbsp;&middot;&nbsp; continuous monitoring &nbsp;&middot;&nbsp; 24/7
+        </header>
+        <div class="moment__body">
+          <div class="moment__anchor">
+            <div class="big-num">130<span class="green">+</span></div>
+            <div class="big-label mono">career pages monitored</div>
+            <ul class="anchor-stats mono">
+              <li><span class="green">6</span> ATS platforms</li>
+              <li>Greenhouse &middot; Lever</li>
+              <li>Workday &middot; iCIMS</li>
+              <li>Taleo &middot; SmartRecruit</li>
+            </ul>
           </div>
-
-          <div class="track">
-
-            <!-- ExponentHR -->
-            <div class="track-item" data-reveal>
-              <div class="track-date">
-                <span class="track-date__period">Jul 2024</span>
-                <span class="track-date__sep">-</span>
-                <span class="track-date__period">Present</span>
-              </div>
-              <div class="track-content">
-                <div class="track-card">
-                  <div class="track-card__header">
-                    <div class="track-card__logo">
-                      <img
-                        src="https://github.com/user-attachments/assets/8f588639-0463-4d1c-95e6-aba025804099"
-                        alt="ExponentHR"
-                        onerror="this.style.display='none'; this.parentElement.textContent='EX';"
-                      >
-                    </div>
-                    <div class="track-card__meta">
-                      <h3 class="track-card__title">Data Engineer</h3>
-                      <p class="track-card__company">ExponentHR &middot; Addison, TX</p>
-                      <p class="track-card__scope"><em>AI platform engineering / applied AI</em></p>
-                    </div>
-                  </div>
-                  <ul class="track-card__bullets">
-                    <li>Architected catalog-driven NL-to-SQL engine on Microsoft Fabric: FAISS classifies intent across 6K+ HR columns, Claude Sonnet generates RLS-enforced T-SQL, NetworkX resolves cross-domain joins. Report tickets cut ~40%, query latency 12s&rarr;4s across 400 enterprise clients.</li>
-                    <li>Compressed deployment cycles from 3 months to 14 days by owning CI/CD end-to-end through Azure DevOps, eliminating 11 weeks of cross-team idle time.</li>
-                    <li>Reengineered CDC ETL from full-table reloads to incremental merge upserts: runtime 30min&rarr;8min, compute cost -67%.</li>
-                  </ul>
-                  <div class="track-card__skills">
-                    <span class="skill-chip">Microsoft Fabric</span>
-                    <span class="skill-chip">FAISS</span>
-                    <span class="skill-chip">Claude Sonnet</span>
-                    <span class="skill-chip">NL-to-SQL</span>
-                    <span class="skill-chip">NetworkX</span>
-                    <span class="skill-chip">CDC/ETL</span>
-                    <span class="skill-chip">Azure DevOps</span>
-                    <span class="skill-chip">SQL Server</span>
-                  </div>
-                  <div class="track-card__actions">
-                    <button class="expand-btn" type="button" aria-expanded="false" data-original-label="Deep dive">Deep dive</button>
-                  </div>
-                  <div class="system-card__expand" hidden>
-                    <div class="arch-grid">
-                      <div class="arch-box">
-                        <h4>What I owned</h4>
-                        <p>Full system design and implementation of the NL-to-SQL pipeline, FAISS index strategy, NetworkX semantic graph, Azure DevOps pipeline, and CDC migration. Designed and shipped end-to-end without a dedicated AI team.</p>
-                      </div>
-                      <div class="arch-box">
-                        <h4>Key decisions</h4>
-                        <p>Chose FAISS over pgvector for offline-first retrieval at 6K column scale. Used NetworkX for semantic join graph over hardcoded paths to enable hot-reload domain onboarding. Chose Claude Sonnet over template SQL for intent-flexible generation with RLS wrapping.</p>
-                      </div>
-                      <div class="arch-box">
-                        <h4>What I'd do differently</h4>
-                        <p>Invest in catalog-first schema discipline earlier. The hot-reload domain onboarding gain came from treating the catalog as a product artifact, not a config file.</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div class="moment__content">
+            <h3 class="moment__name">JobScout</h3>
+            <p class="moment__lede">The discovery layer beneath AutoApply AI. One hundred and thirty company career pages, continuously watched. Six ATS platforms integrated natively. Every new posting becomes a candidate task in the pipeline &mdash; boring, essential plumbing that most teams chronically underbuild.</p>
+            <div class="arch-wrap">
+              <button class="arch-btn mono" data-target="js-trace" aria-expanded="false">[ + ] architecture trace</button>
+              <pre class="arch-trace" id="js-trace" hidden>
++----------------------------+
+|  130+ company career pages  |
+|  + 6 ATS platform APIs      |
++-------------+--------------+
+              |
+              v
+       +------------+
+       |  Crawlers  | -> diff -> dedupe -> normalize
+       +------+-----+
+              |
+              v
+       +------------+
+       | Job stream | -> AutoApply AI discover phase
+       +------------+</pre>
             </div>
-
-            <!-- Missouri S&T -->
-            <div class="track-item" data-reveal>
-              <div class="track-date">
-                <span class="track-date__period">Aug 2023</span>
-                <span class="track-date__sep">-</span>
-                <span class="track-date__period">Jul 2024</span>
-              </div>
-              <div class="track-content">
-                <div class="track-card">
-                  <div class="track-card__header">
-                    <div class="track-card__logo">
-                      <img
-                        src="https://github.com/user-attachments/assets/5dc864b8-501a-485a-b780-d0fcde01a3de"
-                        alt="Missouri S&T"
-                        onerror="this.style.display='none'; this.parentElement.textContent='MS';"
-                      >
-                    </div>
-                    <div class="track-card__meta">
-                      <h3 class="track-card__title">Data Engineer</h3>
-                      <p class="track-card__company">Missouri University of Science and Technology &middot; Rolla, MO</p>
-                      <p class="track-card__scope"><em>ML infrastructure / anomaly detection</em></p>
-                    </div>
-                  </div>
-                  <ul class="track-card__bullets">
-                    <li>Engineered Azure AI Anomaly Detector pipelines selecting optimal algorithms per time-series profile, achieving 95%+ detection accuracy - caught a production memory leak 4 hours before outage.</li>
-                    <li>Implemented tunable alert thresholds, filtering ~250 weekly non-actionable P3 alerts and moving signal-to-noise from 1:5 to 1:1.2.</li>
-                    <li>Migrated from static D-Series VMs to AKS with HPA: CPU utilization 12%&rarr;64%, nodes consolidated 20&rarr;4-8 dynamic, Azure spend cut by $3,200/month.</li>
-                  </ul>
-                  <div class="track-card__skills">
-                    <span class="skill-chip">Azure AI</span>
-                    <span class="skill-chip">AKS/HPA</span>
-                    <span class="skill-chip">Python</span>
-                    <span class="skill-chip">Kubernetes</span>
-                    <span class="skill-chip">Anomaly Detection</span>
-                    <span class="skill-chip">REST API</span>
-                  </div>
-                  <div class="track-card__actions">
-                    <button class="expand-btn" type="button" aria-expanded="false" data-original-label="Deep dive">Deep dive</button>
-                  </div>
-                  <div class="system-card__expand" hidden>
-                    <div class="arch-grid">
-                      <div class="arch-box">
-                        <h4>What I owned</h4>
-                        <p>End-to-end anomaly detection pipeline design, algorithm selection framework, threshold tuning system, and AKS migration with HPA configuration.</p>
-                      </div>
-                      <div class="arch-box">
-                        <h4>Key decisions</h4>
-                        <p>Per-service tunable thresholds instead of global settings - different services have fundamentally different normal variance patterns. Chose AKS over pre-provisioned VMs to handle burst ML inference load without idle spend.</p>
-                      </div>
-                      <div class="arch-box">
-                        <h4>Signal it sends</h4>
-                        <p>MLOps mindset early - treating observability as a product surface, not an afterthought.</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- C2FO -->
-            <div class="track-item" data-reveal>
-              <div class="track-date">
-                <span class="track-date__period">Jun 2023</span>
-                <span class="track-date__sep">-</span>
-                <span class="track-date__period">Aug 2023</span>
-              </div>
-              <div class="track-content">
-                <div class="track-card">
-                  <div class="track-card__header">
-                    <div class="track-card__logo">
-                      <img
-                        src="https://github.com/user-attachments/assets/3568348e-20d6-4210-83de-bdec9950333d"
-                        alt="C2FO"
-                        onerror="this.style.display='none'; this.parentElement.textContent='C2';"
-                      >
-                    </div>
-                    <div class="track-card__meta">
-                      <h3 class="track-card__title">Engineering Intern</h3>
-                      <p class="track-card__company">C2FO &middot; Leawood, KS</p>
-                    </div>
-                  </div>
-                  <ul class="track-card__bullets">
-                    <li>Analyzed B2B financial transaction patterns via SQL to identify user behavior trends and inform product prioritization across the preferred offers tool.</li>
-                    <li>Authored data-driven PRDs that reduced development resource allocation time by 50% by eliminating spec ambiguity across engineering, design, and business stakeholders.</li>
-                  </ul>
-                  <div class="track-card__skills">
-                    <span class="skill-chip">SQL</span>
-                    <span class="skill-chip">Product Management</span>
-                    <span class="skill-chip">Data Analysis</span>
-                    <span class="skill-chip">PRD</span>
-                    <span class="skill-chip">CSPO</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- udaan.com -->
-            <div class="track-item" data-reveal>
-              <div class="track-date">
-                <span class="track-date__period">Sep 2020</span>
-                <span class="track-date__sep">-</span>
-                <span class="track-date__period">Mar 2021</span>
-              </div>
-              <div class="track-content">
-                <div class="track-card">
-                  <div class="track-card__header">
-                    <div class="track-card__logo">
-                      <img
-                        src="https://github.com/user-attachments/assets/f07f767c-50e5-4bd4-b358-3c7dbf10427f"
-                        alt="udaan.com"
-                        onerror="this.style.display='none'; this.parentElement.textContent='UD';"
-                      >
-                    </div>
-                    <div class="track-card__meta">
-                      <h3 class="track-card__title">Business Intelligence Analyst | Supply</h3>
-                      <p class="track-card__company">udaan.com &middot; India</p>
-                    </div>
-                  </div>
-                  <ul class="track-card__bullets">
-                    <li>Built predictive demand forecasting models driving $4 million annual savings and 7% ROI improvement through optimized inventory allocation.</li>
-                    <li>Achieved 99.3% fulfillment rate through statistical capacity planning managing end-to-end first-mile to last-mile operations.</li>
-                    <li>Developed automated ETL pipelines for financial modeling dashboards in Power BI.</li>
-                  </ul>
-                  <div class="track-card__skills">
-                    <span class="skill-chip">Forecasting</span>
-                    <span class="skill-chip">Predictive Models</span>
-                    <span class="skill-chip">Power BI</span>
-                    <span class="skill-chip">SQL</span>
-                    <span class="skill-chip">Supply Chain</span>
-                    <span class="skill-chip">ETL</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Zomato -->
-            <div class="track-item" data-reveal>
-              <div class="track-date">
-                <span class="track-date__period">Mar 2018</span>
-                <span class="track-date__sep">-</span>
-                <span class="track-date__period">Sep 2020</span>
-              </div>
-              <div class="track-content">
-                <div class="track-card">
-                  <div class="track-card__header">
-                    <div class="track-card__logo">
-                      <img
-                        src="https://github.com/user-attachments/assets/f74157d0-b609-496e-9cad-1986f3e22ab4"
-                        alt="Zomato"
-                        onerror="this.style.display='none'; this.parentElement.textContent='ZM';"
-                      >
-                    </div>
-                    <div class="track-card__meta">
-                      <h3 class="track-card__title">Business Analyst</h3>
-                      <p class="track-card__company">Zomato &middot; Hyderabad, India</p>
-                    </div>
-                  </div>
-                  <ul class="track-card__bullets">
-                    <li>Built real-time competitor analytics platform tracking pricing, delivery times, and coverage - fed pricing changes that contributed to 9% market share gain in contested metros.</li>
-                    <li>Optimized search relevance with ranking models using contextual signals (time, location, cuisine affinity), improving search-to-conversion across millions of daily queries.</li>
-                    <li>Built Elasticsearch enterprise search indexing 100K+ documents, reducing Support Desk volume by ~80% through self-serve query resolution.</li>
-                  </ul>
-                  <div class="track-card__skills">
-                    <span class="skill-chip">Elasticsearch</span>
-                    <span class="skill-chip">SQL</span>
-                    <span class="skill-chip">Competitor Analytics</span>
-                    <span class="skill-chip">Ranking Models</span>
-                    <span class="skill-chip">Search</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div><!-- /.track -->
-
-          <!-- Certifications -->
-          <div class="section-head" data-reveal style="margin-top:3rem;">
-            <span class="section-label">Certifications</span>
           </div>
-          <div class="certs-grid" data-reveal>
-
-            <div class="cert-item">
-              <img
-                src="https://github.com/user-attachments/assets/e93f602f-04c4-45a2-8bba-3459cb551943"
-                alt="DP-700 Fabric Data Engineer Associate"
-                class="cert-badge"
-                onerror="this.style.display='none';"
-              >
-              <div class="cert-info">
-                <span class="cert-name">DP-700 Fabric Data Engineer Associate</span>
-                <span class="cert-issuer">Microsoft</span>
-              </div>
-            </div>
-
-            <div class="cert-item">
-              <img
-                src="https://github.com/user-attachments/assets/162dd9ad-89b8-406a-8fe6-5102ec52b37b"
-                alt="Azure AI Fundamentals AI-900"
-                class="cert-badge"
-                onerror="this.style.display='none';"
-              >
-              <div class="cert-info">
-                <span class="cert-name">Azure AI Fundamentals AI-900</span>
-                <span class="cert-issuer">Microsoft</span>
-              </div>
-            </div>
-
-            <div class="cert-item">
-              <img
-                src="https://github.com/user-attachments/assets/d5b15f36-33a2-406b-974d-ea4dad8ec2c9"
-                alt="Databricks Generative AI Fundamentals"
-                class="cert-badge"
-                onerror="this.style.display='none';"
-              >
-              <div class="cert-info">
-                <span class="cert-name">Generative AI Fundamentals</span>
-                <span class="cert-issuer">Databricks</span>
-              </div>
-            </div>
-
-            <div class="cert-item">
-              <div class="cert-badge cert-badge--icon">
-                <i class="fas fa-database"></i>
-              </div>
-              <div class="cert-info">
-                <span class="cert-name">Data Warehouse in Microsoft Fabric</span>
-                <span class="cert-issuer">Applied Skills &middot; Microsoft</span>
-              </div>
-            </div>
-
-            <div class="cert-item">
-              <div class="cert-badge cert-badge--icon">
-                <i class="fab fa-hackerrank"></i>
-              </div>
-              <div class="cert-info">
-                <span class="cert-name">SQL Advanced</span>
-                <span class="cert-issuer">HackerRank</span>
-              </div>
-            </div>
-
-            <div class="cert-item">
-              <div class="cert-badge cert-badge--icon">
-                <i class="fas fa-certificate"></i>
-              </div>
-              <div class="cert-info">
-                <span class="cert-name">Certified Scrum Product Owner</span>
-                <span class="cert-issuer">Scrum Alliance</span>
-              </div>
-            </div>
-
-          </div><!-- /.certs-grid -->
-
         </div>
-      </section>
+      </article>
+    </section>
 
-      <!-- ===== SECTION 5: HOW I THINK IN PUBLIC ===== -->
-      <section class="section" id="notes">
-        <div class="container">
-
-          <div class="section-head" data-reveal>
-            <span class="section-label">How I think in public</span>
-            <h2 class="section-title">Engineering decisions, production failures, and what I learned building AI systems.</h2>
-            <p class="section-subtitle">Architecture notes from shipping real systems - not tutorials.</p>
-          </div>
-
-          <div class="writing-grid">
-
-            <article class="writing-card" data-reveal>
-              <span class="writing-card__label">Architecture</span>
-              <h3 class="writing-card__title">Chrome Extension ATS Adapters: Per-Platform Engineering</h3>
-              <p class="writing-card__desc">Why one generic form handler is the wrong abstraction when ATS platforms vary by DOM isolation, field detection logic, and submission behavior.</p>
-              <a href="https://narendranathe.substack.com" class="text-link" target="_blank" rel="noreferrer">Read on Substack -&gt;</a>
-            </article>
-
-            <article class="writing-card" data-reveal>
-              <span class="writing-card__label">System design</span>
-              <h3 class="writing-card__title">Two Booleans and a Production Bug: State Design in AutoApply AI</h3>
-              <p class="writing-card__desc">A seemingly simple boolean flag caused a state bug that took three false fixes before the real model emerged. What it taught about representing apply state.</p>
-              <a href="https://narendranathe.substack.com" class="text-link" target="_blank" rel="noreferrer">Read on Substack -&gt;</a>
-            </article>
-
-            <article class="writing-card" data-reveal>
-              <span class="writing-card__label">AI systems</span>
-              <h3 class="writing-card__title">The LLM Cascade as a Routing System, Not a Fallback</h3>
-              <p class="writing-card__desc">Five providers, circuit breakers, per-category routing, and a reward loop. Why the model routing layer is the most interesting engineering surface in AutoApply AI.</p>
-              <a href="https://narendranathe.substack.com" class="text-link" target="_blank" rel="noreferrer">Read on Substack -&gt;</a>
-            </article>
-
-          </div>
-
-          <!-- Research publication -->
-          <div class="research-card" data-reveal>
-            <span class="section-label">Peer-reviewed</span>
-            <h3 class="research-card__title">An Examination of Sentiment Analysis as a Tool for Gathering Visitor Feedback</h3>
-            <p class="research-card__authors">Dr. David Bojanic, Narendranath Edara, Jane Zhang</p>
-            <p class="research-card__publisher">Journal of Nonprofit &amp; Public Sector Marketing &middot; Taylor &amp; Francis &middot; 2025</p>
-            <a href="https://doi.org/10.1080/10495142.2025.2525123" class="text-link" target="_blank" rel="noreferrer">View publication -&gt;</a>
-          </div>
-
-          <div class="section-cta" data-reveal>
-            <a href="https://narendranathe.substack.com" class="btn btn--ghost" target="_blank" rel="noreferrer">View all notes on Substack -&gt;</a>
-          </div>
-
+    <!-- ===== INTERACTIVE GRAPH ===== -->
+    <section id="graph-section" class="graph-section" aria-labelledby="graph-head">
+      <div class="graph-section__head">
+        <p class="eyebrow mono">// knowledge graph</p>
+        <h2 id="graph-head" class="display-h">Every tool is a node.<br>The connections are the architecture.</h2>
+        <div class="graph-legend mono">
+          <span><i class="ldot ldot--system"></i>deployed systems</span>
+          <span><i class="ldot ldot--tool"></i>tools &amp; concepts</span>
+          <span><i class="ldot ldot--impact"></i>impact</span>
+          <span class="legend-hint">click &nbsp;&middot;&nbsp; drag &nbsp;&middot;&nbsp; dbl-click to focus</span>
         </div>
-      </section>
-
-      <!-- ===== SECTION 6: SIGNAL FROM THE FIELD ===== -->
-      <section class="section section--alt" id="signal">
-        <div class="container">
-
-          <div class="section-head" data-reveal>
-            <span class="section-label">Signal from the field</span>
-            <h2 class="section-title">What engineers who worked alongside me observed.</h2>
-          </div>
-
-          <div class="peer-grid">
-
-            <div class="peer-card" data-reveal>
-              <blockquote class="peer-card__quote">
-                "Naren is a great talent in the product ownership space. He is a critical thinker and understands how to analyze a problem, and convert that problem into a tangible requirements doc. He also understands how to take a data driven approach to tackle features and initiatives. Most importantly, he is a quick and humble learner that loves researching the areas of the business that are new to him."
-              </blockquote>
-              <div class="peer-card__author">
-                <div class="peer-avatar">RE</div>
-                <div class="peer-card__author-meta">
-                  <span class="peer-card__name">Richard Enright</span>
-                  <span class="peer-card__role">Lead Product Manager, Harness</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="peer-card" data-reveal>
-              <blockquote class="peer-card__quote">
-                "I had the pleasure of working closely with Narendranath for 3+ years and can confidently attest to his outstanding performance and exceptional work ethic. He had a keen eye for solving business problems by identifying trends to improve the overall business. Narendranath was always willing to go above and beyond his responsibilities to support the team."
-              </blockquote>
-              <div class="peer-card__author">
-                <div class="peer-avatar">SM</div>
-                <div class="peer-card__author-meta">
-                  <span class="peer-card__name">Snehal Moni</span>
-                  <span class="peer-card__role">Operations &amp; Policy Analyst, Oregon Health Authority</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="peer-card" data-reveal>
-              <blockquote class="peer-card__quote">
-                "Narendranath has been an efficient source to the team at all times. He expertly trained himself to adapt to the various sectors of the business and was one of the few people who took up every challenge offered to him."
-              </blockquote>
-              <div class="peer-card__author">
-                <div class="peer-avatar">PS</div>
-                <div class="peer-card__author-meta">
-                  <span class="peer-card__name">Pranav Suresh</span>
-                  <span class="peer-card__role">Business Effectiveness, CIBC</span>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      <!-- ===== SECTION 7: CONNECT ===== -->
-      <section class="section" id="connect">
-        <div class="container">
-
-          <div class="section-head" data-reveal>
-            <span class="section-label">Connect</span>
-            <h2 class="section-title">Talk systems, platforms, or applied AI.</h2>
-            <p class="section-subtitle">I'm open to Senior AI Platform Engineer, Applied AI, Backend AI, and ML Platform roles. Based in Dallas TX. H1B transfer. Hybrid or relocation OK.</p>
-          </div>
-
-          <div class="contact-grid" data-reveal>
-
-            <!-- Left: Photo + note -->
-            <div class="contact-profile">
-              <img
-                src="https://github.com/user-attachments/assets/a31266a6-37af-4717-b031-de03ae6058a9"
-                alt="Narendranath Edara"
-                class="contact-photo"
-                onerror="this.style.display='none';"
-              >
-              <p class="contact-intro">
-                Response within 24 hours. I'm most useful to teams who want someone who can design and ship AI systems end-to-end, from retrieval architecture through production deployment and operational observability.
-              </p>
-            </div>
-
-            <!-- Right: Links -->
-            <div class="contact-links">
-              <a href="mailto:edara.narendranath@gmail.com" class="contact-link">
-                <i class="fas fa-envelope"></i>
-                <span>edara.narendranath@gmail.com</span>
-              </a>
-              <a href="https://www.linkedin.com/in/narendranathe/" target="_blank" rel="noreferrer" class="contact-link">
-                <i class="fab fa-linkedin-in"></i>
-                <span>linkedin.com/in/narendranathe</span>
-              </a>
-              <a href="https://github.com/narendranathe" target="_blank" rel="noreferrer" class="contact-link">
-                <i class="fab fa-github"></i>
-                <span>github.com/narendranathe</span>
-              </a>
-              <a href="https://narendranathe.substack.com" target="_blank" rel="noreferrer" class="contact-link">
-                <i class="fas fa-newspaper"></i>
-                <span>narendranathe.substack.com</span>
-              </a>
-              <a href="https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf" target="_blank" rel="noreferrer" class="contact-link">
-                <i class="fas fa-file-pdf"></i>
-                <span>Download resume (PDF)</span>
-              </a>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-    </main>
-
-    <!-- ===== FOOTER ===== -->
-    <footer class="site-footer" data-site-footer>
-      <div class="container footer__inner">
-        <div class="footer__left">
-          <span class="footer__name">Narendranath Edara</span>
-          <span class="footer__role">Senior AI Platform Engineer &middot; Dallas TX</span>
-        </div>
-        <nav class="footer__nav" aria-label="Footer navigation">
-          <a href="#systems" class="footer__link">Systems</a>
-          <a href="#experience" class="footer__link">Track record</a>
-          <a href="#notes" class="footer__link">Writing</a>
-          <a href="#connect" class="footer__link">Connect</a>
-        </nav>
-        <div class="footer__social">
-          <a href="https://github.com/narendranathe" target="_blank" rel="noreferrer" class="footer__social-link" aria-label="GitHub">
-            <i class="fab fa-github"></i>
-          </a>
-          <a href="https://www.linkedin.com/in/narendranathe/" target="_blank" rel="noreferrer" class="footer__social-link" aria-label="LinkedIn">
-            <i class="fab fa-linkedin-in"></i>
-          </a>
-          <a href="https://narendranathe.substack.com" target="_blank" rel="noreferrer" class="footer__social-link" aria-label="Substack">
-            <i class="fas fa-newspaper"></i>
-          </a>
-          <a href="mailto:edara.narendranath@gmail.com" class="footer__social-link" aria-label="Email">
-            <i class="fas fa-envelope"></i>
-          </a>
-        </div>
-        <p class="footer__copy">&copy; <span id="footer-year"></span> Narendranath Edara</p>
       </div>
-    </footer>
+      <div id="graph-canvas" class="graph-canvas" aria-label="Interactive knowledge graph of Naren's systems and tools"></div>
+    </section>
 
-  </div><!-- /.page-shell -->
+    <!-- Minimap (appears when scrolled past graph) -->
+    <aside id="minimap" class="minimap" aria-hidden="true">
+      <div id="minigraph"></div>
+      <p class="minimap__label mono">click to navigate</p>
+    </aside>
 
-  <script src="config.js"></script>
-  <script src="app.js"></script>
+    <!-- Node detail panel -->
+    <div id="node-panel" class="node-panel" role="dialog" aria-modal="true" aria-label="Node detail" aria-hidden="true">
+      <button id="panel-close" class="node-panel__close" aria-label="Close panel">&times;</button>
+      <div id="panel-body" class="node-panel__body"></div>
+    </div>
+    <div id="panel-scrim" class="panel-scrim" aria-hidden="true"></div>
 
-  <script>
-    // ── Scroll progress ─────────────────────────────────────────────
-    window.addEventListener('scroll', function () {
-      var el = document.getElementById('scroll-progress');
-      if (!el) return;
-      var scrollTop = window.scrollY || document.documentElement.scrollTop;
-      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      el.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
-    }, { passive: true });
+    <!-- ===== CAREER ===== -->
+    <section id="career" class="career-section" aria-labelledby="career-head">
+      <div class="essay-col">
+        <p class="eyebrow mono">// career</p>
+        <h2 id="career-head" class="display-h reveal">Five companies.<br>One throughline.</h2>
 
-    // ── Footer year ──────────────────────────────────────────────────
-    var fyEl = document.getElementById('footer-year');
-    if (fyEl) { fyEl.textContent = String(new Date().getFullYear()); }
+        <div class="career-prose reveal">
+          <p>I am currently a Data Engineer at <strong><img class="co-logo" src="https://github.com/user-attachments/assets/8f588639-0463-4d1c-95e6-aba025804099" alt="ExponentHR" onerror="this.style.display='none'" /> ExponentHR</strong> in Dallas, where I have been since July 2024.</p>
 
-    document.addEventListener('DOMContentLoaded', function () {
+          <p>Before Dallas, there was <strong><img class="co-logo" src="https://github.com/user-attachments/assets/5dc864b8-501a-485a-b780-d0fcde01a3de" alt="Missouri S&amp;T" onerror="this.style.display='none'" /> Missouri S&amp;T</strong> &mdash; a Master&rsquo;s in Data Science, finished December 2024 with a 4.0 GPA, and a side project that quietly saved the program $3,200 a month in Azure spend by rewriting the data pipeline nobody had touched in two years. Published in Taylor &amp; Francis the same semester.</p>
 
-      // ── Mobile nav ─────────────────────────────────────────────────
-      var toggle = document.querySelector('.header__mobile-toggle');
-      var mobileNav = document.querySelector('.header__mobile-nav');
-      if (toggle && mobileNav) {
-        toggle.addEventListener('click', function () {
-          var open = toggle.getAttribute('aria-expanded') === 'true';
-          toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
-          mobileNav.setAttribute('aria-hidden', open ? 'true' : 'false');
-          mobileNav.classList.toggle('is-open', !open);
-        });
-        mobileNav.querySelectorAll('.header__mobile-link').forEach(function (link) {
-          link.addEventListener('click', function () {
-            toggle.setAttribute('aria-expanded', 'false');
-            mobileNav.setAttribute('aria-hidden', 'true');
-            mobileNav.classList.remove('is-open');
-          });
-        });
-      }
+          <p>At <strong><img class="co-logo" src="https://github.com/user-attachments/assets/f74157d0-b609-496e-9cad-1986f3e22ab4" alt="Zomato" onerror="this.style.display='none'" /> Zomato</strong> I learned what scale actually means &mdash; not the kind on a slide deck, but the kind where a query plan you wrote on Tuesday changes the unit economics of a city by Friday. I built the analytics that backed a <em class="green">9% market share gain</em> in a contested region. You learn quickly that infrastructure is a moral commitment: someone downstream is going to trust your numbers to make a decision they cannot take back.</p>
 
-      // ── Expand / collapse buttons ───────────────────────────────────
-      document.querySelectorAll('.expand-btn').forEach(function (btn) {
-        var originalLabel = btn.getAttribute('data-original-label') || btn.textContent.trim();
-        btn.setAttribute('data-original-label', originalLabel);
+          <p>Before that, <strong><img class="co-logo" src="https://github.com/user-attachments/assets/3568348e-20d6-4210-83de-bdec9950333d" alt="C2FO" onerror="this.style.display='none'" /> C2FO</strong> taught me what enterprise data engineering looks like when money is literally moving through your pipelines, and <strong> udaan.com</strong> taught me what it looks like when the merchants on the other end of those pipelines are people you can meet. Five companies, one throughline: build the boring layer well, and the interesting layer becomes possible.</p>
+        </div>
+      </div>
+    </section>
 
-        btn.addEventListener('click', function () {
-          var isExpanded = btn.getAttribute('aria-expanded') === 'true';
-          btn.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+    <!-- ===== WRITING ===== -->
+    <section id="writing" class="writing-section" aria-labelledby="writing-head">
+      <div class="essay-col">
+        <p class="eyebrow mono">// writing</p>
+        <h2 id="writing-head" class="display-h reveal">Three essays on<br>building agents.</h2>
 
-          var card = btn.closest('.system-card__body, .track-card');
-          if (!card) return;
-          var panel = card.querySelector('.system-card__expand');
-          if (!panel) return;
+        <div class="pull-quotes reveal">
+          <blockquote class="pull-quote">
+            <p>&ldquo;The MCP standard is not a protocol &mdash; it is a Schelling point. Once enough vendors converged, integration code became a liability rather than a moat.&rdquo;</p>
+            <cite>On MCP and the new integration economy &nbsp;<a href="https://substack.com/@narendranathe" target="_blank" rel="noopener" class="essay-link">&rarr; Substack</a></cite>
+          </blockquote>
+          <blockquote class="pull-quote">
+            <p>&ldquo;A six-provider LLM cascade is not engineering paranoia. It is the recognition that any single vendor will, at some point this quarter, have a bad afternoon.&rdquo;</p>
+            <cite>On reliability in the agentic stack &nbsp;<a href="https://substack.com/@narendranathe" target="_blank" rel="noopener" class="essay-link">&rarr; Substack</a></cite>
+          </blockquote>
+          <blockquote class="pull-quote">
+            <p>&ldquo;Distribution is the part of the agent stack we keep refusing to take seriously. A great pipeline that ships only as a Python script is a pipeline most users will never run.&rdquo;</p>
+            <cite>On four distribution surfaces &nbsp;<a href="https://substack.com/@narendranathe" target="_blank" rel="noopener" class="essay-link">&rarr; Substack</a></cite>
+          </blockquote>
+        </div>
+      </div>
+    </section>
 
-          if (isExpanded) {
-            panel.hidden = true;
-            btn.textContent = originalLabel;
-          } else {
-            panel.hidden = false;
-            btn.textContent = 'Collapse';
-          }
-        });
-      });
+    <!-- ===== CREDENTIALS ===== -->
+    <section id="credentials" class="creds-section" aria-labelledby="creds-head">
+      <div class="section-head">
+        <p class="eyebrow mono">// credentials</p>
+        <h2 id="creds-head" class="display-h reveal">Verified.</h2>
+      </div>
+      <div class="creds-grid reveal">
+        <figure class="cred-card">
+          <img src="https://github.com/user-attachments/assets/e93f602f-04c4-45a2-8bba-3459cb551943" alt="Microsoft DP-700 Fabric Data Engineer Associate badge" loading="lazy" />
+          <figcaption>
+            <strong>DP-700</strong>
+            <span class="mono">Microsoft Fabric Data Engineer Associate</span>
+          </figcaption>
+        </figure>
+        <figure class="cred-card">
+          <img src="https://github.com/user-attachments/assets/162dd9ad-89b8-406a-8fe6-5102ec52b37b" alt="Azure AI Fundamentals badge" loading="lazy" />
+          <figcaption>
+            <strong>AI-900</strong>
+            <span class="mono">Azure AI Fundamentals</span>
+          </figcaption>
+        </figure>
+        <figure class="cred-card">
+          <img src="https://github.com/user-attachments/assets/d5b15f36-33a2-406b-974d-ea4dad8ec2c9" alt="Databricks Generative AI Fundamentals badge" loading="lazy" />
+          <figcaption>
+            <strong>GenAI</strong>
+            <span class="mono">Databricks Generative AI Fundamentals</span>
+          </figcaption>
+        </figure>
+      </div>
+      <div class="pub-card reveal">
+        <p class="eyebrow mono">// publication</p>
+        <p>Taylor &amp; Francis &nbsp;&middot;&nbsp; 2025</p>
+        <p>DOI: <a href="https://doi.org/10.1080/10495142.2025.2525123" target="_blank" rel="noopener">10.1080/10495142.2025.2525123</a></p>
+        <p><a href="https://scholarsmine.mst.edu/bio_inftec_facwork/795/" target="_blank" rel="noopener">Featured at Missouri S&amp;T Scholars&rsquo; Mine &rarr;</a></p>
+      </div>
+    </section>
 
-      // ── Scroll reveal ───────────────────────────────────────────────
-      if ('IntersectionObserver' in window) {
-        var revealObs = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('is-revealed');
-              revealObs.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    <!-- ===== CONTACT ===== -->
+    <section id="contact" class="contact-section reveal" aria-labelledby="contact-head">
+      <div class="contact__inner">
+        <div class="contact__photo-wrap">
+          <img
+            src="https://github.com/user-attachments/assets/a31266a6-37af-4717-b031-de03ae6058a9"
+            alt="Narendranath Edara — contact photo"
+            class="contact__photo"
+            loading="lazy"
+          />
+        </div>
+        <div class="contact__content">
+          <p class="eyebrow mono">// contact</p>
+          <h2 id="contact-head" class="display-h">Open to senior<br>AI &amp; data roles.</h2>
+          <p class="contact__meta mono">
+            <span><span class="status-dot" aria-hidden="true"></span> Dallas, TX</span>
+            <span>H1B transfer ready</span>
+            <span>Remote-friendly</span>
+          </p>
+          <div class="contact__links mono">
+            <a href="https://github.com/narendranathe" target="_blank" rel="noopener">github.com/narendranathe</a>
+            <a href="https://substack.com/@narendranathe" target="_blank" rel="noopener">substack.com/@narendranathe</a>
+          </div>
+          <div class="contact__cta">
+            <a href="https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf" target="_blank" rel="noopener" class="btn btn--gold">Download Resume &darr;</a>
+            <a href="https://github.com/narendranathe" target="_blank" rel="noopener" class="btn btn--ghost">GitHub &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        document.querySelectorAll('[data-reveal]').forEach(function (el) {
-          revealObs.observe(el);
-        });
-      } else {
-        document.querySelectorAll('[data-reveal]').forEach(function (el) {
-          el.classList.add('is-revealed');
-        });
-      }
+  </main>
 
-      // ── Count-up animation ─────────────────────────────────────────
-      document.querySelectorAll('[data-count]').forEach(function (el) {
-        var target = parseInt(el.getAttribute('data-count'), 10);
-        if (isNaN(target)) return;
-        var started = false;
-        function runCount() {
-          if (started) return;
-          started = true;
-          var startTime = null;
-          var duration = 1400;
-          function step(ts) {
-            if (!startTime) startTime = ts;
-            var progress = Math.min((ts - startTime) / duration, 1);
-            var ease = 1 - Math.pow(1 - progress, 3);
-            el.textContent = String(Math.round(ease * target));
-            if (progress < 1) { requestAnimationFrame(step); }
-            else { el.textContent = String(target); }
-          }
-          requestAnimationFrame(step);
-        }
-        if ('IntersectionObserver' in window) {
-          var countObs = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) { runCount(); countObs.unobserve(entry.target); }
-            });
-          }, { threshold: 0.4 });
-          countObs.observe(el);
-        } else {
-          runCount();
-        }
-      });
+  <footer class="site-footer mono" role="contentinfo">
+    <span class="live-dot" aria-hidden="true"></span>
+    <span>&copy; <span id="yr"></span> Narendranath Edara &nbsp;&middot;&nbsp; built at the frontier</span>
+  </footer>
 
-      // ── Recommendations from CONFIG ────────────────────────────────
-      // Uses safe DOM creation - no innerHTML
-      var recContainer = document.getElementById('recommendations-container');
-      if (recContainer && typeof CONFIG !== 'undefined' && Array.isArray(CONFIG.recommendations) && CONFIG.recommendations.length) {
-        var grid = document.createElement('div');
-        grid.className = 'peer-grid';
-
-        CONFIG.recommendations.forEach(function (rec) {
-          var card = document.createElement('div');
-          card.className = 'peer-card';
-
-          var quote = document.createElement('blockquote');
-          quote.className = 'peer-card__quote';
-          quote.textContent = '\u201C' + rec.text + '\u201D';
-
-          var author = document.createElement('div');
-          author.className = 'peer-card__author';
-
-          var avatar = document.createElement('div');
-          avatar.className = 'peer-avatar';
-          avatar.textContent = rec.initials || '??';
-
-          var meta = document.createElement('div');
-          meta.className = 'peer-card__author-meta';
-
-          if (rec.linkedin) {
-            var nameLink = document.createElement('a');
-            nameLink.className = 'peer-card__name';
-            nameLink.href = rec.linkedin;
-            nameLink.target = '_blank';
-            nameLink.rel = 'noreferrer';
-            nameLink.textContent = rec.name;
-            meta.appendChild(nameLink);
-          } else {
-            var nameSpan = document.createElement('span');
-            nameSpan.className = 'peer-card__name';
-            nameSpan.textContent = rec.name;
-            meta.appendChild(nameSpan);
-          }
-
-          var roleSpan = document.createElement('span');
-          roleSpan.className = 'peer-card__role';
-          roleSpan.textContent = rec.role;
-          meta.appendChild(roleSpan);
-
-          author.appendChild(avatar);
-          author.appendChild(meta);
-          card.appendChild(quote);
-          card.appendChild(author);
-          grid.appendChild(card);
-        });
-
-        recContainer.appendChild(grid);
-      }
-
-    });
-  </script>
-
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="app.js" defer></script>
 </body>
 </html>
