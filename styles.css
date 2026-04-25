@@ -244,12 +244,21 @@ button { font-family: inherit; cursor: pointer; }
   margin-bottom: 0.6rem;
 }
 .hero-role {
-  font-size: 0.8rem; font-weight: 700;
+  font-size: 0.78rem; font-weight: 700;
   color: var(--accent); letter-spacing: 0.12em;
-  text-transform: uppercase; margin-bottom: 1.25rem;
+  text-transform: uppercase; margin-bottom: 0.85rem;
+}
+.hero-tagline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  font-weight: 400; font-style: italic;
+  line-height: 1.5; color: var(--fg);
+  margin-bottom: 1rem; max-width: 520px;
+  border-left: 3px solid var(--accent-warm);
+  padding-left: 1rem;
 }
 .hero-brief {
-  font-size: 1.05rem; line-height: 1.75; color: var(--fg-soft);
+  font-size: 0.97rem; line-height: 1.75; color: var(--fg-soft);
   margin-bottom: 1.75rem; max-width: 520px;
 }
 .hero-proof {
@@ -372,6 +381,114 @@ button { font-family: inherit; cursor: pointer; }
   z-index: 290; opacity: 0; pointer-events: none; transition: opacity 0.3s;
 }
 #panel-scrim.open { opacity: 1; pointer-events: auto; }
+
+/* ============================================================
+   PLATFORM DIAGRAM
+   ============================================================ */
+.platform-diagram {
+  background: radial-gradient(ellipse at 40% 30%, var(--graph-bg-a) 0%, var(--graph-bg-b) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 2rem;
+  margin-bottom: 2.5rem;
+  display: flex; flex-direction: column; gap: 0;
+}
+.pd-top { display: flex; justify-content: center; }
+.pd-flagship {
+  background: var(--bg);
+  border: 1.5px solid var(--accent);
+  border-radius: var(--r-lg);
+  padding: 1.5rem 2rem;
+  width: 100%; max-width: 600px;
+  box-shadow: 0 2px 16px rgba(23,107,82,0.1);
+}
+.pd-flagship-header { margin-bottom: 0.6rem; }
+.pd-type {
+  font-size: 0.68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--accent); display: block; margin-bottom: 0.2rem;
+}
+.pd-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem; font-weight: 600; color: var(--fg);
+}
+.pd-flow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem; color: var(--accent-warm);
+  font-weight: 500; margin-bottom: 0.85rem;
+}
+.pd-stats {
+  display: flex; flex-wrap: wrap; gap: 1.25rem;
+  margin-bottom: 0.85rem;
+}
+.pd-stat { font-size: 0.84rem; color: var(--fg-soft); }
+.pd-stat strong { color: var(--fg); font-weight: 600; }
+.pd-tech { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+.pd-arrow-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  max-width: 600px; margin: 0 auto;
+  width: 100%;
+}
+.pd-arrow-col {
+  display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
+  padding: 0.6rem 0;
+}
+.pd-arrow-line {
+  width: 1px; height: 28px;
+  background: var(--border);
+  position: relative;
+}
+.pd-arrow-line::after {
+  content: '▾'; position: absolute; bottom: -10px; left: 50%;
+  transform: translateX(-50%); font-size: 10px;
+  color: var(--fg-muted);
+}
+.pd-arrow-label { font-size: 0.68rem; color: var(--fg-muted); font-weight: 500; letter-spacing: 0.04em; }
+
+.pd-engines {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.pd-engine {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 1.25rem 1.5rem;
+}
+.pd-engine-header { margin-bottom: 0.5rem; }
+.pd-engine-desc { font-size: 0.87rem; line-height: 1.6; color: var(--fg-soft); margin-bottom: 0.85rem; }
+.pd-engine-desc strong { color: var(--fg); }
+.pd-surfaces { display: flex; flex-direction: column; gap: 0.45rem; }
+.surface-item { font-size: 0.83rem; color: var(--fg-soft); display: flex; align-items: baseline; gap: 0.4rem; flex-wrap: wrap; }
+.surface-mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem; background: var(--chip-bg);
+  padding: 0.15em 0.5em; border-radius: 4px;
+  color: var(--accent); font-weight: 500;
+}
+.surface-label { font-weight: 600; color: var(--fg); }
+
+.pd-infra {
+  margin-top: 1rem; padding-top: 1rem;
+  border-top: 1px solid var(--border-soft);
+  display: flex; flex-direction: column; gap: 0.3rem;
+  align-items: center; text-align: center;
+}
+.pd-infra-label {
+  font-size: 0.68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--fg-muted);
+}
+.pd-infra-stack {
+  font-size: 0.83rem; color: var(--fg-muted);
+}
+
+@media (max-width: 640px) {
+  .pd-engines { grid-template-columns: 1fr; }
+  .pd-flagship { padding: 1.25rem; }
+  .pd-arrow-row { max-width: 100%; }
+}
 
 /* ============================================================
    SYSTEM CARDS

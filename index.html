@@ -23,9 +23,6 @@
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 
-  <!-- D3 for knowledge graph -->
-  <script src="https://cdn.jsdelivr.net/npm/d3@7" defer></script>
-
   <title>Narendranath Edara | Senior AI Platform Engineer</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -77,8 +74,9 @@
         <div class="hero-copy" data-reveal>
           <h1 class="hero-name">Narendranath<br>Edara</h1>
           <p class="hero-role">Senior AI Platform Engineer</p>
+          <p class="hero-tagline">I build AI systems that are actually in production — and I extract reusable engines from them so the next team doesn't rebuild what I already shipped.</p>
           <p class="hero-brief">
-            I build production AI systems in the messy middle between product and infrastructure — retrieval, workflow orchestration, security guardrails, and the boundaries that make AI useful in production instead of impressive only in demos.
+            Six years shipping data and AI systems across enterprise HR, food-tech, and fintech. Currently building the retrieval, workflow orchestration, and governed SQL layers that make AI useful in production — not just impressive in demos.
           </p>
           <ul class="hero-proof">
             <li>
@@ -197,29 +195,70 @@
           <p class="section-subtitle">The story isn't breadth. It's that I build AI systems with measurable outcomes, strong engineering boundaries, and distribution-aware surfaces that other teams can actually use.</p>
         </div>
 
-        <!-- Knowledge graph -->
-        <div class="graph-wrap" data-reveal>
-          <p class="graph-hint">
-            How the systems connect &mdash;
-            <span class="mono">click</span> any node to explore &middot;
-            <span class="mono">scroll</span> passes through &middot;
-            <span class="mono">Ctrl+scroll</span> or pinch to zoom
-          </p>
-          <div id="graph-container">
-            <div id="graph"></div>
+        <!-- Platform architecture diagram -->
+        <div class="platform-diagram" data-reveal>
+          <div class="pd-top">
+            <div class="pd-flagship">
+              <div class="pd-flagship-header">
+                <span class="pd-type">Workflow Platform</span>
+                <h3 class="pd-name">AutoApply AI</h3>
+              </div>
+              <p class="pd-flow">discover &rarr; tailor &rarr; apply &rarr; track</p>
+              <div class="pd-stats">
+                <span class="pd-stat"><strong>40+</strong> API endpoints</span>
+                <span class="pd-stat"><strong>11</strong> ATS adapters</span>
+                <span class="pd-stat"><strong>6</strong> LLM providers</span>
+                <span class="pd-stat"><strong>9-page</strong> dashboard</span>
+              </div>
+              <div class="pd-tech">
+                <span class="chip">FastAPI</span><span class="chip">Chrome MV3</span>
+                <span class="chip">PostgreSQL</span><span class="chip">Redis</span>
+                <span class="chip">Fly.io</span><span class="chip">React</span>
+              </div>
+            </div>
           </div>
-        </div>
-
-        <!-- Node detail panel -->
-        <div id="panel" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Node detail">
-          <button id="panel-close" aria-label="Close panel">&times;</button>
-          <div id="panel-body"></div>
-        </div>
-        <div id="panel-scrim"></div>
-
-        <!-- Minimap (fixed, appears after scrolling past graph) -->
-        <div id="minimap" aria-hidden="true" aria-label="Graph minimap">
-          <div id="minigraph"></div>
+          <div class="pd-arrow-row" aria-hidden="true">
+            <div class="pd-arrow-col">
+              <div class="pd-arrow-line"></div>
+              <span class="pd-arrow-label">tailoring engine</span>
+            </div>
+            <div class="pd-arrow-col">
+              <div class="pd-arrow-line"></div>
+              <span class="pd-arrow-label">discovery layer</span>
+            </div>
+          </div>
+          <div class="pd-engines">
+            <div class="pd-engine">
+              <div class="pd-engine-header">
+                <span class="pd-type">Reusable Engine</span>
+                <h3 class="pd-name">tailor-resume</h3>
+              </div>
+              <p class="pd-engine-desc">Extracted core, ships independently. <strong>190 tests</strong>. Any team can consume it without touching AutoApply AI.</p>
+              <div class="pd-surfaces">
+                <div class="surface-item"><span class="surface-mono">pip install tailor-resume</span></div>
+                <div class="surface-item"><span class="surface-label">MCP server</span> &mdash; any agent calls it, zero integration</div>
+                <div class="surface-item"><span class="surface-label">CLI</span> &mdash; zero config, cloud features opt-in</div>
+                <div class="surface-item"><span class="surface-label">Streamlit</span> &mdash; browser UI for non-technical users</div>
+              </div>
+            </div>
+            <div class="pd-engine">
+              <div class="pd-engine-header">
+                <span class="pd-type">Discovery Layer</span>
+                <h3 class="pd-name">JobScout</h3>
+              </div>
+              <p class="pd-engine-desc">Keeps discovery signal clean. Runs independently so the apply workflow never inherits stale or low-quality data.</p>
+              <div class="pd-surfaces">
+                <div class="surface-item"><span class="surface-label">130+</span> company career pages monitored</div>
+                <div class="surface-item"><span class="surface-label">6</span> ATS platforms covered</div>
+                <div class="surface-item"><span class="surface-label">Sponsorship-aware</span> ranking built in</div>
+                <div class="surface-item"><span class="surface-label">Continuous</span> alerting, no manual polling</div>
+              </div>
+            </div>
+          </div>
+          <div class="pd-infra">
+            <span class="pd-infra-label">Shared infrastructure</span>
+            <span class="pd-infra-stack">Claude · OpenAI · Gemini · Groq &nbsp;·&nbsp; pgvector / RAG &nbsp;·&nbsp; Multi-provider cascade &nbsp;·&nbsp; MCP Protocol</span>
+          </div>
         </div>
 
         <!-- System cards -->
@@ -716,87 +755,6 @@
   </footer>
 
   <script src="app.js"></script>
-  <script>
-    document.getElementById('footer-year').textContent = new Date().getFullYear();
-
-    // Scroll progress bar
-    window.addEventListener('scroll', function() {
-      var el = document.getElementById('scroll-progress');
-      if (!el) return;
-      var d = document.documentElement.scrollHeight - window.innerHeight;
-      el.style.width = (d > 0 ? (window.scrollY / d) * 100 : 0) + '%';
-    }, { passive: true });
-
-    // Mobile nav toggle
-    (function() {
-      var toggle = document.querySelector('.mobile-toggle');
-      var nav    = document.querySelector('.mobile-nav');
-      if (!toggle || !nav) return;
-      toggle.addEventListener('click', function() {
-        var open = toggle.getAttribute('aria-expanded') === 'true';
-        toggle.setAttribute('aria-expanded', String(!open));
-        nav.setAttribute('aria-hidden', String(open));
-        nav.classList.toggle('is-open', !open);
-        toggle.querySelector('i').className = open ? 'fas fa-bars' : 'fas fa-times';
-      });
-      nav.querySelectorAll('.mobile-link').forEach(function(l) {
-        l.addEventListener('click', function() {
-          toggle.setAttribute('aria-expanded', 'false');
-          nav.setAttribute('aria-hidden', 'true');
-          nav.classList.remove('is-open');
-          toggle.querySelector('i').className = 'fas fa-bars';
-        });
-      });
-    })();
-
-    // Expand / collapse architecture panels
-    document.querySelectorAll('.expand-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        var expanded = btn.getAttribute('aria-expanded') === 'true';
-        btn.setAttribute('aria-expanded', String(!expanded));
-        var body  = btn.closest('.system-body, .track-card');
-        if (!body) return;
-        var panel = body.querySelector('.arch-expand');
-        if (!panel) return;
-        panel.hidden = expanded;
-        btn.textContent = expanded ? (btn.getAttribute('data-label') || 'See architecture') : 'Collapse';
-      });
-    });
-
-    // Scroll reveal
-    (function() {
-      if (!('IntersectionObserver' in window)) {
-        document.querySelectorAll('[data-reveal]').forEach(function(el) { el.classList.add('revealed'); });
-        return;
-      }
-      var obs = new IntersectionObserver(function(entries) {
-        entries.forEach(function(e) {
-          if (e.isIntersecting) { e.target.classList.add('revealed'); obs.unobserve(e.target); }
-        });
-      }, { threshold: 0.07, rootMargin: '0px 0px -40px 0px' });
-      document.querySelectorAll('[data-reveal]').forEach(function(el) { obs.observe(el); });
-    })();
-
-    // Count-up animation
-    document.querySelectorAll('[data-count]').forEach(function(el) {
-      var target = parseInt(el.getAttribute('data-count'), 10);
-      if (isNaN(target)) return;
-      var started = false;
-      function run() {
-        if (started) return; started = true;
-        var t0 = null, dur = 1400;
-        requestAnimationFrame(function step(ts) {
-          if (!t0) t0 = ts;
-          var p = Math.min((ts - t0) / dur, 1), ease = 1 - Math.pow(1 - p, 3);
-          el.textContent = Math.round(ease * target);
-          if (p < 1) requestAnimationFrame(step); else el.textContent = target;
-        });
-      }
-      new IntersectionObserver(function(entries) {
-        if (entries[0].isIntersecting) { run(); }
-      }, { threshold: 0.4 }).observe(el);
-    });
-  </script>
 
 </body>
 </html>
