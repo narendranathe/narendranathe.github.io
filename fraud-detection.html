@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Case study: Fraud Detection ML Platform - real-time scoring at 100+ TPS, sub-ms P99 latency, built with Kafka, PySpark, MLflow, Airflow, Prometheus, and Grafana.">
+  <meta name="author" content="Narendranath Edara">
+  <meta property="og:title" content="Fraud Detection ML Platform | Narendranath Edara">
+  <meta property="og:type" content="article">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <title>Fraud Detection ML Platform | Narendranath Edara</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <nav class="cs-nav">
+    <a href="index.html" class="cs-nav__back">
+      <i class="fas fa-arrow-left"></i> Back to portfolio
+    </a>
+    <span class="cs-nav__name">narendranathe.github.io</span>
+  </nav>
+
+  <div class="page-shell" style="padding-bottom: 4rem;">
+    <div class="container">
+
+      <!-- Hero -->
+      <section class="cs-hero">
+        <span class="cs-hero__kicker">ML Infrastructure</span>
+        <h1>Fraud Detection ML Platform</h1>
+        <p class="cs-hero__summary">
+          A real-time ML pipeline for financial fraud detection: Kafka-driven transaction ingestion,
+          PySpark feature engineering, MLflow model lifecycle management, FastAPI scoring at sub-ms P99
+          latency, and a Grafana observability stack. Built to handle 100+ transactions per second
+          with a full feedback loop from detection to model retraining.
+        </p>
+        <div class="cs-proof-strip">
+          <span>100+ TPS sustained</span>
+          <span>sub-ms P99 scoring</span>
+          <span>94%+ model accuracy</span>
+          <span>&lt;2% false positive rate</span>
+          <span>MLflow model registry</span>
+          <span>Prometheus + Grafana</span>
+        </div>
+        <div class="cs-links">
+          <a href="https://github.com/narendranathe/fraud-detection-ml-platform" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub repo</a>
+        </div>
+        <div style="margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+          <span class="skill-chip">Apache Kafka</span>
+          <span class="skill-chip">PySpark</span>
+          <span class="skill-chip">MLflow</span>
+          <span class="skill-chip">Apache Airflow</span>
+          <span class="skill-chip">FastAPI</span>
+          <span class="skill-chip">Prometheus</span>
+          <span class="skill-chip">Grafana</span>
+          <span class="skill-chip">Docker</span>
+          <span class="skill-chip">PostgreSQL</span>
+          <span class="skill-chip">scikit-learn</span>
+        </div>
+      </section>
+
+      <!-- Metrics -->
+      <div class="cs-metrics">
+        <div class="cs-metric">
+          <span class="cs-metric-num">100+</span>
+          <span class="cs-metric-lbl">transactions/sec</span>
+        </div>
+        <div class="cs-metric">
+          <span class="cs-metric-num">&lt;1ms</span>
+          <span class="cs-metric-lbl">P99 scoring latency</span>
+        </div>
+        <div class="cs-metric">
+          <span class="cs-metric-num">94%+</span>
+          <span class="cs-metric-lbl">detection accuracy</span>
+        </div>
+        <div class="cs-metric">
+          <span class="cs-metric-num">&lt;2%</span>
+          <span class="cs-metric-lbl">false positive rate</span>
+        </div>
+      </div>
+
+      <!-- Problem -->
+      <section class="cs-section">
+        <h2>The Problem</h2>
+        <p>
+          Most fraud detection systems are batch-oriented: transactions are scored hours after they occur,
+          by which time the fraudulent activity has already cascaded. Real-time scoring requires a completely
+          different architecture - one where latency is measured in milliseconds, throughput in hundreds of
+          transactions per second, and the model feedback loop runs continuously.
+        </p>
+        <p>
+          The secondary problem is model drift. Fraud patterns shift fast. A model trained three months ago
+          has already been partially circumvented by new attack vectors. The system needed to support
+          rapid retraining, A/B testing between model versions, and rollback without downtime.
+        </p>
+      </section>
+
+      <!-- Architecture -->
+      <section class="cs-section">
+        <h2>System Architecture</h2>
+        <p>The pipeline has five distinct layers, each with a clear boundary and independent failure mode.</p>
+
+        <div class="cs-arch">
+          <div class="cs-arch-label">Ingestion</div>
+          <div class="cs-arch-row">
+            <div class="cs-arch-box accent">Transaction Producer</div>
+            <div class="cs-arch-box accent">Kafka: raw_transactions</div>
+          </div>
+          <div class="cs-arch-arrow">&#8595;</div>
+          <div class="cs-arch-label">Feature Engineering</div>
+          <div class="cs-arch-row">
+            <div class="cs-arch-box">PySpark Consumer</div>
+            <div class="cs-arch-box">Feature Store (Kafka: feature_vectors)</div>
+          </div>
+          <div class="cs-arch-arrow">&#8595;</div>
+          <div class="cs-arch-label">Scoring</div>
+          <div class="cs-arch-row">
+            <div class="cs-arch-box accent">FastAPI Scoring Service</div>
+            <div class="cs-arch-box accent">MLflow Model (in-memory)</div>
+          </div>
+          <div class="cs-arch-arrow">&#8595;</div>
+          <div class="cs-arch-label">Storage + Observability</div>
+          <div class="cs-arch-row">
+            <div class="cs-arch-box">PostgreSQL (predictions)</div>
+            <div class="cs-arch-box">Prometheus (metrics)</div>
+            <div class="cs-arch-box">Grafana (dashboards)</div>
+          </div>
+          <div class="cs-arch-arrow">&#8593;</div>
+          <div class="cs-arch-label">Training Loop</div>
+          <div class="cs-arch-row">
+            <div class="cs-arch-box">Airflow DAG (retrain)</div>
+            <div class="cs-arch-box">MLflow Model Registry</div>
+          </div>
+        </div>
+
+        <div class="arch-grid">
+          <div class="arch-box">
+            <h4>Ingestion layer</h4>
+            <p>
+              A Kafka producer simulates a realistic transaction stream: varying amounts, merchant categories,
+              geolocation signals, and behavioral anomalies. Transactions flow into a <code>raw_transactions</code>
+              topic at configurable TPS (tested to 100+ sustained). Partitioned by account ID for ordering guarantees.
+            </p>
+          </div>
+          <div class="arch-box">
+            <h4>Feature engineering</h4>
+            <p>
+              PySpark Structured Streaming consumes the raw topic and computes derived features:
+              rolling velocity (transactions in last 5 min / 1 hr), merchant category risk score,
+              geographic anomaly flag, amount deviation from 30-day mean. Output goes to a
+              <code>feature_vectors</code> topic.
+            </p>
+          </div>
+          <div class="arch-box">
+            <h4>Scoring service</h4>
+            <p>
+              FastAPI loads the production model from MLflow at startup and keeps it in memory.
+              No network hop per prediction - sub-ms P99 latency achieved by eliminating the
+              model-loading roundtrip. Model swaps happen via a reload endpoint that pulls the
+              new production model without dropping existing connections.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- MLflow -->
+      <section class="cs-section">
+        <h2>Model Lifecycle with MLflow</h2>
+        <p>
+          Every training run is tracked in MLflow: hyperparameters, dataset version, evaluation
+          metrics, and the serialized model artifact. Models graduate through three stages in the
+          MLflow Registry: Staging, Production, Archived. The Airflow retraining DAG runs
+          nightly, compares the new model against the current Production baseline on a holdout set,
+          and only promotes if recall improves and false positive rate stays below 2%.
+        </p>
+        <p>
+          This gave a meaningful CI/CD pattern for models: new versions are tested before they
+          serve traffic, rollback is a single registry stage change, and experiment history
+          is fully reproducible from any commit SHA.
+        </p>
+
+        <div class="cs-media-placeholder">
+          <i class="fas fa-chart-bar"></i>
+          MLflow Experiment Tracker - showing training run comparison across 12 model versions,
+          F1 score, precision-recall curves, and feature importance rankings.
+        </div>
+      </section>
+
+      <!-- Observability -->
+      <section class="cs-section">
+        <h2>Observability Stack</h2>
+        <p>
+          Prometheus scrapes three endpoints: the FastAPI scoring service (prediction count, latency
+          histogram, fraud rate), the Kafka consumer (consumer lag, processing time), and the Airflow
+          scheduler (DAG run durations, task failures). Grafana pulls from Prometheus and renders four
+          dashboards:
+        </p>
+        <ul>
+          <li><strong>Real-time fraud rate</strong> - rolling 5-minute fraud detection rate with alert threshold</li>
+          <li><strong>Scoring latency</strong> - P50, P95, P99 breakdown by transaction type</li>
+          <li><strong>Pipeline health</strong> - Kafka consumer lag, PySpark processing backlog</li>
+          <li><strong>Model performance</strong> - precision and recall tracked over time against ground truth labels</li>
+        </ul>
+
+        <div class="cs-media-placeholder">
+          <i class="fas fa-tachometer-alt"></i>
+          Grafana dashboard showing real-time fraud rate (top), scoring latency P99 (middle),
+          and Kafka consumer lag across partitions (bottom). Alert firing at 3.1% fraud rate spike.
+        </div>
+      </section>
+
+      <!-- What worked / what didn't -->
+      <section class="cs-section">
+        <h2>Honest Assessment: What Worked and What Didn't</h2>
+        <div class="cs-lessons">
+          <div class="cs-lesson worked">
+            <h4>What worked</h4>
+            <p><strong>In-memory model serving.</strong> Loading the MLflow model at FastAPI startup and keeping it in RAM was the single biggest latency win. Eliminated 15-40ms per prediction compared to loading per-request.</p>
+          </div>
+          <div class="cs-lesson failed">
+            <h4>What failed</h4>
+            <p><strong>Schema evolution.</strong> Changing the feature schema mid-stream broke the PySpark consumer. Needed a schema registry (Confluent or AWS Glue) to version feature contracts properly.</p>
+          </div>
+          <div class="cs-lesson worked">
+            <h4>What worked</h4>
+            <p><strong>MLflow model staging.</strong> The Staging - Production - Archived lifecycle prevented accidental promotion of underperforming models and gave clean rollback at any point.</p>
+          </div>
+          <div class="cs-lesson failed">
+            <h4>What failed</h4>
+            <p><strong>Spark executor memory.</strong> Under sustained 100+ TPS, PySpark GC pressure caused processing spikes. Fixed by tuning <code>spark.executor.memory</code>, <code>spark.sql.shuffle.partitions</code>, and switching from default GC to G1GC.</p>
+          </div>
+          <div class="cs-lesson worked">
+            <h4>What worked</h4>
+            <p><strong>Airflow LocalExecutor.</strong> Dropped the CeleryExecutor for local dev. Eliminated Redis + Celery dependencies and cut environment setup time from 20 minutes to under 5.</p>
+          </div>
+          <div class="cs-lesson failed">
+            <h4>What failed</h4>
+            <p><strong>Kafka consumer group rebalancing.</strong> Under rapid producer scale-up, consumer group rebalancing caused processing gaps up to 8 seconds. Mitigated with <code>session.timeout.ms</code> and <code>heartbeat.interval.ms</code> tuning, but not fully resolved.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Next steps -->
+      <section class="cs-section">
+        <h2>What I Would Build Next</h2>
+        <ul>
+          <li>Schema Registry (Confluent) to version feature contracts and prevent silent consumer failures</li>
+          <li>Online feature store (Feast or Hopsworks) to serve precomputed features at scoring time with sub-millisecond lookup</li>
+          <li>Shadow mode: run new model candidates on live traffic, log predictions without serving them, compare offline against ground truth before promoting</li>
+          <li>Drift detection: track input feature distribution against training distribution using KS tests, alert when drift exceeds threshold</li>
+          <li>Explainability: SHAP values per prediction stored in PostgreSQL for compliance audit trail</li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+
+  <footer class="site-footer" style="margin-top: 2rem;">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <span class="footer-name">Narendranath Edara</span>
+        <span class="footer-tagline">Senior AI Platform Engineer</span>
+      </div>
+      <nav class="footer-nav">
+        <a href="index.html">Portfolio</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="index.html#connect">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

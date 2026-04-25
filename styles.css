@@ -584,25 +584,26 @@ button { font-family: inherit; cursor: pointer; }
 .track { display: flex; flex-direction: column; position: relative; }
 .track::before {
   content: ''; position: absolute;
-  left: 7.5rem; top: 0; bottom: 0;
+  left: 9.5rem; top: 0; bottom: 0;
   width: 1px; background: var(--border);
 }
 .track-item {
-  display: grid; grid-template-columns: 7.5rem 1fr;
+  display: grid; grid-template-columns: 9.5rem 1fr;
   gap: 2rem; padding-bottom: 2rem; position: relative;
 }
 .track-item::before {
   content: ''; position: absolute;
-  left: 7.5rem; top: 1.5rem;
+  left: 9.5rem; top: 1.5rem;
   width: 8px; height: 8px;
   background: var(--accent); border-radius: 50%;
   transform: translateX(-50%); z-index: 1;
   box-shadow: 0 0 0 3px var(--bg-alt);
 }
 .track-date {
-  font-size: 0.75rem; color: var(--fg-muted);
-  font-weight: 500; line-height: 1.4;
+  font-size: 0.74rem; color: var(--fg-muted);
+  font-weight: 500; line-height: 1.5;
   padding-top: 1.35rem; text-align: right;
+  white-space: nowrap;
 }
 .track-card {
   background: var(--bg); border: 1px solid var(--border);
@@ -852,6 +853,150 @@ button { font-family: inherit; cursor: pointer; }
   border-radius: var(--r-lg); z-index: 1;
 }
 .writing-card .writing-cta:hover::after { background: transparent; }
+
+/* ============================================================
+   CASE STUDY PAGES
+   ============================================================ */
+.page-shell { min-height: 100vh; }
+.cs-nav {
+  padding: 1rem 2rem; background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.cs-nav__back {
+  color: var(--accent); text-decoration: none;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  transition: color 0.2s;
+}
+.cs-nav__back:hover { color: var(--accent-lt); text-decoration: underline; }
+.cs-nav__name { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--fg-muted); }
+.cs-hero { padding: 4rem 0 2.5rem; }
+.cs-hero__kicker {
+  display: inline-block; font-size: 0.72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--accent-warm); margin-bottom: 0.75rem;
+}
+.cs-hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.85rem, 3.5vw, 2.75rem);
+  font-weight: 600; line-height: 1.15; color: var(--fg);
+  margin: 0 0 1.25rem; max-width: 780px;
+}
+.cs-hero__summary {
+  font-size: 1.05rem; color: var(--fg-soft); max-width: 680px;
+  line-height: 1.75; margin-bottom: 2rem;
+}
+.cs-proof-strip {
+  display: flex; flex-wrap: wrap; gap: 0.5rem 0.85rem; margin-bottom: 1.5rem;
+}
+.cs-proof-strip span {
+  display: inline-block; font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem; color: var(--accent);
+  background: var(--chip-bg); border: 1px solid var(--border-soft);
+  border-radius: 4px; padding: 0.3rem 0.75rem;
+}
+.cs-links { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
+.skill-chip {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  padding: 0.25rem 0.65rem; background: var(--chip-bg);
+  border-radius: 20px; font-size: 0.78rem; font-weight: 500;
+  color: var(--accent); border: 1px solid var(--border-soft);
+}
+.cs-section {
+  padding: 2.5rem 0; border-top: 1px solid var(--border);
+}
+.cs-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.2rem, 2.5vw, 1.55rem);
+  font-weight: 500; margin: 0 0 1rem; color: var(--fg);
+}
+.cs-section p {
+  color: var(--fg-soft); line-height: 1.75; max-width: 720px; margin-bottom: 1rem;
+}
+.cs-section p:last-child { margin-bottom: 0; }
+.cs-section ul, .cs-section ol {
+  color: var(--fg-soft); line-height: 1.75; max-width: 720px;
+  padding-left: 1.25rem; margin-bottom: 1rem;
+}
+.cs-section li { margin-bottom: 0.4rem; }
+.cs-section strong { color: var(--fg); font-weight: 600; }
+
+/* Architecture flow diagram for case studies */
+.cs-arch {
+  display: flex; flex-direction: column; gap: 0;
+  align-items: center; margin: 2rem 0;
+  background: var(--bg-alt); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 2rem;
+}
+.cs-arch-row { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+.cs-arch-box {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 0.75rem 1.25rem;
+  font-size: 0.84rem; font-weight: 500; color: var(--fg);
+  text-align: center; min-width: 140px;
+}
+.cs-arch-box.accent { border-color: var(--accent); color: var(--accent); }
+.cs-arch-arrow {
+  font-size: 1.1rem; color: var(--fg-muted);
+  margin: 0.4rem 0; text-align: center;
+}
+.cs-arch-label {
+  font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--fg-muted); margin-bottom: 0.5rem;
+  text-align: center; width: 100%;
+}
+
+/* Metrics grid for case studies */
+.cs-metrics {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border); border-radius: var(--r);
+  overflow: hidden; margin: 1.5rem 0;
+}
+.cs-metric {
+  background: var(--bg); padding: 1.25rem 1rem;
+  display: flex; flex-direction: column; gap: 0.2rem;
+}
+.cs-metric-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.65rem; font-weight: 600; color: var(--accent); line-height: 1;
+}
+.cs-metric-lbl { font-size: 0.74rem; color: var(--fg-muted); font-weight: 500; }
+
+/* Image/screenshot placeholder */
+.cs-media-placeholder {
+  background: var(--bg-alt); border: 1px dashed var(--border);
+  border-radius: var(--r-lg); padding: 3rem 2rem;
+  text-align: center; margin: 1.5rem 0; color: var(--fg-muted);
+  font-size: 0.88rem; line-height: 1.6;
+}
+.cs-media-placeholder i { font-size: 2rem; display: block; margin-bottom: 0.75rem; opacity: 0.4; }
+
+/* Lessons card */
+.cs-lessons {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem;
+}
+.cs-lesson {
+  padding: 1.25rem; border-radius: var(--r);
+  font-size: 0.88rem; line-height: 1.65;
+}
+.cs-lesson.worked { background: rgba(23,107,82,0.06); border: 1px solid rgba(23,107,82,0.2); }
+.cs-lesson.failed { background: rgba(181,117,42,0.06); border: 1px solid rgba(181,117,42,0.2); }
+.cs-lesson h4 {
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; margin-bottom: 0.5rem;
+}
+.cs-lesson.worked h4 { color: var(--accent); }
+.cs-lesson.failed h4 { color: var(--accent-warm); }
+.cs-lesson p { color: var(--fg-soft); font-size: 0.86rem; }
+
+@media (max-width: 700px) {
+  .cs-nav { padding: 0.875rem 1rem; }
+  .cs-hero { padding: 2.5rem 0 2rem; }
+  .cs-lessons { grid-template-columns: 1fr; }
+}
 
 /* inline code in system-desc */
 .system-desc code {
