@@ -621,7 +621,7 @@ button { font-family: inherit; cursor: pointer; }
   font-size: 0.87rem; line-height: 1.65; color: var(--fg-soft);
   padding-left: 1.1rem; position: relative;
 }
-.track-bullets li::before { content: '–'; position: absolute; left: 0; color: var(--accent-warm); }
+.track-bullets li::before { content: '-'; position: absolute; left: 0; color: var(--accent-warm); }
 .track-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 
 @media (max-width: 640px) {
@@ -772,3 +772,83 @@ button { font-family: inherit; cursor: pointer; }
 .footer-social a:hover { color: #fff; }
 .footer-copy { font-size: 0.76rem; color: rgba(255,255,255,0.35); width: 100%; text-align: center; margin-top: 0.5rem; }
 @media (max-width: 580px) { .footer-nav { display: none; } }
+
+/* ============================================================
+   EDUCATION
+   ============================================================ */
+.edu-card-row { margin-bottom: 1rem; }
+.edu-card {
+  display: flex; gap: 1.25rem; align-items: center;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);
+  max-width: 560px;
+}
+.edu-logo-wrap {
+  width: 56px; height: 56px; flex-shrink: 0;
+  border-radius: var(--r); border: 1px solid var(--border-soft);
+  background: var(--bg-alt); overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.edu-logo { width: 100%; height: 100%; object-fit: contain; }
+.edu-degree {
+  font-family: 'Playfair Display', serif; font-size: 1.05rem;
+  font-weight: 500; color: var(--fg); margin-bottom: 0.2rem;
+}
+.edu-school { font-size: 0.83rem; color: var(--fg-soft); margin-bottom: 0.5rem; }
+.edu-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+/* ============================================================
+   PLATFORM DIAGRAM LINKS
+   ============================================================ */
+.pd-link {
+  color: inherit; text-decoration: none;
+  transition: color 0.2s;
+}
+.pd-link:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ============================================================
+   CONTACT - PLATFORM BRAND HOVER COLORS
+   ============================================================ */
+.contact-linkedin i { color: #0077b5; }
+.contact-linkedin:hover { border-color: #0077b5; color: #0077b5; box-shadow: 0 2px 12px rgba(0,119,181,0.12); }
+.contact-linkedin:hover i { color: #0077b5; }
+
+.contact-github i { color: var(--fg); }
+.contact-github:hover { border-color: #333; color: #333; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.contact-github:hover i { color: #333; }
+
+.contact-substack i { color: #ff6719; }
+.contact-substack:hover { border-color: #ff6719; color: #ff6719; box-shadow: 0 2px 12px rgba(255,103,25,0.12); }
+.contact-substack:hover i { color: #ff6719; }
+
+/* ============================================================
+   WRITING - SUBSTACK CTA BUTTON
+   ============================================================ */
+.btn-substack {
+  background: #ff6719; color: #fff;
+  border: none; font-size: 0.9rem; font-weight: 500;
+  padding: 0.65rem 1.35rem;
+  border-radius: var(--r); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.btn-substack:hover { background: #e05510; box-shadow: 0 2px 14px rgba(255,103,25,0.3); }
+
+/* ============================================================
+   WRITING CARD - STRETCHED LINK (whole card clickable)
+   ============================================================ */
+.writing-card { position: relative; }
+.writing-card .writing-cta { position: static; }
+.writing-card .writing-cta::after {
+  content: ''; position: absolute; inset: 0;
+  border-radius: var(--r-lg); z-index: 1;
+}
+.writing-card .writing-cta:hover::after { background: transparent; }
+
+/* inline code in system-desc */
+.system-desc code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82em; background: var(--chip-bg);
+  padding: 0.1em 0.4em; border-radius: 3px;
+  color: var(--accent);
+}

@@ -39,11 +39,11 @@
         <span class="logo-role">Senior AI Platform Engineer</span>
       </a>
       <nav class="main-nav" aria-label="Main navigation">
-        <a href="#proof"      class="nav-link">What shipped</a>
-        <a href="#systems"    class="nav-link">Systems</a>
-        <a href="#experience" class="nav-link">Track record</a>
-        <a href="#notes"      class="nav-link">Writing</a>
-        <a href="#connect"    class="nav-link">Connect</a>
+        <a href="#systems"    class="nav-link">Projects</a>
+        <a href="#experience" class="nav-link">Experience</a>
+        <a href="#notes"      class="nav-link">Publications</a>
+        <a href="#signal"     class="nav-link">References</a>
+        <a href="#connect"    class="nav-link">Contact</a>
       </nav>
       <a href="https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf"
          class="btn btn-resume" target="_blank" rel="noreferrer"
@@ -55,11 +55,11 @@
       </button>
     </div>
     <nav class="mobile-nav" aria-hidden="true">
-      <a href="#proof"      class="mobile-link">What shipped</a>
-      <a href="#systems"    class="mobile-link">Systems</a>
-      <a href="#experience" class="mobile-link">Track record</a>
-      <a href="#notes"      class="mobile-link">Writing</a>
-      <a href="#connect"    class="mobile-link">Connect</a>
+      <a href="#systems"    class="mobile-link">Projects</a>
+      <a href="#experience" class="mobile-link">Experience</a>
+      <a href="#notes"      class="mobile-link">Publications</a>
+      <a href="#signal"     class="mobile-link">References</a>
+      <a href="#connect"    class="mobile-link">Contact</a>
       <a href="https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf"
          class="mobile-link" target="_blank" rel="noreferrer">Download resume</a>
     </nav>
@@ -138,7 +138,7 @@
         <div class="proof-split">
 
           <article class="proof-col" data-reveal>
-            <h2 class="proof-title">What shipped</h2>
+            <h2 class="proof-title">Results</h2>
             <ol class="kicker-list">
               <li class="kicker-item">
                 <span class="kicker">400 enterprise clients</span>
@@ -160,7 +160,7 @@
           </article>
 
           <article class="proof-col" data-reveal>
-            <h2 class="proof-title">How it was built</h2>
+            <h2 class="proof-title">Technical approach</h2>
             <ol class="kicker-list">
               <li class="kicker-item">
                 <span class="kicker">Retrieval stack</span>
@@ -190,9 +190,9 @@
       <div class="container">
 
         <div class="section-head" data-reveal>
-          <span class="section-label">Production systems</span>
-          <h2 class="section-title">Three engines. Each inspectable.</h2>
-          <p class="section-subtitle">The story isn't breadth. It's that I build AI systems with measurable outcomes, strong engineering boundaries, and distribution-aware surfaces that other teams can actually use.</p>
+          <span class="section-label">Projects &amp; Open Source</span>
+          <h2 class="section-title">Three production systems, each independently deployable.</h2>
+          <p class="section-subtitle">Built end-to-end, tested in production, and modular enough that other teams can use the engines without adopting the whole stack.</p>
         </div>
 
         <!-- Platform architecture diagram -->
@@ -201,7 +201,7 @@
             <div class="pd-flagship">
               <div class="pd-flagship-header">
                 <span class="pd-type">Workflow Platform</span>
-                <h3 class="pd-name">AutoApply AI</h3>
+                <h3 class="pd-name"><a href="autoapply-ai.html" class="pd-link">AutoApply AI</a></h3>
               </div>
               <p class="pd-flow">discover &rarr; tailor &rarr; apply &rarr; track</p>
               <div class="pd-stats">
@@ -231,20 +231,20 @@
             <div class="pd-engine">
               <div class="pd-engine-header">
                 <span class="pd-type">Reusable Engine</span>
-                <h3 class="pd-name">tailor-resume</h3>
+                <h3 class="pd-name"><a href="tailor-resume.html" class="pd-link">tailor-resume</a></h3>
               </div>
               <p class="pd-engine-desc">Extracted core, ships independently. <strong>190 tests</strong>. Any team can consume it without touching AutoApply AI.</p>
               <div class="pd-surfaces">
                 <div class="surface-item"><span class="surface-mono">pip install tailor-resume</span></div>
-                <div class="surface-item"><span class="surface-label">MCP server</span> &mdash; any agent calls it, zero integration</div>
-                <div class="surface-item"><span class="surface-label">CLI</span> &mdash; zero config, cloud features opt-in</div>
-                <div class="surface-item"><span class="surface-label">Streamlit</span> &mdash; browser UI for non-technical users</div>
+                <div class="surface-item"><span class="surface-label">MCP server</span>  - any agent calls it, zero integration</div>
+                <div class="surface-item"><span class="surface-label">CLI</span>  - zero config, cloud features opt-in</div>
+                <div class="surface-item"><span class="surface-label">Streamlit</span>  - browser UI for non-technical users</div>
               </div>
             </div>
             <div class="pd-engine">
               <div class="pd-engine-header">
                 <span class="pd-type">Discovery Layer</span>
-                <h3 class="pd-name">JobScout</h3>
+                <h3 class="pd-name"><a href="https://github.com/narendranathe/job-scout" class="pd-link" target="_blank" rel="noreferrer">JobScout</a></h3>
               </div>
               <p class="pd-engine-desc">Keeps discovery signal clean. Runs independently so the apply workflow never inherits stale or low-quality data.</p>
               <div class="pd-surfaces">
@@ -273,15 +273,15 @@
             </div>
             <div class="system-body">
               <h3 class="system-name">AutoApply AI</h3>
-              <p class="system-desc">End-to-end workflow platform for discover &rarr; tailor &rarr; apply &rarr; track. Chrome MV3 extension + FastAPI backend + React dashboard with multi-provider LLM routing (Claude, OpenAI, Gemini, Groq, Kimi, Ollama), retrieval-backed answer vaults, and ATS-specific adapters deployed live on Fly.io.</p>
+              <p class="system-desc">Applying for jobs is a ritual that eats weeks without improving outcomes. I rebuilt the process from scratch - Chrome MV3 extension detects the job form, tailors the resume using an LLM cascade across 6 providers, submits through 11 different ATS systems, and logs everything to a React dashboard. No manual copy-paste. No lost applications. Live on Fly.io.</p>
               <div class="tech-chips">
                 <span class="chip">FastAPI</span><span class="chip">Chrome MV3</span>
                 <span class="chip">PostgreSQL</span><span class="chip">Redis</span>
                 <span class="chip">pgvector · RAG</span><span class="chip">React</span>
               </div>
               <div class="card-actions">
-                <a href="autoapply-ai.html" class="text-link">View case study &rarr;</a>
-                <a href="https://github.com/narendranathe/autoapply-ai" class="text-link" target="_blank" rel="noreferrer">Open repo &rarr;</a>
+                <a href="autoapply-ai.html" class="text-link">Read case study &rarr;</a>
+                <a href="https://github.com/narendranathe/autoapply-ai" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub</a>
                 <button class="expand-btn" aria-expanded="false" data-label="See architecture">See architecture</button>
               </div>
               <div class="arch-expand" hidden>
@@ -312,15 +312,15 @@
             </div>
             <div class="system-body">
               <h3 class="system-name">tailor-resume</h3>
-              <p class="system-desc">Extracted tailoring core from AutoApply AI — shipped as CLI, Streamlit app, typed MCP server, and PyPI package. 190 automated tests, hosted on Fly.io, distribution-aware from day one. The strongest engineering move was modularization.</p>
+              <p class="system-desc">The tailoring engine inside AutoApply AI was too useful to keep locked inside one product. Friends wanted it. Agents could call it. So I extracted it properly - 190 tests, four distribution surfaces - and shipped it so any developer can <code>pip install tailor-resume</code> and any MCP-aware agent can call it directly, zero integration work required.</p>
               <div class="tech-chips">
                 <span class="chip">Python</span><span class="chip">MCP server</span>
                 <span class="chip">Streamlit</span><span class="chip">PyPI package</span>
                 <span class="chip">LaTeX</span><span class="chip">Fly.io</span>
               </div>
               <div class="card-actions">
-                <a href="tailor-resume.html" class="text-link">View case study &rarr;</a>
-                <a href="https://github.com/narendranathe/tailor-resume" class="text-link" target="_blank" rel="noreferrer">Open repo &rarr;</a>
+                <a href="tailor-resume.html" class="text-link">Read case study &rarr;</a>
+                <a href="https://github.com/narendranathe/tailor-resume" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub</a>
                 <button class="expand-btn" aria-expanded="false" data-label="See architecture">See architecture</button>
               </div>
               <div class="arch-expand" hidden>
@@ -351,13 +351,13 @@
             </div>
             <div class="system-body">
               <h3 class="system-name">JobScout</h3>
-              <p class="system-desc">Discovery layer feeding the AutoApply AI workflow. Monitors 130+ company career pages across 6 ATS platforms with sponsorship-aware ranking and continuous alerting. Keeps discovery signal clean so the apply workflow doesn't inherit noise.</p>
+              <p class="system-desc">Job boards are noisy by design - most listings are duplicated, aggregated, or irrelevant before you open them. I built JobScout to monitor 130+ company career pages directly, bypassing the middleman, with sponsorship-aware ranking built in. Clean input upstream means better applications downstream.</p>
               <div class="tech-chips">
                 <span class="chip">130+ companies</span><span class="chip">6 ATS platforms</span>
                 <span class="chip">ranking engine</span><span class="chip">sponsorship-aware</span>
               </div>
               <div class="card-actions">
-                <a href="https://github.com/narendranathe/job-scout" class="text-link" target="_blank" rel="noreferrer">Open repo &rarr;</a>
+                <a href="https://github.com/narendranathe/job-scout" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub</a>
               </div>
             </div>
           </article>
@@ -379,8 +379,8 @@
             <span class="section-label">ML infrastructure</span>
             <h3>Supporting systems</h3>
             <ul class="support-list">
-              <li><strong>fraud-detection-ml-platform</strong> &mdash; 100+ TPS, sub-ms P99, Kafka, MLflow, Prometheus, Grafana.</li>
-              <li><strong>portfolio-risk-analysis</strong> &mdash; Kafka, Spark, VaR pipeline, real-time risk analytics design.</li>
+              <li><strong>fraud-detection-ml-platform</strong>  - 100+ TPS, sub-ms P99, Kafka, MLflow, Prometheus, Grafana.</li>
+              <li><strong>portfolio-risk-analysis</strong>  - Kafka, Spark, VaR pipeline, real-time risk analytics design.</li>
             </ul>
           </article>
         </div>
@@ -393,15 +393,15 @@
       <div class="container">
 
         <div class="section-head" data-reveal>
-          <span class="section-label">Engineering track record</span>
-          <h2 class="section-title">Where I built the depth behind the systems.</h2>
+          <span class="section-label">Work Experience</span>
+          <h2 class="section-title">Six years building data and AI systems across enterprise, food-tech, and fintech.</h2>
         </div>
 
         <div class="track">
 
           <!-- ExponentHR -->
           <div class="track-item" data-reveal>
-            <div class="track-date">Jul 2024 &mdash; Present</div>
+            <div class="track-date">Jul 2024  - Present</div>
             <div class="track-content">
               <div class="track-card">
                 <div class="track-header">
@@ -431,7 +431,7 @@
 
           <!-- Missouri S&T -->
           <div class="track-item" data-reveal>
-            <div class="track-date">Aug 2023 &mdash; Jul 2024</div>
+            <div class="track-date">Aug 2023  - Jul 2024</div>
             <div class="track-content">
               <div class="track-card">
                 <div class="track-header">
@@ -440,13 +440,13 @@
                          alt="Missouri S&T" onerror="this.style.display='none';">
                   </div>
                   <div class="track-meta">
-                    <h3 class="track-title">Data Engineer &middot; M.S. Data Science, 4.0 GPA</h3>
+                    <h3 class="track-title">Graduate Research Assistant</h3>
                     <p class="track-company">Missouri University of Science and Technology &middot; Rolla, MO</p>
-                    <p class="track-scope">ML infrastructure / anomaly detection</p>
+                    <p class="track-scope">ML infrastructure / anomaly detection &nbsp;&middot;&nbsp; M.S. Data Science - GPA 4.0 - Dec 2024</p>
                   </div>
                 </div>
                 <ul class="track-bullets">
-                  <li>Engineered Azure AI Anomaly Detector pipelines selecting optimal algorithms per time-series profile, achieving 95%+ detection accuracy &mdash; caught a production memory leak 4 hours before outage.</li>
+                  <li>Engineered Azure AI Anomaly Detector pipelines selecting optimal algorithms per time-series profile, achieving 95%+ detection accuracy  - caught a production memory leak 4 hours before outage.</li>
                   <li>Implemented tunable alert thresholds, filtering ~250 weekly non-actionable P3 alerts; signal-to-noise improved from 1:5 to 1:1.2.</li>
                   <li>Migrated from static D-Series VMs to AKS with HPA: CPU utilization 12%&rarr;64%, nodes consolidated 20&rarr;4-8 dynamic, Azure spend cut $3,200/month.</li>
                 </ul>
@@ -460,7 +460,7 @@
 
           <!-- C2FO -->
           <div class="track-item" data-reveal>
-            <div class="track-date">Jun 2023 &mdash; Aug 2023</div>
+            <div class="track-date">Jun 2023  - Aug 2023</div>
             <div class="track-content">
               <div class="track-card">
                 <div class="track-header">
@@ -486,7 +486,7 @@
 
           <!-- udaan.com -->
           <div class="track-item" data-reveal>
-            <div class="track-date">Sep 2020 &mdash; Mar 2021</div>
+            <div class="track-date">Sep 2020  - Mar 2021</div>
             <div class="track-content">
               <div class="track-card">
                 <div class="track-header">
@@ -514,7 +514,7 @@
 
           <!-- Zomato -->
           <div class="track-item" data-reveal>
-            <div class="track-date">Mar 2018 &mdash; Sep 2020</div>
+            <div class="track-date">Mar 2018  - Sep 2020</div>
             <div class="track-content">
               <div class="track-card">
                 <div class="track-header">
@@ -528,7 +528,7 @@
                   </div>
                 </div>
                 <ul class="track-bullets">
-                  <li>Built real-time competitor analytics platform tracking pricing, delivery times, and coverage &mdash; fed pricing changes that contributed to 9% market share gain in contested metros.</li>
+                  <li>Built real-time competitor analytics platform tracking pricing, delivery times, and coverage  - fed pricing changes that contributed to 9% market share gain in contested metros.</li>
                   <li>Optimized search relevance with ranking models using contextual signals (time, location, cuisine affinity), improving search-to-conversion across millions of daily queries.</li>
                   <li>Built Elasticsearch enterprise search indexing 100K+ documents, reducing Support Desk volume ~80% through self-serve query resolution.</li>
                 </ul>
@@ -542,8 +542,30 @@
 
         </div>
 
-        <!-- Certifications -->
+        <!-- Education -->
         <div class="section-head" data-reveal style="margin-top:3.5rem;">
+          <span class="section-label">Education</span>
+        </div>
+        <div class="edu-card-row" data-reveal>
+          <div class="edu-card">
+            <div class="edu-logo-wrap">
+              <img src="https://github.com/user-attachments/assets/5dc864b8-501a-485a-b780-d0fcde01a3de"
+                   alt="Missouri S&T" class="edu-logo" onerror="this.style.display='none';">
+            </div>
+            <div class="edu-info">
+              <h3 class="edu-degree">M.S. Data Science</h3>
+              <p class="edu-school">Missouri University of Science and Technology &middot; Rolla, MO</p>
+              <div class="edu-meta">
+                <span class="chip">GPA 4.0 / 4.0</span>
+                <span class="chip">Dec 2024</span>
+                <span class="chip">Taylor &amp; Francis Publication</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certifications -->
+        <div class="section-head" data-reveal style="margin-top:2.5rem;">
           <span class="section-label">Certifications</span>
         </div>
         <div class="certs-grid" data-reveal>
@@ -602,9 +624,9 @@
       <div class="container">
 
         <div class="section-head" data-reveal>
-          <span class="section-label">How I think in public</span>
-          <h2 class="section-title">Engineering decisions, production failures, and what I learned building AI systems.</h2>
-          <p class="section-subtitle">Architecture notes from shipping real systems &mdash; not tutorials.</p>
+          <span class="section-label">Publications &amp; Writing</span>
+          <h2 class="section-title">Architecture essays from shipping real systems.</h2>
+          <p class="section-subtitle">Not tutorials. Real decisions, real tradeoffs, real failures - published on Substack and in Taylor &amp; Francis.</p>
         </div>
 
         <div class="writing-grid">
@@ -612,19 +634,19 @@
             <span class="writing-label">Architecture</span>
             <h3 class="writing-title">Chrome Extension ATS Adapters: Per-Platform Engineering</h3>
             <p class="writing-desc">Why one generic form handler is the wrong abstraction when ATS platforms vary by DOM isolation, field detection logic, and submission behavior.</p>
-            <a href="https://narendranathe.substack.com" class="text-link" target="_blank" rel="noreferrer">Read on Substack &rarr;</a>
+            <a href="https://narendranathe.substack.com" class="text-link writing-cta" target="_blank" rel="noreferrer">Read the full essay on Substack &rarr;</a>
           </article>
           <article class="writing-card" data-reveal>
             <span class="writing-label">System design</span>
             <h3 class="writing-title">Two Booleans and a Production Bug: State Design in AutoApply AI</h3>
             <p class="writing-desc">A seemingly simple boolean flag caused a state bug that took three false fixes before the real model emerged. What it taught about representing apply state.</p>
-            <a href="https://narendranathe.substack.com" class="text-link" target="_blank" rel="noreferrer">Read on Substack &rarr;</a>
+            <a href="https://narendranathe.substack.com" class="text-link writing-cta" target="_blank" rel="noreferrer">Read the full essay on Substack &rarr;</a>
           </article>
           <article class="writing-card" data-reveal>
             <span class="writing-label">AI systems</span>
             <h3 class="writing-title">The LLM Cascade as a Routing System, Not a Fallback</h3>
             <p class="writing-desc">Five providers, circuit breakers, per-category routing, and a reward loop. Why the model routing layer is the most interesting engineering surface in AutoApply AI.</p>
-            <a href="https://narendranathe.substack.com" class="text-link" target="_blank" rel="noreferrer">Read on Substack &rarr;</a>
+            <a href="https://narendranathe.substack.com" class="text-link writing-cta" target="_blank" rel="noreferrer">Read the full essay on Substack &rarr;</a>
           </article>
         </div>
 
@@ -637,7 +659,7 @@
         </div>
 
         <div class="section-cta" data-reveal>
-          <a href="https://narendranathe.substack.com" class="btn btn-ghost" target="_blank" rel="noreferrer">View all notes on Substack &rarr;</a>
+          <a href="https://narendranathe.substack.com" class="btn btn-substack" target="_blank" rel="noreferrer">Follow on Substack - free, no noise &rarr;</a>
         </div>
 
       </div>
@@ -648,8 +670,8 @@
       <div class="container">
 
         <div class="section-head" data-reveal>
-          <span class="section-label">Signal from the field</span>
-          <h2 class="section-title">What engineers who worked alongside me observed.</h2>
+          <span class="section-label">References</span>
+          <h2 class="section-title">What colleagues and managers observed working alongside me.</h2>
         </div>
 
         <div class="peer-grid">
@@ -693,9 +715,9 @@
       <div class="container">
 
         <div class="section-head" data-reveal>
-          <span class="section-label">Connect</span>
-          <h2 class="section-title">Talk systems, platforms, or applied AI.</h2>
-          <p class="section-subtitle">I'm most useful to teams who want someone who can design and ship AI systems end-to-end &mdash; from retrieval architecture through production deployment and operational observability.</p>
+          <span class="section-label">Contact</span>
+          <h2 class="section-title">Let's talk.</h2>
+          <p class="section-subtitle">Based in Dallas TX, open to remote. I'm most useful to teams building production AI systems who want someone who can own the full stack - from retrieval design through deployment and observability.</p>
         </div>
 
         <div class="contact-grid" data-reveal>
@@ -709,14 +731,14 @@
             <a href="mailto:edara.narendranath@gmail.com" class="contact-link">
               <i class="fas fa-envelope"></i><span>edara.narendranath@gmail.com</span>
             </a>
-            <a href="https://www.linkedin.com/in/narendranathe/" target="_blank" rel="noreferrer" class="contact-link">
-              <i class="fab fa-linkedin-in"></i><span>linkedin.com/in/narendranathe</span>
+            <a href="https://www.linkedin.com/in/narendranathe/" target="_blank" rel="noreferrer" class="contact-link contact-linkedin">
+              <i class="fab fa-linkedin-in"></i><span>Connect on LinkedIn</span>
             </a>
-            <a href="https://github.com/narendranathe" target="_blank" rel="noreferrer" class="contact-link">
-              <i class="fab fa-github"></i><span>github.com/narendranathe</span>
+            <a href="https://github.com/narendranathe" target="_blank" rel="noreferrer" class="contact-link contact-github">
+              <i class="fab fa-github"></i><span>Browse the code on GitHub</span>
             </a>
-            <a href="https://narendranathe.substack.com" target="_blank" rel="noreferrer" class="contact-link">
-              <i class="fas fa-newspaper"></i><span>narendranathe.substack.com</span>
+            <a href="https://narendranathe.substack.com" target="_blank" rel="noreferrer" class="contact-link contact-substack">
+              <i class="fas fa-newspaper"></i><span>Follow my writing on Substack</span>
             </a>
             <a href="https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf"
                target="_blank" rel="noreferrer" class="contact-link"
@@ -739,10 +761,10 @@
         <span class="footer-tagline">Senior AI Platform Engineer &middot; Dallas TX</span>
       </div>
       <nav class="footer-nav" aria-label="Footer navigation">
-        <a href="#systems">Systems</a>
-        <a href="#experience">Track record</a>
-        <a href="#notes">Writing</a>
-        <a href="#connect">Connect</a>
+        <a href="#systems">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#notes">Publications</a>
+        <a href="#connect">Contact</a>
       </nav>
       <div class="footer-social">
         <a href="https://github.com/narendranathe" target="_blank" rel="noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
