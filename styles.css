@@ -284,6 +284,14 @@ button { font-family: inherit; cursor: pointer; }
   background: var(--bg-alt); aspect-ratio: 4/5; max-height: 420px;
 }
 .profile-photo { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.hero-photo-stack { position: relative; }
+.hero-photo-inset {
+  position: absolute; bottom: 1rem; right: 1rem;
+  width: 72px; height: 72px; border-radius: 50%;
+  object-fit: cover; object-position: center top;
+  border: 3px solid var(--bg);
+  box-shadow: var(--shadow-md);
+}
 .metric-grid {
   display: grid; grid-template-columns: 1fr 1fr;
   gap: 1px; background: var(--border);
