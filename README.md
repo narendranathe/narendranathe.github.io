@@ -59,7 +59,7 @@ This site is deployed through GitHub Pages from the `main` branch.
 
 ## Contact
 
-- Email: `narenedara@gmail.com`
-- LinkedIn: `https://www.linkedin.com/in/narenedara/`
+- Email: `edara.narendranath@gmail.com`
+- LinkedIn: `https://www.linkedin.com/in/narendranathe/`
 - GitHub: `https://github.com/narendranathe`
 
