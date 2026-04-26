@@ -50,7 +50,7 @@
     btn.addEventListener('click', function () {
       var expanded = btn.getAttribute('aria-expanded') === 'true';
       btn.setAttribute('aria-expanded', String(!expanded));
-      var body  = btn.closest('.system-body, .track-card');
+      var body  = btn.closest('.system-body, .track-card, .support-card');
       if (!body) return;
       var panel = body.querySelector('.arch-expand');
       if (!panel) return;
