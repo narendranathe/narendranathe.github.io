@@ -59,6 +59,16 @@
     });
   });
 
+  // ML Pipeline accordion
+  document.querySelectorAll('.accordion-trigger').forEach(function (trigger) {
+    trigger.addEventListener('click', function () {
+      var expanded = trigger.getAttribute('aria-expanded') === 'true';
+      trigger.setAttribute('aria-expanded', String(!expanded));
+      var body = trigger.nextElementSibling;
+      if (body) body.hidden = expanded;
+    });
+  });
+
   // Mobile nav
   var toggle = document.querySelector('.mobile-toggle');
   var mobileNav = document.querySelector('.mobile-nav');

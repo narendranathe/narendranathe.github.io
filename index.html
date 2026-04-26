@@ -103,11 +103,15 @@
         </div>
 
         <aside class="hero-visual" data-reveal>
-          <div class="profile-frame">
-            <img src="https://github.com/user-attachments/assets/a31266a6-37af-4717-b031-de03ae6058a9"
+          <div class="profile-frame hero-photo-stack">
+            <img src="https://raw.githubusercontent.com/narendranathe/assets/main/PP.jpg"
                  alt="Narendranath Edara - Senior AI Platform Engineer"
                  class="profile-photo"
-                 onerror="this.style.display='none'">
+                 onerror="this.src='https://github.com/user-attachments/assets/a31266a6-37af-4717-b031-de03ae6058a9';this.onerror=null;">
+            <img src="https://raw.githubusercontent.com/narendranathe/assets/main/images/hero2.jpg"
+                 alt="Narendranath Edara"
+                 class="hero-photo-inset"
+                 onerror="this.src='https://github.com/user-attachments/assets/ce009ed4-be8a-47d1-ba3e-4d45e87b28d8';this.onerror=function(){this.style.display='none'};">
           </div>
           <div class="metric-grid">
             <div class="metric-item">
@@ -511,7 +515,7 @@
                 <span class="chip">pgvector · RAG</span><span class="chip">React</span>
               </div>
               <div class="card-actions">
-                <a href="autoapply-ai.html" class="text-link">Read case study &rarr;</a>
+                <a href="autoapply-ai.html" class="cs-btn">Read case study<svg viewBox="0 0 16 16" fill="none" class="cs-btn-arrow" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
                 <a href="https://github.com/narendranathe/autoapply-ai" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub</a>
                 <button class="expand-btn" aria-expanded="false" data-label="See architecture">See architecture</button>
               </div>
@@ -550,7 +554,7 @@
                 <span class="chip">LaTeX</span><span class="chip">Fly.io</span>
               </div>
               <div class="card-actions">
-                <a href="tailor-resume.html" class="text-link">Read case study &rarr;</a>
+                <a href="tailor-resume.html" class="cs-btn">Read case study<svg viewBox="0 0 16 16" fill="none" class="cs-btn-arrow" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
                 <a href="https://github.com/narendranathe/tailor-resume" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub</a>
                 <button class="expand-btn" aria-expanded="false" data-label="See architecture">See architecture</button>
               </div>
@@ -606,13 +610,26 @@
               <span class="chip">-67% ETL cost</span><span class="chip">3mo&rarr;14d deploys</span>
             </div>
           </article>
-          <article class="support-card">
-            <span class="section-label">ML infrastructure</span>
-            <h3>ML Pipeline Projects</h3>
-            <ul class="support-list">
-              <li><a href="fraud-detection.html" class="text-link"><strong>Fraud Detection ML Platform</strong></a> - 100+ TPS, sub-ms P99, Kafka, MLflow, Prometheus, Grafana. Real-time scoring with full model lifecycle.</li>
-              <li><a href="portfolio-risk.html" class="text-link"><strong>Portfolio Risk Analytics</strong></a> - Kafka, Spark, historical simulation VaR, live P&amp;L dashboard. Sub-second risk metric updates.</li>
-            </ul>
+          <article class="support-card support-card--accordion">
+            <button class="accordion-trigger" aria-expanded="false" type="button">
+              <div>
+                <span class="section-label">ML infrastructure</span>
+                <h3>ML Pipeline Projects</h3>
+              </div>
+              <svg class="accordion-chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="accordion-body" hidden>
+              <div class="accordion-project">
+                <strong>Fraud Detection ML Platform</strong>
+                <p>100+ TPS, sub-ms P99, Kafka, MLflow, Prometheus, Grafana. Real-time scoring with full model lifecycle.</p>
+                <a href="fraud-detection.html" class="cs-btn">Read case study<svg viewBox="0 0 16 16" fill="none" class="cs-btn-arrow" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              </div>
+              <div class="accordion-project">
+                <strong>Portfolio Risk Analytics</strong>
+                <p>Kafka, Spark, historical simulation VaR, live P&amp;L dashboard. Sub-second risk metric updates.</p>
+                <a href="portfolio-risk.html" class="cs-btn">Read case study<svg viewBox="0 0 16 16" fill="none" class="cs-btn-arrow" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              </div>
+            </div>
           </article>
         </div>
 
@@ -634,19 +651,19 @@
             <span class="writing-label">Architecture</span>
             <h3 class="writing-title">Chrome Extension ATS Adapters: Per-Platform Engineering</h3>
             <p class="writing-desc">Why one generic form handler is the wrong abstraction when ATS platforms vary by DOM isolation, field detection logic, and submission behavior.</p>
-            <a href="https://narendranathe.substack.com" class="text-link writing-cta" target="_blank" rel="noreferrer">Read the full essay on Substack &rarr;</a>
+            <a href="https://narendranathe.substack.com" class="cs-btn cs-btn--substack writing-cta" target="_blank" rel="noreferrer">Read on Substack<svg viewBox="0 0 16 16" fill="none" class="cs-btn-arrow" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           </article>
           <article class="writing-card" data-reveal>
             <span class="writing-label">System design</span>
             <h3 class="writing-title">Two Booleans and a Production Bug: State Design in AutoApply AI</h3>
             <p class="writing-desc">A seemingly simple boolean flag caused a state bug that took three false fixes before the real model emerged. What it taught about representing apply state.</p>
-            <a href="https://narendranathe.substack.com" class="text-link writing-cta" target="_blank" rel="noreferrer">Read the full essay on Substack &rarr;</a>
+            <a href="https://narendranathe.substack.com" class="cs-btn cs-btn--substack writing-cta" target="_blank" rel="noreferrer">Read on Substack<svg viewBox="0 0 16 16" fill="none" class="cs-btn-arrow" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           </article>
           <article class="writing-card" data-reveal>
             <span class="writing-label">AI systems</span>
             <h3 class="writing-title">The LLM Cascade as a Routing System, Not a Fallback</h3>
             <p class="writing-desc">Five providers, circuit breakers, per-category routing, and a reward loop. Why the model routing layer is the most interesting engineering surface in AutoApply AI.</p>
-            <a href="https://narendranathe.substack.com" class="text-link writing-cta" target="_blank" rel="noreferrer">Read the full essay on Substack &rarr;</a>
+            <a href="https://narendranathe.substack.com" class="cs-btn cs-btn--substack writing-cta" target="_blank" rel="noreferrer">Read on Substack<svg viewBox="0 0 16 16" fill="none" class="cs-btn-arrow" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           </article>
         </div>
 
@@ -659,7 +676,7 @@
         </div>
 
         <div class="section-cta" data-reveal>
-          <a href="https://narendranathe.substack.com" class="btn btn-substack" target="_blank" rel="noreferrer">Follow on Substack - free, no noise &rarr;</a>
+          <a href="https://narendranathe.substack.com" class="btn btn-substack" target="_blank" rel="noreferrer"><svg class="substack-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>Follow on Substack</a>
         </div>
 
       </div>
@@ -671,11 +688,12 @@
 
         <div class="section-head" data-reveal>
           <span class="section-label">References</span>
-          <h2 class="section-title">What colleagues and managers observed working alongside me.</h2>
+          <h2 class="section-title">What colleagues and managers wrote on LinkedIn.</h2>
         </div>
 
         <div class="peer-grid">
           <div class="peer-card" data-reveal>
+            <div class="peer-linkedin-badge"><i class="fab fa-linkedin"></i> LinkedIn recommendation</div>
             <blockquote class="peer-quote">"Naren is a great talent in the product ownership space. He is a critical thinker and understands how to analyze a problem, and convert that problem into a tangible requirements doc. Most importantly, he is a quick and humble learner that loves researching the areas of the business that are new to him."</blockquote>
             <div class="peer-author">
               <div class="peer-avatar">RE</div>
@@ -686,6 +704,7 @@
             </div>
           </div>
           <div class="peer-card" data-reveal>
+            <div class="peer-linkedin-badge"><i class="fab fa-linkedin"></i> LinkedIn recommendation</div>
             <blockquote class="peer-quote">"I had the pleasure of working closely with Narendranath for 3+ years and can confidently attest to his outstanding performance and exceptional work ethic. He had a keen eye for solving business problems by identifying trends to improve the overall business."</blockquote>
             <div class="peer-author">
               <div class="peer-avatar">SM</div>
@@ -696,6 +715,7 @@
             </div>
           </div>
           <div class="peer-card" data-reveal>
+            <div class="peer-linkedin-badge"><i class="fab fa-linkedin"></i> LinkedIn recommendation</div>
             <blockquote class="peer-quote">"Narendranath has been an efficient source to the team at all times. He expertly trained himself to adapt to the various sectors of the business and was one of the few people who took up every challenge offered to him."</blockquote>
             <div class="peer-author">
               <div class="peer-avatar">PS</div>
@@ -705,6 +725,15 @@
               </div>
             </div>
           </div>
+        </div>
+
+        <div class="peer-cta" data-reveal>
+          <a href="https://www.linkedin.com/in/narendranathe/" class="btn peer-cta-btn peer-cta-btn--linkedin" target="_blank" rel="noreferrer">
+            <i class="fab fa-linkedin"></i> Connect on LinkedIn
+          </a>
+          <a href="https://narendranathe.substack.com" class="btn peer-cta-btn peer-cta-btn--substack" target="_blank" rel="noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;flex-shrink:0" aria-hidden="true"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg> Follow on Substack
+          </a>
         </div>
 
       </div>
