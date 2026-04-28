@@ -128,7 +128,7 @@ button { font-family: inherit; cursor: pointer; }
   font-size: 0.9rem; font-weight: 500;
   border-radius: var(--r);
   text-decoration: none;
-  transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s ease;
   white-space: nowrap;
   cursor: pointer; border: none;
 }
@@ -1101,4 +1101,80 @@ button { font-family: inherit; cursor: pointer; }
   font-size: 0.82em; background: var(--chip-bg);
   padding: 0.1em 0.4em; border-radius: 3px;
   color: var(--accent);
+}
+
+/* ============================================================
+   SPLASH SCREEN — SVG self-drawing brackets
+   ============================================================ */
+#splash-screen {
+  position: fixed; inset: 0; z-index: 10000;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+#splash-screen.splash-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+body.splash-active { overflow: hidden; }
+
+.splash-inner {
+  display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+  text-align: center;
+}
+.splash-svg { width: 120px; height: 60px; }
+
+/* Draw the bracket paths via stroke-dashoffset */
+.sp-bracket-l {
+  stroke-dasharray: 80;
+  stroke-dashoffset: 80;
+  animation: splash-draw 0.7s cubic-bezier(0.4,0,0.2,1) 0.1s forwards;
+}
+.sp-slash {
+  stroke-dasharray: 68;
+  stroke-dashoffset: 68;
+  animation: splash-draw 0.45s cubic-bezier(0.4,0,0.2,1) 0.35s forwards;
+}
+.sp-bracket-r {
+  stroke-dasharray: 80;
+  stroke-dashoffset: 80;
+  animation: splash-draw 0.7s cubic-bezier(0.4,0,0.2,1) 0.5s forwards;
+}
+@keyframes splash-draw { to { stroke-dashoffset: 0; } }
+
+.splash-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; font-weight: 500; color: var(--fg);
+  margin: 0;
+  opacity: 0; transform: translateY(8px);
+  animation: splash-fade-up 0.5s ease 1.1s forwards;
+}
+.splash-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem; color: var(--fg-muted); letter-spacing: 0.08em;
+  text-transform: uppercase; margin: -0.75rem 0 0;
+  opacity: 0;
+  animation: splash-fade-up 0.5s ease 1.35s forwards;
+}
+@keyframes splash-fade-up {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   HERO GREETING
+   ============================================================ */
+.hero-greeting {
+  font-size: 0.88rem; font-weight: 500;
+  color: var(--fg-muted); margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
+}
+
+
+/* ============================================================
+   REDUCED MOTION — respect user preference globally
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .wave-emoji         { animation: none; }
+#splash-screen      { transition: none; }
+  .sp-bracket-l,
+  .sp-slash,
+  .sp-bracket-r       { animation: none; stroke-dashoffset: 0; }
+  [data-reveal]       { transition: none; }
 }

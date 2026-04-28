@@ -90,6 +90,26 @@
     });
   }
 
+  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---- Splash screen — sessionStorage gate, 1.6 s ----
+  (function () {
+    var splash = document.getElementById('splash-screen');
+    if (!splash) return;
+    if (sessionStorage.getItem('splashSeen')) {
+      splash.classList.add('splash-hidden');
+      return;
+    }
+    document.body.classList.add('splash-active');
+    setTimeout(function () {
+      splash.classList.add('splash-hidden');
+      document.body.classList.remove('splash-active');
+      sessionStorage.setItem('splashSeen', '1');
+    }, prefersReducedMotion ? 0 : 1600);
+  }());
+
+
+
   // Footer year + scroll progress
   var yr = document.getElementById('footer-year');
   if (yr) yr.textContent = new Date().getFullYear();
