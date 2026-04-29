@@ -24,6 +24,11 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 INDEX_HTML = REPO_ROOT / "index.html"
 STYLES_CSS = REPO_ROOT / "styles.css"
+SUPPLY_CHAIN_POST = REPO_ROOT / "content" / "posts" / "repo-context-hooks-supply-chain.html"
+
+REQUIRED_POST_SECTIONS = ("problem", "constraints", "design", "tradeoffs", "outcome")
+POST_MIN_WORDS = 1500
+POST_MAX_WORDS = 2500
 
 # Number of impact strips expected on the home page. Five flagship cards
 # carry a strip after the v3 trim: AutoApply AI, tailor-resume, JobScout
@@ -260,6 +265,80 @@ def test_no_legacy_system_rail_in_systems_grid(html: str) -> None:
         )
 
 
+def test_supply_chain_post_exists() -> None:
+    assert SUPPLY_CHAIN_POST.exists(), (
+        f"missing {SUPPLY_CHAIN_POST} (issue #64 + #56 architecture write-up)"
+    )
+
+
+def test_supply_chain_post_has_required_sections() -> None:
+    """Post must follow Problem -> Constraints -> Design -> Tradeoffs -> Outcome."""
+    html = SUPPLY_CHAIN_POST.read_text(encoding="utf-8")
+    for sec in REQUIRED_POST_SECTIONS:
+        assert f'id="{sec}"' in html, (
+            f'supply-chain post missing <section id="{sec}">; '
+            "required by Problem/Constraints/Design/Tradeoffs/Outcome template."
+        )
+
+
+def test_supply_chain_post_word_count_in_range() -> None:
+    html = SUPPLY_CHAIN_POST.read_text(encoding="utf-8")
+    main_match = re.search(r"<main[^>]*>(.*?)</main>", html, flags=re.S)
+    assert main_match, "post missing <main> element"
+    text = re.sub(r"<[^>]+>", " ", main_match.group(1))
+    text = re.sub(r"\s+", " ", text)
+    words = len(text.split())
+    assert POST_MIN_WORDS <= words <= POST_MAX_WORDS, (
+        f"supply-chain post word count {words} outside "
+        f"[{POST_MIN_WORDS}, {POST_MAX_WORDS}] (HN-eligible budget)."
+    )
+
+
+def test_supply_chain_post_has_inline_svg_diagram() -> None:
+    """Inline SVG with <title> and <desc> for a11y, currentColor for
+    light/dark/print parity (impact-strip pattern conventions)."""
+    html = SUPPLY_CHAIN_POST.read_text(encoding="utf-8")
+    assert "<svg" in html, "post missing inline <svg> diagram"
+    svg_match = re.search(r"<svg[^>]*>(.*?)</svg>", html, flags=re.S)
+    assert svg_match, "post <svg> not closed properly"
+    svg_body = svg_match.group(0)
+    assert "<title" in svg_body, "post <svg> missing <title> for a11y"
+    assert "<desc" in svg_body, "post <svg> missing <desc> for a11y"
+    assert 'role="img"' in svg_body, "post <svg> missing role='img'"
+    assert "currentColor" in svg_body, (
+        "post <svg> hardcodes color; must use currentColor for dark/print parity"
+    )
+
+
+def test_supply_chain_post_no_scrapped_outcomes() -> None:
+    """ExponentHR NL-to-SQL Architecture 4 was scrapped; cannot reappear here."""
+    html = SUPPLY_CHAIN_POST.read_text(encoding="utf-8")
+    forbidden = [
+        "400 enterprise client",
+        "support ticket reduction",
+        "catalog-driven NL-to-SQL",
+        "FAISS retrieval",
+    ]
+    for needle in forbidden:
+        assert needle.lower() not in html.lower(), (
+            f"Found scrapped-project claim {needle!r} in supply-chain post."
+        )
+
+
+def test_index_links_to_supply_chain_post(html: str) -> None:
+    assert "content/posts/repo-context-hooks-supply-chain.html" in html, (
+        "index.html missing link to the supply-chain write-up; "
+        "Architecture & Write-Ups section should link the post."
+    )
+
+
+def test_index_has_architecture_section(html: str) -> None:
+    assert 'id="architecture"' in html, (
+        "index.html missing the Architecture & Write-Ups section "
+        "(issue #56 acceptance criteria)."
+    )
+
+
 def test_all_ids_unique(all_ids: list) -> None:
     """No two elements share an id on the page — ID collisions would
     break aria-labelledby / aria-describedby resolution and CSS #id
@@ -296,6 +375,14 @@ TESTS = [
     test_repo_context_hooks_card_present,
     test_no_legacy_system_rail_in_systems_grid,
     test_all_ids_unique,
+    # ----- Architecture & Write-Ups (issues #56 + #64) -----
+    test_supply_chain_post_exists,
+    test_supply_chain_post_has_required_sections,
+    test_supply_chain_post_word_count_in_range,
+    test_supply_chain_post_has_inline_svg_diagram,
+    test_supply_chain_post_no_scrapped_outcomes,
+    test_index_links_to_supply_chain_post,
+    test_index_has_architecture_section,
 ]
 
 
