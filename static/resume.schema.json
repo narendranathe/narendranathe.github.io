@@ -1,0 +1,60 @@
+{
+  "$id": "https://narendranathe.github.io/static/resume.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Stable resume URL pattern with version metadata. Place the canonical instance at /.well-known/resume.json (RFC 8615). Any tool can probe <host>/.well-known/resume.json for a portfolio's resume contract.",
+  "properties": {
+    "$schema": {
+      "format": "uri",
+      "type": "string"
+    },
+    "byte_size": {
+      "maximum": 10485760,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "last_updated": {
+      "description": "Date-only (YYYY-MM-DD UTC) of latest regeneration. Date-only by design \u2014 full timestamps leak job-search activity.",
+      "format": "date",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "type": "string"
+    },
+    "page_count": {
+      "maximum": 20,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "sha256": {
+      "description": "Full SHA-256 of resume.pdf for content addressing.",
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "spec_version": {
+      "description": "SemVer version of this sidecar's schema contract.",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-z0-9-]+)?$",
+      "type": "string"
+    },
+    "url": {
+      "description": "Absolute https URL of the canonical resume PDF.",
+      "format": "uri",
+      "maxLength": 2048,
+      "pattern": "^https://[^\\s\\\"'<>]+\\.pdf(\\?[^\\s]*)?$",
+      "type": "string"
+    },
+    "version_hash": {
+      "description": "Short version hash (first 8 chars of sha256). Use as ?v=<hash> cache-bust.",
+      "pattern": "^[a-f0-9]{8}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "spec_version",
+    "url",
+    "byte_size",
+    "page_count",
+    "version_hash",
+    "last_updated"
+  ],
+  "title": "Resume Discovery Sidecar",
+  "type": "object"
+}

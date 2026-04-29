@@ -71,6 +71,54 @@ python scripts/snap-favicon.py
 
 The script auto-detects the face via OpenCV's Haar cascade, applies a tight 1.18× face-bbox crop, renders the monogram from Inter Black (or Arial Bold fallback), and writes all six tab/iOS/Android/OG outputs deterministically. Source masters are downscaled to 1200 px long-edge and saved to `static/originals/` so the repo stays light.
 
+## Stable Resume URL — drop-in for any portfolio
+
+> **Status: v0.1.0-experimental.** The well-known path `/.well-known/resume.json` is not yet IANA-registered ([RFC 8615 §3.1](https://datatracker.ietf.org/doc/html/rfc8615#section-3.1)); for hardened use, vendor-prefix it.
+
+Every developer with a portfolio hits the same pain: recruiter clicks a 6-month-old resume URL → 404 (file renamed); LinkedIn / cold-outreach links rot every update; CDNs cache aggressively so content changes don't propagate. This repo ships a small protocol that fixes all three.
+
+**The contract:**
+
+| Path | Purpose |
+|------|---------|
+| `/static/resume.pdf` | Canonical PDF. Filename never changes; inbound links never break. PDF metadata (`/Producer`, `/CreationDate`, `/ID`) is sanitized at publish time to avoid toolchain fingerprinting. |
+| `/.well-known/resume.json` | Discovery sidecar ([RFC 8615](https://datatracker.ietf.org/doc/html/rfc8615)). Tools probe `<host>/.well-known/resume.json` and read version + page count + last-updated date without parsing PDF bytes. |
+| `/static/resume.schema.json` | JSON Schema (draft 2020-12) so adopters can validate their sidecars. |
+| `<a href="/static/resume.pdf?v=<hash>">` | Cache-bust uses content-derived `version_hash`. Stable URL, immediate invalidation on content change. |
+
+**Regenerate:**
+
+```bash
+# 1. Drop your latest resume at scripts/_in/resume.pdf (gitignored)
+# 2. Run — script auto-strips PDF metadata, writes sidecar+schema, and
+#    rewrites every /static/resume.pdf?v=<hash> in index.html in place.
+python scripts/snap-resume.py
+# 3. Commit and push.
+```
+
+Self-test (11 assertions, stdlib only):
+
+```bash
+python scripts/snap-resume.py --self-test
+```
+
+A GitHub Action ([`.github/workflows/resume-self-test.yml`](.github/workflows/resume-self-test.yml)) runs the self-test, validates the sidecar against the schema, and warns if the cache-bust hash in `index.html` drifts from the sidecar.
+
+**CDN cache-bust compatibility:**
+
+| Host | Query-string `?v=` cache-bust works out of the box? |
+|------|------|
+| GitHub Pages, Vercel | Yes |
+| Cloudflare Pages, Netlify | No — query strings stripped from cache key by default; configure cache-level standard or hash the path instead |
+| S3 + CloudFront | No — distribution must forward query strings |
+
+For CDNs that strip query strings, hash-suffix the filename (`/static/resume.<hash>.pdf`) and 302 from the canonical URL.
+
+**Privacy notes:**
+
+- The sidecar's `last_updated` field is intentionally **date-only** (not full ISO 8601 timestamp). Full timestamps broadcast job-search activity to anyone (including a current employer) probing `/.well-known/resume.json`.
+- Source PDFs in `scripts/_in/` are gitignored by default; only the sanitized canonical copy ships.
+
 ## Deployment
 
 This site is deployed through GitHub Pages from the `main` branch.
