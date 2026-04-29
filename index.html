@@ -527,13 +527,27 @@
 
           <!-- AutoApply AI -->
           <article class="system-card" data-reveal>
-            <div class="system-rail">
-              <span class="system-type">Workflow Platform</span>
-              <span class="system-metric">11+6</span>
-              <span class="system-caption">ATS adapters + LLM providers</span>
-            </div>
             <div class="system-body">
-              <h3 class="system-name">AutoApply AI</h3>
+              <span class="section-label">Workflow Platform</span>
+              <h3 class="system-name" id="card-autoapply">AutoApply AI</h3>
+              <dl class="impact-strip" aria-labelledby="card-autoapply">
+                <div class="impact-stat">
+                  <dt class="impact-value">40+</dt>
+                  <dd class="impact-label">FastAPI endpoints<span class="sr-only"> — verified by counting @router decorators in the AutoApply backend.</span></dd>
+                </div>
+                <div class="impact-stat">
+                  <dt class="impact-value">11</dt>
+                  <dd class="impact-label">ATS adapters<span class="sr-only"> — eleven content-script adapters (Greenhouse, Lever, Workday, Ashby, SmartRecruiters, iCIMS, BambooHR, Jobvite, Taleo, Recruitee, Workable) live in the extension's ats/ directory.</span></dd>
+                </div>
+                <div class="impact-stat">
+                  <dt class="impact-value">6</dt>
+                  <dd class="impact-label">LLM providers<span class="sr-only"> — a cascading provider chain across Claude, GPT-4o, Kimi, Ollama, Gemini, and Groq, all defined in the backend's providers service.</span></dd>
+                </div>
+                <div class="impact-stat">
+                  <dt class="impact-value">190</dt>
+                  <dd class="impact-label">automated tests<span class="sr-only"> — one hundred ninety pytest cases in the AutoApply backend, verifiable with pytest collect-only.</span></dd>
+                </div>
+              </dl>
               <p class="system-desc">Applying for jobs is a ritual that eats weeks without improving outcomes. I rebuilt the process from scratch - Chrome MV3 extension detects the job form, tailors the resume using an LLM cascade across 6 providers, submits through 11 different ATS systems, and logs everything to a React dashboard. No manual copy-paste. No lost applications. Live on Fly.io.</p>
               <div class="tech-chips">
                 <span class="chip">FastAPI</span><span class="chip">Chrome MV3</span>
@@ -566,13 +580,23 @@
 
           <!-- tailor-resume -->
           <article class="system-card" data-reveal>
-            <div class="system-rail">
-              <span class="system-type">Reusable Engine</span>
-              <span class="system-metric" data-count="190">190</span>
-              <span class="system-caption">automated tests</span>
-            </div>
             <div class="system-body">
-              <h3 class="system-name">tailor-resume</h3>
+              <span class="section-label">Reusable Engine</span>
+              <h3 class="system-name" id="card-tailor-resume">tailor-resume</h3>
+              <dl class="impact-strip" aria-labelledby="card-tailor-resume">
+                <div class="impact-stat">
+                  <dt class="impact-value">190</dt>
+                  <dd class="impact-label">automated tests<span class="sr-only"> — one hundred ninety pytest cases covering the tailoring engine, verifiable with pytest collect-only.</span></dd>
+                </div>
+                <div class="impact-stat">
+                  <dt class="impact-value">4</dt>
+                  <dd class="impact-label">distribution surfaces<span class="sr-only"> — four delivery surfaces from one shared core: PyPI package, MCP server hosted on Fly.io, Streamlit web app, and a command-line interface.</span></dd>
+                </div>
+                <div class="impact-stat">
+                  <dt class="impact-value">MCP</dt>
+                  <dd class="impact-label">server live on Fly.io<span class="sr-only"> — model-context-protocol compatible endpoint discoverable by any MCP-aware agent at tailor-resume-mcp.fly.dev.</span></dd>
+                </div>
+              </dl>
               <p class="system-desc">The tailoring engine inside AutoApply AI was too useful to keep locked inside one product. Friends wanted it. Agents could call it. So I extracted it properly - 190 tests, four distribution surfaces - and shipped it so any developer can <code>pip install tailor-resume</code> and any MCP-aware agent can call it directly, zero integration work required.</p>
               <div class="tech-chips">
                 <span class="chip">Python</span><span class="chip">MCP server</span>
@@ -605,13 +629,23 @@
 
           <!-- JobScout -->
           <article class="system-card" data-reveal>
-            <div class="system-rail">
-              <span class="system-type">Discovery Engine</span>
-              <span class="system-metric">130+</span>
-              <span class="system-caption">career pages monitored</span>
-            </div>
             <div class="system-body">
-              <h3 class="system-name">JobScout</h3>
+              <span class="section-label">Discovery Engine</span>
+              <h3 class="system-name" id="card-jobscout">JobScout</h3>
+              <dl class="impact-strip" aria-labelledby="card-jobscout">
+                <div class="impact-stat">
+                  <dt class="impact-value">130+</dt>
+                  <dd class="impact-label">career pages monitored<span class="sr-only"> — one hundred thirty-plus company-specific scrapers configured in the JobScout target list.</span></dd>
+                </div>
+                <div class="impact-stat">
+                  <dt class="impact-value">6</dt>
+                  <dd class="impact-label">ATS platforms<span class="sr-only"> — six applicant-tracking-system adapters: Greenhouse, Lever, Workday, Ashby, SmartRecruiters, and iCIMS.</span></dd>
+                </div>
+                <div class="impact-stat">
+                  <dt class="impact-value">95+</dt>
+                  <dd class="impact-label">resumes tailored<span class="sr-only"> — ninety-five-plus per-role tailored resume PDFs generated from the master profile, each tracked back to the job opening it applied to.</span></dd>
+                </div>
+              </dl>
               <p class="system-desc">Job boards are noisy by design - most listings are duplicated, aggregated, or irrelevant before you open them. I built JobScout to monitor 130+ company career pages directly, bypassing the middleman, with sponsorship-aware ranking built in. Clean input upstream means better applications downstream.</p>
               <div class="tech-chips">
                 <span class="chip">130+ companies</span><span class="chip">6 ATS platforms</span>
@@ -631,11 +665,25 @@
         <div class="supporting-row" data-reveal>
           <article class="support-card">
             <span class="section-label">Enterprise Data Platform</span>
-            <h3>Azure Platform Engineering</h3>
+            <h3 id="card-azure">Azure Platform Engineering</h3>
+            <dl class="impact-strip" aria-labelledby="card-azure">
+              <div class="impact-stat">
+                <dt class="impact-value">3mo&rarr;14d</dt>
+                <dd class="impact-label">deployment cycle<span class="sr-only"> — release cadence cut from three months to fourteen days by owning CI/CD end-to-end through Azure DevOps; eliminated about eleven weeks of cross-team idle per release.</span></dd>
+              </div>
+              <div class="impact-stat">
+                <dt class="impact-value">-67%</dt>
+                <dd class="impact-label">CDC ETL compute<span class="sr-only"> — CDC ETL runtime cut from thirty minutes to under eight minutes after reengineering full-table reloads into incremental merge-upserts.</span></dd>
+              </div>
+              <div class="impact-stat">
+                <dt class="impact-value">~1hr</dt>
+                <dd class="impact-label">saved per AAG copy-down<span class="sr-only"> — idempotent Azure DevOps pipeline for Contained Always-On Availability Groups (restore plus security plus CDC plus listener validation) eliminated about an hour of manual orchestration on each of twenty-plus daily copy-down requests.</span></dd>
+              </div>
+            </dl>
             <p>Production data platform work at ExponentHR: CI/CD ownership compressed deployment from 3 months to 14 days, CDC ETL -67% compute cost, payroll-critical AAG database failover automation, idempotent Azure DevOps pipelines.</p>
             <div class="support-chips">
               <span class="chip">Azure DevOps</span><span class="chip">CDC ETL</span>
-              <span class="chip">-67% compute</span><span class="chip">3mo&rarr;14d deploys</span>
+              <span class="chip">AAG failover</span><span class="chip">Microsoft Fabric</span>
             </div>
           </article>
           <article class="support-card">
@@ -644,7 +692,7 @@
             <div class="ml-projects">
               <div class="ml-project-entry">
                 <h4>Fraud Detection ML Platform</h4>
-                <p>100+ TPS, sub-ms P99, Kafka, MLflow, Prometheus, Grafana. Real-time scoring with full model lifecycle.</p>
+                <p>Streaming fraud scoring with Kafka ingest, FastAPI + LightGBM model serving, MLflow experiment tracking, and Prometheus + Grafana observability. Full model lifecycle in containers.</p>
                 <div class="card-actions">
                   <a href="fraud-detection.html" class="cs-btn">Read case study</a>
                   <a href="https://github.com/narendranathe/fraud-detection-ml-platform" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub</a>
@@ -652,7 +700,7 @@
               </div>
               <div class="ml-project-entry">
                 <h4>Portfolio Risk Analytics</h4>
-                <p>Kafka, Spark, historical simulation VaR, live P&amp;L dashboard. Sub-second risk metric updates.</p>
+                <p>Real-time risk analytics: Kafka streaming ingest, Spark historical-simulation VaR, FastAPI + Streamlit dashboard for live P&amp;L visibility.</p>
                 <div class="card-actions">
                   <a href="portfolio-risk.html" class="cs-btn">Read case study</a>
                   <a href="https://github.com/narendranathe/portfolio-risk-analysis" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub</a>
@@ -666,6 +714,29 @@
                   <a href="https://github.com/narendranathe/fintune" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub</a>
                 </div>
               </div>
+            </div>
+          </article>
+          <article class="support-card">
+            <span class="section-label">Open-source tooling</span>
+            <h3 id="card-repo-context-hooks">repo-context-hooks</h3>
+            <dl class="impact-strip" aria-labelledby="card-repo-context-hooks">
+              <div class="impact-stat">
+                <dt class="impact-value">330+</dt>
+                <dd class="impact-label">automated tests<span class="sr-only"> — three hundred thirty-plus pytest cases passing as of the v1.0 supply-chain hardening release; verifiable with pytest collect-only.</span></dd>
+              </div>
+              <div class="impact-stat">
+                <dt class="impact-value">Sigstore + CodeQL</dt>
+                <dd class="impact-label">supply-chain hardening<span class="sr-only"> — every release signed via Sigstore through GitHub Actions Trusted Publisher OIDC, plus CodeQL static analysis on every pull request; verifiable in the publish and codeql workflow files.</span></dd>
+              </div>
+              <div class="impact-stat">
+                <dt class="impact-value">stdlib</dt>
+                <dd class="impact-label">only — zero runtime deps<span class="sr-only"> — the project dependencies array in pyproject.toml is empty; the package uses Python standard library only at runtime.</span></dd>
+              </div>
+            </dl>
+            <p>Pre/post-commit hooks that snapshot repo context for LLM agents. Sigstore-signed PyPI releases via OIDC Trusted Publisher; CodeQL static analysis on every PR; Dependabot tracks the GitHub Actions ecosystem.</p>
+            <div class="card-actions">
+              <a href="https://github.com/narendranathe/repo-context-hooks" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub</a>
+              <a href="https://pypi.org/project/repo-context-hooks/" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-python"></i> PyPI</a>
             </div>
           </article>
         </div>

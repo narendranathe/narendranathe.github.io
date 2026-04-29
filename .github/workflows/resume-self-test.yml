@@ -1,10 +1,10 @@
 name: Resume sidecar self-test
 
-# Runs the snap-resume.py self-test on every push and PR.
-# 11 assertions, ~50ms, zero deps beyond Python stdlib (the script's
-# self-test uses only stdlib; pikepdf only needed for the main pipeline).
-# Catches: regex regressions on page count detection, hash determinism
-# breakage, schema field drift, cache-bust rewrite logic.
+# Runs the resume sidecar + portfolio HTML invariant self-tests on
+# every push and PR. Catches: regex regressions on page count detection,
+# hash determinism breakage, schema field drift, cache-bust rewrite
+# logic, scrapped-project claim re-introduction, impact-strip semantic
+# violations, ID collisions.
 
 on:
   push:
@@ -26,6 +26,9 @@ jobs:
           python-version: "3.12"
       - name: Run snap-resume.py self-test
         run: python scripts/snap-resume.py --self-test
+
+      - name: Run portfolio HTML invariants self-test
+        run: python scripts/test-portfolio.py --self-test
 
       - name: Validate sidecar against schema
         if: hashFiles('.well-known/resume.json') != ''

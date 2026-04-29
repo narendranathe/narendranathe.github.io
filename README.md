@@ -119,6 +119,20 @@ For CDNs that strip query strings, hash-suffix the filename (`/static/resume.<ha
 - The sidecar's `last_updated` field is intentionally **date-only** (not full ISO 8601 timestamp). Full timestamps broadcast job-search activity to anyone (including a current employer) probing `/.well-known/resume.json`.
 - Source PDFs in `scripts/_in/` are gitignored by default; only the sanitized canonical copy ships.
 
+## Impact Strip — drop-in pattern for project cards
+
+Every flagship project card on this site uses an "impact strip" — 3-5 quantified-impact metrics displayed beneath the card title. Senior-engineer-credible (verifiable provenance via `aria-describedby`, AAA contrast, no font-swap CLS) and copy-pasteable into any portfolio (Hugo, Jekyll, Next.js, Astro, vanilla HTML).
+
+See **[docs/impact-strip-pattern.md](docs/impact-strip-pattern.md)** for the full spec, HTML/CSS, conventions ("numbers > tech labels", "3-5 stats per card", "every stat has defensible provenance"), and a11y/mobile checklist.
+
+The reference implementation ships in `index.html` + `styles.css`. Tests in `scripts/test-portfolio.py` enforce the contract:
+
+```bash
+python scripts/test-portfolio.py --self-test
+```
+
+17 assertions cover: pattern presence on every card, 3-5 stat range, semantic primitive (`<dl>`), `aria-describedby` linkage, no scrapped-project claims, no inline styles, JetBrains Mono loaded, mobile breakpoint at 600px, dark-mode + print blocks. Wired into CI ([`.github/workflows/portfolio-self-test.yml`](.github/workflows/portfolio-self-test.yml)).
+
 ## Deployment
 
 This site is deployed through GitHub Pages from the `main` branch.

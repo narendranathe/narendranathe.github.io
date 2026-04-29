@@ -1178,3 +1178,108 @@ body.splash-active { overflow: hidden; }
   .sp-bracket-r       { animation: none; stroke-dashoffset: 0; }
   [data-reveal]       { transition: none; }
 }
+
+
+/* ============================================================
+   IMPACT STRIP — quantified-impact ledger pattern
+   See docs/impact-strip-pattern.md for the drop-in spec.
+
+   Visual: warm-rule ledger (NOT a chip row). Each stat is a
+   left-ruled value-over-label block, deliberately distinct from
+   .chip (rounded pill) so the eye reads "evidence, not stack list."
+   Tokens reuse the site palette (--fg, --fg-muted, --accent-warm)
+   so the pattern is native rather than bolt-on.
+
+   Semantics: <dl> contains <div> wrappers per HTML Living Standard;
+   each wrapper holds <dt class="impact-value"> + <dd class="impact-
+   label">. Per-stat provenance lives as <span class="sr-only">
+   *inside* the <dd>, so screen readers announce it in document
+   order after the visible label.
+   ============================================================ */
+.impact-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.5rem;
+  margin: 0 0 1.1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.impact-strip > .impact-stat {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.05rem;
+  margin: 0;
+  padding: 0.1rem 0 0.1rem 0.6rem;
+  border-left: 2px solid var(--accent-warm, #b5752a);
+  /* Allow wrap inside a stat on small viewports (WCAG 1.4.10 reflow);
+     suppress wrap on >=600px where horizontal real estate exists. */
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.impact-strip .impact-value {
+  margin: 0;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.2;
+  color: var(--fg, #1a1818);
+  /* tabular-nums prevents font-swap CLS; the JetBrains Mono fallback
+     chain (ui-monospace -> monospace) is not always tabular by default. */
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+.impact-strip .impact-label {
+  margin: 0;
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-muted, #9b9490);
+  line-height: 1.3;
+}
+
+.impact-strip .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Keep value+label paired (no wrap mid-stat) on >=600px viewports;
+   below that, allow wrap to satisfy WCAG 1.4.10 (reflow) at 320px. */
+@media (min-width: 600px) {
+  .impact-strip > .impact-stat {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}
+
+/* Dark-mode adaptation — drop-in default for adopters whose host
+   palette uses prefers-color-scheme. */
+@media (prefers-color-scheme: dark) {
+  .impact-strip .impact-value {
+    color: var(--fg, #f0f0f0);
+  }
+  .impact-strip .impact-label {
+    color: var(--fg-muted, #c0c0c0);
+  }
+}
+
+/* Print — keep the rule + text legible on PDF export. */
+@media print {
+  .impact-strip > .impact-stat {
+    border-left-color: #000;
+  }
+  .impact-strip .impact-value,
+  .impact-strip .impact-label {
+    color: #000;
+  }
+}
