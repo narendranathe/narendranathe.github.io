@@ -339,6 +339,83 @@ def test_index_has_architecture_section(html: str) -> None:
     )
 
 
+# ----- System diagrams (issue #58) -----
+SYSTEM_DIAGRAM_RE = re.compile(
+    r'<svg[^>]*class="system-diagram"[^>]*>.*?</svg>', re.S
+)
+# Per-page inline-SVG byte budget across all .system-diagram elements.
+# Hand-authored diagrams in this repo run 3-5 KB each; the gate keeps
+# regressions (e.g., an Excalidraw export sneaking in) loud.
+SYSTEM_DIAGRAM_PAGE_BUDGET_BYTES = 30 * 1024  # 30 KB
+
+
+def test_index_has_two_system_diagrams(html: str) -> None:
+    """Issue #58: D1 (AutoApply AI) + D2 (Portfolio-Risk) inline SVGs.
+
+    Both diagrams live in the home index.html (D1 inside the AutoApply
+    arch-expand, D2 inside the Portfolio Risk Analytics ml-project-entry).
+    There is no separate content/posts/<slug>.html for either project,
+    so the home page is the single target location for both diagrams."""
+    diagrams = SYSTEM_DIAGRAM_RE.findall(html)
+    assert len(diagrams) >= 2, (
+        f"index.html must contain at least 2 inline <svg class=\"system-diagram\"> "
+        f"elements (D1 AutoApply AI + D2 Portfolio-Risk per issue #58); "
+        f"found {len(diagrams)}."
+    )
+    # Sanity-check both diagrams reference the right diagram IDs.
+    body = "\n".join(diagrams)
+    assert "diagram-d1-autoapply" in body, (
+        "D1 AutoApply AI diagram missing (expected id namespace 'diagram-d1-autoapply-*')."
+    )
+    assert "diagram-d2-portfolio-risk" in body, (
+        "D2 Portfolio-Risk diagram missing (expected id namespace 'diagram-d2-portfolio-risk-*')."
+    )
+
+
+def test_each_system_diagram_has_title_and_desc(html: str) -> None:
+    """WCAG 1.1.1: every <svg role='img'> needs a programmatic accessible
+    name + description. Pattern enshrined in docs/system-diagram-pattern.md."""
+    diagrams = SYSTEM_DIAGRAM_RE.findall(html)
+    for i, svg in enumerate(diagrams):
+        assert "<title" in svg, (
+            f"system-diagram #{i + 1} missing <title> (WCAG 1.1.1)."
+        )
+        assert "<desc" in svg, (
+            f"system-diagram #{i + 1} missing <desc> (WCAG 1.1.1)."
+        )
+        assert 'role="img"' in svg, (
+            f"system-diagram #{i + 1} missing role=\"img\" on the <svg> element."
+        )
+
+
+def test_each_system_diagram_uses_currentcolor(html: str) -> None:
+    """No hardcoded #hex on fill / stroke. Diagrams must inherit color
+    via currentColor or CSS custom-property var() so dark-mode + print
+    + forced-colors all render correctly with one markup."""
+    diagrams = SYSTEM_DIAGRAM_RE.findall(html)
+    # Pattern: any fill="#xxx" or stroke="#xxx" attribute in the diagram
+    # body that isn't legitimate (currentColor, var(--...), none).
+    HEX_ATTR_RE = re.compile(r'(?:fill|stroke)="#[0-9a-fA-F]{3,8}"')
+    for i, svg in enumerate(diagrams):
+        hits = HEX_ATTR_RE.findall(svg)
+        assert not hits, (
+            f"system-diagram #{i + 1} hardcodes color attributes "
+            f"({hits}); use currentColor or var(--accent-warm) so dark/print/HCM work."
+        )
+
+
+def test_index_inline_system_diagram_byte_budget(html: str) -> None:
+    """Per-page inline-SVG byte budget (system-diagrams only) <= 30 KB.
+    Loud regression gate against Excalidraw exports / verbose hand-edits."""
+    diagrams = SYSTEM_DIAGRAM_RE.findall(html)
+    total_bytes = sum(len(d.encode("utf-8")) for d in diagrams)
+    assert total_bytes <= SYSTEM_DIAGRAM_PAGE_BUDGET_BYTES, (
+        f"Inline system-diagram payload on index.html is {total_bytes} bytes; "
+        f"budget is {SYSTEM_DIAGRAM_PAGE_BUDGET_BYTES} bytes "
+        f"(issue #58 hand-rolled inline SVG contract)."
+    )
+
+
 def test_all_ids_unique(all_ids: list) -> None:
     """No two elements share an id on the page — ID collisions would
     break aria-labelledby / aria-describedby resolution and CSS #id
@@ -383,6 +460,11 @@ TESTS = [
     test_supply_chain_post_no_scrapped_outcomes,
     test_index_links_to_supply_chain_post,
     test_index_has_architecture_section,
+    # ----- System diagrams (issue #58) -----
+    test_index_has_two_system_diagrams,
+    test_each_system_diagram_has_title_and_desc,
+    test_each_system_diagram_uses_currentcolor,
+    test_index_inline_system_diagram_byte_budget,
 ]
 
 

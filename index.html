@@ -560,6 +560,59 @@
                 <button class="expand-btn" aria-expanded="false" data-label="See architecture">See architecture</button>
               </div>
               <div class="arch-expand" hidden>
+                <figure class="system-diagram-figure" aria-labelledby="diagram-d1-autoapply-title" aria-describedby="diagram-d1-autoapply-desc">
+                  <svg class="system-diagram" viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" role="img">
+                    <title id="diagram-d1-autoapply-title">AutoApply AI architecture: Chrome MV3 client to FastAPI backend to BYOK LLM router, with Postgres pgvector RAG and a user-owned GitHub Resume-Vault sink</title>
+                    <desc id="diagram-d1-autoapply-desc">AutoApply AI architecture. The Chrome MV3 service worker orchestrates a Shadow-DOM content script (ATS adapters) and a React side panel. Both authenticate with a FastAPI backend through Clerk RS256 tokens, with Redis enforcing per-user rate limits. The backend dispatches to a BYOK provider router across seven LLMs: Claude, OpenAI, Gemini, Groq, Perplexity, Kimi, and Ollama as local fallback. Routing is two-step: a user-selected primary provider, with Ollama as the in-request fallback. RAG retrieval flows through Postgres with pgvector hosted on Supabase. Tailored resumes write back to a user-owned GitHub Resume-Vault as versioned LaTeX files. Solid edges are dispatch; the dashed edge is the RAG return path from Postgres to the backend.</desc>
+                    <defs>
+                      <marker id="arrow-d1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0 0 L10 5 L0 10 Z" fill="currentColor"/>
+                      </marker>
+                    </defs>
+                    <g fill="none" stroke="currentColor" stroke-width="1.4" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="11">
+                      <rect x="20" y="50" width="140" height="100" rx="6"/>
+                      <text x="90" y="70" text-anchor="middle" fill="currentColor" font-weight="600">Chrome MV3</text>
+                      <text x="90" y="90" text-anchor="middle" fill="currentColor" font-size="10">Service Worker</text>
+                      <text x="90" y="106" text-anchor="middle" fill="currentColor" font-size="10">Content Script</text>
+                      <text x="90" y="122" text-anchor="middle" fill="currentColor" font-size="10">Side Panel (React)</text>
+                      <text x="90" y="140" text-anchor="middle" fill="currentColor" font-size="9">11 ATS adapters</text>
+
+                      <rect x="200" y="50" width="140" height="100" rx="6"/>
+                      <text x="270" y="70" text-anchor="middle" fill="currentColor" font-weight="600">FastAPI backend</text>
+                      <text x="270" y="90" text-anchor="middle" fill="currentColor" font-size="10">async, 40+ endpoints</text>
+                      <text x="270" y="106" text-anchor="middle" fill="currentColor" font-size="10">Clerk RS256 JWT</text>
+                      <text x="270" y="122" text-anchor="middle" fill="currentColor" font-size="10">Redis rate-limit</text>
+                      <text x="270" y="140" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">in-request dispatch</text>
+
+                      <rect x="380" y="20" width="160" height="160" rx="6" stroke="var(--accent-warm, #b5752a)" stroke-width="2"/>
+                      <text x="460" y="42" text-anchor="middle" fill="var(--accent-warm, #b5752a)" font-weight="600">BYOK Router</text>
+                      <text x="460" y="60" text-anchor="middle" fill="currentColor" font-size="9">primary + Ollama fallback</text>
+                      <text x="460" y="80" text-anchor="middle" fill="currentColor" font-size="10">Claude</text>
+                      <text x="460" y="96" text-anchor="middle" fill="currentColor" font-size="10">OpenAI &middot; GPT-4o</text>
+                      <text x="460" y="112" text-anchor="middle" fill="currentColor" font-size="10">Gemini &middot; Groq</text>
+                      <text x="460" y="128" text-anchor="middle" fill="currentColor" font-size="10">Perplexity &middot; Kimi</text>
+                      <text x="460" y="146" text-anchor="middle" fill="currentColor" font-size="10" font-style="italic">Ollama (local)</text>
+
+                      <rect x="580" y="50" width="120" height="100" rx="6"/>
+                      <text x="640" y="72" text-anchor="middle" fill="currentColor" font-weight="600">Postgres</text>
+                      <text x="640" y="90" text-anchor="middle" fill="currentColor" font-weight="600">+ pgvector</text>
+                      <text x="640" y="108" text-anchor="middle" fill="currentColor" font-size="10">Supabase</text>
+                      <text x="640" y="124" text-anchor="middle" fill="currentColor" font-size="9">TF-IDF + dense</text>
+                      <text x="640" y="138" text-anchor="middle" fill="currentColor" font-size="9">top-k 6</text>
+
+                      <rect x="200" y="200" width="220" height="46" rx="6"/>
+                      <text x="310" y="219" text-anchor="middle" fill="currentColor" font-weight="600">GitHub Resume-Vault</text>
+                      <text x="310" y="234" text-anchor="middle" fill="currentColor" font-size="9">user-owned repo, .tex versions</text>
+
+                      <line x1="160" y1="95" x2="200" y2="95" marker-end="url(#arrow-d1)"/>
+                      <line x1="340" y1="95" x2="380" y2="95" marker-end="url(#arrow-d1)"/>
+                      <line x1="540" y1="100" x2="580" y2="100" marker-end="url(#arrow-d1)"/>
+                      <line x1="580" y1="115" x2="540" y2="115" marker-end="url(#arrow-d1)" stroke-dasharray="3 3"/>
+                      <line x1="270" y1="150" x2="270" y2="200" marker-end="url(#arrow-d1)"/>
+                    </g>
+                  </svg>
+                  <figcaption class="post-figcaption">Figure: AutoApply AI topology. Solid arrows are dispatch; dashed is RAG return.</figcaption>
+                </figure>
                 <div class="arch-grid">
                   <div class="arch-box">
                     <h4>Product boundary</h4>
@@ -701,6 +754,55 @@
               <div class="ml-project-entry">
                 <h4>Portfolio Risk Analytics</h4>
                 <p>Real-time risk analytics: Kafka streaming ingest, Spark historical-simulation VaR, FastAPI + Streamlit dashboard for live P&amp;L visibility.</p>
+                <figure class="system-diagram-figure" aria-labelledby="diagram-d2-portfolio-risk-title" aria-describedby="diagram-d2-portfolio-risk-desc">
+                  <svg class="system-diagram" viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" role="img">
+                    <title id="diagram-d2-portfolio-risk-title">Portfolio-Risk topology: Kafka producer to Spark Structured Streaming to console sink, FastAPI VaR served to Streamlit</title>
+                    <desc id="diagram-d2-portfolio-risk-desc">Portfolio-Risk real-time topology. A Kafka producer publishes synthetic market ticks at fifty messages per second on one topic with five partitions. Spark Structured Streaming consumes them with five-second tumbling windows and ten-second watermarks, running on a single-node local cluster. The current sink is stdout (a demo console writer) — a CSV file sink to data/processed is the next planned step but is not yet wired. A FastAPI service computes historical-simulation VaR at ninety-five and ninety-nine percent confidence intervals; until the file sink exists it falls back to synthetic data. The dashboard is a local Streamlit app.</desc>
+                    <defs>
+                      <marker id="arrow-d2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0 0 L10 5 L0 10 Z" fill="currentColor"/>
+                      </marker>
+                    </defs>
+                    <g fill="none" stroke="currentColor" stroke-width="1.4" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="11">
+                      <rect x="20" y="50" width="120" height="86" rx="6"/>
+                      <text x="80" y="70" text-anchor="middle" fill="currentColor" font-weight="600">Kafka producer</text>
+                      <text x="80" y="88" text-anchor="middle" fill="currentColor" font-size="10">50 TPS</text>
+                      <text x="80" y="104" text-anchor="middle" fill="currentColor" font-size="10">1 topic / 5 parts</text>
+                      <text x="80" y="122" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">acks=all, gzip</text>
+
+                      <rect x="170" y="40" width="150" height="106" rx="6" stroke="var(--accent-warm, #b5752a)" stroke-width="2"/>
+                      <text x="245" y="60" text-anchor="middle" fill="var(--accent-warm, #b5752a)" font-weight="600">Spark Streaming</text>
+                      <text x="245" y="78" text-anchor="middle" fill="currentColor" font-size="10">structured streaming</text>
+                      <text x="245" y="94" text-anchor="middle" fill="currentColor" font-size="10">5s tumbling window</text>
+                      <text x="245" y="110" text-anchor="middle" fill="currentColor" font-size="10">10s watermark</text>
+                      <text x="245" y="130" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">local[2] demo</text>
+
+                      <rect x="350" y="60" width="100" height="66" rx="6"/>
+                      <text x="400" y="82" text-anchor="middle" fill="currentColor" font-weight="600">Console sink</text>
+                      <text x="400" y="100" text-anchor="middle" fill="currentColor" font-size="10">stdout (demo)</text>
+                      <text x="400" y="116" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">CSV sink TODO</text>
+
+                      <rect x="480" y="50" width="130" height="86" rx="6"/>
+                      <text x="545" y="70" text-anchor="middle" fill="currentColor" font-weight="600">FastAPI</text>
+                      <text x="545" y="88" text-anchor="middle" fill="currentColor" font-size="10">numpy VaR</text>
+                      <text x="545" y="104" text-anchor="middle" fill="currentColor" font-size="10">95% / 99% CI</text>
+                      <text x="545" y="122" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">historical simulation</text>
+
+                      <rect x="640" y="60" width="60" height="66" rx="6"/>
+                      <text x="670" y="82" text-anchor="middle" fill="currentColor" font-weight="600">Streamlit</text>
+                      <text x="670" y="100" text-anchor="middle" fill="currentColor" font-size="9">local</text>
+                      <text x="670" y="114" text-anchor="middle" fill="currentColor" font-size="9">dev</text>
+
+                      <line x1="140" y1="93" x2="170" y2="93" marker-end="url(#arrow-d2)"/>
+                      <line x1="320" y1="93" x2="350" y2="93" marker-end="url(#arrow-d2)"/>
+                      <line x1="450" y1="93" x2="480" y2="93" marker-end="url(#arrow-d2)"/>
+                      <line x1="610" y1="93" x2="640" y2="93" marker-end="url(#arrow-d2)"/>
+
+                      <text x="360" y="170" text-anchor="middle" fill="var(--fg-muted, #9b9490)" font-size="10">Single-node demo. Spark prints aggregates to stdout; CSV file handoff to FastAPI is planned, not shipped.</text>
+                    </g>
+                  </svg>
+                  <figcaption class="post-figcaption">Figure: Portfolio-Risk topology, as it actually runs today. The Spark-to-FastAPI link is currently console-only; FastAPI falls back to synthetic data until the CSV sink lands.</figcaption>
+                </figure>
                 <div class="card-actions">
                   <a href="portfolio-risk.html" class="cs-btn">Read case study</a>
                   <a href="https://github.com/narendranathe/portfolio-risk-analysis" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub</a>

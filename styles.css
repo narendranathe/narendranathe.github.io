@@ -1483,4 +1483,17 @@ body.splash-active { overflow: hidden; }
   }
   .system-diagram { color: #000; }
   .post-section h2 { border-top-color: #000; }
+  /* Warm-accent strokes/fills fall back to #000 in print so they meet
+     WCAG 1.4.11 (3:1) on a B&W laser printer. CSS tokens overridden
+     here cascade through var() lookups inside inline SVG. */
+  .system-diagram { --accent-warm: #000; --fg-muted: #333; }
+}
+
+/* Windows High Contrast Mode (forced-colors): CSS custom-property
+   warm accents are NOT remapped by the OS. Force every stroke + fill
+   inside the diagram onto the system CanvasText token so the diagram
+   stays readable when the user has selected an accessibility theme. */
+@media (forced-colors: active) {
+  .system-diagram [stroke] { stroke: CanvasText; }
+  .system-diagram [fill]:not([fill="none"]) { fill: CanvasText; }
 }
