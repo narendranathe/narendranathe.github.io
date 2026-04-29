@@ -49,6 +49,28 @@ The site is intentionally simple and fast: no framework, no build step, and no r
 
 Open `index.html` in a browser for a quick preview, or serve the repo with any lightweight static file server if you want local routing behavior to match GitHub Pages more closely.
 
+## Regenerating Favicons + Social Card
+
+The site uses a deliberate split: monogram "N" white-on-orange for the browser tab (16/32/48 px) and the actual headshot for the iOS home screen (`apple-touch-icon.png`), Android adaptive icon (`favicon-512-maskable.png`), and OpenGraph share card (`og-image.jpg`). All assets are deterministic, regenerated from a single source photo by [`scripts/snap-favicon.py`](scripts/snap-favicon.py).
+
+```bash
+# 1. Install pipeline deps (one-time)
+pip install -r scripts/requirements.txt
+
+# 2. Drop a fresh head-and-shoulders photo at scripts/_in/headshot-portrait.jpg
+#    (and optionally a full-body shot at scripts/_in/headshot-fullbody.jpg)
+
+# 3. Regenerate everything
+python scripts/snap-favicon.py
+
+# 4. Bump the cache-bust query strings in index.html (search for "?v=2026-04-28")
+#    so existing browsers fetch the new files instead of stale cached copies.
+
+# 5. Commit and push
+```
+
+The script auto-detects the face via OpenCV's Haar cascade, applies a tight 1.18× face-bbox crop, renders the monogram from Inter Black (or Arial Bold fallback), and writes all six tab/iOS/Android/OG outputs deterministically. Source masters are downscaled to 1200 px long-edge and saved to `static/originals/` so the repo stays light.
+
 ## Deployment
 
 This site is deployed through GitHub Pages from the `main` branch.
