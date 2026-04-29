@@ -546,6 +546,370 @@ post-critique consensus.
 
 ---
 
+# Wave 2 — Flow Enhancements (PRD #66, child issues #67–#71)
+
+After the user reviewed the live preview of #50 / #52 / #56 / #57 / #58, three new feature requests + one bug fix were filed as PRD #66 and decomposed into 5 vertical-slice issues:
+
+- **#67** — M2 tracer bullet: resume page-1 preview asset pipeline (S, blocks #70)
+- **#68** — M4: ExponentHR claim scrub + DOM-aware test guard (S, parallel-safe)
+- **#69** — M3: full-body hero photo swap (M, parallel-safe)
+- **#70** — M1: hover-preview primitive on resume + key links (L, blocked by #67, blocks #71)
+- **#71** — M5: skills image grid with hover tooltips (L, blocked by #70)
+
+Recommended order: **#67 → #68 + #69 (parallel) → #70 → #71**.
+
+Each prompt below is self-contained for a fresh session in the repo root.
+
+---
+
+## Prompt 6 — Issue #67 (M2 tracer bullet — resume preview asset)
+
+> Smallest end-to-end change. Proves the asset-generation pipeline. ≤ 1 hour.
+
+```
+---BEGIN PROMPT---
+You are working on the narendranathe/narendranathe.github.io portfolio,
+branch feat/portfolio-ui-upgrade-2026. Working directory is the repo root.
+
+Drive GitHub issue #67 (M2 — resume page-1 preview asset pipeline,
+TRACER BULLET) through the critique loop documented in this file.
+
+Steps:
+1. Read docs/backlog-critique-prompts.md "Shared context" + the
+   "Issue #67" full spec via `gh issue view 67`.
+2. Three pre-critique agents in PARALLEL (one Agent tool call message
+   with three sub-calls):
+   Agent A (rendering toolchain): pikepdf vs pdf2image vs Pillow's
+   built-in. Which is cross-platform-stable on Windows + Linux + macOS
+   without poppler bundled? What's the determinism property of each
+   (same PDF bytes -> identical PNG bytes)?
+   Agent B (asset-format choice): is 320x240 PNG the right shape for
+   a hover-preview thumbnail, or does a portrait 240x320 (matching
+   resume aspect ratio) read better in a hover popover? Should it be
+   AVIF / WebP for size, or PNG for compatibility?
+   Agent C (cache-bust + reproducibility): the resume sidecar already
+   has version_hash from #52. Should the preview filename embed the
+   hash (resume-page1-preview.<hash>.png) or be a stable name with
+   ?v=<hash> in markup? What's the simpler maintenance path?
+3. Synthesize convergent findings.
+4. Implement: extend scripts/snap-resume.py with a render_page1_preview
+   function. Output static/resume-page1-preview.png (target <=30KB).
+   Self-test extended: assert preview exists, byte size, dimensions.
+5. 5 post-critique agents in PARALLEL:
+   Agent D (deterministic encoding): is the PNG output byte-stable
+   across runs? What encoder flags are needed?
+   Agent E (cross-platform): does it work on a fresh Windows clone
+   without poppler? On a CI Linux runner?
+   Agent F (size budget): 30KB target — actuals?
+   Agent G (a11y for downstream M1): what alt text / aria-label should
+   the eventual hover-preview-card use? Is the image decorative or
+   semantically meaningful (deserves description)?
+   Agent H (scope discipline): did the implementation stay scoped to
+   "render + write PNG", or did it accidentally creep into M1 hover-
+   preview UI work that belongs in #70?
+6. Refine + commit + push + status comment on #67.
+
+Constraints:
+- ≤ 1 hr realistic effort. Bail if pikepdf rendering doesn't work and
+  pdf2image needs system binaries — document the fallback in the issue
+  comment and ship a manually-rendered PNG as committed artifact.
+- Self-test must run with stdlib only (no poppler dep at test time).
+- Output PNG must NOT contain PDF metadata leakage (use the
+  metadata-stripped resume.pdf as input, not the raw source).
+
+You have authorization to: read all files, run gh CLI, dispatch
+parallel Agent tool calls, modify scripts/snap-resume.py and
+scripts/requirements.txt, commit + push.
+---END PROMPT---
+```
+
+---
+
+## Prompt 7 — Issue #68 (M4 — ExponentHR scrub + DOM-aware test guard)
+
+> Smallest scope. Removes one HTML block + adds ~30 LOC test helper. ≤ 1 hour.
+
+```
+---BEGIN PROMPT---
+You are working on the narendranathe/narendranathe.github.io portfolio,
+branch feat/portfolio-ui-upgrade-2026. Working directory is the repo root.
+
+Drive GitHub issue #68 (M4 — ExponentHR claim scrub + DOM-aware test
+guard) through the critique loop documented in this file.
+
+Background: line 144 of index.html has
+  <span class="metric-num" data-count="400">400</span>
+  <span class="metric-lbl">enterprise clients</span>
+which is the scrapped ExponentHR NL-to-SQL claim. The current test
+guard greps the raw HTML for "400 enterprise client" but never matches
+because the words live in adjacent spans. Fix the leak AND fix the
+guard.
+
+Steps:
+1. Read docs/backlog-critique-prompts.md "Shared context" + `gh issue
+   view 68` for the full spec.
+2. Three pre-critique agents in PARALLEL:
+   Agent A (DOM-walker correctness): the proposed extract_visible_text
+   helper subclasses html.parser.HTMLParser. What edge cases will trip
+   it? <script>/<style> inline content, HTML entities (&amp;, &rarr;),
+   self-closing tags, CDATA?
+   Agent B (forbidden phrase list completeness): the PRD lists 6
+   phrases. Are there others ("400 client", "40% reduction", "4 second
+   query") that should be in the guard? What's the right inclusion
+   bar?
+   Agent C (false-positive risk): could the substring search trigger
+   on legitimate text — e.g., "400 milliseconds" in a different
+   context? How to scope the assertion to avoid false positives?
+3. Synthesize.
+4. Implement:
+   - Remove the <div class="metric-item"> for "400 enterprise clients"
+     (lines 142-146 of index.html).
+   - Add extract_visible_text() helper to scripts/test-portfolio.py.
+   - Add new test test_no_scrapped_exponenthr_outcomes_in_rendered_text.
+   - Verify all 28+ existing assertions still pass.
+5. 5 post-critique agents in PARALLEL:
+   Agent D (regression prevention): plant 3 deliberate violations in
+   a fixture HTML and confirm the new test catches all 3.
+   Agent E (whitespace handling): does multi-space / newline-split
+   text get normalized correctly?
+   Agent F (test runtime): the helper walks the entire index.html
+   tree on every CI run. Is the perf cost acceptable (<500ms)?
+   Agent G (false-positive sweep): run the new guard against the
+   live HTML — does it flag anything legitimate that needs an
+   exception?
+   Agent H (defense-in-depth): should the existing raw-HTML regex
+   guard stay (additive) or be removed (replaced)?
+6. Refine + commit + push + status comment on #68.
+
+Constraints:
+- No new runtime deps (use stdlib html.parser only).
+- The new test must complete in <500ms on CI.
+- Existing scrapped-phrase list stays a module constant for easy
+  future additions.
+
+You have authorization to: read all files, run gh CLI, dispatch
+parallel Agent tool calls, modify index.html and scripts/test-
+portfolio.py, commit + push.
+---END PROMPT---
+```
+
+---
+
+## Prompt 8 — Issue #69 (M3 — hero photo swap)
+
+> Image swap + CSS layout integration. ~2 hours.
+
+```
+---BEGIN PROMPT---
+You are working on the narendranathe/narendranathe.github.io portfolio,
+branch feat/portfolio-ui-upgrade-2026. Working directory is the repo root.
+
+Drive GitHub issue #69 (M3 — replace hero close-up with full-body shot,
+Yerradouani-style integration) through the critique loop.
+
+Steps:
+1. Read docs/backlog-critique-prompts.md "Shared context" + `gh issue
+   view 69` for the full spec.
+2. Three pre-critique agents in PARALLEL:
+   Agent A (layout integration): full-body shot is 1200px tall, hero
+   column is constrained. Best layout: bottom-anchor + object-fit
+   cover + soft top-fade mask, OR a separate "wraps the hero text"
+   composition? Reference the Yerradouani site at yerradouani.me for
+   visual cue.
+   Agent B (mobile UX): on 320px viewport, does the full-body shot
+   crowd the hero text + metric-grid + CTA buttons? Should mobile
+   hide the photo entirely, or scale it down + reposition?
+   Agent C (image weight + LCP): static/originals/headshot-fullbody.jpg
+   is 66KB at 1200px long-edge. Will inlining as the hero LCP element
+   regress the Lighthouse LCP score (target <1.8s on Slow 4G)?
+   Should we generate a lower-resolution variant for mobile?
+3. Synthesize.
+4. Implement:
+   - Modify index.html lines 130-141: replace external GitHub-asset
+     URLs with local static/originals/headshot-fullbody.jpg.
+   - Possibly remove the hero-photo-inset entry (designer's call).
+   - Modify styles.css .hero-photo-stack: bottom-anchor + soft top-
+     fade mask via mask-image.
+   - Add mobile breakpoint <=780px adjustments.
+   - Add loading="eager" + width/height attributes for CLS=0.
+5. 5 post-critique agents in PARALLEL:
+   Agent D (visual taste): does the new hero look "polished, intentional"
+   or "trying too hard"? Compare to current state.
+   Agent E (mobile rendering): test at 320px / 375px / 412px / 768px;
+   does the photo break any layout?
+   Agent F (CLS): with declared dims + eager-loaded image, is CLS=0?
+   Run Lighthouse, confirm.
+   Agent G (a11y): is alt text descriptive without being verbose?
+   Does the photo block any keyboard focus path?
+   Agent H (scope discipline): did the implementation only touch
+   hero CSS, or did it accidentally cascade into other layout breakage?
+6. Refine + commit + push + status comment on #69.
+
+Constraints:
+- Image MUST come from static/originals/ (no external CDN refs).
+- LCP delta <=200ms; if it regresses more, generate a lower-res
+  variant.
+- Mobile must not horizontal-scroll.
+
+You have authorization to: read all files, run gh CLI, dispatch
+parallel Agent tool calls, modify index.html and styles.css,
+generate a lower-res image variant if needed (via Pillow in a
+one-off script), commit + push.
+---END PROMPT---
+```
+
+---
+
+## Prompt 9 — Issue #70 (M1 — hover-preview primitive)
+
+> Reusable popover state machine + ARIA + mobile fallback. ~6 hours. Run AFTER #67 ships.
+
+```
+---BEGIN PROMPT---
+You are working on the narendranathe/narendranathe.github.io portfolio,
+branch feat/portfolio-ui-upgrade-2026. Working directory is the repo root.
+
+PRECONDITION: issue #67 must be closed and static/resume-page1-preview.png
+must exist on the branch. If not, drive #67 first.
+
+Drive GitHub issue #70 (M1 — hover-preview primitive) through the
+critique loop.
+
+Steps:
+1. Read docs/backlog-critique-prompts.md "Shared context" + `gh issue
+   view 70` for the full spec.
+2. Three pre-critique agents in PARALLEL:
+   Agent A (state machine design): hover-intent timing (150ms open,
+   200ms grace), focus tracking across DOM siblings, single shared
+   card vs per-trigger cards. Vanilla JS or use the native HTML
+   <dialog> element + popover API (Chrome 114+, Safari 17+, Firefox
+   125+)? What's the cross-browser support story for the popover API
+   in 2026?
+   Agent B (popover ARIA pattern): the spec says role="dialog" +
+   aria-modal="false" + aria-haspopup="dialog". Is "dialog" the right
+   pattern, or should it be "tooltip" (lighter), or the new HTML
+   "popover" (declarative)? What does NVDA/VoiceOver actually
+   announce for each?
+   Agent C (mobile UX): tap-to-toggle vs always-visible vs long-press.
+   Tap-then-tap-again-to-download is non-standard and may confuse;
+   would a mobile-only "Preview" button next to the link be cleaner?
+3. Synthesize.
+4. Implement:
+   - Create docs/hover-preview-pattern.md (~150 LOC).
+   - Append CSS module to styles.css (~80 LOC).
+   - Append JS state machine to app.js (~120 LOC).
+   - Annotate 4 resume link sites + 2 contact icons (GitHub, LinkedIn)
+     in index.html with data-hover-preview / data-hover-title /
+     data-hover-caption attributes.
+   - Generate static/preview-github.png and static/preview-linkedin.png
+     (~30KB each, manually captured screenshots).
+   - Extend scripts/test-portfolio.py with new structural assertions.
+5. 5 post-critique agents in PARALLEL:
+   Agent D (a11y): full WCAG 1.4.13 pressure-test (dismissible,
+   hoverable, persistent). Keyboard navigation end-to-end.
+   Agent E (mobile UX): tap-to-preview + tap-card-to-download
+   pattern actually intuitive on iPhone Safari + Android Chrome?
+   Agent F (cross-browser): test on latest 2 versions of Chrome /
+   Safari / Firefox / Edge. Any popover quirks?
+   Agent G (scope creep): did the implementation stay scoped to the
+   primitive + 6 link sites, or did it bleed into M5 skills tooltip
+   work?
+   Agent H (test coverage): are the new structural assertions
+   sufficient, or are there gaps (e.g., asserting card lazy-loads,
+   asserting Esc key handling)?
+6. Refine + commit + push + status comment on #70.
+
+Constraints:
+- No new runtime JS deps. Vanilla DOM APIs only.
+- Pattern must be drop-in for adopters (CSS custom property override
+  surface).
+- Reduced-motion users get snap-open / snap-close (no fade).
+
+You have authorization to: read all files, run gh CLI, dispatch
+parallel Agent tool calls, modify index.html / styles.css / app.js /
+scripts/test-portfolio.py / docs/, generate static/preview-*.png,
+commit + push.
+---END PROMPT---
+```
+
+---
+
+## Prompt 10 — Issue #71 (M5 — skills image grid)
+
+> New section + 25-30 logos + tooltip pattern. ~6 hours. Run AFTER #70 ships.
+
+```
+---BEGIN PROMPT---
+You are working on the narendranathe/narendranathe.github.io portfolio,
+branch feat/portfolio-ui-upgrade-2026. Working directory is the repo root.
+
+PRECONDITION: issue #70 must be closed and the hover-preview primitive
+must be available in app.js + styles.css. If not, drive #70 first.
+
+Drive GitHub issue #71 (M5 — skills image grid) through the critique
+loop.
+
+Steps:
+1. Read docs/backlog-critique-prompts.md "Shared context" + `gh issue
+   view 71` for the full spec.
+2. Three pre-critique agents in PARALLEL:
+   Agent A (logo sourcing + licensing): devicons.dev (OFL) covers
+   most. What's the right approach for Anthropic Claude logo (brand
+   guidelines)? Microsoft Fabric? Should ambiguous-license logos
+   become text-monogram glyphs? Is monochrome (currentColor) rendering
+   the right tradeoff for visual cohesion?
+   Agent B (category structure): 5 categories x 4-6 logos. Is the
+   category split ideal (Languages / Data Platforms / LLM Stack /
+   Infra / Observability), or do "LLM Stack" and "Data Platforms"
+   overlap awkwardly (FAISS, pgvector)? Should there be a "Tools /
+   IDEs" category?
+   Agent C (tooltip pattern reuse): M1 hover-preview is heavyweight
+   (popover dialog). For 25-30 small icons, would a simpler
+   aria-describedby + visually-hidden span be better, OR does
+   reusing M1 give visual consistency? Tradeoff: code-reuse vs
+   weight.
+3. Synthesize.
+4. Implement:
+   - Source 25-30 logo SVGs (devicons.dev preferred), SVGO-minimize.
+   - Create static/skills/<name>.svg files.
+   - Insert <section id="skills"> in index.html between Track Record
+     and What Shipped.
+   - Append .skills-grid CSS module to styles.css.
+   - Add nav link "Stack" between "Experience" and "Projects".
+   - Create docs/skills-grid-pattern.md (~150 LOC).
+   - Extend scripts/test-portfolio.py with structural assertions
+     (section presence, icon count per category, byte budget per
+     icon, no external CDN refs).
+5. 5 post-critique agents in PARALLEL:
+   Agent D (visual taste): does the grid read as "elegant + intentional"
+   or "CV gimmick"? If gimmick, switch to monochrome.
+   Agent E (a11y): every icon keyboard-focusable with aria-label?
+   Tooltip announces correctly via NVDA / VoiceOver?
+   Agent F (page weight): total byte delta <= 60KB? (Aim for ~2KB
+   per icon after SVGO.)
+   Agent G (mobile rendering): grid wraps cleanly on 320px? Tooltips
+   show inline (not as popover)?
+   Agent H (brand consistency): does the new section integrate with
+   the rest of the portfolio's warm-palette + JetBrains-mono +
+   Playfair aesthetic, or does it stand out as a foreign component?
+6. Refine + commit + push + status comment on #71.
+
+Constraints:
+- All icons LOCAL (no external CDN refs in skills section).
+- SVG icons must use currentColor for fills/strokes (dark-mode
+  compatible).
+- Total page-weight delta <=60KB.
+- Pattern doc matches docs/impact-strip-pattern.md conventions.
+
+You have authorization to: read all files, run gh CLI, dispatch
+parallel Agent tool calls, fetch logos from devicons.dev (curl/wget),
+write to static/skills/, modify index.html / styles.css / scripts/
+test-portfolio.py / docs/, commit + push.
+---END PROMPT---
+```
+
+---
+
 ## Meta-prompt: how to run any of these
 
 If a session is starting cold, paste the relevant block above. If continuing
