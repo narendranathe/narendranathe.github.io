@@ -18,10 +18,6 @@ The site highlights the kind of work I want to keep doing: production AI systems
 
 ## Featured Proof Points
 
-### ExponentHR NL-to-SQL Platform
-
-Enterprise analytics platform work centered on catalog-driven NL-to-SQL, semantic joins, governed access patterns, and production data workflows.
-
 ### AutoApply AI
 
 Full-stack applied AI system for job-search automation with FastAPI, Chrome extension workflows, multi-provider LLM routing, and production-minded architecture.

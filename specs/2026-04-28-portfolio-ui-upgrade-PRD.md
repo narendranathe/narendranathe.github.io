@@ -1,370 +1,167 @@
-# PRD: Portfolio UI Upgrade — 2026 Inspirations Pass
+# PRD v3: Portfolio UI Upgrade — Trimmed for Career Leverage
 
-**Status:** v2 (post-critique, scope-frozen)
+**Status:** v3 (trimmed after second-round 3-agent self-critique; scope-frozen)
 **Author:** Naren + Claude
 **Branch:** `feat/portfolio-ui-upgrade-2026` (off `feat/portfolio-apex`)
 **Date:** 2026-04-28
-**Critique round:** 5 parallel agents (UX, Perf, A11y, Senior-eng-signal, Scope) — synthesis below
 
 ---
 
-## 0. v2 Changelog
+## v2 → v3 Changelog
 
-| Change | Rationale | Source critic |
-|--------|-----------|---------------|
-| **CUT F11** Windows XP mode | Unanimous reject; wrong audience for Senior+ AI roles; ~80KB perf cost; a11y nightmare (2.5.7, 2.1.1, 4.1.2 violations) | All 5 |
-| **CUT F9** GitHub contribution graph | Junior cargo-cult signal; senior portfolios show artifacts not commit cadence | Senior-signal |
-| **REMOVE H1B line** from hero code panel | Self-sabotage at top-tier sponsoring companies (Anthropic, Google, Stripe, Databricks) | Senior-signal |
-| **ADD F-AW** Architecture Write-Ups section | #1 senior-signal addition; Anthropic hires people who write | Senior-signal |
-| **ADD F-IS** Quantified Impact Strip per flagship | Numbers > animations | Senior-signal, UX |
-| **ADD F-SD** System Diagrams (ExponentHR, Portfolio-Risk) | Senior portfolios show topology | Senior-signal |
-| **ADD F-PB** Perf-budget regression test harness | NFR enforcement, not just aspiration | Scope |
-| **ADD F-A11Y** A11y regression test harness | Same | Scope, A11y |
-| **REFRAME F6** "Coming Up" → "In Design" with linked architecture doc | "TODO" reads weak; "design doc" reads strong | Senior-signal |
-| **REFRAME hover-reveals** F2/F3/F4 — on touch, content is always-visible inline (no tap gesture) | Tap-to-toggle competes with primary CTA on mobile | UX |
-| **TIGHTEN F1** hand-rolled syntax spans, ~1.6KB; not PrismJS | Stay vanilla, avoid 14KB lib for one snippet | Perf |
-| **TIGHTEN F2** AVIF screenshot of resume page 1 (~25KB), not pdf.js | pdf.js = 340KB, kills budget | Perf |
-| **TIGHTEN F7** `<details>/<summary>` native; do NOT default-collapse Track Record on mobile | Native a11y; PRD persona contradiction (Rita scans on mobile) | A11y, UX |
-| **TIGHTEN F4** copy: "Let's talk." not "Want to talk?" | One register, drops question-mark neediness | UX |
-| **MOVE F12** developer-portfolios contribution to a separate post-merge issue, labeled `post-merge`, not in this PRD's scope | Cross-repo, zero shared code with this PRD | Scope |
-| **Sequencing rebuilt** | Phase A as drafted shared `<section class="hero">` + `<head>` files, would conflict on merge | Scope |
+A second round of critique (Skeptic + Shipper + Strategist) revealed that v2 was **a well-engineered software project that was the wrong project**. The strategist's verdict dominated:
 
----
+> "Naren is targeting Senior+ AI roles at Anthropic, Stripe, Citadel — the rate-limiter on those interviews is **not portfolio polish**; it's getting past the recruiter screen. 80–160 hours of UI upgrade produces zero inbound recruiter signal. The real multipliers are warm referrals, indexed public artifacts (HN-eligible blog posts, OSS PRs), and reputation work."
 
-## 1. Problem
+v3 cuts the portfolio scope by ~70% and redirects the saved hours to higher-leverage moves.
 
-The current `narendranathe.github.io` portfolio is a clean, fast 1-page scroll. It signals "competent senior engineer" but does not yet signal "distinctive, top-tier AI Platform candidate" the way reference portfolios from Yubraj Khatri, Dev Zahid, Yassine Erradouani, Maxime Haegeman, and Bjorn Melin do.
+### What was cut from v2 (10 issues, all closed as superseded)
 
-For Naren's targeting profile — Senior+ AI / Data / ML Platform roles at H1B-sponsoring companies (Anthropic, OpenAI, Databricks, Google, Microsoft, NVIDIA, Apple, Amazon, Meta, Stripe, Citadel, AQR, Two Sigma, HRT, Bloomberg, JPM, etc.) — the portfolio needs to do three jobs:
+| Cut | Reason |
+|-----|--------|
+| F1 (hero code-class panel) | Senior recruiters don't care about syntax-highlighted hero text |
+| F-PB (Lighthouse CI gate) | Vanity infra for a static page; not the recruiter funnel |
+| F-A11Y (axe-core regression harness) | Senior+ a11y signal lives in production work, not personal-site CI |
+| F5 (scroll nudge indicator) | Micro-UX polish; Anthropic does not care |
+| F2b (resume desktop hover popover) | Over-engineered substitute for "link to PDF" |
+| F2c (resume touch tap dialog) | Same; iOS testing also unrealistic on Naren's Win+Android setup |
+| F3+F4 (pixel-consistent tech + contact icons) | Icon hygiene; substitutes for one paragraph of LinkedIn About copy |
+| F6 (In Design + recommendation engine doc) | "Designing" badge with hand-wavy doc is a weaker signal than no signal |
+| F7+F8 (collapsibles + nudge animation) | Polish |
+| POST-MERGE F12 (developer-portfolios entry) | List of portfolio links; recruiters don't source from it |
 
-1. **Pass the 30-second scan** — recruiters making sponsorship-tier decisions
-2. **Earn the 5-minute exploration** — hiring managers evaluating engineering taste
-3. **Be memorable enough to share** — the "have you seen this guy's site?" effect
+### What survived (5 issues — kept, scoped down)
 
-This PRD codifies a set of UI **and content** upgrades. The content upgrades (Architecture Write-Ups, Impact Strips, System Diagrams) are weighted higher than the visual polish, per the senior-signal critique.
+| Survivor | Why it passes the career-leverage filter |
+|----------|-------------------------------------------|
+| #56 F-AW (1-2 architecture write-ups) | Only issue producing **external, indexable, shareable** artifacts. HN-eligible posts compound. Pivoted away from ExponentHR NL-to-SQL (project scrapped) to AutoApply AI + repo-context-hooks. |
+| #57 F-IS (impact strips on flagship cards) | Numbers flow back to resume + LinkedIn About + cold-outreach. Reusable. |
+| #58 F-SD (inline SVG system diagrams) | Diagrams compound — feed into blog posts, resume, recruiter screenshare in interviews. Pivoted to AutoApply AI + Portfolio-Risk subjects. |
+| #52 F2a (canonical PDF at stable URL — PDF only) | Genuine recruiter infrastructure. AVIF screenshot half cut. |
+| #50 F10 (photo favicon) | Cheap, memorable, low-risk; protects against tab-loss in 14-tab recruiter sessions. |
 
-## 2. Goals
+### What was added (3 NEW issues — the actual high-leverage moves)
 
-- **G1.** Add **content depth** that signals senior engineering: architecture write-ups, quantified impact, system diagrams
-- **G2.** Add tasteful, restrained micro-interactions that signal frontend craft without crossing into gimmick territory
-- **G3.** Add one **memorable signature element** (code-class hero panel + photo favicon) that gives the site a "share this" moment
-- **G4.** Add an "In Design" section seeded with the recommendation-engine project, framed as a design doc with tradeoffs (not a TODO)
-- **G5.** Hold Lighthouse Perf >= 95, A11y = 100, total page weight increase <= 65KB gzipped
+| New | Action | Cadence |
+|-----|--------|---------|
+| **HL-1 Warm-referral campaign** | Map LinkedIn 2nd-degree to 24 dream companies; send 5 personalized notes/day for 10 days | One-shot, ~25 hours |
+| **HL-2 2 OSS PRs to anthropic-cookbook (or pgvector / mlflow)** | Concrete gap on prompt-caching benchmarks for long-context workloads, using AutoApply AI + tailor-resume as real workloads | One-shot, ~30 hours |
+| **HL-3 3 HN-eligible blog posts (cross-posted to Lobsters/dev.to/Substack)** | Topics: AutoApply AI provider-fallback architecture, repo-context-hooks supply-chain hardening, field-detection Strategy C audit | One-shot, ~30 hours |
 
-## 3. Non-Goals
+### Project scrappage note
 
-- **NG1.** No build step, no framework, no package manager — keep vanilla HTML/CSS/JS per `CLAUDE.md`
-- **NG2.** No backend, no auth, no analytics beyond what already exists
-- **NG3.** No replacing the current 1-page scroll architecture with multi-route SPA
-- **NG4.** No JavaScript-required content — all sections render with JS disabled (progressive enhancement only)
-- **NG5.** No Windows-XP-style alternate UI mode (cut from v1; out of scope for this PRD)
-- **NG6.** No GitHub contribution graph in hero (cut from v1)
-- **NG7.** No cross-repo automation in this branch (developer-portfolios contribution tracked as a separate post-merge issue, not in this PRD's scope)
-
-## 4. Personas
-
-- **Recruiter Rita** — 30s on the page on **mobile**, scanning for: role fit, location, dream-company experience. Loses interest fast. **Rita's eyes must land on three things in 30s: flagship project name, quantified impact stat, and "Senior AI Platform Engineer" title.**
-- **Hiring-manager Hugo** — 5–8 min, looking for engineering taste, system thinking, production rigor. Will read project cards, write-ups, and at least one architecture diagram.
-- **Peer-engineer Priya** — 15+ min, evaluating depth. Inspects source, reads architecture write-ups, judges code quality of linked repos.
-
-## 5. Reference Portfolios + Specific Steals
-
-### 5.1 yubrajkhatri.com.np
-- Floating resume card that previews on hover — **kept, with pre-rendered AVIF screenshot, not live PDF render**
-- Contact section that feels warm and personal — **kept, copy: "Let's talk."**
-- Blog/notes cards subtly nudge on filter/sort — **kept**
-
-### 5.2 devzahid.in
-- Tech-stack icons at consistent pixel dimensions — **kept**
-- Contact icons at uniform height/width with hover-reveal previews on desktop, **always-visible inline previews on touch devices** (revised from v1)
-- ~~GitHub contribution-graph animation~~ — **CUT** (junior signal)
-- Collapsible content sections — **kept, using native `<details>/<summary>`**
-
-### 5.3 yerradouani.me
-- Subtle "scroll" nudge at bottom of hero — **kept, with full `prefers-reduced-motion` gate and `aria-hidden`**
-- Recommendation-engine project — **kept, REFRAMED** as "In Design" section with linked architecture note (not "TODO")
-
-### 5.4 maximehaegeman.com
-- Inline `class Naren(...)` code panel in hero — **kept, with H1B line removed** (moved to resume only)
-- Hand-rolled syntax spans, ~1.6KB; not PrismJS
-
-### 5.5 windows-xp-portfolio-tau.vercel.app
-- ~~XP OS simulation~~ — **CUT** (out of scope; would warrant its own PRD if pursued)
-
-### 5.6 bjornmelin.io
-- Photo favicon — **kept, AVIF (512) + PNG (180 Apple touch) + multi-res .ico, ~18KB**
+**ExponentHR NL-to-SQL Architecture 4 has been scrapped as a portfolio asset.** All references removed from index.html, README.md, memory files, and issues. The employer (ExponentHR Data Engineer role) remains valid — bullets pivot to CI/CD, CDC ETL, AAG database automation only.
 
 ---
 
-## 6. Functional Requirements
+## 1. Problem (revised)
 
-### Content Pillar (highest senior-signal value)
+The current portfolio is a clean, fast 1-page scroll. The previous PRD v2 added 14 issues of UI polish on the assumption that polish moves the recruiter funnel. Second-round critique established that it does not — for Senior+ AI roles at H1B-sponsoring companies, the funnel is gated by:
 
-#### F-AW. Architecture Write-Ups Section
-- New section between Systems and In Design, titled "Architecture & Write-Ups"
-- 2–3 long-form technical posts at launch:
-  1. **ExponentHR Catalog-Driven NL-to-SQL** — FAISS retrieval, Claude Sonnet planning, NetworkX join graphs, DAX-free design, multi-tenant governance
-  2. **AutoApply AI Q&A Generation** — provider-fallback architecture, RAG with pgvector, category-routed model selection, prompt-cache hit rates
-  3. **Portfolio Risk Real-Time Topology** — Kafka producer/Spark consumer split, p95 ingest latency, dashboard backpressure handling
-- Each write-up: dedicated `content/posts/<slug>.html` with consistent template (problem, constraints, design, tradeoffs, outcome)
-- Section card on home: title + 2-line teaser + "Read →" link
-- Posts MAY reuse the existing `content/posts/` directory if compatible; otherwise add it
+1. **Warm referrals** (LinkedIn 2nd-degree intros)
+2. **Indexed public artifacts** (HN/Lobsters posts, OSS PR commit graphs)
+3. **Recruiter inbound** (LinkedIn keywords, reposts, conference signal)
 
-#### F-IS. Quantified Impact Strip
-- Every flagship project card (ExponentHR, AutoApply AI, tailor-resume, Fraud-Detection, Portfolio-Risk, Job-Scout) gets a stat strip
-- 3–5 numeric stats per card, each with a unit (e.g., "400 clients", "p95 1.4s", "12k queries/day", "$0.003/query", "99.7% uptime")
-- Numbers must be real and defensible — Naren provides ground truth
-- Visual: small monospace badges in a horizontal row beneath each card title
-- Mobile: wraps to 2 rows, stays readable
+The portfolio site is a tiebreaker after the recruiter screen, not the primary signal source.
 
-#### F-SD. System Diagrams
-- One SVG architecture diagram for ExponentHR, one for Portfolio-Risk
-- Inline SVG (no `<img>`), so diagrams scale crisply and respect dark/light mode tokens
-- Each diagram has a screen-reader-friendly `<title>` and `<desc>` summary
-- Linked from the matching write-up + project card
+## 2. Goals (revised)
 
-### Visual Pillar (senior-signal-neutral, taste-positive)
+- **G1 (CONTENT, kept).** Ship 1-2 deep architecture write-ups (AutoApply AI, repo-context-hooks) and cross-post to HN/Lobsters/dev.to.
+- **G2 (POLISH, scoped down).** Add a small set of senior-signal touches: quantified impact strips, system diagrams, photo favicon, canonical resume URL.
+- **G3 (CAREER, NEW).** Run a 50-person warm-referral campaign + 2 OSS PRs to dream-company-adjacent repos.
 
-#### F1. Hero Code-Class Panel (Maxime-inspired, H1B-removed)
-- Inline code block in hero, right side desktop / below H1 mobile
-- Renders:
-  ```python
-  from education import ComputerScience
+## 3. Non-Goals (revised)
 
-  class Naren(DataEngineer, MLEngineer):
-      """
-      Building pipelines that turn raw data
-      into decisions — at production scale.
-      """
-      def __init__(self):
-          self.role = "Senior AI Platform Engineer"
-          self.base = "Dallas, TX"
-          self.exp = 5  # years
+- **NG1.** No build step, no framework, no package manager — keep vanilla HTML/CSS/JS.
+- **NG2.** No backend, no auth, no analytics beyond what already exists.
+- **NG3.** No replacing 1-page scroll with multi-route SPA.
+- **NG4.** No hover-popover system, no pixel-grid icon refresh, no XP mode.
+- **NG5.** No Lighthouse CI / axe-core regression harnesses (deferred — not blocking the high-leverage work).
+- **NG6.** No in-page "In Design" / recommendation-engine teaser.
+- **NG7.** No ExponentHR NL-to-SQL references anywhere in this repo or related artifacts (project scrapped).
 
-      def mission(self) -> str:
-          return "From messy data to reliable predictions, at scale."
-  ```
-- Hand-rolled syntax spans, 6 token classes (kw, str, com, fn, cls, op); CSS color tokens with documented contrast ratios
-- ~1.6KB total HTML+CSS budget
+## 4. Personas (revised)
 
-#### F2. Resume Hover Preview (Yubraj-inspired)
-- "View Resume" link in header
-- **Desktop hover** (mouseenter, 200ms debounce): pre-rendered AVIF screenshot of resume page 1 (~25KB), JPEG fallback in `<picture>`
-- **Touch tap**: opens preview as a popover (`role="dialog"`, `aria-modal="false"`, dismissable via Esc + outside click)
-- Click on the original "View Resume" still navigates to `/static/resume.pdf` (atomic swap on resume updates)
-- Decoupled into 3 sub-issues:
-  - **F2a** — canonical resume PDF artifact + atomic swap workflow
-  - **F2b** — desktop hover popover component
-  - **F2c** — touch tap dialog + a11y
+The personas from v2 (Recruiter Rita / Hiring-manager Hugo / Peer-engineer Priya) are still valid — but the v3 understanding is that **Rita and Hugo never reach the portfolio without warm intro or HN/LinkedIn referrer**. The portfolio is what they verify *after* deciding to engage. Optimize for verification speed (canonical PDF, 1-2 strong write-ups, defensible numbers), not first-impression theater.
 
-#### F3. Tech Stack Grid (Dev-Zahid-inspired, categorized)
-- Replace current skills grid with pixel-perfect logo grid
-- All icons exactly 48x48px, uniform padding
-- Categories: **Languages | Data Platforms | LLM Stack | Infrastructure | Observability**
-- Hover reveals tech name + 1-line context ("Spark — production streaming for Portfolio-Risk")
-- Touch: tech name always-visible below icon (inline, no tap gesture)
-- Inline SVG icons, ~8KB total
+## 5. Functional Requirements (final 5)
 
-#### F4. Contact Section (Dev-Zahid + Yubraj-inspired)
-- GitHub, LinkedIn, Email, Resume icons at uniform 56x56px
-- **Desktop hover** (popover pattern with proper ARIA): preview cards
-  - GitHub → top 3 pinned repos
-  - LinkedIn → headline + photo
-  - Resume → AVIF screenshot (shares F2 asset)
-- **Touch**: previews always-visible inline beneath each icon (no tap gesture)
-- Copy: "Let's talk." (not "Want to talk?")
-- Merged in implementation with F3 (shared icon-size design tokens, same CSS surface)
+| # | Title | Issue | Lane |
+|---|-------|-------|------|
+| F-AW | 1-2 architecture write-ups (AutoApply AI + repo-context-hooks) | #56 | CONTENT |
+| F-IS | Quantified impact strips on flagship project cards | #57 | CONTENT |
+| F-SD | Inline SVG system diagrams (AutoApply AI + Portfolio-Risk) | #58 | CONTENT |
+| F2a | Canonical resume PDF at stable URL (PDF only) | #52 | RESUME |
+| F10 | Photo favicon (AVIF + PNG + .ico) | #50 | HERO |
 
-#### F5. Scroll Nudge Indicator (Yerradouani-inspired)
-- Mouse-scroll SVG icon at bottom of hero, fades in after 1.5s, gently pulses
-- Disappears after first scroll event
-- Hidden via `@media (pointer: coarse)` on touch
-- `aria-hidden="true"` and `role="presentation"`
-- Under `prefers-reduced-motion: reduce`: both pulse and fade-in fully suppressed (static or hidden)
+**Total estimated hours (Shipper realistic estimate):** ~24 hours.
 
-#### F6. In Design Section (Yerradouani-inspired, reframed)
-- New section between Systems and Writing, titled **"In Design"** (not "Coming Up")
-- Seeded with: **Job Recommendation Engine** card
-  - Linked to a design doc at `content/posts/job-recommendation-engine-design.html`
-  - Doc covers: collaborative filtering vs content-based hybrid, FAISS vs ScaNN, cold-start strategy, eval metrics (NDCG@10, recall@50), integration with job-scout pipeline
-  - Status badge: "Designing" (not "TODO")
-- Section is a list — easy to add more upcoming work later
+## 6. New High-Leverage Issues (parallel to portfolio work)
 
-#### F7. Collapsibles (Dev-Zahid-inspired, native semantics)
-- Long sections (deep Track Record details, Writing archive) get optional collapse via native `<details>/<summary>`
-- Default-open on desktop AND mobile for Track Record (do NOT default-collapse on mobile per Rita persona)
-- Default-collapsed for archived/older content only (e.g., posts older than 12 months)
-- Animated chevron rotation via CSS transform on `[open]` selector
-- Section state persists in `localStorage`; FOUC prevented via inline `<head>` script that sets `data-collapsed` before paint
-- ~1KB total
+| # | Title | Issue |
+|---|-------|-------|
+| HL-1 | 50-person warm-referral campaign | NEW |
+| HL-2 | 2 OSS PRs to anthropic-cookbook / pgvector / mlflow | NEW |
+| HL-3 | 3 HN-eligible blog posts cross-posted to Lobsters/dev.to | NEW |
 
-#### F8. Notes Card Nudge Animation (Yubraj-inspired)
-- On filter or sort: cards subtly translate (8–12px) and fade — staggered 30ms per card, 250ms cubic-bezier easing
-- Fully suppressed under `prefers-reduced-motion: reduce`
-- Merged in implementation with F7 (same JS module, same easing tokens)
+**Total estimated hours:** ~85 hours.
 
-#### F10. Photo Favicon (Bjorn-inspired)
-- Replace current favicon with photo of Naren (cropped, neutral background)
-- Sizes: 512 AVIF (~6KB), 180 PNG Apple touch (~10KB), multi-res 32+16 .ico (~2KB)
-- Total budget: ~18KB
+## 7. Non-Functional Requirements (relaxed)
 
-### Quality Pillar (NFR enforcement)
+- **N1.** Portfolio still loads fast (Lighthouse Perf >= 90 — unenforced; dropped from 95 + CI gate).
+- **N2.** Accessibility: keep current state, do not regress; do not require axe-core gate to ship.
+- **N3.** Browser support: same as today.
+- **N4.** Progressive enhancement: maintained (no JS required for content).
+- **N5.** SEO: unchanged.
+- **N6.** Maintainability: each new component must be self-contained.
 
-#### F-PB. Perf Regression Test Harness
-- GitHub Action runs Lighthouse CI on PR + main pushes
-- Budget assertions: Perf >= 95, LCP <= 1.8s, CLS = 0, page weight delta <= 65KB
-- Fail PR check on regression
-- Reuses public `lighthouse-ci-action`
+## 8. Acceptance Criteria (final)
 
-#### F-A11Y. A11y Regression Test Harness
-- Same Action runs `axe-core` against the deployed preview
-- Fail PR on any new violation
-- Documents the WCAG 2.2 SCs being tracked
+- [ ] At least 1 architecture write-up published, cross-posted to HN + Lobsters + dev.to (#56)
+- [ ] All flagship project cards show 3-5 quantified, defensible stats (#57)
+- [ ] AutoApply AI + Portfolio-Risk inline SVG diagrams render with `<title>`/`<desc>` (#58)
+- [ ] Canonical resume PDF live at `https://narendranathe.github.io/static/resume.pdf` (#52)
+- [ ] Photo favicon visible in browser tab (#50)
+- [ ] Warm-referral campaign tracking sheet shows 50 outreach attempts logged (HL-1)
+- [ ] At least 1 OSS PR open or merged in anthropic-cookbook / pgvector / mlflow (HL-2)
+- [ ] At least 1 blog post submitted to HN with title link captured (HL-3)
+- [ ] Zero references to ExponentHR NL-to-SQL Architecture 4 anywhere in repo, memory, or GitHub issues
 
-#### POST-MERGE. Developer-Portfolios Contribution (out of PRD scope, tracked as separate issue)
-- One-time scheduled remote agent triggered after this branch merges to `main`
-- Opens a PR to `https://github.com/emmabostian/developer-portfolios` with Naren's entry per repo convention
-- Tracked under label `post-merge`, **not part of this PRD's definition of done**
+## 9. Sequencing
 
----
+**Lane CAREER (highest priority, lowest latency to interview loops):**
+- HL-1 (warm-referral campaign) — start immediately, runs 10 days
 
-## 7. Non-Functional Requirements
+**Lane CONTENT (parallel with CAREER, content powers HL-3):**
+- F-AW post #1 (AutoApply AI provider-fallback) — 8 hours
+- F-AW post #2 (repo-context-hooks supply-chain) — 8 hours
+- HL-3 (cross-post both posts to HN/Lobsters/dev.to) — 4 hours
+- F-SD diagrams (feed posts) — 6 hours
+- F-IS impact strips — 4 hours
 
-### N1. Performance
-- Lighthouse Performance >= 95 on mobile + desktop
-- No new runtime JS dependencies (keep `0` package count)
-- Total page weight increase: **<= 65KB gzipped** vs current baseline (revised down from 80KB after Perf critique tally: ~63KB realistic)
-- LCP <= 1.8s on Slow 4G simulation
-- CLS = 0
-- AVIF resume screenshot must be `loading="lazy"`, NOT in initial critical path
+**Lane RESUME-INFRA (small, high-ROI):**
+- F2a canonical PDF URL — 1 hour
+- F10 favicon — 2 hours
 
-### N2. Accessibility (WCAG 2.2 AA conformance, not just Lighthouse 100)
-- Lighthouse A11y = 100 AND axe-core 0 violations
-- All interactive elements keyboard-navigable
-- Hover-reveals follow popover/tooltip ARIA patterns:
-  - Resume preview → `role="dialog" aria-modal="false"`, trigger has `aria-haspopup="dialog" aria-expanded`
-  - Tech-stack one-liners → `role="tooltip" aria-describedby` (no interactive children)
-  - Contact preview cards → popover pattern (rich content with links)
-- Per WCAG 1.4.13 (Content on Hover or Focus): dismissible (Esc), hoverable (cursor enters without dismiss), persistent (stays until dismissed)
-- All animations respect `prefers-reduced-motion: reduce` (full gate, not partial)
-- New colors documented in a contrast table in the PR — every token >= 4.5:1 (AA) or 7:1 (AAA where feasible)
-- Syntax highlight palette: each token >= 4.5:1 on code background
-- F5 scroll nudge: `aria-hidden="true"`, `role="presentation"`
-- Focus management: hover preview opens → focus moves to first focusable in preview; Esc closes → focus returns to trigger
+**Lane OSS:**
+- HL-2 (2 OSS PRs) — 30 hours; pick after the first blog post lands so cross-pollination is possible
 
-### N3. Browser Support
-- Latest 2 versions of Chrome, Firefox, Safari, Edge
-- iOS Safari 16+, Android Chrome 110+
-- Graceful degradation on older browsers
+## 10. Risks
 
-### N4. Progressive Enhancement
-- All content readable with JS disabled
-- All sections in `index.html` (or content/posts/*.html for write-ups)
-- JS only enhances
-
-### N5. SEO + Social
-- All new sections use semantic HTML5
-- OpenGraph image refreshed if hero changes
-- Meta description updated to mention recommendation-engine work + write-ups
-
-### N6. Maintainability
-- All new CSS uses existing design tokens
-- New components self-contained
-- Hero code-class panel uses already-loaded JetBrains Mono
-
----
-
-## 8. Acceptance Criteria (Demoable, all testable)
-
-- [ ] **F-AW** Architecture & Write-Ups section live with 3 posts; each post has problem/constraints/design/tradeoffs/outcome sections
-- [ ] **F-IS** Every flagship project card shows 3–5 quantified stats with units
-- [ ] **F-SD** ExponentHR + Portfolio-Risk inline SVG diagrams render with `<title>`/`<desc>`, scale crisply on mobile
-- [ ] **F1** Hero shows hand-rolled syntax-highlighted code panel; H1B line absent; ≤ 1.6KB total
-- [ ] **F2** Resume hover preview uses pre-rendered AVIF (~25KB), JPEG fallback; popover dialog on touch with proper ARIA
-- [ ] **F3** Tech stack grid: 5 categories (incl. Observability), all icons 48x48px, hover (desktop) / inline (touch) reveals tech + 1-line context
-- [ ] **F4** Contact icons uniform 56x56px; previews on hover (desktop) / inline (touch); copy reads "Let's talk."
-- [ ] **F5** Scroll nudge appears, fades after first scroll, hidden on touch, fully suppressed under `prefers-reduced-motion`
-- [ ] **F6** "In Design" section visible with Job Recommendation Engine card linking to design doc
-- [ ] **F7** Long sections collapse via `<details>/<summary>`; Track Record stays default-open on mobile; state persists in localStorage with no FOUC
-- [ ] **F8** Notes cards nudge animation on filter, fully suppressed under `prefers-reduced-motion`
-- [ ] **F10** Photo favicon: AVIF 512 + PNG 180 + multi-res .ico, total ~18KB
-- [ ] **F-PB** Lighthouse CI Action: Perf >= 95, LCP <= 1.8s, CLS = 0, page weight delta <= 65KB on PR
-- [ ] **F-A11Y** axe-core: 0 violations on PR; contrast table in PR description
-- [ ] All hover-reveal interactions follow correct ARIA pattern (dialog/tooltip/popover) per N2
-- [ ] All interactions keyboard-accessible; Esc dismisses; focus returns to trigger
-- [ ] Tested on iOS Safari + Android Chrome (PR template checkbox)
-- [ ] **(post-merge, separate issue)** `emmabostian/developer-portfolios` contains Naren's entry
-
----
-
-## 9. Risks (post-critique)
-
-- **R1.** Resume PDF screenshot must be regenerated when resume changes — mitigation: pre-commit hook or simple manual script in `scripts/snap-resume.sh`
-- **R2.** Architecture write-ups require real time investment (~4–8 hours each); ship with 1 post initially if needed, not 3 — mitigation: PRD AC says "2–3 posts at launch" so 2 is acceptable minimum
-- **R3.** Contrast tables for new tokens add overhead — mitigation: one-time spreadsheet, lives in `specs/contrast-table.md`
-- **R4.** Lighthouse CI Action may be flaky on cold runs — mitigation: 3 runs, take median
-- **R5.** F2c (touch dialog) and F4 (touch inline previews) are the most a11y-sensitive — mitigation: code-review with axe-core local run before PR
-
-## 10. Sequencing (rebuilt after Scope critique)
-
-The original Phase A (F1+F10+F4) shared `<head>` and hero region — would conflict on merge. Rebuilt:
-
-**Lane HERO (serial):** F1 → F10 → F5
-**Lane CONTENT (parallel-safe):** F-AW → F-IS → F-SD → F6
-**Lane ICONS (parallel with HERO + CONTENT):** F3+F4 merged
-**Lane RESUME (serial within lane):** F2a → F2b → F2c
-**Lane POLISH (parallel):** F7+F8 merged
-**Lane QUALITY (parallel):** F-PB, F-A11Y
-
-**Parallel-safe groupings (good for `superpowers:dispatching-parallel-agents`):**
-- F3+F4, F-AW, F6, F2a, F-PB can all dispatch simultaneously after F1/F10 hero pass lands
-
----
+- **R1.** Warm-referral campaign requires energy + emotional discipline (rejection-tolerance) — mitigation: 5/day cadence is intentionally small, sustainable
+- **R2.** Blog posts can balloon — mitigation: 1500-2000 word target; ship one before starting the next
+- **R3.** OSS PR maintainer response time is unpredictable — mitigation: open the PR and move on; merge timeline is not on Naren's clock
+- **R4.** ExponentHR NL-to-SQL still appears somewhere in old git history (pre-scrub commits) — mitigation: rewriting history is destructive; scrubbing the working tree + new artifacts is sufficient
 
 ## 11. Out of Scope (Explicit)
 
-- Multi-language i18n
-- Dark/light mode toggle (already exists)
-- Comment system on writing
-- CMS migration
-- Analytics dashboard
-- A/B testing of variants
-- Windows XP alternate UI mode (cut)
-- GitHub contribution graph (cut)
-- developer-portfolios cross-repo PR (separate post-merge issue)
-
-## 12. Open Questions — RESOLVED
-
-| # | Question | Resolution |
-|---|----------|------------|
-| Q1 | Windows XP mode worth shipping? | **No, cut entirely** |
-| Q2 | H1B in code panel or contact? | **Neither — resume only** |
-| Q3 | "Coming Up" top-level or subsection? | **Top-level, renamed "In Design"** |
-| Q4 | Hover previews GIF/screenshot or iframe? | **Pre-rendered AVIF screenshot** |
-| Q5 | 11 features too many? | **Yes — final scope is 14 issues across 5 lanes; 9 visual + 3 content + 2 quality = scope-frozen** |
-
----
-
-## 13. Issue Decomposition Target (input to /prd-to-issues)
-
-**Final issue count: 14**
-
-| # | Issue Title | Lane | Blocks | Parallel-safe |
-|---|-------------|------|--------|---------------|
-| 1 | F1: Hero code-class panel (hand-rolled spans, no H1B line) | HERO | F2, F5 | – |
-| 2 | F10: Photo favicon (AVIF + PNG + .ico) | HERO | – | yes (with F-AW lane) |
-| 3 | F5: Scroll nudge indicator (a11y-gated) | HERO | – | – |
-| 4 | F2a: Canonical resume PDF + screenshot artifact pipeline | RESUME | F2b | yes (with F-AW lane) |
-| 5 | F2b: Desktop hover popover for resume preview | RESUME | F2c | – |
-| 6 | F2c: Touch tap dialog for resume preview (a11y) | RESUME | – | – |
-| 7 | F3+F4: Pixel-consistent tech stack & contact icons (uniform sizing, hover/inline) | ICONS | – | yes |
-| 8 | F-AW: Architecture & Write-Ups section + 2-3 posts | CONTENT | – | yes |
-| 9 | F-IS: Quantified impact strips on flagship project cards | CONTENT | – | yes |
-| 10 | F-SD: System diagrams (ExponentHR + Portfolio-Risk inline SVG) | CONTENT | – | yes |
-| 11 | F6: In Design section + Recommendation Engine design doc | CONTENT | – | yes |
-| 12 | F7+F8: Native `<details>` collapsibles + notes nudge animation | POLISH | – | yes |
-| 13 | F-PB: Lighthouse CI perf-budget regression Action | QUALITY | – | yes |
-| 14 | F-A11Y: axe-core a11y regression Action + contrast table | QUALITY | – | yes |
-
-**Plus 1 post-merge tracker (separate label, not in PRD's DoD):**
-- 15 | POST-MERGE: Auto-contribute Naren's entry to emmabostian/developer-portfolios | – | merge of this PRD | – |
+- Hover popovers / dialog patterns
+- Tech-stack pixel-grid refresh
+- Collapsibles
+- Scroll-nudge indicators
+- Code-class hero panel
+- Lighthouse CI / axe-core gates
+- Windows XP mode
+- GitHub contribution graph
+- developer-portfolios cross-repo PR
+- ExponentHR NL-to-SQL Architecture 4 (project scrapped — never to be re-added)
