@@ -556,11 +556,26 @@ button { font-family: inherit; cursor: pointer; }
 .arch-box p { font-size: 0.83rem; line-height: 1.6; color: var(--fg-soft); }
 
 .supporting-row {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* Smaller row-gap stacks the left-column cards (Azure + repo-context-hooks)
+     tightly; the column-gap stays generous so the ML card on the right has
+     breathing room. */
+  gap: 1rem 1.5rem;
+  margin-top: 1.5rem;
+  align-items: start;
 }
+/* The ML Pipeline Projects card (DOM order #2) is genuinely tall because it
+   carries three sub-project entries plus an inline architecture SVG. Pin it
+   to the right column spanning both rows; the two shorter cards (Azure, then
+   repo-context-hooks) stack in the left column without inheriting the huge
+   row-height ML would otherwise impose on Azure. */
+.supporting-row > .support-card:nth-child(1) { grid-column: 1; grid-row: 1; }
+.supporting-row > .support-card:nth-child(2) { grid-column: 2; grid-row: 1 / span 2; }
+.supporting-row > .support-card:nth-child(3) { grid-column: 1; grid-row: 2; }
 .support-card {
   background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--r-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);
+  border-radius: var(--r-lg); padding: 1.25rem 1.4rem; box-shadow: var(--shadow-sm);
 }
 .support-card h3 {
   font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 500;
@@ -581,7 +596,13 @@ button { font-family: inherit; cursor: pointer; }
 @media (max-width: 900px) {
   .systems-grid { grid-template-columns: 1fr; }
   .arch-grid { grid-template-columns: 1fr; }
-  .supporting-row { grid-template-columns: 1fr; }
+  .supporting-row { grid-template-columns: 1fr; gap: 1rem; }
+  /* Mobile: drop the desktop row/column pinning so cards flow in DOM order. */
+  .supporting-row > .support-card:nth-child(1),
+  .supporting-row > .support-card:nth-child(2),
+  .supporting-row > .support-card:nth-child(3) {
+    grid-column: 1; grid-row: auto;
+  }
 }
 
 /* ============================================================
