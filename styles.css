@@ -1508,7 +1508,8 @@ body.splash-active { overflow: hidden; }
 :root {
   --hover-preview-open-delay:  80ms;
   --hover-preview-close-grace: 250ms;
-  --hover-preview-fade:        200ms;
+  --hover-preview-fade:        280ms;
+  --hover-preview-ease:        cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .hover-preview {
@@ -1524,30 +1525,41 @@ body.splash-active { overflow: hidden; }
   width: max-content;
   z-index: 80;
   opacity: 0;
-  transform: translateY(4px);
+  /* Slight downward + scaled-in resting state. ease-out-expo lets the
+     entrance feel like the card is rising and settling rather than
+     cross-fading in place — that's what makes a hover-preview read as
+     "graceful" instead of "flicked on". */
+  transform: translateY(8px) scale(0.96);
+  transform-origin: top center;
   transition:
-    opacity var(--hover-preview-fade) ease-out,
-    transform var(--hover-preview-fade) ease-out;
+    opacity   var(--hover-preview-fade) var(--hover-preview-ease),
+    transform var(--hover-preview-fade) var(--hover-preview-ease);
   pointer-events: none;
+  will-change: transform, opacity;
 }
 .hover-preview:popover-open {
   opacity: 1;
-  transform: none;
+  transform: translateY(0) scale(1);
   pointer-events: auto;
 }
 
 .hover-preview-card {
   display: grid;
   grid-template-rows: auto auto;
-  gap: 0.5rem;
+  gap: 0.625rem;
   width: 264px;
   padding: 0.875rem;
   background: var(--bg);
   color: var(--fg);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+  border-radius: 14px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 14px 36px -8px rgba(20, 14, 8, 0.22);
   font-family: inherit;
+  /* Layered entrance: thumb fades in slightly later than the card
+     itself, text follows the thumb. The eye reads it as a small
+     reveal animation instead of one flat opacity step. */
 }
 
 .hover-preview-thumb {
@@ -1555,14 +1567,32 @@ body.splash-active { overflow: hidden; }
   width: 100%;
   height: auto;
   aspect-ratio: 240 / 320;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #ffffff;
   object-fit: contain;
+  opacity: 0;
+  transform: scale(0.985);
+  transition:
+    opacity   calc(var(--hover-preview-fade) * 0.95) var(--hover-preview-ease) 80ms,
+    transform calc(var(--hover-preview-fade) * 0.95) var(--hover-preview-ease) 80ms;
+}
+.hover-preview:popover-open .hover-preview-thumb {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .hover-preview-text {
   display: grid;
   gap: 0.125rem;
+  opacity: 0;
+  transform: translateY(2px);
+  transition:
+    opacity   calc(var(--hover-preview-fade) * 0.85) var(--hover-preview-ease) 140ms,
+    transform calc(var(--hover-preview-fade) * 0.85) var(--hover-preview-ease) 140ms;
+}
+.hover-preview:popover-open .hover-preview-text {
+  opacity: 1;
+  transform: none;
 }
 
 .hover-preview-title {
@@ -1571,13 +1601,14 @@ body.splash-active { overflow: hidden; }
   font-weight: 600;
   color: var(--fg);
   line-height: 1.3;
+  letter-spacing: -0.005em;
 }
 
 .hover-preview-caption {
   margin: 0;
   font-size: 0.75rem;
   color: var(--fg-muted);
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 /* Touch devices: hide the popover entirely. Mobile users get the
@@ -1589,9 +1620,11 @@ body.splash-active { overflow: hidden; }
   .hover-preview { display: none !important; }
 }
 
-/* Reduced motion: snap-open / snap-close, no fade. */
+/* Reduced motion: snap-open / snap-close, no fade or scale. */
 @media (prefers-reduced-motion: reduce) {
-  .hover-preview {
+  .hover-preview,
+  .hover-preview .hover-preview-thumb,
+  .hover-preview .hover-preview-text {
     transition: none;
     transform: none;
   }

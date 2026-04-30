@@ -30,12 +30,17 @@ HOVER_PREVIEW_PATTERN_DOC = REPO_ROOT / "docs" / "hover-preview-pattern.md"
 RESUME_PREVIEW_PNG = REPO_ROOT / "static" / "resume-page1-preview.png"
 GITHUB_PREVIEW_PNG = REPO_ROOT / "static" / "preview-github.png"
 LINKEDIN_PREVIEW_PNG = REPO_ROOT / "static" / "preview-linkedin.png"
+SUBSTACK_PREVIEW_PNG = REPO_ROOT / "static" / "preview-substack.png"
 
 # #70 hover-preview budget: 30 KB per asset matches #67's resume-preview budget.
 HOVER_PREVIEW_BUDGET_BYTES = 30 * 1024
-# Minimum trigger count: 4 resume sites + 2 contact icons (github, linkedin) per #70 spec.
-HOVER_PREVIEW_MIN_TRIGGERS = 6
+# Minimum trigger count: 4 resume + 6 LinkedIn (3 testimonials + peer-CTA + contact + footer)
+# + 1 GitHub + 7 Substack (3 writing CTAs + hero CTA + peer-CTA + contact + footer) = 18.
+# We use 14 as the floor to allow minor markup churn without test thrash.
+HOVER_PREVIEW_MIN_TRIGGERS = 14
 HOVER_PREVIEW_MIN_RESUME_TRIGGERS = 4
+HOVER_PREVIEW_MIN_LINKEDIN_TRIGGERS = 5
+HOVER_PREVIEW_MIN_SUBSTACK_TRIGGERS = 5
 
 REQUIRED_POST_SECTIONS = ("problem", "constraints", "design", "tradeoffs", "outcome")
 POST_MIN_WORDS = 1500
@@ -584,9 +589,9 @@ def test_hover_preview_total_triggers_count(html: str) -> None:
 
 
 def test_hover_preview_assets_committed() -> None:
-    """All three preview PNGs (resume + github + linkedin) committed and within
-    the 30 KB per-asset budget."""
-    for path in (RESUME_PREVIEW_PNG, GITHUB_PREVIEW_PNG, LINKEDIN_PREVIEW_PNG):
+    """All four preview PNGs (resume + github + linkedin + substack) committed
+    and within the 30 KB per-asset budget."""
+    for path in (RESUME_PREVIEW_PNG, GITHUB_PREVIEW_PNG, LINKEDIN_PREVIEW_PNG, SUBSTACK_PREVIEW_PNG):
         assert path.exists(), f"missing committed preview asset: {path.relative_to(REPO_ROOT)}"
         size = path.stat().st_size
         assert size <= HOVER_PREVIEW_BUDGET_BYTES, (
@@ -594,6 +599,54 @@ def test_hover_preview_assets_committed() -> None:
         )
         # PNG magic bytes
         assert path.read_bytes()[:8] == b"\x89PNG\r\n\x1a\n", f"{path.name} is not a valid PNG"
+
+
+def test_hover_preview_every_linkedin_link_annotated(html: str) -> None:
+    """Every <a> pointing at linkedin.com must carry data-hover-preview.
+    Consistency over coverage: the user-facing complaint about #70 v1 was
+    'LinkedIn implementation isn't on every instance.' Lock this invariant."""
+    # Match each opening anchor tag containing a linkedin.com URL
+    anchor_re = re.compile(
+        r'<a\s[^>]*href="[^"]*linkedin\.com[^"]*"[^>]*>',
+        re.IGNORECASE | re.DOTALL,
+    )
+    bad = [a for a in anchor_re.findall(html) if "data-hover-preview" not in a]
+    assert not bad, (
+        f"{len(bad)} LinkedIn anchor(s) missing data-hover-preview annotation:\n  "
+        + "\n  ".join(a[:140] + ("..." if len(a) > 140 else "") for a in bad)
+    )
+
+
+def test_hover_preview_every_substack_link_annotated(html: str) -> None:
+    """Every <a> pointing at narendranathe.substack.com must carry
+    data-hover-preview. Same consistency rule as LinkedIn."""
+    anchor_re = re.compile(
+        r'<a\s[^>]*href="[^"]*substack\.com[^"]*"[^>]*>',
+        re.IGNORECASE | re.DOTALL,
+    )
+    bad = [a for a in anchor_re.findall(html) if "data-hover-preview" not in a]
+    assert not bad, (
+        f"{len(bad)} Substack anchor(s) missing data-hover-preview annotation:\n  "
+        + "\n  ".join(a[:140] + ("..." if len(a) > 140 else "") for a in bad)
+    )
+
+
+def test_hover_preview_linkedin_trigger_count(html: str) -> None:
+    """At least 5 LinkedIn hover-preview triggers — covers Naren's own profile
+    (peer CTA + contact + footer) plus 3 testimonial author profiles."""
+    n = len(re.findall(r'data-hover-preview="/static/preview-linkedin\.png"', html))
+    assert n >= HOVER_PREVIEW_MIN_LINKEDIN_TRIGGERS, (
+        f"LinkedIn hover-preview triggers: {n} < expected {HOVER_PREVIEW_MIN_LINKEDIN_TRIGGERS}."
+    )
+
+
+def test_hover_preview_substack_trigger_count(html: str) -> None:
+    """At least 5 Substack hover-preview triggers — covers writing CTAs +
+    hero follow CTA + peer CTA + contact + footer."""
+    n = len(re.findall(r'data-hover-preview="/static/preview-substack\.png"', html))
+    assert n >= HOVER_PREVIEW_MIN_SUBSTACK_TRIGGERS, (
+        f"Substack hover-preview triggers: {n} < expected {HOVER_PREVIEW_MIN_SUBSTACK_TRIGGERS}."
+    )
 
 
 def test_hover_preview_resume_cache_bust_matches_sidecar(html: str) -> None:
@@ -725,6 +778,10 @@ TESTS = [
     test_hover_preview_contact_icons_annotated,
     test_hover_preview_total_triggers_count,
     test_hover_preview_assets_committed,
+    test_hover_preview_every_linkedin_link_annotated,
+    test_hover_preview_every_substack_link_annotated,
+    test_hover_preview_linkedin_trigger_count,
+    test_hover_preview_substack_trigger_count,
     test_hover_preview_resume_cache_bust_matches_sidecar,
     test_hover_preview_companion_attrs_present,
     test_hover_preview_no_role_dialog,
