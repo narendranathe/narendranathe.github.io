@@ -739,7 +739,12 @@ button { font-family: inherit; cursor: pointer; }
 }
 .research-authors { font-size: 0.87rem; color: var(--fg-soft); }
 .research-pub { font-size: 0.8rem; color: var(--fg-muted); }
-.section-cta { text-align: center; }
+.section-cta { text-align: center; margin: 0; }
+/* The Publications section ends in a single Substack CTA; the standard
+   5rem section bottom-padding produced visible dead space below the
+   button before the next section's own top padding. Trim the bottom
+   here so the page reads as a tight close, not a hanging break. */
+.section#notes { padding-bottom: 1.5rem; }
 @media (max-width: 780px) { .writing-grid { grid-template-columns: 1fr; } }
 
 /* ============================================================
