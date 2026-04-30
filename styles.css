@@ -1222,14 +1222,30 @@ body.splash-active { overflow: hidden; }
 .impact-strip .impact-value {
   margin: 0;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-weight: 600;
+  /* Lighter weight + warm-sienna colour replaces the previous black/600
+     pair. The earlier styling read as "hardened bold" against the soft
+     warm palette of the rest of the page; lifting the colour onto the
+     accent token unifies it with the left rule on each stat. */
+  font-weight: 500;
   font-size: 1.05rem;
   line-height: 1.2;
-  color: var(--fg, #1a1818);
+  color: var(--accent-warm, #b5752a);
   /* tabular-nums prevents font-swap CLS; the JetBrains Mono fallback
      chain (ui-monospace -> monospace) is not always tabular by default. */
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
+}
+
+/* When a strip carries 4+ stats (e.g. AutoApply AI's
+   endpoints/adapters/providers/tests), flex-wrap produces visible
+   column drift because each stat's intrinsic width depends on its
+   value text. Switch to a 2-column grid so the left rules + values
+   align cleanly across rows. CSS :has() is baseline-supported
+   across all four target engines. */
+.impact-strip:has(.impact-stat:nth-child(4)) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.55rem 1rem;
 }
 
 .impact-strip .impact-label {
