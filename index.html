@@ -225,7 +225,7 @@
                   <div class="track-meta">
                     <h3 class="track-title">Data Engineer</h3>
                     <p class="track-company">Missouri University of Science and Technology &middot; Rolla, MO</p>
-                    <p class="track-scope">ML infrastructure / anomaly detection &nbsp;&middot;&nbsp; M.S. Data Science - GPA 4.0 - Dec 2024</p>
+                    <p class="track-scope">ML infrastructure / anomaly detection &nbsp;&middot;&nbsp; M.S. Data Science - GPA 4.0 - Dec 2023</p>
                   </div>
                 </div>
                 <ul class="track-bullets">
@@ -340,7 +340,7 @@
               <p class="edu-school">Missouri University of Science and Technology &middot; Rolla, MO</p>
               <div class="edu-meta">
                 <span class="chip">GPA 4.0 / 4.0</span>
-                <span class="chip">Dec 2024</span>
+                <span class="chip">Jan 2022 - Dec 2023</span>
                 <span class="chip">Taylor &amp; Francis Publication</span>
               </div>
             </div>
@@ -860,17 +860,113 @@
       <div class="container">
 
         <div class="section-head" data-reveal>
-          <span class="section-label">Architecture &amp; Write-Ups</span>
-          <h2 class="section-title">Long-form notes from shipping production systems.</h2>
-          <p class="section-subtitle">Problem &rarr; Constraints &rarr; Design &rarr; Tradeoffs &rarr; Outcome. The tradeoffs section is the one that matters &mdash; what didn't work and why.</p>
+          <span class="section-label">Articles</span>
+          <h2 class="section-title">Technical write-ups.</h2>
+          <p class="section-subtitle">Problem, constraints, design, tradeoffs, outcome. Each post focuses on what didn't work and why.</p>
         </div>
 
         <div class="writing-grid">
           <article class="writing-card" data-reveal>
+            <figure class="writing-thumb" aria-labelledby="thumb-supply-chain-title" aria-describedby="thumb-supply-chain-desc">
+              <svg class="writing-diagram" viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg" role="img">
+                <title id="thumb-supply-chain-title">Supply-chain audit pipeline: PR triggers five Claude agents in parallel feeding one consensus report.</title>
+                <desc id="thumb-supply-chain-desc">A pull request enters from the left, fans out to five parallel agent reviewers (security, telemetry, contract, docs, packaging), and converges into a single consensus report on the right.</desc>
+                <g fill="none" stroke="currentColor" stroke-width="1.3" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="9">
+                  <rect x="6" y="46" width="46" height="28" rx="4"/>
+                  <text x="29" y="63" text-anchor="middle" fill="currentColor">PR</text>
+                  <rect x="100" y="6"  width="74" height="20" rx="4"/><text x="137" y="20" text-anchor="middle" fill="currentColor">security</text>
+                  <rect x="100" y="32" width="74" height="20" rx="4"/><text x="137" y="46" text-anchor="middle" fill="currentColor">telemetry</text>
+                  <rect x="100" y="58" width="74" height="20" rx="4" stroke="var(--accent-warm, #b5752a)"/><text x="137" y="72" text-anchor="middle" fill="var(--accent-warm, #b5752a)">contract</text>
+                  <rect x="100" y="84" width="74" height="20" rx="4"/><text x="137" y="98" text-anchor="middle" fill="currentColor">docs</text>
+                  <rect x="100" y="110" width="74" height="0"/>
+                  <line x1="52" y1="60" x2="100" y2="16"/>
+                  <line x1="52" y1="60" x2="100" y2="42"/>
+                  <line x1="52" y1="60" x2="100" y2="68"/>
+                  <line x1="52" y1="60" x2="100" y2="94"/>
+                  <rect x="220" y="40" width="92" height="40" rx="4" stroke="var(--accent-warm, #b5752a)" stroke-width="1.6"/>
+                  <text x="266" y="58" text-anchor="middle" fill="var(--accent-warm, #b5752a)" font-weight="600">consensus</text>
+                  <text x="266" y="72" text-anchor="middle" fill="currentColor" font-size="8">41 issues caught</text>
+                  <line x1="174" y1="16" x2="220" y2="56"/>
+                  <line x1="174" y1="42" x2="220" y2="58"/>
+                  <line x1="174" y1="68" x2="220" y2="60"/>
+                  <line x1="174" y1="94" x2="220" y2="62"/>
+                </g>
+              </svg>
+            </figure>
             <span class="writing-label">Supply-chain &middot; 12 min read &middot; Apr 2026</span>
             <h3 class="writing-title">Five Claude agents audited my plugin release in parallel. They caught 41 issues.</h3>
             <p class="writing-desc">A defender-side playbook for shipping a Claude Code plugin with PyPI-tier supply-chain hygiene &mdash; Sigstore signing, OIDC Trusted Publisher, CodeQL, property-tested telemetry, and the multi-agent review workflow that found everything I missed.</p>
             <a href="content/posts/repo-context-hooks-supply-chain.html" class="cs-btn writing-cta">Read the write-up &rarr;</a>
+          </article>
+
+          <article class="writing-card" data-reveal>
+            <figure class="writing-thumb" aria-labelledby="thumb-llm-cascade-title" aria-describedby="thumb-llm-cascade-desc">
+              <svg class="writing-diagram" viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg" role="img">
+                <title id="thumb-llm-cascade-title">LLM cascade: Claude as primary, fall through to GPT-4o, Kimi, Ollama, then keyword on each provider failure.</title>
+                <desc id="thumb-llm-cascade-desc">A request flows left-to-right through five providers. Each box is a fallback step; the active path stops at the first provider returning a usable answer. Claude is highlighted as the primary; keyword-extract on the right is the no-LLM degraded mode.</desc>
+                <g fill="none" stroke="currentColor" stroke-width="1.3" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="9">
+                  <rect x="6" y="46" width="50" height="28" rx="4" stroke="var(--accent-warm, #b5752a)" stroke-width="1.6"/>
+                  <text x="31" y="58" text-anchor="middle" fill="var(--accent-warm, #b5752a)" font-weight="600">Claude</text>
+                  <text x="31" y="69" text-anchor="middle" fill="currentColor" font-size="8">primary</text>
+                  <rect x="68" y="46" width="50" height="28" rx="4"/><text x="93" y="58" text-anchor="middle" fill="currentColor">GPT-4o</text><text x="93" y="69" text-anchor="middle" fill="currentColor" font-size="8">fallback</text>
+                  <rect x="130" y="46" width="50" height="28" rx="4"/><text x="155" y="58" text-anchor="middle" fill="currentColor">Kimi</text><text x="155" y="69" text-anchor="middle" fill="currentColor" font-size="8">cheap</text>
+                  <rect x="192" y="46" width="50" height="28" rx="4"/><text x="217" y="58" text-anchor="middle" fill="currentColor">Ollama</text><text x="217" y="69" text-anchor="middle" fill="currentColor" font-size="8">local</text>
+                  <rect x="254" y="46" width="60" height="28" rx="4"/><text x="284" y="58" text-anchor="middle" fill="currentColor">keyword</text><text x="284" y="69" text-anchor="middle" fill="currentColor" font-size="8">no-LLM</text>
+                  <line x1="56" y1="60" x2="68" y2="60" marker-end="url(#wd-arrow)"/>
+                  <line x1="118" y1="60" x2="130" y2="60" marker-end="url(#wd-arrow)"/>
+                  <line x1="180" y1="60" x2="192" y2="60" marker-end="url(#wd-arrow)"/>
+                  <line x1="242" y1="60" x2="254" y2="60" marker-end="url(#wd-arrow)"/>
+                  <text x="160" y="22" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">circuit breaker on each provider</text>
+                  <text x="160" y="100" text-anchor="middle" fill="var(--fg-muted, #9b9490)" font-size="8">first usable answer wins; rest skip</text>
+                </g>
+                <defs>
+                  <marker id="wd-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M0 0 L10 5 L0 10 Z" fill="currentColor"/>
+                  </marker>
+                </defs>
+              </svg>
+            </figure>
+            <span class="writing-label">AI infra &middot; draft &middot; on Substack</span>
+            <h3 class="writing-title">The LLM cascade as a routing system, not a fallback.</h3>
+            <p class="writing-desc">Five providers, circuit breakers per provider, per-category routing, and a reward loop. What worked: Claude-first with cost-aware overflow. What didn't: naive failover by HTTP status code &mdash; LLMs fail in much weirder ways than 500s.</p>
+            <a href="https://narendranathe.substack.com" class="cs-btn cs-btn--substack writing-cta" target="_blank" rel="noreferrer"
+               data-hover-preview="/static/preview-substack.png"
+               data-hover-title="Substack - narendranathe"
+               data-hover-caption="AI infra notes, weekly cadence">Read on Substack &rarr;</a>
+          </article>
+
+          <article class="writing-card" data-reveal>
+            <figure class="writing-thumb" aria-labelledby="thumb-deploy-title" aria-describedby="thumb-deploy-desc">
+              <svg class="writing-diagram" viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg" role="img">
+                <title id="thumb-deploy-title">Azure DevOps pipeline compressing deploy cycle from three months to fourteen days.</title>
+                <desc id="thumb-deploy-desc">A git push enters from the left, runs through build, test, and security gates, and lands on a database-target environment in about fourteen days end-to-end. The earlier three-month process is shown faintly above as a comparison anchor.</desc>
+                <g fill="none" stroke="currentColor" stroke-width="1.3" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="9">
+                  <text x="160" y="14" text-anchor="middle" fill="var(--fg-muted, #9b9490)" font-size="8" font-style="italic">before: 3 months / cross-team relay / manual gates</text>
+                  <rect x="6" y="46" width="46" height="28" rx="4"/><text x="29" y="63" text-anchor="middle" fill="currentColor">git</text>
+                  <rect x="64" y="46" width="58" height="28" rx="4"/><text x="93" y="58" text-anchor="middle" fill="currentColor">build</text><text x="93" y="69" text-anchor="middle" fill="currentColor" font-size="8">cached</text>
+                  <rect x="134" y="46" width="58" height="28" rx="4"/><text x="163" y="58" text-anchor="middle" fill="currentColor">test</text><text x="163" y="69" text-anchor="middle" fill="currentColor" font-size="8">parallel</text>
+                  <rect x="204" y="46" width="58" height="28" rx="4" stroke="var(--accent-warm, #b5752a)"/><text x="233" y="58" text-anchor="middle" fill="var(--accent-warm, #b5752a)" font-weight="600">CDC ETL</text><text x="233" y="69" text-anchor="middle" fill="currentColor" font-size="8">incremental</text>
+                  <rect x="274" y="46" width="40" height="28" rx="4"/><text x="294" y="63" text-anchor="middle" fill="currentColor">DB</text>
+                  <line x1="52" y1="60" x2="64" y2="60" marker-end="url(#wd-arrow2)"/>
+                  <line x1="122" y1="60" x2="134" y2="60" marker-end="url(#wd-arrow2)"/>
+                  <line x1="192" y1="60" x2="204" y2="60" marker-end="url(#wd-arrow2)"/>
+                  <line x1="262" y1="60" x2="274" y2="60" marker-end="url(#wd-arrow2)"/>
+                  <text x="160" y="100" text-anchor="middle" fill="var(--accent-warm, #b5752a)" font-size="9" font-weight="600">after: 14 days &middot; idempotent &middot; -67% compute</text>
+                </g>
+                <defs>
+                  <marker id="wd-arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M0 0 L10 5 L0 10 Z" fill="currentColor"/>
+                  </marker>
+                </defs>
+              </svg>
+            </figure>
+            <span class="writing-label">Data platform &middot; draft &middot; on Substack</span>
+            <h3 class="writing-title">Compressing a deploy cycle from 3 months to 14 days.</h3>
+            <p class="writing-desc">CI/CD ownership at ExponentHR &mdash; Azure DevOps pipelines, idempotent CDC ETL with merge-upserts, AAG copy-down automation. Honest tradeoffs section: which gates I tried to remove and learned to keep.</p>
+            <a href="https://narendranathe.substack.com" class="cs-btn cs-btn--substack writing-cta" target="_blank" rel="noreferrer"
+               data-hover-preview="/static/preview-substack.png"
+               data-hover-title="Substack - narendranathe"
+               data-hover-caption="AI infra notes, weekly cadence">Read on Substack &rarr;</a>
           </article>
         </div>
 
@@ -882,9 +978,9 @@
       <div class="container">
 
         <div class="section-head" data-reveal>
-          <span class="section-label">Publications &amp; Writing</span>
-          <h2 class="section-title">Architecture essays from shipping real systems.</h2>
-          <p class="section-subtitle">Not tutorials. Real decisions, real tradeoffs, real failures - published on Substack and in Taylor &amp; Francis.</p>
+          <span class="section-label">Publications</span>
+          <h2 class="section-title">External articles and peer-reviewed work.</h2>
+          <p class="section-subtitle">Posts on Substack covering production decisions; peer-reviewed publication in Taylor &amp; Francis.</p>
         </div>
 
         <div class="writing-grid">

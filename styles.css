@@ -697,6 +697,21 @@ button { font-family: inherit; cursor: pointer; }
 .writing-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem;
 }
+.writing-thumb {
+  margin: 0 0 0.25rem;
+  padding: 0.75rem;
+  background: var(--bg-alt);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r);
+  color: var(--fg-soft);
+}
+.writing-thumb .writing-diagram {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 320 / 120;
+  color: var(--fg-soft);
+}
 .writing-card {
   background: var(--bg); border: 1px solid var(--border);
   border-radius: var(--r-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);
@@ -1243,27 +1258,28 @@ body.splash-active { overflow: hidden; }
 .impact-strip .impact-value {
   margin: 0;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  /* Lighter weight + warm-sienna colour replaces the previous black/600
-     pair. The earlier styling read as "hardened bold" against the soft
-     warm palette of the rest of the page; lifting the colour onto the
-     accent token unifies it with the left rule on each stat. */
-  font-weight: 500;
+  /* Regular weight + body-ink colour. Earlier iterations went bold-black
+     (read as "hardened") and then warm-sienna (read as decorative);
+     regular black is the right balance — credible, professional, no
+     theme drift. */
+  font-weight: 400;
   font-size: 1.05rem;
   line-height: 1.2;
-  color: var(--accent-warm, #b5752a);
+  color: var(--fg, #1a1818);
   /* tabular-nums prevents font-swap CLS; the JetBrains Mono fallback
      chain (ui-monospace -> monospace) is not always tabular by default. */
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
 }
 
-/* When a strip carries 4+ stats (e.g. AutoApply AI's
-   endpoints/adapters/providers/tests), flex-wrap produces visible
-   column drift because each stat's intrinsic width depends on its
-   value text. Switch to a 2-column grid so the left rules + values
-   align cleanly across rows. CSS :has() is baseline-supported
-   across all four target engines. */
-.impact-strip:has(.impact-stat:nth-child(4)) {
+/* Whenever a strip carries 3+ stats (the impact-strip pattern's stated
+   minimum is 3 — see docs/impact-strip-pattern.md), use a 2-column
+   grid so the left rules + values align cleanly across rows. Plain
+   flex-wrap produces visible column drift because each stat's
+   intrinsic width depends on its value text (e.g. ~1hr vs 3mo→14d
+   vs Sigstore + CodeQL). CSS :has() is baseline across the four
+   target engines (Chrome 105+, Safari 15.4+, Firefox 121+, Edge 105+). */
+.impact-strip:has(.impact-stat:nth-child(3)) {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 0.55rem 1rem;
