@@ -117,6 +117,99 @@ def collect(html: str) -> StripCollector:
     return p
 
 
+# ------- Visible-text DOM walker -------
+# A screen reader / human reader perceives text from inline siblings as
+# space-joined (<span>400</span><span>enterprise clients</span> reads as
+# "400 enterprise clients"). The raw-HTML substring check below misses
+# this case because the words live in adjacent spans. This walker
+# rebuilds the visible-text concatenation so adjacent-span leaks of
+# scrapped claims are caught.
+_VISIBLE_TEXT_SUPPRESS_TAGS = frozenset(
+    {"script", "style", "template", "noscript"}
+)
+# Zero-width joiner / BOM characters - screen readers ignore them, but
+# Python's \s does not match them, so a paste from Word/Google Docs
+# could re-introduce a forbidden phrase split by ZWSP and bypass the
+# substring guard. Strip these before whitespace collapse.
+_ZERO_WIDTH_RE = re.compile(r"[​-‍﻿]")
+
+
+class VisibleTextCollector(HTMLParser):
+    """Concatenate visible text-node content; emit a space at every tag
+    boundary so adjacent inline siblings don't fuse into one token.
+    Skips <script>/<style>/<template>/<noscript>; <svg> contents (title,
+    desc, text) ARE included since they are a11y-visible."""
+
+    def __init__(self) -> None:
+        # convert_charrefs=True (Python 3.5+ default) auto-decodes
+        # entities into handle_data - so &#52;00 surfaces as "400" and
+        # entity-encoded leaks cannot bypass the substring guard.
+        super().__init__(convert_charrefs=True)
+        self._suppress_depth = 0
+        self._buf: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs_list: list) -> None:
+        if tag in _VISIBLE_TEXT_SUPPRESS_TAGS:
+            self._suppress_depth += 1
+        # Space at every element boundary; final \s+ collapse pays the bill.
+        self._buf.append(" ")
+
+    def handle_startendtag(self, tag: str, attrs_list: list) -> None:
+        # XHTML self-closing form (<br/>, <img/>); no end tag will fire.
+        self._buf.append(" ")
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag in _VISIBLE_TEXT_SUPPRESS_TAGS and self._suppress_depth > 0:
+            self._suppress_depth -= 1
+        self._buf.append(" ")
+
+    def handle_data(self, data: str) -> None:
+        if self._suppress_depth == 0:
+            self._buf.append(data)
+
+    def text(self) -> str:
+        # Replace zero-width chars with a space (not empty): ZWSP is a
+        # word boundary to screen readers, so "400<ZWSP>enterprise"
+        # should normalise to "400 enterprise" not "400enterprise".
+        text = _ZERO_WIDTH_RE.sub(" ", "".join(self._buf))
+        return re.sub(r"\s+", " ", text).strip()
+
+
+def extract_visible_text(html: str) -> str:
+    p = VisibleTextCollector()
+    p.feed(html)
+    return p.text()
+
+
+# Phrases that uniquely identify the scrapped ExponentHR NL-to-SQL
+# Architecture 4 claim. Single source of truth for both the raw-HTML
+# guard (catches attribute values, HTML comments, <script> bodies) and
+# the rendered-text guard (catches adjacent-span leaks). All entries
+# lowercase; comparisons normalise both sides via .lower().
+#
+# Land mine: the ExponentHR card on index.html says "support desk
+# volume ~80%" - a future synonym swap from "desk" to "ticket" would
+# trip "support ticket reduction". Preserve "desk" or rephrase rather
+# than narrowing the guard.
+FORBIDDEN_SCRAPPED_CLAIMS: tuple[str, ...] = (
+    # "400 enterprise clients" - main offender. Substring covers plural.
+    "400 enterprise client",
+    "400+ enterprise client",
+    # 40% support-ticket-reduction claim
+    "support ticket reduction",
+    # 12s -> 4s query-response claim, ASCII + Unicode arrow variants
+    "12s to 4s",
+    "12s -> 4s",
+    "12s->4s",
+    "12s → 4s",
+    "12s→4s",
+    "12 second",
+    # Architecture vocabulary
+    "catalog-driven nl-to-sql",
+    "faiss retrieval",
+)
+
+
 # ------- Test cases -------
 def test_index_html_exists() -> None:
     assert INDEX_HTML.exists(), f"missing {INDEX_HTML}"
@@ -173,19 +266,29 @@ def test_each_stat_has_value_and_label(strips: list[dict]) -> None:
 
 
 def test_no_scrapped_exponenthr_outcomes(html: str) -> None:
-    """ExponentHR NL-to-SQL Architecture 4 was scrapped. Its outcomes
-    (400 enterprise clients, 40% support ticket reduction, 12s -> 4s
-    query response) cannot be cited anywhere on the portfolio."""
-    forbidden = [
-        "400 enterprise client",
-        "400+ enterprise client",
-        "support ticket reduction",
-        "catalog-driven NL-to-SQL",
-        "FAISS retrieval",
-    ]
-    for needle in forbidden:
-        assert needle.lower() not in html.lower(), (
-            f"Found scrapped-project claim {needle!r} in index.html — must remove."
+    """Defense-in-depth raw-HTML check: covers attribute values
+    (alt=, title=, aria-label=), HTML comments, and <script> bodies
+    that the rendered-text guard cannot see. Complemented by the
+    rendered-text guard below which catches adjacent-span leaks this
+    raw substring search misses."""
+    lower_html = html.lower()
+    for phrase in FORBIDDEN_SCRAPPED_CLAIMS:
+        assert phrase not in lower_html, (
+            f"Found scrapped-project claim {phrase!r} in index.html - must remove."
+        )
+
+
+def test_no_scrapped_exponenthr_outcomes_in_rendered_text(html: str) -> None:
+    """Rendered-text guard: walks the DOM, concatenates visible text
+    with element-boundary spaces, then substring-checks against the
+    scrapped-claim phrase list. Catches leaks that span adjacent
+    elements (e.g. <span>400</span><span>enterprise clients</span>)
+    which the raw-HTML substring check above silently passes."""
+    rendered = extract_visible_text(html).lower()
+    for phrase in FORBIDDEN_SCRAPPED_CLAIMS:
+        assert phrase not in rendered, (
+            f"Found scrapped-project phrase {phrase!r} in rendered DOM "
+            f"text of index.html - must remove (rendered-text guard)."
         )
 
 
@@ -443,6 +546,7 @@ TESTS = [
     test_each_strip_has_3_to_5_stats,
     test_each_stat_has_value_and_label,
     test_no_scrapped_exponenthr_outcomes,
+    test_no_scrapped_exponenthr_outcomes_in_rendered_text,
     test_no_inline_style_attribute_on_strips,
     test_jetbrains_mono_loaded,
     test_css_uses_tabular_nums,
