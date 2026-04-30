@@ -122,4 +122,141 @@
     }, { passive: true });
   }
 
+  // -------------------------------------------------------------
+  // Hover-preview primitive (#70). Drop-in for any link with
+  // data-hover-preview / data-hover-title / data-hover-caption.
+  // Uses native HTML Popover API (Chrome 114+, Safari 17+, FF 125+).
+  // Touch devices skip entirely - see CSS @media (hover: none).
+  // Pattern: docs/hover-preview-pattern.md
+  // -------------------------------------------------------------
+  (function () {
+    var triggers = document.querySelectorAll('[data-hover-preview]');
+    if (!triggers.length) return;
+
+    var isTouch = window.matchMedia &&
+      window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    if (isTouch) return;
+
+    if (!('showPopover' in HTMLElement.prototype)) return;
+
+    var OPEN_DELAY  = 80;
+    var CLOSE_GRACE = 250;
+
+    var card, thumb, titleEl, captionEl;
+    var lastTrigger = null;
+    var openTimer = null;
+    var closeTimer = null;
+
+    function ensureCard() {
+      if (card) return;
+      card = document.createElement('div');
+      card.className = 'hover-preview';
+      card.id = 'hover-preview-card';
+      card.setAttribute('popover', 'manual');
+
+      var inner = document.createElement('div');
+      inner.className = 'hover-preview-card';
+
+      thumb = document.createElement('img');
+      thumb.className = 'hover-preview-thumb';
+      thumb.setAttribute('alt', '');
+      thumb.setAttribute('decoding', 'async');
+      thumb.setAttribute('loading', 'lazy');
+      thumb.setAttribute('width', '240');
+      thumb.setAttribute('height', '320');
+      inner.appendChild(thumb);
+
+      var textWrap = document.createElement('div');
+      textWrap.className = 'hover-preview-text';
+      titleEl = document.createElement('p');
+      titleEl.className = 'hover-preview-title';
+      captionEl = document.createElement('p');
+      captionEl.className = 'hover-preview-caption';
+      textWrap.appendChild(titleEl);
+      textWrap.appendChild(captionEl);
+      inner.appendChild(textWrap);
+
+      card.appendChild(inner);
+      document.body.appendChild(card);
+
+      // Cursor on the card itself keeps it open (WCAG 1.4.13 hoverable).
+      card.addEventListener('mouseenter', function () { clearTimeout(closeTimer); });
+      card.addEventListener('mouseleave', scheduleClose);
+    }
+
+    function position(trigger) {
+      var rt = trigger.getBoundingClientRect();
+      var rc = card.getBoundingClientRect();
+      var pad = 8;
+      var top = rt.bottom + pad;
+      var left = rt.left + rt.width / 2 - rc.width / 2;
+      var maxLeft = window.innerWidth - rc.width - pad;
+      if (left < pad) left = pad;
+      if (left > maxLeft) left = maxLeft;
+      if (top + rc.height > window.innerHeight - pad) {
+        top = rt.top - rc.height - pad;
+      }
+      card.style.top  = top  + 'px';
+      card.style.left = left + 'px';
+    }
+
+    function open(trigger) {
+      ensureCard();
+      var src = trigger.getAttribute('data-hover-preview');
+      if (thumb.getAttribute('src') !== src) thumb.setAttribute('src', src);
+      titleEl.textContent   = trigger.getAttribute('data-hover-title')   || '';
+      captionEl.textContent = trigger.getAttribute('data-hover-caption') || '';
+      if (!card.matches(':popover-open')) {
+        try { card.showPopover(); } catch (_) { /* noop */ }
+      }
+      requestAnimationFrame(function () { position(trigger); });
+      lastTrigger = trigger;
+    }
+
+    function close() {
+      if (card && card.matches(':popover-open')) {
+        try { card.hidePopover(); } catch (_) { /* noop */ }
+      }
+    }
+
+    function scheduleOpen(trigger) {
+      clearTimeout(closeTimer);
+      clearTimeout(openTimer);
+      openTimer = setTimeout(function () { open(trigger); }, OPEN_DELAY);
+    }
+    function scheduleClose() {
+      clearTimeout(openTimer);
+      clearTimeout(closeTimer);
+      closeTimer = setTimeout(close, CLOSE_GRACE);
+    }
+
+    function attach(trigger) {
+      trigger.addEventListener('mouseenter', function () { scheduleOpen(trigger); });
+      trigger.addEventListener('mouseleave', scheduleClose);
+      trigger.addEventListener('focus', function () {
+        clearTimeout(closeTimer);
+        clearTimeout(openTimer);
+        open(trigger);
+      });
+      // Deliberately NO close-on-blur. Keyboard users need persistent card
+      // content (WCAG 1.4.13 hoverable for keyboard). The card has no
+      // focusable children, so Tab from the trigger leaves focus entirely;
+      // closing the card on that blur would give the keyboard user a
+      // 0-frame glimpse. Closes via:
+      //   - Esc (document keydown handler below)
+      //   - mouse leaving both trigger and card (mouseleave + grace timer)
+      //   - focus moving to another [data-hover-preview] trigger, whose
+      //     own focus handler re-uses the shared card and replaces content
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && card && card.matches(':popover-open')) {
+        close();
+        if (lastTrigger) lastTrigger.focus();
+      }
+    });
+
+    Array.prototype.forEach.call(triggers, attach);
+  }());
+
 })();

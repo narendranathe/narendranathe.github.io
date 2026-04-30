@@ -1497,3 +1497,118 @@ body.splash-active { overflow: hidden; }
   .system-diagram [stroke] { stroke: CanvasText; }
   .system-diagram [fill]:not([fill="none"]) { fill: CanvasText; }
 }
+
+/* ============================================================
+   Hover-preview pattern (#70) — drop-in floating cards on important
+   links. Visual enrichment ONLY for sighted desktop users; touch
+   devices fall through to native link navigation, screen readers
+   read the link's accessible name and skip the popover entirely.
+   See docs/hover-preview-pattern.md for the full pattern.
+   ============================================================ */
+:root {
+  --hover-preview-open-delay:  80ms;
+  --hover-preview-close-grace: 250ms;
+  --hover-preview-fade:        200ms;
+}
+
+.hover-preview {
+  /* HTML Popover API target: rendered in the top layer, no position
+     stacking-context concerns. Margin/padding/border reset because
+     UA stylesheets put a default frame around the [popover] element. */
+  position: fixed;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  inset: unset;
+  width: max-content;
+  z-index: 80;
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity var(--hover-preview-fade) ease-out,
+    transform var(--hover-preview-fade) ease-out;
+  pointer-events: none;
+}
+.hover-preview:popover-open {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.hover-preview-card {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 0.5rem;
+  width: 264px;
+  padding: 0.875rem;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+  font-family: inherit;
+}
+
+.hover-preview-thumb {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 240 / 320;
+  border-radius: 8px;
+  background: #ffffff;
+  object-fit: contain;
+}
+
+.hover-preview-text {
+  display: grid;
+  gap: 0.125rem;
+}
+
+.hover-preview-title {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--fg);
+  line-height: 1.3;
+}
+
+.hover-preview-caption {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+  line-height: 1.4;
+}
+
+/* Touch devices: hide the popover entirely. Mobile users get the
+   normal link-tap behaviour they expect, plus iOS Safari's native
+   long-press preview menu. Detection: BOTH no-hover AND coarse
+   pointer — hybrid devices (Surface, iPad+trackpad) keep the
+   desktop preview. */
+@media (hover: none) and (pointer: coarse) {
+  .hover-preview { display: none !important; }
+}
+
+/* Reduced motion: snap-open / snap-close, no fade. */
+@media (prefers-reduced-motion: reduce) {
+  .hover-preview {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* Print: never print the popover. */
+@media print {
+  .hover-preview { display: none !important; }
+}
+
+/* Forced-colors / High-contrast: keep the card readable with system
+   tokens, lose the warm shadow which the OS suppresses anyway. */
+@media (forced-colors: active) {
+  .hover-preview-card {
+    background: Canvas;
+    color: CanvasText;
+    border-color: CanvasText;
+    box-shadow: none;
+  }
+}

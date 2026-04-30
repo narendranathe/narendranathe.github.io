@@ -24,7 +24,18 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 INDEX_HTML = REPO_ROOT / "index.html"
 STYLES_CSS = REPO_ROOT / "styles.css"
+APP_JS = REPO_ROOT / "app.js"
 SUPPLY_CHAIN_POST = REPO_ROOT / "content" / "posts" / "repo-context-hooks-supply-chain.html"
+HOVER_PREVIEW_PATTERN_DOC = REPO_ROOT / "docs" / "hover-preview-pattern.md"
+RESUME_PREVIEW_PNG = REPO_ROOT / "static" / "resume-page1-preview.png"
+GITHUB_PREVIEW_PNG = REPO_ROOT / "static" / "preview-github.png"
+LINKEDIN_PREVIEW_PNG = REPO_ROOT / "static" / "preview-linkedin.png"
+
+# #70 hover-preview budget: 30 KB per asset matches #67's resume-preview budget.
+HOVER_PREVIEW_BUDGET_BYTES = 30 * 1024
+# Minimum trigger count: 4 resume sites + 2 contact icons (github, linkedin) per #70 spec.
+HOVER_PREVIEW_MIN_TRIGGERS = 6
+HOVER_PREVIEW_MIN_RESUME_TRIGGERS = 4
 
 REQUIRED_POST_SECTIONS = ("problem", "constraints", "design", "tradeoffs", "outcome")
 POST_MIN_WORDS = 1500
@@ -519,6 +530,144 @@ def test_index_inline_system_diagram_byte_budget(html: str) -> None:
     )
 
 
+# ----- Hover-preview primitive (issue #70) -----
+def test_hover_preview_css_module_present() -> None:
+    """styles.css must contain the .hover-preview module (selector + popover-open
+    state). Catches accidental deletion of the CSS block during refactors."""
+    css = STYLES_CSS.read_text(encoding="utf-8")
+    assert ".hover-preview {" in css, ".hover-preview block missing from styles.css"
+    assert ".hover-preview:popover-open" in css, ".hover-preview:popover-open state missing"
+    assert "(hover: none) and (pointer: coarse)" in css, "touch-device hide rule missing"
+    assert "prefers-reduced-motion" in css, "reduced-motion block missing"
+
+
+def test_hover_preview_js_module_present() -> None:
+    """app.js must contain the hover-preview IIFE — vanilla DOM, no deps."""
+    js = APP_JS.read_text(encoding="utf-8")
+    assert "data-hover-preview" in js, "hover-preview JS does not query data-hover-preview triggers"
+    assert "showPopover" in js, "hover-preview JS does not call native Popover API"
+    assert "(hover: none) and (pointer: coarse)" in js, "hover-preview JS does not skip touch devices"
+
+
+def test_hover_preview_resume_triggers_count(html: str) -> None:
+    """At least 4 resume link sites in index.html annotated with the resume preview
+    (header desktop, mobile menu, hero CTA, contact section per #70 AC)."""
+    pattern = re.compile(
+        r'data-hover-preview="/static/resume-page1-preview\.png(?:\?v=[a-f0-9]{8})?"',
+        re.IGNORECASE,
+    )
+    matches = pattern.findall(html)
+    assert len(matches) >= HOVER_PREVIEW_MIN_RESUME_TRIGGERS, (
+        f"Found {len(matches)} resume hover-preview triggers; expected >= "
+        f"{HOVER_PREVIEW_MIN_RESUME_TRIGGERS} (header, mobile, hero, contact)."
+    )
+
+
+def test_hover_preview_contact_icons_annotated(html: str) -> None:
+    """GitHub + LinkedIn contact icons must carry data-hover-preview pointing at
+    static/preview-github.png and static/preview-linkedin.png respectively."""
+    assert 'data-hover-preview="/static/preview-github.png"' in html, (
+        "GitHub contact icon missing data-hover-preview annotation"
+    )
+    assert 'data-hover-preview="/static/preview-linkedin.png"' in html, (
+        "LinkedIn contact icon missing data-hover-preview annotation"
+    )
+
+
+def test_hover_preview_total_triggers_count(html: str) -> None:
+    """Total data-hover-preview attribute count meets the #70 minimum
+    (4 resume + 2 contact = 6)."""
+    n = len(re.findall(r"data-hover-preview=", html))
+    assert n >= HOVER_PREVIEW_MIN_TRIGGERS, (
+        f"Found {n} hover-preview triggers; expected >= {HOVER_PREVIEW_MIN_TRIGGERS}."
+    )
+
+
+def test_hover_preview_assets_committed() -> None:
+    """All three preview PNGs (resume + github + linkedin) committed and within
+    the 30 KB per-asset budget."""
+    for path in (RESUME_PREVIEW_PNG, GITHUB_PREVIEW_PNG, LINKEDIN_PREVIEW_PNG):
+        assert path.exists(), f"missing committed preview asset: {path.relative_to(REPO_ROOT)}"
+        size = path.stat().st_size
+        assert size <= HOVER_PREVIEW_BUDGET_BYTES, (
+            f"{path.name} is {size} B; exceeds {HOVER_PREVIEW_BUDGET_BYTES} B per-asset budget."
+        )
+        # PNG magic bytes
+        assert path.read_bytes()[:8] == b"\x89PNG\r\n\x1a\n", f"{path.name} is not a valid PNG"
+
+
+def test_hover_preview_resume_cache_bust_matches_sidecar(html: str) -> None:
+    """Every `?v=<hash>` in resume `data-hover-preview` URLs must match the live
+    `.well-known/resume.json` `preview_hash`. Catches the silent-failure class
+    where snap-resume.py regenerates the PNG, sidecar bumps the hash, but the
+    hover-preview markup is left stale → users see browser-cached old preview."""
+    import json
+    sidecar = json.loads((REPO_ROOT / ".well-known" / "resume.json").read_text(encoding="utf-8"))
+    expected = sidecar.get("preview_hash")
+    if not expected:
+        return  # sidecar has no preview yet — handled by #67's own assertions.
+    pattern = re.compile(
+        r'data-hover-preview="/static/resume-page1-preview\.png\?v=([a-f0-9]{8})"',
+        re.IGNORECASE,
+    )
+    found = pattern.findall(html)
+    assert found, "no resume-preview triggers carry a ?v=<hash> cache-bust suffix"
+    drifted = [h for h in found if h != expected]
+    assert not drifted, (
+        f"resume-preview cache-bust hash drift: markup has {drifted!r} but "
+        f"sidecar preview_hash is {expected!r}. Run `python scripts/snap-resume.py` "
+        f"and update the data-hover-preview attributes."
+    )
+
+
+def test_hover_preview_companion_attrs_present(html: str) -> None:
+    """Every element with `data-hover-preview` must also carry non-empty
+    `data-hover-title` AND `data-hover-caption`. These are the SR-visible
+    contract for the popover content; missing them silently breaks UX."""
+    # Crude but stdlib-only: extract each opening tag containing data-hover-preview
+    # and check for the companion attrs in the same tag substring.
+    tag_re = re.compile(r"<[^>]*data-hover-preview=[^>]*>", re.IGNORECASE)
+    bad: list[str] = []
+    for tag in tag_re.findall(html):
+        if not re.search(r'data-hover-title="[^"]+"', tag):
+            bad.append("missing data-hover-title in: " + tag[:120])
+        if not re.search(r'data-hover-caption="[^"]+"', tag):
+            bad.append("missing data-hover-caption in: " + tag[:120])
+    assert not bad, "hover-preview companion-attribute drift:\n  " + "\n  ".join(bad)
+
+
+def test_hover_preview_no_role_dialog(html: str) -> None:
+    """Deliberate a11y choice: the hover-preview is decorative for sighted users
+    only — neither trigger nor card carries `role="dialog"` / `aria-haspopup`.
+    Promising assistive tech a "dialog" then rendering a read-only card-with-image
+    is a worse SR experience than no announcement. Lock this invariant so a
+    well-meaning future PR doesn't quietly add it back."""
+    # Look for either attribute appearing within ~200 chars of a data-hover-preview
+    # occurrence (the trigger element). Scope the check to avoid false positives
+    # from unrelated dialogs elsewhere on the page.
+    for m in re.finditer(r"data-hover-preview=", html):
+        nearby = html[max(0, m.start() - 200):m.end() + 200]
+        assert 'role="dialog"' not in nearby, (
+            "hover-preview trigger or container near a `role=\"dialog\"` — "
+            "the pattern intentionally omits this; re-adding it is a regression "
+            "(see docs/hover-preview-pattern.md ARIA decisions)."
+        )
+        assert "aria-haspopup" not in nearby, (
+            "hover-preview trigger has `aria-haspopup` — the pattern intentionally "
+            "omits this (see docs/hover-preview-pattern.md ARIA decisions)."
+        )
+
+
+def test_hover_preview_pattern_doc_present() -> None:
+    """docs/hover-preview-pattern.md exists and is non-trivial — drop-in
+    documentation is part of the #70 deliverable."""
+    assert HOVER_PREVIEW_PATTERN_DOC.exists(), (
+        "docs/hover-preview-pattern.md missing — pattern doc is part of #70 deliverable"
+    )
+    body = HOVER_PREVIEW_PATTERN_DOC.read_text(encoding="utf-8")
+    assert len(body) > 1000, f"pattern doc body is only {len(body)} chars; expected >= 1000"
+
+
 def test_all_ids_unique(all_ids: list) -> None:
     """No two elements share an id on the page — ID collisions would
     break aria-labelledby / aria-describedby resolution and CSS #id
@@ -569,6 +718,17 @@ TESTS = [
     test_each_system_diagram_has_title_and_desc,
     test_each_system_diagram_uses_currentcolor,
     test_index_inline_system_diagram_byte_budget,
+    # ----- Hover-preview primitive (issue #70) -----
+    test_hover_preview_css_module_present,
+    test_hover_preview_js_module_present,
+    test_hover_preview_resume_triggers_count,
+    test_hover_preview_contact_icons_annotated,
+    test_hover_preview_total_triggers_count,
+    test_hover_preview_assets_committed,
+    test_hover_preview_resume_cache_bust_matches_sidecar,
+    test_hover_preview_companion_attrs_present,
+    test_hover_preview_no_role_dialog,
+    test_hover_preview_pattern_doc_present,
 ]
 
 
