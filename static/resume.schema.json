@@ -24,6 +24,16 @@
       "minimum": 1,
       "type": "integer"
     },
+    "preview_hash": {
+      "description": "Short hash of the preview PNG bytes. Decoupled from version_hash so metadata-only PDF updates don't bust preview cache.",
+      "pattern": "^[a-f0-9]{8}$",
+      "type": "string"
+    },
+    "preview_path": {
+      "description": "Repo-rooted public path of the page-1 preview PNG (#67). Optional \u2014 present only if rendering toolchain succeeded.",
+      "pattern": "^/[^\\s\\\"'<>]+\\.png$",
+      "type": "string"
+    },
     "sha256": {
       "description": "Full SHA-256 of resume.pdf for content addressing.",
       "pattern": "^[a-f0-9]{64}$",
