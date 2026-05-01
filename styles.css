@@ -1127,10 +1127,35 @@ button { font-family: inherit; cursor: pointer; }
 .cs-lesson.failed h4 { color: var(--accent-warm); }
 .cs-lesson p { color: var(--fg-soft); font-size: 0.86rem; }
 
-@media (max-width: 700px) {
+/* Inline <code> in case-study prose can hold long shell snippets like
+   "tailor-resume --artifact PATH:FORMAT --jd JD_PATH" (42 chars). On
+   narrow viewports those overflow the column and trigger horizontal
+   scroll. overflow-wrap: anywhere lets the browser break inside the
+   code text only when it would otherwise overflow — desktop is
+   unaffected. */
+.cs-section code, .cs-hero code, .cs-section p code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+@media (max-width: 780px) {
   .cs-nav { padding: 0.875rem 1rem; }
   .cs-hero { padding: 2.5rem 0 2rem; }
+  .cs-hero__summary { font-size: 0.97rem; line-height: 1.7; }
+  .cs-proof-strip { gap: 0.4rem 0.55rem; }
+  .cs-proof-strip span { font-size: 0.72rem; padding: 0.25rem 0.6rem; }
+  .cs-section { padding: 1.75rem 0; }
+  .cs-section p { font-size: 0.95rem; line-height: 1.7; }
   .cs-lessons { grid-template-columns: 1fr; }
+}
+
+/* Very narrow phones: hide the right-side site-name in the back nav
+   so the back-link has the row to itself. The site-name reads as
+   chrome, not content — no information lost when it's gone. */
+@media (max-width: 480px) {
+  .cs-nav__name { display: none; }
+  .cs-nav { justify-content: flex-start; }
+  .cs-hero h1 { font-size: 1.65rem; line-height: 1.2; }
 }
 
 /* inline code in system-desc */
