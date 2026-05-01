@@ -39,6 +39,9 @@
 
   <title>Narendranath Edara | Senior AI Platform Engineer</title>
   <link rel="stylesheet" href="styles.css">
+
+  <!-- LCP candidate: hero portrait, preload to start fetch before body parses -->
+  <link rel="preload" as="image" href="static/originals/headshot-fullbody.jpg" fetchpriority="high">
 </head>
 <body>
 
@@ -139,14 +142,11 @@
         <aside class="hero-visual" data-reveal>
 
           <div class="profile-frame hero-photo-stack">
-            <img src="https://raw.githubusercontent.com/narendranathe/assets/main/PP.jpg"
-                 alt="Narendranath Edara - Senior AI Platform Engineer"
+            <img src="static/originals/headshot-fullbody.jpg"
+                 alt="Naren Edara"
                  class="profile-photo"
-                 onerror="this.src='https://github.com/user-attachments/assets/a31266a6-37af-4717-b031-de03ae6058a9';this.onerror=null;">
-            <img src="https://raw.githubusercontent.com/narendranathe/assets/main/images/hero2.jpg"
-                 alt="Narendranath Edara"
-                 class="hero-photo-inset"
-                 onerror="this.src='https://github.com/user-attachments/assets/ce009ed4-be8a-47d1-ba3e-4d45e87b28d8';this.onerror=function(){this.style.display='none'};">
+                 width="1200" height="798"
+                 loading="eager" decoding="async" fetchpriority="high">
           </div>
           <div class="metric-grid">
             <div class="metric-item">

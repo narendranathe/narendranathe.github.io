@@ -308,6 +308,33 @@ def test_no_scrapped_exponenthr_outcomes_in_rendered_text(html: str) -> None:
         )
 
 
+def test_hero_uses_local_photo_not_external_cdn(html: str) -> None:
+    """Hero photo (issue #69): the <aside class="hero-visual"> primary
+    portrait MUST be served from static/originals/ — never an external
+    raw.githubusercontent.com or github.com/user-attachments URL.
+    Regression guard against re-introducing CDN dependencies that
+    cost LCP and add cross-origin DNS lookups. Scoped to the hero
+    <aside> block only — other sections (e.g. Contact) may continue
+    to use their own image sources."""
+    start = html.find('<aside class="hero-visual"')
+    assert start != -1, "hero-visual <aside> block not found in index.html"
+    end = html.find("</aside>", start)
+    assert end != -1, "hero-visual <aside> block not closed"
+    hero_block = html[start:end]
+    assert "static/originals/headshot-fullbody.jpg" in hero_block, (
+        "hero <img> must reference static/originals/headshot-fullbody.jpg"
+    )
+    forbidden = (
+        "raw.githubusercontent.com",
+        "github.com/user-attachments/",
+    )
+    for url_fragment in forbidden:
+        assert url_fragment not in hero_block, (
+            f"hero must not reference external CDN photo {url_fragment!r}; "
+            "use local static/originals/ asset instead."
+        )
+
+
 def test_no_inline_style_attribute_on_strips(inline_styles: list) -> None:
     assert not inline_styles, (
         f"Found inline style= attributes inside impact strips: {inline_styles}; "
@@ -749,6 +776,7 @@ TESTS = [
     test_each_stat_has_value_and_label,
     test_no_scrapped_exponenthr_outcomes,
     test_no_scrapped_exponenthr_outcomes_in_rendered_text,
+    test_hero_uses_local_photo_not_external_cdn,
     test_no_inline_style_attribute_on_strips,
     test_jetbrains_mono_loaded,
     test_css_uses_tabular_nums,

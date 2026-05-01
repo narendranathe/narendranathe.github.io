@@ -281,17 +281,13 @@ button { font-family: inherit; cursor: pointer; }
 .profile-frame {
   border-radius: var(--r-lg); overflow: hidden;
   border: 1px solid var(--border); box-shadow: var(--shadow-md);
-  background: var(--bg-alt); aspect-ratio: 4/5; max-height: 420px;
+  background: var(--bg-alt); aspect-ratio: 4/5; max-height: 460px;
 }
-.profile-photo { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.profile-photo {
+  width: 100%; height: 100%; display: block;
+  object-fit: cover; object-position: 62% 70%;
+}
 .hero-photo-stack { position: relative; }
-.hero-photo-inset {
-  position: absolute; bottom: 1rem; right: 1rem;
-  width: 72px; height: 72px; border-radius: 50%;
-  object-fit: cover; object-position: center top;
-  border: 3px solid var(--bg);
-  box-shadow: var(--shadow-md);
-}
 .metric-grid {
   display: grid; grid-template-columns: 1fr 1fr;
   gap: 1px; background: var(--border);
@@ -312,7 +308,8 @@ button { font-family: inherit; cursor: pointer; }
   .hero { padding: 6rem 0 3.5rem; }
   .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
   .hero-visual { order: -1; max-width: 300px; }
-  .profile-frame { max-height: 280px; }
+  .profile-frame { max-height: 280px; aspect-ratio: 4/5; }
+  .profile-photo { object-position: 60% 60%; }
 }
 
 /* ============================================================
