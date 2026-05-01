@@ -261,21 +261,34 @@
 
 
   // ===== Skills grid tooltip polish (#80) =====
-  // 1. Esc-to-dismiss: keyboard users can clear the focused tile (and
-  //    its visible tooltip) without having to tab past it.
-  // 2. Edge-tile overflow: rightmost tiles in a row had their tooltip
-  //    overflow the viewport on narrow desktop widths and at 200%
-  //    zoom (WCAG 1.4.10 reflow). Measures the tooltip rect on
-  //    focus/mouseenter and translates it horizontally so it stays
-  //    inside the viewport with a small margin.
+  // 1. Esc-to-dismiss: WAI-ARIA APG tooltip pattern says Esc should
+  //    HIDE the tooltip while keeping focus on the trigger. We mark
+  //    the tile with data-tooltip-suppressed and a CSS rule hides
+  //    the tooltip; suppression clears on next focus/mouseenter so
+  //    the tile remains a working tooltip trigger.
+  // 2. Edge-tile overflow: rightmost tiles had their tooltip overflow
+  //    the viewport on narrow desktop widths and at 200% zoom (WCAG
+  //    1.4.10 reflow). Measures the tooltip rect on focus/mouseenter
+  //    and translates horizontally to stay inside the viewport. The
+  //    JS-set transform preserves translateY(0) so the tooltip stays
+  //    at its CSS-defined revealed position (CSS rest-state has
+  //    translateY(4px); a translateX-only transform would drop the
+  //    lift and visibly mis-align the shifted tooltip by 4px).
   // CSS-only edge detection is unreliable under auto-fill grids
-  // (column count varies), so this lives in JS but only runs on
-  // hover/focus — zero cost when the grid isn't being interacted with.
+  // (column count varies with viewport), so this lives in JS but
+  // only runs on focus/mouseenter — zero cost when idle.
   (function () {
     var grid = document.querySelector('.skills-grid');
     if (!grid) return;
 
-    var EDGE_MARGIN = 12; // px breathing room from viewport edge
+    // EDGE_MARGIN scales with the user's root font-size so 200% text
+    // zoom (Firefox text-only zoom) doesn't shrink the breathing room.
+    var rootFontPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    var EDGE_MARGIN = Math.round(rootFontPx * 0.75); // ~12px at default
+
+    function clearSuppression(tile) {
+      tile.removeAttribute('data-tooltip-suppressed');
+    }
 
     function shiftTooltipIfNeeded(tile) {
       var tooltip = tile.querySelector('.skill-tooltip');
@@ -286,9 +299,9 @@
       var overshootRight = rect.right - (vw - EDGE_MARGIN);
       var overshootLeft = EDGE_MARGIN - rect.left;
       if (overshootRight > 0) {
-        tooltip.style.transform = 'translateX(calc(-50% - ' + overshootRight + 'px))';
+        tooltip.style.transform = 'translateX(calc(-50% - ' + overshootRight + 'px)) translateY(0)';
       } else if (overshootLeft > 0) {
-        tooltip.style.transform = 'translateX(calc(-50% + ' + overshootLeft + 'px))';
+        tooltip.style.transform = 'translateX(calc(-50% + ' + overshootLeft + 'px)) translateY(0)';
       }
     }
 
@@ -298,17 +311,27 @@
     }
 
     Array.prototype.forEach.call(grid.querySelectorAll('.skill-icon'), function (tile) {
-      tile.addEventListener('mouseenter', function () { shiftTooltipIfNeeded(tile); });
-      tile.addEventListener('focus', function () { shiftTooltipIfNeeded(tile); });
+      tile.addEventListener('mouseenter', function () {
+        clearSuppression(tile);
+        shiftTooltipIfNeeded(tile);
+      });
+      tile.addEventListener('focus', function () {
+        clearSuppression(tile);
+        shiftTooltipIfNeeded(tile);
+      });
       tile.addEventListener('mouseleave', function () { clearShift(tile); });
-      tile.addEventListener('blur', function () { clearShift(tile); });
+      tile.addEventListener('blur', function () {
+        clearShift(tile);
+        clearSuppression(tile);
+      });
     });
 
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape') return;
       var active = document.activeElement;
       if (active && active.classList && active.classList.contains('skill-icon')) {
-        active.blur();
+        // APG tooltip pattern: hide tooltip, keep focus on trigger.
+        active.setAttribute('data-tooltip-suppressed', '');
       }
     });
   }());
