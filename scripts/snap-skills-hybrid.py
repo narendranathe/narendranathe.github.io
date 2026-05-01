@@ -42,7 +42,6 @@ HYBRID_TARGETS: list[tuple[str, str, str]] = [
     ("spark", "apachespark", "#E25A1C"),
     ("databricks", "databricks", "#FF3621"),
     # Cloud & Deployment
-    ("supabase", "supabase", "#3FCF8E"),
     ("docker", "docker", "#2496ED"),
     ("kubernetes", "kubernetes", "#326CE5"),
     ("fly", "flydotio", "#7B3FE4"),

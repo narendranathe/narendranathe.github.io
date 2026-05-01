@@ -33,10 +33,13 @@ SKILLS: list[tuple[str, str, int, str]] = [
     ("sql", "SQL", 14, "#336791"),          # postgres-flavor blue
     # Data
     ("pgvector", "pgv", 14, "#4169E1"),    # PostgreSQL royal blue
+    ("sql-server", "MSS", 13, "#CC2927"),  # MS SQL Server red (brand-restricted, monogram-safer than silhouette)
     ("delta-lake", "DL", 18, "#00ADD4"),   # Delta Lake teal
     # Cloud
     ("aws", "AWS", 13, "#FF9900"),         # AWS orange (official brand)
     ("azure", "Az", 18, "#0078D4"),        # Azure blue (official brand)
+    # ETL / Lakehouse-adjacent
+    ("ssis", "SSIS", 12, "#BC8D2C"),       # ETL gold; complements SQL Server red without competing
 ]
 
 SVG_TEMPLATE = (
