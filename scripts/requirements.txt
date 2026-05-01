@@ -1,0 +1,10 @@
+# Pillow pinned exact: locks the MEDIANCUT quantizer + LANCZOS resampler
+# behaviour used by render_page1_preview() (#67). Patch-version drift can
+# perturb output bytes; the committed PNG is the canonical artifact.
+Pillow==10.3.0
+opencv-python>=4.9
+pikepdf>=8.0
+# PDF page rasterization for resume page-1 hover thumbnail (#67).
+# Pre-built wheels for win/mac/linux; no system poppler dep.
+# Pinned for byte-stable PNG output across regenerations.
+pymupdf==1.24.10

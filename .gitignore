@@ -15,3 +15,9 @@ Thumbs.db
 # Session / generation artifacts
 gen.py
 .claude-memory.md
+
+# Favicon regeneration intermediates (do not commit raw source masters)
+scripts/_in/
+scripts/_fonts/
+scripts/_tmp/
+*.psd

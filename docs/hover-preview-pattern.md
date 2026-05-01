@@ -1,0 +1,150 @@
+# Hover-Preview — drop-in floating cards on important links
+
+A small accessible HTML+CSS+JS pattern for showing a thumbnail-card popover when a sighted desktop user hovers (or focuses) an important link. Used on `narendranathe.github.io` for the resume PDF, GitHub profile, and LinkedIn profile.
+
+> **Why this exists:** Recruiters scanning a portfolio in 30 seconds want to *peek* at a resume / profile before context-switching to a PDF reader or external site. Showing a thumbnail on hover eliminates that friction. The pattern is sighted-desktop-only enrichment — it is never the *only* way to read or reach the underlying content.
+
+**Status: `v0.1.0-experimental`.** Used in production at `narendranathe.github.io`. Class names and attribute names may change before v1.
+
+---
+
+## The HTML
+
+```html
+<a href="/static/resume.pdf?v=7a55b6b6"
+   data-hover-preview="/static/resume-page1-preview.png?v=fc9a5e8c"
+   data-hover-title="Resume - last updated Apr 30, 2026"
+   data-hover-caption="1 page - click to download PDF">
+  Download resume
+</a>
+```
+
+Three `data-*` attributes opt the link into the pattern. **No ARIA wiring on the link itself** — the link's own text is the screen-reader contract; the popover is decorative for sighted users only.
+
+The popover element is created on first interaction by the JS module — there is no markup for it in the page source.
+
+---
+
+## How it works
+
+- **Desktop sighted users** (`pointer: fine`): hovering the link for ~80 ms fades a card in beside it. The card lazy-loads its `<img>` on first hover. Cursor leaving has 250 ms grace; cursor entering the card itself keeps it open. `Esc` dismisses and returns focus to the trigger.
+- **Keyboard users**: focus opens the card immediately (no hover-intent delay). Tab walks past; `Esc` dismisses.
+- **Touch users** (`(hover: none) and (pointer: coarse)`): the popover is hidden by CSS *and* the JS bails before wiring any handlers. Tapping the link does what tapping a link does. iOS Safari's native long-press preview menu remains available — that *is* the mobile equivalent of the hover card.
+- **Screen-reader users**: encounter the link with its normal accessible name and skip the popover entirely. The `<img>` inside the card carries `alt=""`, so the rendered thumbnail is announced as nothing.
+- **Reduced-motion users** (`prefers-reduced-motion: reduce`): card snaps in / out with no fade or transform.
+- **Print** and **Windows High Contrast** are handled in the CSS module.
+
+---
+
+## CSS module (drop-in)
+
+The styling lives in `styles.css` under the `/* Hover-preview pattern */` banner. Key bits any forker can copy verbatim:
+
+```css
+:root {
+  --hover-preview-open-delay:  80ms;
+  --hover-preview-close-grace: 250ms;
+  --hover-preview-fade:        200ms;
+}
+
+.hover-preview {
+  position: fixed; margin: 0; padding: 0; border: none;
+  background: transparent; inset: unset; width: max-content;
+  z-index: 80; opacity: 0; transform: translateY(4px);
+  transition: opacity var(--hover-preview-fade) ease-out,
+              transform var(--hover-preview-fade) ease-out;
+  pointer-events: none;
+}
+.hover-preview:popover-open { opacity: 1; transform: none; pointer-events: auto; }
+
+.hover-preview-card {
+  display: grid; gap: 0.5rem;
+  width: 264px; padding: 0.875rem;
+  background: var(--bg); color: var(--fg);
+  border: 1px solid var(--border); border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0,0,0,.16);
+}
+
+@media (hover: none) and (pointer: coarse) { .hover-preview { display: none !important; } }
+@media (prefers-reduced-motion: reduce)    { .hover-preview { transition: none; transform: none; } }
+@media print                                { .hover-preview { display: none !important; } }
+@media (forced-colors: active) {
+  .hover-preview-card {
+    background: Canvas; color: CanvasText; border-color: CanvasText; box-shadow: none;
+  }
+}
+```
+
+The `--bg` / `--fg` / `--fg-muted` / `--border` tokens are the portfolio's existing palette. Adopters: substitute your own token names.
+
+---
+
+## JS state machine (drop-in)
+
+The script lives in `app.js` (~120 LOC). It:
+
+1. Skips entirely on touch primary devices (`(hover: none) and (pointer: coarse)`).
+2. Skips entirely if the browser has no Popover API (Chrome < 114, Safari < 17, Firefox < 125).
+3. Lazy-creates a single shared `<div popover="manual">` card in `<body>` on first hover.
+4. Opens after 80 ms hover-intent / immediately on focus; closes after 250 ms mouse-leave grace.
+5. Cursor entering the card itself keeps it open (WCAG 1.4.13 *hoverable*).
+6. `Esc` dismisses + returns focus to the last trigger.
+7. Guards `:popover-open` before each `showPopover()` call to dodge the `InvalidStateError` thrown when racing across triggers.
+
+The placement code uses `getBoundingClientRect` + viewport clamping. Anchor positioning was deliberately not used — Firefox shipped it in 2025, but the JS-positioned approach is bulletproof across all 4 target engines.
+
+---
+
+## Generating preview thumbnails
+
+The resume preview is regenerated by `scripts/snap-resume.py` (see [`#67`](https://github.com/narendranathe/narendranathe.github.io/issues/67)). For other previews two strategies coexist:
+
+- **Real screenshots** of external profile pages: capture at 1× device-pixel-ratio, crop to 240×320 portrait, run through `pillow.quantize(colors=256, method=MEDIANCUT)` → save with `optimize=True, compress_level=9` and an empty `PngInfo()` to strip metadata. Target ≤ 30 KB.
+- **Brand-neutral cards** (the current default for GitHub / LinkedIn / Substack): the generator script in [the #70 polish commit] produces a single per-brand card showing the brand colour, the brand glyph, and a generic "View profile" pill. Crucially the *image carries no specific identity* — per-link nuance lives in `data-hover-title` and `data-hover-caption`. This lets the same `preview-linkedin.png` serve every LinkedIn link on the page (Naren's own profile, three testimonial authors, the footer icon) without spinning up six different rendered variants.
+
+Both strategies feed the same `data-hover-preview` attribute. Cache-bust via `?v=<hash>` if the asset changes (the resume preview is the only one with a sidecar-tracked hash today; brand-neutral cards rarely change).
+
+### Coverage rule: every instance, not just the contact section
+
+The pattern is applied to **every** anchor that points at a personal profile / writing destination — not just the headline placement. So:
+
+- 4 resume link sites (header, mobile menu, hero CTA, contact section)
+- 6 LinkedIn anchors (3 testimonial author profiles, peer CTA, contact section, footer icon)
+- 1 GitHub anchor (contact section)
+- 7 Substack anchors (3 article-card "Read on Substack" CTAs, hero "Follow on Substack", peer CTA, contact section, footer icon)
+
+The structural test runner enforces this: any new `<a href="...linkedin.com...">` or `<a href="...substack.com...">` that lands without a `data-hover-preview` attribute fails CI. Catches drift before recruiters notice the inconsistency.
+
+---
+
+## Why this design (and not the alternatives)
+
+- **`popover="manual"` over `<dialog>` or `popover="hint"`**: `<dialog>` is modeled for tasks; `popover="hint"` auto-closes on outside click which fights mouse-leave grace. `manual` keeps every transition under explicit control.
+- **No `aria-haspopup` / `role="dialog"` on the trigger**: the popover carries no information not already present in the link text + the visual card. Adding ARIA roles forces screen-reader users to listen to "dialog" announcements before the actionable link text — a regression, not an improvement.
+- **`alt=""` on the thumbnail**: WAI-ARIA decorative-image canon. The link text says what the link is; the image is a redundant visual aid.
+- **Hide entirely on touch**: tap-to-preview-then-tap-again-to-navigate is the exact pattern users mistake for a broken link. The mobile-equivalent affordance (iOS Safari long-press preview) already exists at the OS layer; not our job to re-implement it.
+- **Don't close on trigger blur**: the card has no focusable children, so closing on Tab-out would give keyboard users a sub-frame glimpse — failing WCAG 1.4.13 *hoverable* for keyboard. The card stays visible until Esc, mouse-leave grace, or focus on another `[data-hover-preview]` trigger (which reuses the shared card and replaces its content).
+
+### ARIA decisions vs the original spec (#70)
+
+The issue spec (#70) listed `aria-haspopup="dialog"`, `aria-expanded`, `role="dialog"`, and `aria-modal="false"` as ACs. The shipped implementation deliberately omits them:
+
+| Original AC | Shipped | Reason |
+|---|---|---|
+| `aria-haspopup="dialog"` on trigger | omitted | The popover is not a dialog (no task, no focusable content). Promising "dialog" to assistive tech and then delivering an empty card-with-image is worse than no announcement. |
+| `aria-expanded` toggling on trigger | omitted | Adds SR chatter on every hover for sighted users' visual aid. Caption text is not new info to SR users. |
+| `role="dialog"` + `aria-modal="false"` on card | omitted | Same reasoning. Card is decorative for sighted users only; SR users get the link's accessible name and skip the popover entirely. |
+
+These are deliberate scope reductions per a11y critique; the change satisfies WCAG 1.4.13 (Content on Hover or Focus) without the heavy ARIA. Future contributors who want the announcement behaviour can re-add the attributes — but should also add focusable content inside the card so the dialog promise is real.
+
+---
+
+## Adopting in another portfolio
+
+1. Copy the CSS block above into your stylesheet. Substitute palette tokens.
+2. Copy the JS module from `app.js` (the `// Hover-preview primitive (#70)` block).
+3. Annotate any `<a>` (or `<button>`) with `data-hover-preview` + `data-hover-title` + `data-hover-caption`.
+4. Drop a 240×320 PNG (or any aspect; the card lays out fine) at the URL the `data-hover-preview` attribute points at.
+5. (Optional) Tune `--hover-preview-open-delay` / `--hover-preview-close-grace` / `--hover-preview-fade` to taste — they are CSS custom properties, single-line overrides.
+
+No build step, no framework, no runtime deps.
