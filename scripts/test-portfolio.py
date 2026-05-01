@@ -1094,6 +1094,23 @@ def test_all_local_links_resolve() -> None:
     )
 
 
+def test_skills_tooltip_esc_and_overflow_polish_in_app_js() -> None:
+    """Issue #80: app.js carries the skills-grid tooltip polish block:
+    Esc-to-dismiss for keyboard users + edge-tile overflow detector
+    that shifts the tooltip horizontally so it stays in viewport on
+    narrow desktop widths and at 200% browser zoom (WCAG 1.4.10)."""
+    js = APP_JS.read_text(encoding="utf-8")
+    assert ".skills-grid" in js, (
+        "app.js missing .skills-grid hook for the #80 tooltip polish block"
+    )
+    assert "shiftTooltipIfNeeded" in js, (
+        "app.js missing the edge-tile overflow detector (shiftTooltipIfNeeded) for #80"
+    )
+    assert "Escape" in js and "skill-icon" in js, (
+        "app.js missing the Esc-to-dismiss handler for skill-icon focus (#80)"
+    )
+
+
 # ------- Test runner -------
 TESTS = [
     test_index_html_exists,
@@ -1158,6 +1175,7 @@ TESTS = [
     test_skills_icon_files_present,
     test_skills_icon_byte_budgets,
     test_skills_pattern_doc_present,
+    test_skills_tooltip_esc_and_overflow_polish_in_app_js,
     # ----- Link verification (issue #43) -----
     test_all_local_links_resolve,
 ]

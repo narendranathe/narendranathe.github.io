@@ -259,4 +259,58 @@
     Array.prototype.forEach.call(triggers, attach);
   }());
 
+
+  // ===== Skills grid tooltip polish (#80) =====
+  // 1. Esc-to-dismiss: keyboard users can clear the focused tile (and
+  //    its visible tooltip) without having to tab past it.
+  // 2. Edge-tile overflow: rightmost tiles in a row had their tooltip
+  //    overflow the viewport on narrow desktop widths and at 200%
+  //    zoom (WCAG 1.4.10 reflow). Measures the tooltip rect on
+  //    focus/mouseenter and translates it horizontally so it stays
+  //    inside the viewport with a small margin.
+  // CSS-only edge detection is unreliable under auto-fill grids
+  // (column count varies), so this lives in JS but only runs on
+  // hover/focus — zero cost when the grid isn't being interacted with.
+  (function () {
+    var grid = document.querySelector('.skills-grid');
+    if (!grid) return;
+
+    var EDGE_MARGIN = 12; // px breathing room from viewport edge
+
+    function shiftTooltipIfNeeded(tile) {
+      var tooltip = tile.querySelector('.skill-tooltip');
+      if (!tooltip) return;
+      tooltip.style.transform = ''; // reset before measuring
+      var rect = tooltip.getBoundingClientRect();
+      var vw = window.innerWidth;
+      var overshootRight = rect.right - (vw - EDGE_MARGIN);
+      var overshootLeft = EDGE_MARGIN - rect.left;
+      if (overshootRight > 0) {
+        tooltip.style.transform = 'translateX(calc(-50% - ' + overshootRight + 'px))';
+      } else if (overshootLeft > 0) {
+        tooltip.style.transform = 'translateX(calc(-50% + ' + overshootLeft + 'px))';
+      }
+    }
+
+    function clearShift(tile) {
+      var tooltip = tile.querySelector('.skill-tooltip');
+      if (tooltip) tooltip.style.transform = '';
+    }
+
+    Array.prototype.forEach.call(grid.querySelectorAll('.skill-icon'), function (tile) {
+      tile.addEventListener('mouseenter', function () { shiftTooltipIfNeeded(tile); });
+      tile.addEventListener('focus', function () { shiftTooltipIfNeeded(tile); });
+      tile.addEventListener('mouseleave', function () { clearShift(tile); });
+      tile.addEventListener('blur', function () { clearShift(tile); });
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var active = document.activeElement;
+      if (active && active.classList && active.classList.contains('skill-icon')) {
+        active.blur();
+      }
+    });
+  }());
+
 })();
