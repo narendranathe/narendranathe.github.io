@@ -40,8 +40,15 @@
   <title>Narendranath Edara | Senior AI Platform Engineer</title>
   <link rel="stylesheet" href="styles.css">
 
-  <!-- LCP candidate: hero portrait, preload to start fetch before body parses -->
-  <link rel="preload" as="image" href="static/originals/headshot-fullbody.jpg" fetchpriority="high">
+  <!-- LCP candidate: hero portrait, preload to start fetch before body parses.
+       imagesrcset + imagesizes mirror the <picture> in the hero so the preload
+       scanner fetches the 800px variant on mobile (saves ~30 KB on Slow 4G)
+       and the 1200px variant on desktop. -->
+  <link rel="preload" as="image"
+        href="static/originals/headshot-fullbody.jpg"
+        imagesrcset="static/originals/headshot-fullbody-800.jpg 800w, static/originals/headshot-fullbody.jpg 1200w"
+        imagesizes="(max-width: 780px) 100vw, 1200px"
+        fetchpriority="high">
 </head>
 <body>
 
@@ -144,11 +151,14 @@
         <aside class="hero-visual">
 
           <div class="profile-frame hero-photo-stack">
-            <img src="static/originals/headshot-fullbody.jpg"
-                 alt="Naren Edara"
-                 class="profile-photo"
-                 width="1200" height="798"
-                 loading="eager" decoding="async" fetchpriority="high">
+            <picture>
+              <source media="(max-width: 780px)" srcset="static/originals/headshot-fullbody-800.jpg">
+              <img src="static/originals/headshot-fullbody.jpg"
+                   alt="Naren Edara"
+                   class="profile-photo"
+                   width="1200" height="798"
+                   loading="eager" decoding="async" fetchpriority="high">
+            </picture>
           </div>
           <div class="metric-grid">
             <div class="metric-item">
