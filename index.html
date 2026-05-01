@@ -69,6 +69,7 @@
       </a>
       <nav class="main-nav" aria-label="Main navigation">
         <a href="#experience" class="nav-link">Experience</a>
+        <a href="#skills"     class="nav-link">Stack</a>
         <a href="#systems"    class="nav-link">Projects</a>
         <a href="#notes"      class="nav-link">Publications</a>
         <a href="#signal"     class="nav-link">References</a>
@@ -88,6 +89,7 @@
     </div>
     <nav class="mobile-nav" aria-hidden="true">
       <a href="#experience" class="mobile-link">Experience</a>
+      <a href="#skills"     class="mobile-link">Stack</a>
       <a href="#systems"    class="mobile-link">Projects</a>
       <a href="#notes"      class="mobile-link">Publications</a>
       <a href="#signal"     class="mobile-link">References</a>
@@ -399,6 +401,79 @@
           </div>
         </div>
 
+      </div>
+    </section>
+
+    <!-- ===== SKILLS GRID (issue #71) ===== -->
+    <section class="section section-alt" id="skills">
+      <div class="container">
+
+        <div class="section-head" data-reveal>
+          <span class="section-label">Stack</span>
+          <h2 class="section-title">Stack I work in daily.</h2>
+          <p class="section-subtitle">Senior+ AI/ML platform tools, organized by domain. Hover or focus a tile for one-line context. Every tile is a tool I've shipped with — no aspirational filler.</p>
+        </div>
+
+        <div class="skills-grid" data-reveal>
+
+          <div class="skills-category">
+            <h3 class="skills-category-title">AI &amp; LLM Stack</h3>
+            <ul class="skills-list">
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-claude"><img src="static/skills/claude.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Claude</span><span id="skill-tip-claude" role="tooltip" class="skill-tooltip">Primary LLM in production cascade (Anthropic API)</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-gpt-4o"><img src="static/skills/gpt-4o.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">GPT-4o</span><span id="skill-tip-gpt-4o" role="tooltip" class="skill-tooltip">OpenAI fallback in the multi-LLM cascade</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-langchain"><img src="static/skills/langchain.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">LangChain</span><span id="skill-tip-langchain" role="tooltip" class="skill-tooltip">RAG orchestration where prompt-chain depth justifies it</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-mcp"><img src="static/skills/mcp.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">MCP</span><span id="skill-tip-mcp" role="tooltip" class="skill-tooltip">Model Context Protocol — tool-use spec for AI agents</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-faiss"><img src="static/skills/faiss.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">FAISS</span><span id="skill-tip-faiss" role="tooltip" class="skill-tooltip">Dense vector retrieval for resume-tailoring RAG</span></span></li>
+            </ul>
+          </div>
+
+          <div class="skills-category">
+            <h3 class="skills-category-title">Languages &amp; Frameworks</h3>
+            <ul class="skills-list">
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-python"><img src="static/skills/python.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Python</span><span id="skill-tip-python" role="tooltip" class="skill-tooltip">Primary backend + ML language across every system</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-typescript"><img src="static/skills/typescript.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">TypeScript</span><span id="skill-tip-typescript" role="tooltip" class="skill-tooltip">Chrome MV3 extension + type-safe API contracts</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-sql"><img src="static/skills/sql.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">SQL</span><span id="skill-tip-sql" role="tooltip" class="skill-tooltip">Postgres-flavored — query-tuning, partitions, EXPLAIN</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-fastapi"><img src="static/skills/fastapi.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">FastAPI</span><span id="skill-tip-fastapi" role="tooltip" class="skill-tooltip">Async Python backend on every shipped service</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-pydantic"><img src="static/skills/pydantic.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Pydantic</span><span id="skill-tip-pydantic" role="tooltip" class="skill-tooltip">Schema validation at every API boundary</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-streamlit"><img src="static/skills/streamlit.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Streamlit</span><span id="skill-tip-streamlit" role="tooltip" class="skill-tooltip">Internal dashboards + Tailor-Resume UI</span></span></li>
+            </ul>
+          </div>
+
+          <div class="skills-category">
+            <h3 class="skills-category-title">Data &amp; Storage</h3>
+            <ul class="skills-list">
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-postgresql"><img src="static/skills/postgresql.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">PostgreSQL</span><span id="skill-tip-postgresql" role="tooltip" class="skill-tooltip">Primary OLTP store — Supabase managed in prod</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-pgvector"><img src="static/skills/pgvector.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">pgvector</span><span id="skill-tip-pgvector" role="tooltip" class="skill-tooltip">Postgres extension powering RAG embeddings</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-redis"><img src="static/skills/redis.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Redis</span><span id="skill-tip-redis" role="tooltip" class="skill-tooltip">Session cache + queue, Upstash serverless in prod</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-kafka"><img src="static/skills/kafka.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Kafka</span><span id="skill-tip-kafka" role="tooltip" class="skill-tooltip">Streaming ingest in Portfolio Risk Analytics</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-spark"><img src="static/skills/spark.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Spark</span><span id="skill-tip-spark" role="tooltip" class="skill-tooltip">Structured Streaming consumer for Kafka topics</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-delta-lake"><img src="static/skills/delta-lake.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Delta Lake</span><span id="skill-tip-delta-lake" role="tooltip" class="skill-tooltip">Versioned, ACID-safe lakehouse tables</span></span></li>
+            </ul>
+          </div>
+
+          <div class="skills-category">
+            <h3 class="skills-category-title">Cloud &amp; Deployment</h3>
+            <ul class="skills-list">
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-aws"><img src="static/skills/aws.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">AWS</span><span id="skill-tip-aws" role="tooltip" class="skill-tooltip">S3 + IAM + CloudWatch on production deployments</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-azure"><img src="static/skills/azure.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Azure</span><span id="skill-tip-azure" role="tooltip" class="skill-tooltip">Azure Functions + Storage in prior enterprise work</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-docker"><img src="static/skills/docker.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Docker</span><span id="skill-tip-docker" role="tooltip" class="skill-tooltip">Multi-stage builds for every shipped service</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-kubernetes"><img src="static/skills/kubernetes.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Kubernetes</span><span id="skill-tip-kubernetes" role="tooltip" class="skill-tooltip">Have used — staging clusters for AutoApply experiments</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-fly"><img src="static/skills/fly.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Fly.io</span><span id="skill-tip-fly" role="tooltip" class="skill-tooltip">AutoApply AI production region — IAD + DFW</span></span></li>
+            </ul>
+          </div>
+
+          <div class="skills-category">
+            <h3 class="skills-category-title">Observability &amp; Ops</h3>
+            <ul class="skills-list">
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-prometheus"><img src="static/skills/prometheus.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Prometheus</span><span id="skill-tip-prometheus" role="tooltip" class="skill-tooltip">Metrics scraping in containerized services</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-grafana"><img src="static/skills/grafana.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Grafana</span><span id="skill-tip-grafana" role="tooltip" class="skill-tooltip">Dashboards for ingest lag + provider latency</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-sentry"><img src="static/skills/sentry.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Sentry</span><span id="skill-tip-sentry" role="tooltip" class="skill-tooltip">Backend + extension error tracking on AutoApply</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-mlflow"><img src="static/skills/mlflow.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">MLflow</span><span id="skill-tip-mlflow" role="tooltip" class="skill-tooltip">Experiment tracking for fraud-detection pipelines</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-github-actions"><img src="static/skills/github-actions.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">GitHub Actions</span><span id="skill-tip-github-actions" role="tooltip" class="skill-tooltip">CI on every repo — lint, types, tests, deploy</span></span></li>
+            </ul>
+          </div>
+
+        </div>
       </div>
     </section>
 

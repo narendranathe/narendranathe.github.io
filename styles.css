@@ -1700,3 +1700,192 @@ body.splash-active { overflow: hidden; }
     box-shadow: none;
   }
 }
+
+/* ============================================================
+   Skills grid (#71) — categorized monogram tiles with hover
+   tooltips. Static text-tooltip pattern (NOT the M1 popover):
+   ARIA `role="tooltip"` + `aria-describedby`, CSS-only show/hide
+   on :hover and :focus-visible. Mobile collapses tooltips to
+   inline captions so the grid serves both surfaces from one DOM.
+   See docs/skills-grid-pattern.md for the full pattern.
+   ============================================================ */
+.skills-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+  margin-top: 2.25rem;
+}
+
+.skills-category-title {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin: 0 0 0.85rem;
+}
+
+.skills-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 0.55rem;
+  padding: 0;
+  margin: 0;
+}
+
+.skills-list > li { display: contents; }
+
+.skill-icon {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.45rem;
+  width: 100%;
+  min-height: 92px;
+  padding: 0.85rem 0.55rem 0.7rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  color: var(--fg-muted);
+  font: inherit;
+  cursor: default;
+  transition: border-color 200ms ease, color 200ms ease, background 200ms ease, transform 200ms ease;
+}
+
+.skill-icon:hover,
+.skill-icon:focus-visible {
+  border-color: var(--accent-warm);
+  color: var(--fg);
+  background: var(--bg-alt);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.skill-icon:focus-visible {
+  box-shadow: 0 0 0 2px var(--accent-warm);
+}
+
+.skill-glyph {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  /* SVGs use fill="currentColor"; <img> drops that contract, but the
+     monograms are styled via the SVG's own attributes — width/height
+     declared on <img> for CLS=0 and lazy-load for off-screen tiles. */
+}
+
+.skill-name {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--fg);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.skill-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  z-index: 5;
+  padding: 0.55rem 0.7rem;
+  width: max-content;
+  max-width: 220px;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 0.72rem;
+  line-height: 1.45;
+  border-radius: var(--r);
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.skill-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--fg);
+}
+
+.skill-icon:hover > .skill-tooltip,
+.skill-icon:focus-visible > .skill-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 780px) {
+  .skills-list {
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+    gap: 0.5rem;
+  }
+  .skill-icon { min-height: 88px; }
+}
+
+/* Mobile + any pointer:coarse device: tooltip collapses to inline
+   static caption beneath the tool name, so touch users get the context
+   without a hover gesture and iOS Safari does not fire sticky-hover on
+   tap. Triggers on max-width OR (hover: none) so iPad landscape /
+   large-phone landscape (which exceed 780px in width) also get the
+   touch-friendly behavior. */
+@media (max-width: 780px), (hover: none) {
+  .skill-tooltip {
+    position: static;
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+    background: transparent;
+    color: var(--fg-soft);
+    box-shadow: none;
+    padding: 0;
+    margin-top: 0.15rem;
+    max-width: 100%;
+    font-size: 0.66rem;
+    line-height: 1.35;
+    text-align: center;
+  }
+  .skill-tooltip::after { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-icon { transition: none; }
+  .skill-icon:hover, .skill-icon:focus-visible { transform: none; }
+  .skill-tooltip { transition: none; transform: translateX(-50%); }
+  .skill-icon:hover > .skill-tooltip,
+  .skill-icon:focus-visible > .skill-tooltip { transform: translateX(-50%); }
+}
+
+@media print {
+  .skill-icon {
+    border-color: #ccc;
+    color: #000;
+    background: #fff;
+    box-shadow: none;
+    transform: none;
+  }
+  /* Print: render tooltip inline so the page is self-explanatory
+     without needing hover state. */
+  .skill-tooltip {
+    position: static;
+    transform: none;
+    opacity: 1;
+    background: transparent;
+    color: #555;
+    padding: 0;
+    margin-top: 0.2rem;
+    box-shadow: none;
+    font-size: 0.7rem;
+    text-align: center;
+  }
+  .skill-tooltip::after { display: none; }
+}

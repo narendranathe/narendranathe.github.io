@@ -31,6 +31,15 @@ RESUME_PREVIEW_PNG = REPO_ROOT / "static" / "resume-page1-preview.png"
 GITHUB_PREVIEW_PNG = REPO_ROOT / "static" / "preview-github.png"
 LINKEDIN_PREVIEW_PNG = REPO_ROOT / "static" / "preview-linkedin.png"
 SUBSTACK_PREVIEW_PNG = REPO_ROOT / "static" / "preview-substack.png"
+SKILLS_DIR = REPO_ROOT / "static" / "skills"
+SKILLS_PATTERN_DOC = REPO_ROOT / "docs" / "skills-grid-pattern.md"
+
+# #71 skills-grid budgets
+SKILLS_EXPECTED_CATEGORIES = 5
+SKILLS_MIN_ICONS_PER_CATEGORY = 4
+SKILLS_MAX_ICONS_PER_CATEGORY = 6
+SKILLS_MAX_ICON_BYTES = 5 * 1024
+SKILLS_MAX_TOTAL_BYTES = 60 * 1024
 
 # #70 hover-preview budget: 30 KB per asset matches #67's resume-preview budget.
 HOVER_PREVIEW_BUDGET_BYTES = 30 * 1024
@@ -748,6 +757,209 @@ def test_hover_preview_pattern_doc_present() -> None:
     assert len(body) > 1000, f"pattern doc body is only {len(body)} chars; expected >= 1000"
 
 
+def _skills_section_html(html: str) -> str:
+    """Extract the inner HTML of the <section id="skills"> block, raising
+    AssertionError if the section is missing or malformed. Reused by the
+    skills-grid assertions below to keep them scoped."""
+    start = html.find('<section class="section" id="skills">')
+    if start == -1:
+        # Allow class ordering / attribute ordering tolerance
+        m = re.search(r'<section[^>]*id="skills"[^>]*>', html)
+        assert m, "<section id=\"skills\"> not found in index.html"
+        start = m.start()
+    end = html.find("</section>", start)
+    assert end != -1, "<section id=\"skills\"> not closed"
+    return html[start:end]
+
+
+def test_skills_section_present(html: str) -> None:
+    """Issue #71: <section id="skills"> exists between Track Record and
+    What Shipped, has the expected section heading + subtitle."""
+    block = _skills_section_html(html)
+    assert 'class="section-label">Stack<' in block, (
+        "skills section missing 'Stack' section-label"
+    )
+    assert "Stack I work in daily" in block, (
+        "skills section missing 'Stack I work in daily' h2 title"
+    )
+    # Section ordering: skills must come AFTER experience and BEFORE proof
+    pos_experience = html.find('id="experience"')
+    pos_skills = html.find('id="skills"')
+    pos_proof = html.find('id="proof"')
+    assert -1 < pos_experience < pos_skills < pos_proof, (
+        f"section order broken: experience={pos_experience} "
+        f"skills={pos_skills} proof={pos_proof} (expected ascending)"
+    )
+
+
+def test_skills_nav_link_present(html: str) -> None:
+    """Issue #71: nav must include a 'Stack' link pointing to #skills,
+    in BOTH the desktop nav and the mobile nav drawer."""
+    assert html.count('href="#skills"') >= 2, (
+        "expected at least 2 nav links to #skills (desktop + mobile drawer)"
+    )
+    desktop_nav = re.search(
+        r'<a href="#skills"\s+class="nav-link">Stack</a>', html
+    )
+    mobile_nav = re.search(
+        r'<a href="#skills"\s+class="mobile-link">Stack</a>', html
+    )
+    assert desktop_nav, "desktop nav missing 'Stack' link"
+    assert mobile_nav, "mobile nav drawer missing 'Stack' link"
+
+
+def test_skills_has_expected_category_count(html: str) -> None:
+    """Issue #71: exactly 5 .skills-category subgroups, each with a
+    .skills-category-title heading."""
+    block = _skills_section_html(html)
+    cats = re.findall(r'<div class="skills-category">', block)
+    assert len(cats) == SKILLS_EXPECTED_CATEGORIES, (
+        f"expected {SKILLS_EXPECTED_CATEGORIES} .skills-category subgroups, "
+        f"found {len(cats)}"
+    )
+    titles = re.findall(
+        r'<h3 class="skills-category-title">([^<]+)</h3>', block
+    )
+    assert len(titles) == SKILLS_EXPECTED_CATEGORIES, (
+        f"expected {SKILLS_EXPECTED_CATEGORIES} category titles, found {len(titles)}"
+    )
+
+
+def test_skills_each_category_has_valid_icon_count(html: str) -> None:
+    """Issue #71: each category has 4-6 .skill-icon tiles (the spec's
+    band — fewer than 4 reads as filler, more than 6 crowds the row)."""
+    block = _skills_section_html(html)
+    parts = re.split(r'<div class="skills-category">', block)[1:]
+    for i, part in enumerate(parts, start=1):
+        end = part.find("</div>\n          </div>")
+        section = part[:end] if end != -1 else part
+        icon_count = section.count('class="skill-icon"')
+        assert SKILLS_MIN_ICONS_PER_CATEGORY <= icon_count <= SKILLS_MAX_ICONS_PER_CATEGORY, (
+            f"skills-category #{i} has {icon_count} skill-icon tiles; "
+            f"expected {SKILLS_MIN_ICONS_PER_CATEGORY}-{SKILLS_MAX_ICONS_PER_CATEGORY}"
+        )
+
+
+def test_skills_every_icon_is_keyboard_focusable(html: str) -> None:
+    """Issue #71: every .skill-icon tile must be keyboard-focusable so
+    users without a pointer can read the tooltip context. Implementation
+    is `<span tabindex="0">` (per a11y review: <button> would imply
+    activation that doesn't happen; a <div role="button"> would have the
+    same issue. <span tabindex="0"> + visible text + aria-describedby
+    is the WAI-ARIA APG canonical pattern for non-actionable focusable
+    tooltip triggers)."""
+    block = _skills_section_html(html)
+    tiles = re.findall(r'<span[^>]+class="skill-icon"[^>]*>', block)
+    assert tiles, "no .skill-icon tiles found in skills section"
+    missing = [t for t in tiles if 'tabindex="0"' not in t]
+    assert not missing, (
+        f"{len(missing)} .skill-icon tiles missing tabindex=\"0\": {missing[:3]}"
+    )
+
+
+def test_skills_every_icon_has_visible_name(html: str) -> None:
+    """Issue #71: every tile has a visible <span class="skill-name">
+    sibling so the accessible name is not duplicated via aria-label
+    (which would override the visible text and create a maintenance
+    fork between visible and announced content)."""
+    block = _skills_section_html(html)
+    tiles = re.findall(
+        r'<span[^>]+class="skill-icon"[^>]*>(.+?)</span></li>',
+        block,
+        flags=re.DOTALL,
+    )
+    assert tiles, "no .skill-icon tile bodies found"
+    missing = [t for t in tiles if 'class="skill-name"' not in t]
+    assert not missing, (
+        f"{len(missing)} .skill-icon tiles missing visible <span class=\"skill-name\">"
+    )
+    # Confirm aria-label is NOT used (would shadow the visible name)
+    has_aria_label = re.search(r'<span[^>]+class="skill-icon"[^>]+aria-label=', block)
+    assert not has_aria_label, (
+        "skill-icon tiles must not use aria-label (visible .skill-name is "
+        "the accessible name; aria-label would override and fork content)"
+    )
+
+
+def test_skills_every_icon_has_tooltip(html: str) -> None:
+    """Issue #71: every .skill-icon has aria-describedby pointing to a
+    role="tooltip" span. The describedby ID must resolve."""
+    block = _skills_section_html(html)
+    tiles = re.findall(r'<span[^>]+class="skill-icon"[^>]*>', block)
+    described_ids: list[str] = []
+    for t in tiles:
+        m = re.search(r'aria-describedby="([^"]+)"', t)
+        assert m, f".skill-icon tile missing aria-describedby: {t}"
+        described_ids.append(m.group(1))
+    tooltip_ids = set(re.findall(
+        r'<span id="([^"]+)" role="tooltip" class="skill-tooltip">', block
+    ))
+    missing = [i for i in described_ids if i not in tooltip_ids]
+    assert not missing, (
+        f"aria-describedby IDs missing matching tooltip span: {missing[:3]}"
+    )
+
+
+def test_skills_no_external_cdn_refs(html: str) -> None:
+    """Issue #71: skills section must NOT reference any external CDN for
+    icon assets (no jsdelivr, no unpkg, no Font Awesome, no devicons.dev
+    runtime). Local static/skills/ only."""
+    block = _skills_section_html(html)
+    forbidden = (
+        "cdn.jsdelivr.net",
+        "unpkg.com",
+        "fontawesome",
+        "devicons.dev",
+        "raw.githubusercontent.com",
+    )
+    for token in forbidden:
+        assert token not in block.lower(), (
+            f"skills section references external CDN token {token!r}; "
+            "icons must be local static/skills/*.svg only"
+        )
+
+
+def test_skills_icon_files_present(html: str) -> None:
+    """Every <img src="static/skills/<slug>.svg"> referenced in the
+    skills section must exist on disk at the expected path."""
+    block = _skills_section_html(html)
+    refs = re.findall(r'src="(static/skills/[^"]+)"', block)
+    assert refs, "no static/skills/*.svg references found in skills section"
+    missing = [r for r in refs if not (REPO_ROOT / r).exists()]
+    assert not missing, f"missing skill SVGs on disk: {missing}"
+
+
+def test_skills_icon_byte_budgets() -> None:
+    """Issue #71: each skill SVG <= 5 KB; total <= 60 KB (page-weight
+    delta cap)."""
+    assert SKILLS_DIR.exists(), f"static/skills/ directory missing: {SKILLS_DIR}"
+    svg_files = sorted(SKILLS_DIR.glob("*.svg"))
+    assert svg_files, "static/skills/ contains no .svg files"
+    total = 0
+    overweight: list[tuple[str, int]] = []
+    for f in svg_files:
+        size = f.stat().st_size
+        total += size
+        if size > SKILLS_MAX_ICON_BYTES:
+            overweight.append((f.name, size))
+    assert not overweight, (
+        f"skill SVGs exceed {SKILLS_MAX_ICON_BYTES}-byte cap: {overweight}"
+    )
+    assert total <= SKILLS_MAX_TOTAL_BYTES, (
+        f"total skills/ payload {total}B exceeds {SKILLS_MAX_TOTAL_BYTES}B cap"
+    )
+
+
+def test_skills_pattern_doc_present() -> None:
+    """docs/skills-grid-pattern.md exists + is non-trivial — drop-in
+    documentation is part of the #71 deliverable."""
+    assert SKILLS_PATTERN_DOC.exists(), (
+        "docs/skills-grid-pattern.md missing — pattern doc is part of #71 deliverable"
+    )
+    body = SKILLS_PATTERN_DOC.read_text(encoding="utf-8")
+    assert len(body) > 1500, f"skills pattern doc body is only {len(body)} chars; expected >= 1500"
+
+
 def test_all_ids_unique(all_ids: list) -> None:
     """No two elements share an id on the page — ID collisions would
     break aria-labelledby / aria-describedby resolution and CSS #id
@@ -814,6 +1026,18 @@ TESTS = [
     test_hover_preview_companion_attrs_present,
     test_hover_preview_no_role_dialog,
     test_hover_preview_pattern_doc_present,
+    # ----- Skills grid (issue #71) -----
+    test_skills_section_present,
+    test_skills_nav_link_present,
+    test_skills_has_expected_category_count,
+    test_skills_each_category_has_valid_icon_count,
+    test_skills_every_icon_is_keyboard_focusable,
+    test_skills_every_icon_has_visible_name,
+    test_skills_every_icon_has_tooltip,
+    test_skills_no_external_cdn_refs,
+    test_skills_icon_files_present,
+    test_skills_icon_byte_budgets,
+    test_skills_pattern_doc_present,
 ]
 
 
