@@ -148,3 +148,68 @@ These are deliberate scope reductions per a11y critique; the change satisfies WC
 5. (Optional) Tune `--hover-preview-open-delay` / `--hover-preview-close-grace` / `--hover-preview-fade` to taste — they are CSS custom properties, single-line overrides.
 
 No build step, no framework, no runtime deps.
+
+---
+
+## Live embed mode (Substack)
+
+The default render mode is the static thumbnail + title + caption. A second mode renders a stacked list of recent posts pulled from a periodically-refreshed JSON snapshot — used for Substack publication links.
+
+**Why a snapshot, not a live fetch:** Substack's `/feed` endpoint does not return `Access-Control-Allow-Origin`, so a client-side fetch from a third-party origin (e.g. GitHub Pages) is blocked by CORS. A scheduled GitHub Action runs `scripts/snap-substack-feed.py` every ~4 hours, parses the RSS, writes `static/substack-latest.json`, and commits only if the content changed. The popup then fetches that file from its own origin — no CORS, no third-party tracking, no client-side parsing cost.
+
+### Trigger annotation
+
+```html
+<a href="https://yourpub.substack.com" target="_blank" rel="noreferrer"
+   data-hover-preview="/static/preview-substack.png"
+   data-hover-embed="substack-feed"
+   data-hover-feed="/static/substack-latest.json"
+   data-hover-title="My Substack"
+   data-hover-caption="Weekly notes">
+  Read on Substack
+</a>
+```
+
+`data-hover-preview` stays as a fallback: if the JSON fetch fails (404 / network / CORS), the popup degrades to the static screenshot. `data-hover-title` is reused as the feed-card header.
+
+### JSON contract
+
+```json
+{
+  "publication": "Naren's Substack",
+  "url": "https://narendranathe.substack.com/",
+  "fetched_at": "2026-05-01T18:00:00Z",
+  "posts": [
+    {
+      "title": "...",
+      "url": "https://narendranathe.substack.com/p/...",
+      "published_at": "2026-04-28T15:30:00Z",
+      "excerpt": "..."
+    }
+  ]
+}
+```
+
+Top 3 posts only. Excerpts are HTML-stripped + truncated to ~220 chars by the parser. Test gates in `scripts/test-portfolio.py` enforce this shape.
+
+### Adopter checklist
+
+1. Copy `scripts/snap-substack-feed.py` and adjust the default feed URL.
+2. Copy `.github/workflows/substack-snapshot.yml` and adjust the cron cadence to match your post frequency.
+3. Run the script once locally to seed `static/substack-latest.json` so the popup works on first visit before the cron has fired.
+4. Add `data-hover-embed="substack-feed"` + `data-hover-feed="/static/substack-latest.json"` to your Substack triggers.
+5. Confirm `permissions: contents: write` is set in the workflow so it can commit the refreshed JSON back to the repo.
+
+Mobile path is unchanged: touch devices skip the popover entirely (`@media (hover: none) and (pointer: coarse)`), so the live-feed mode is desktop-only.
+
+---
+
+## Scroll-aware positioning
+
+The popover is `position: fixed` and `position(trigger)` originally ran ONCE on open via `getBoundingClientRect()` (viewport coordinates). When the user scrolled afterwards, the trigger moved but the popover stayed frozen — drifting visually away. v2 adds a `scroll` + `resize` listener (capture phase, passive, rAF-throttled) that re-runs `position(lastTrigger)` while the popover is open. The position function also clamps `top` to viewport bounds so the popover stays on-screen even when the trigger has scrolled partly off-screen.
+
+---
+
+## LinkedIn limitation
+
+`<iframe src="linkedin.com/in/...">` is blocked by `X-Frame-Options: SAMEORIGIN`, LinkedIn's OEmbed endpoint returns 404, and there is no public unauth API. The Profile Badge widget only works for profiles the owner has explicitly enabled. **Conclusion:** LinkedIn triggers must use the static-thumbnail render mode. The static `/static/preview-linkedin.png` is the ceiling; do not promise live LinkedIn previews.

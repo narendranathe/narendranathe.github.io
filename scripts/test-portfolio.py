@@ -765,6 +765,107 @@ def test_hover_preview_pattern_doc_present() -> None:
     assert len(body) > 1000, f"pattern doc body is only {len(body)} chars; expected >= 1000"
 
 
+# ===== Substack live-feed mode (hover-preview v2 follow-up) =====
+
+SUBSTACK_SNAPSHOT_JSON = REPO_ROOT / "static" / "substack-latest.json"
+SUBSTACK_SNAP_SCRIPT = REPO_ROOT / "scripts" / "snap-substack-feed.py"
+SUBSTACK_WORKFLOW = REPO_ROOT / ".github" / "workflows" / "substack-snapshot.yml"
+
+
+def test_substack_snapshot_pipeline_present() -> None:
+    """The Substack live-feed render mode depends on three artifacts
+    being shipped together: the parser script, the cron workflow, and
+    a same-origin JSON snapshot. Removing any one breaks the popup."""
+    assert SUBSTACK_SNAP_SCRIPT.exists(), (
+        "scripts/snap-substack-feed.py missing — needed by the cron workflow"
+    )
+    assert SUBSTACK_WORKFLOW.exists(), (
+        ".github/workflows/substack-snapshot.yml missing — without this the "
+        "JSON snapshot never refreshes after the seed commit"
+    )
+    assert SUBSTACK_SNAPSHOT_JSON.exists(), (
+        "static/substack-latest.json missing — the popup will 404 on hover. "
+        "Run: python scripts/snap-substack-feed.py"
+    )
+
+
+def test_substack_snapshot_json_schema() -> None:
+    """The JSON shape is the contract between the parser + the popup
+    renderer. Any change here MUST update both buildFeedDom() in app.js
+    AND the parser; this test catches drift."""
+    import json
+    body = SUBSTACK_SNAPSHOT_JSON.read_text(encoding="utf-8")
+    data = json.loads(body)
+    for key in ("publication", "url", "fetched_at", "posts"):
+        assert key in data, f"substack-latest.json missing required field: {key}"
+    assert isinstance(data["posts"], list), "posts must be a list"
+    assert 0 <= len(data["posts"]) <= 5, (
+        f"posts length {len(data['posts'])} unexpected; parser caps at 3"
+    )
+    if data["posts"]:
+        post = data["posts"][0]
+        for key in ("title", "url", "published_at", "excerpt"):
+            assert key in post, f"post entry missing field: {key}"
+        assert post["url"].startswith("http"), "post.url must be an absolute URL"
+
+
+def test_substack_triggers_have_embed_attrs(html: str) -> None:
+    """Every <a> link to narendranathe.substack.com that uses the
+    hover-preview MUST also declare data-hover-embed=\"substack-feed\"
+    and data-hover-feed=\"/static/substack-latest.json\". Without these,
+    the live-feed render mode falls back to the static screenshot."""
+    # Find every Substack-targeted anchor that has data-hover-preview
+    pattern = re.compile(
+        r'<a\s+href="https://[^"]*substack\.com[^"]*"[^>]*data-hover-preview',
+        flags=re.S,
+    )
+    anchors = pattern.findall(html)
+    assert anchors, "no Substack hover-preview triggers found"
+    # Each one of those anchor opening tags must include the embed attrs.
+    # Use a wider re.search per occurrence.
+    embed_count = len(re.findall(
+        r'<a\s+href="https://[^"]*substack\.com[^>]*?data-hover-embed="substack-feed"',
+        html,
+        flags=re.S,
+    ))
+    assert embed_count == len(anchors), (
+        f"{len(anchors)} Substack hover triggers found, but only {embed_count} "
+        f"declare data-hover-embed=\"substack-feed\". Each Substack trigger "
+        f"must opt in to the live-feed render mode."
+    )
+
+
+def test_app_js_has_substack_render_branch() -> None:
+    """app.js must implement the renderSubstack branch and the scroll-
+    aware repositioning listener; without either, the live-feed mode
+    is half-built."""
+    js = APP_JS.read_text(encoding="utf-8")
+    assert "renderSubstack" in js, (
+        "app.js missing renderSubstack() — live-feed render branch absent"
+    )
+    assert "buildFeedDom" in js, (
+        "app.js missing buildFeedDom() — feed list construction absent"
+    )
+    assert "data-hover-embed" in js, (
+        "app.js never reads data-hover-embed attribute — render branch dead code"
+    )
+    # Scroll-aware reposition listener: scroll OR resize handler that
+    # re-runs position(lastTrigger). Substring-match is canary-level
+    # but catches a regression where someone removes the listener.
+    assert "onScrollOrResize" in js or "scroll" in js.lower(), (
+        "app.js missing scroll listener that re-positions the popover"
+    )
+
+
+def test_styles_css_has_feed_list_module() -> None:
+    """The .hp-feed-* CSS module renders the live-posts list in the
+    smaller card. Removing it would leave the JS-built DOM unstyled."""
+    css = STYLES_CSS.read_text(encoding="utf-8")
+    for selector in (".hp-feed-header", ".hp-feed-list", ".hp-feed-item",
+                     ".hp-feed-title", ".hp-feed-meta", ".hp-feed-empty"):
+        assert selector in css, f"styles.css missing {selector} rule"
+
+
 def _skills_section_html(html: str) -> str:
     """Extract the inner HTML of the <section id="skills"> block, raising
     AssertionError if the section is missing or malformed. Reused by the
@@ -1034,6 +1135,12 @@ TESTS = [
     test_hover_preview_companion_attrs_present,
     test_hover_preview_no_role_dialog,
     test_hover_preview_pattern_doc_present,
+    # ----- Substack live-feed mode (hover-preview v2 follow-up) -----
+    test_substack_snapshot_pipeline_present,
+    test_substack_snapshot_json_schema,
+    test_substack_triggers_have_embed_attrs,
+    test_app_js_has_substack_render_branch,
+    test_styles_css_has_feed_list_module,
     # ----- Skills grid (issue #71) -----
     test_skills_section_present,
     test_skills_nav_link_present,

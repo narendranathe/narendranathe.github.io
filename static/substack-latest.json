@@ -1,0 +1,25 @@
+{
+  "publication": "Narendranath Edara",
+  "url": "https://narendranathe.substack.com",
+  "fetched_at": "2026-05-01T18:44:51.937488Z",
+  "posts": [
+    {
+      "title": "Karpathy’s LLM Wiki, applied to a multi-repo system - what changes and what doesn’t",
+      "url": "https://narendranathe.substack.com/p/karpathys-llm-wiki-applied-to-a-multi",
+      "published_at": "2026-04-21T13:11:57Z",
+      "excerpt": "GraphRAG implementation"
+    },
+    {
+      "title": "I built a resume tailoring tool with Claude Code",
+      "url": "https://narendranathe.substack.com/p/i-built-a-resume-tailoring-tool-with",
+      "published_at": "2026-03-19T23:51:50Z",
+      "excerpt": "Your ability to get a job should not depend on your resume writing skills."
+    },
+    {
+      "title": "I Built a Cinematic Website in 10 Minutes Using Claude AI. Here’s Every Technical Decision I Made.",
+      "url": "https://narendranathe.substack.com/p/i-built-a-cinematic-website-in-10",
+      "published_at": "2026-02-07T21:43:11Z",
+      "excerpt": "What used to take days now takes minutes. But the engineering knowledge that makes it possible hasn’t changed."
+    }
+  ]
+}
