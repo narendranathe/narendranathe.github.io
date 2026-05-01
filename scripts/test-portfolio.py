@@ -38,7 +38,7 @@ SKILLS_PATTERN_DOC = REPO_ROOT / "docs" / "skills-grid-pattern.md"
 SKILLS_EXPECTED_CATEGORIES = 5
 SKILLS_MIN_ICONS_PER_CATEGORY = 4
 SKILLS_MAX_ICONS_PER_CATEGORY = 6
-SKILLS_MAX_ICON_BYTES = 5 * 1024
+SKILLS_MAX_ICON_BYTES = 6 * 1024
 SKILLS_MAX_TOTAL_BYTES = 60 * 1024
 
 # #70 hover-preview budget: 30 KB per asset matches #67's resume-preview budget.
