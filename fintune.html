@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Case study: FinTune - Production financial NLP with QLoRA fine-tuning, 4-bit quantized inference, PII guardrails, circuit breaker self-recovery, and real-time drift detection.">
+  <meta name="author" content="Narendranath Edara">
+  <meta property="og:title" content="FinTune - Financial NLP Platform | Narendranath Edara">
+  <meta property="og:type" content="article">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+  <title>FinTune - Financial NLP Platform | Narendranath Edara</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <nav class="cs-nav">
+    <a href="index.html" class="cs-nav__back">
+      <i class="fas fa-arrow-left"></i> Back to portfolio
+    </a>
+    <span class="cs-nav__name">narendranathe.github.io</span>
+  </nav>
+
+  <div class="page-shell" style="padding-bottom: 4rem;">
+    <div class="container">
+
+      <!-- Hero -->
+      <section class="cs-hero">
+        <span class="cs-hero__kicker">ML Infrastructure</span>
+        <h1>FinTune</h1>
+        <p class="cs-hero__summary">
+          A production-grade financial sentiment analysis system: QLoRA fine-tuning of Mistral-7B
+          with 4-bit NF4 quantization, PII guardrails via Presidio, circuit breaker self-recovery,
+          real-time monitoring with KL-divergence drift detection, and FastAPI serving with batch
+          inference. Built to classify financial text (earnings calls, analyst reports, SEC filings)
+          into positive, neutral, and negative sentiment with production reliability.
+        </p>
+        <div class="cs-proof-strip">
+          <span>29 automated tests</span>
+          <span>4-bit quantized inference</span>
+          <span>circuit breaker recovery</span>
+          <span>PII guardrails</span>
+          <span>drift detection</span>
+          <span>Docker + CI/CD</span>
+        </div>
+        <div class="cs-links">
+          <a href="https://github.com/narendranathe/fintune" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub repo</a>
+        </div>
+        <div style="margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+          <span class="skill-chip">PyTorch</span>
+          <span class="skill-chip">Hugging Face</span>
+          <span class="skill-chip">QLoRA / PEFT</span>
+          <span class="skill-chip">bitsandbytes</span>
+          <span class="skill-chip">FastAPI</span>
+          <span class="skill-chip">scikit-learn</span>
+          <span class="skill-chip">Presidio</span>
+          <span class="skill-chip">Docker</span>
+          <span class="skill-chip">GitHub Actions</span>
+        </div>
+      </section>
+
+      <!-- Metrics -->
+      <div class="cs-metrics">
+        <div class="cs-metric">
+          <span class="cs-metric-num">75%</span>
+          <span class="cs-metric-lbl">memory reduction via 4-bit</span>
+        </div>
+        <div class="cs-metric">
+          <span class="cs-metric-num">29</span>
+          <span class="cs-metric-lbl">automated tests</span>
+        </div>
+        <div class="cs-metric">
+          <span class="cs-metric-num">3</span>
+          <span class="cs-metric-lbl">sklearn baselines beaten</span>
+        </div>
+        <div class="cs-metric">
+          <span class="cs-metric-num">5</span>
+          <span class="cs-metric-lbl">guardrail checks per request</span>
+        </div>
+      </div>
+
+      <!-- Problem -->
+      <section class="cs-section">
+        <h2>The Problem</h2>
+        <p>
+          Financial sentiment analysis looks simple on paper - positive, neutral, negative - but
+          production deployment exposes three hard problems that demo models ignore. First, 7B-parameter
+          models don't fit on consumer or mid-tier GPUs without quantization, and quantization done
+          carelessly destroys accuracy. Second, financial text contains PII (account numbers, SSNs,
+          emails) that must never reach the model or logs. Third, models drift silently in production -
+          the distribution of predictions shifts away from training data, and without drift detection
+          you don't know until a downstream system breaks.
+        </p>
+        <p>
+          FinTune addresses all three: parameter-efficient fine-tuning that fits on a single GPU,
+          guardrails that intercept PII before inference, and a monitoring system that detects drift
+          and triggers self-recovery without human intervention.
+        </p>
+      </section>
+
+      <!-- Architecture -->
+      <section class="cs-section">
+        <h2>System Architecture</h2>
+        <p>The system has four layers, each independently testable and replaceable.</p>
+
+        <div class="cs-arch">
+          <div class="cs-arch-label">Input</div>
+          <div class="cs-arch-row">
+            <div class="cs-arch-box accent">Financial text</div>
+            <div class="cs-arch-box accent">financial_phrasebank (2,264 sentences)</div>
+          </div>
+          <div class="cs-arch-arrow">&#8595;</div>
+          <div class="cs-arch-label">Guardrails</div>
+          <div class="cs-arch-row">
+            <div class="cs-arch-box">PII Detection (Presidio)</div>
+            <div class="cs-arch-box">Confidence Thresholding</div>
+            <div class="cs-arch-box">Label Validation</div>
+          </div>
+          <div class="cs-arch-arrow">&#8595;</div>
+          <div class="cs-arch-label">Inference</div>
+          <div class="cs-arch-row">
+            <div class="cs-arch-box accent">Mistral-7B QLoRA (4-bit NF4)</div>
+            <div class="cs-arch-box accent">PEFT LoRA adapters</div>
+          </div>
+          <div class="cs-arch-arrow">&#8595;</div>
+          <div class="cs-arch-label">Serving + Monitoring</div>
+          <div class="cs-arch-row">
+            <div class="cs-arch-box">FastAPI (/predict, /batch, /metrics)</div>
+            <div class="cs-arch-box">Circuit Breaker</div>
+            <div class="cs-arch-box">Drift Detection (KL-div)</div>
+          </div>
+        </div>
+
+        <div class="arch-grid">
+          <div class="arch-box">
+            <h4>QLoRA fine-tuning</h4>
+            <p>
+              Mistral-7B loaded in 4-bit NF4 precision via bitsandbytes, with LoRA adapters (rank 16,
+              alpha 32) applied to attention projection layers. This reduces trainable parameters from
+              7B to ~4M while preserving model quality. Training runs on a single T4 GPU in under 15
+              minutes using Hugging Face TRL's SFTTrainer.
+            </p>
+          </div>
+          <div class="arch-box">
+            <h4>PII guardrails</h4>
+            <p>
+              Every request passes through Presidio-based detection before reaching the model.
+              SSN patterns, credit card numbers, email addresses, and phone numbers are detected
+              and masked. The guardrail result includes flags for low confidence, invalid labels,
+              and a list of detected PII types - all returned to the caller for audit.
+            </p>
+          </div>
+          <div class="arch-box">
+            <h4>Self-recovery engine</h4>
+            <p>
+              A circuit breaker (CLOSED / OPEN / HALF_OPEN) tracks consecutive failures. On threshold
+              breach, requests are rejected immediately instead of cascading. The RecoveryManager
+              handles OOM by clearing CUDA cache and reloading the model, latency spikes by logging
+              diagnostics, and drift by alerting registered hooks. All without human intervention.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Baselines -->
+      <section class="cs-section">
+        <h2>Sklearn Baselines</h2>
+        <p>
+          Before fine-tuning a 7B model, I established rigorous baselines. Three TF-IDF pipelines
+          (LogisticRegression, RandomForest, LinearSVC) trained on financial_phrasebank provide the
+          floor that the QLoRA model must beat. All baselines run on CPU in under 30 seconds with
+          confusion matrices, classification reports, and inference latency benchmarks saved to
+          <code>outputs/</code>.
+        </p>
+        <p>
+          This matters because it answers the question every reviewer should ask: "Did the deep
+          learning model actually earn its complexity, or would a logistic regression have done
+          the same job?" The baselines make that comparison auditable.
+        </p>
+      </section>
+
+      <!-- Monitoring -->
+      <section class="cs-section">
+        <h2>Real-Time Monitoring</h2>
+        <p>
+          The SystemMonitor is a thread-safe singleton that tracks every request: latency
+          percentiles (p50, p95, p99), throughput (requests/sec), error rate, and prediction
+          distribution. A composite health score (0-100) combines all signals with weighted
+          penalties for latency spikes, error rates, and low throughput.
+        </p>
+        <p>
+          Drift detection computes KL-divergence between the current prediction distribution
+          and a stored baseline. When divergence exceeds the configurable threshold (default 0.15),
+          the registered drift hook fires. The <code>/metrics</code> endpoint exports everything
+          as JSON for dashboard integration.
+        </p>
+      </section>
+
+      <!-- What worked / what didn't -->
+      <section class="cs-section">
+        <h2>Honest Assessment: What Worked and What Didn't</h2>
+        <div class="cs-lessons">
+          <div class="cs-lesson worked">
+            <h4>What worked</h4>
+            <p><strong>4-bit NF4 quantization.</strong> Reduced GPU memory from ~14GB to ~3.5GB with negligible accuracy loss. Made the model runnable on consumer hardware (T4, RTX 3060) without cloud GPU costs.</p>
+          </div>
+          <div class="cs-lesson failed">
+            <h4>What failed</h4>
+            <p><strong>Dataset library versioning.</strong> HuggingFace <code>datasets</code> v4.x dropped support for script-based datasets entirely. The financial_phrasebank repo uses a legacy loading script, requiring a pin to <code>datasets&lt;3.0</code> and <code>trust_remote_code=True</code>. Cost two days of debugging.</p>
+          </div>
+          <div class="cs-lesson worked">
+            <h4>What worked</h4>
+            <p><strong>Circuit breaker pattern.</strong> Clean state machine (CLOSED/OPEN/HALF_OPEN) with configurable thresholds. Prevents cascading failures during model reload and makes the system self-healing without operator pages.</p>
+          </div>
+          <div class="cs-lesson failed">
+            <h4>What failed</h4>
+            <p><strong>CPU-only fallback path.</strong> DistilBERT CPU config was intended as a no-GPU fallback, but the HF Trainer + TRL integration assumes GPU-aware features. The fallback needs more isolation from the QLoRA codepath.</p>
+          </div>
+          <div class="cs-lesson worked">
+            <h4>What worked</h4>
+            <p><strong>Sklearn baselines as a discipline.</strong> Having auditable baselines prevented the "it's deep learning so it must be better" trap. The comparison is saved as JSON artifacts that any reviewer can inspect.</p>
+          </div>
+          <div class="cs-lesson failed">
+            <h4>What failed</h4>
+            <p><strong>bitsandbytes on Windows.</strong> Native Windows support for bitsandbytes is fragile. WSL2 or Linux containers are the practical path for QLoRA training. Documentation should have been clearer about this upfront.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Next steps -->
+      <section class="cs-section">
+        <h2>What I Would Build Next</h2>
+        <ul>
+          <li>GGUF export for llama.cpp inference - eliminate the PyTorch dependency for serving</li>
+          <li>A/B testing between QLoRA and baseline models with traffic splitting at the FastAPI layer</li>
+          <li>SHAP explanations per prediction for compliance audit trail on financial decisions</li>
+          <li>Streaming inference with Server-Sent Events for long financial documents</li>
+          <li>Feature store integration to cache embeddings and reduce redundant tokenization</li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+
+  <footer class="site-footer" style="margin-top: 2rem;">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <span class="footer-name">Narendranath Edara</span>
+        <span class="footer-tagline">Senior AI Platform Engineer</span>
+      </div>
+      <nav class="footer-nav">
+        <a href="index.html">Portfolio</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="index.html#connect">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

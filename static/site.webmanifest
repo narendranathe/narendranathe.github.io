@@ -1,0 +1,33 @@
+{
+  "name": "Narendranath Edara",
+  "short_name": "Naren",
+  "description": "Senior AI Platform Engineer — production LLM systems, retrieval pipelines, governed analytics.",
+  "icons": [
+    {
+      "src": "/static/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/favicon-48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/favicon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "theme_color": "#E8743C",
+  "background_color": "#1A1A1A",
+  "display": "minimal-ui",
+  "start_url": "/",
+  "scope": "/"
+}

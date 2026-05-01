@@ -1,0 +1,57 @@
+name: Resume sidecar self-test
+
+# Runs the resume sidecar + portfolio HTML invariant self-tests on
+# every push and PR. Catches: regex regressions on page count detection,
+# hash determinism breakage, schema field drift, cache-bust rewrite
+# logic, scrapped-project claim re-introduction, impact-strip semantic
+# violations, ID collisions.
+
+on:
+  push:
+    branches: [main, "feat/**"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  self-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run snap-resume.py self-test
+        run: python scripts/snap-resume.py --self-test
+
+      - name: Run portfolio HTML invariants self-test
+        run: python scripts/test-portfolio.py --self-test
+
+      - name: Validate sidecar against schema
+        if: hashFiles('.well-known/resume.json') != ''
+        run: |
+          python -m pip install --quiet jsonschema
+          python - <<'EOF'
+          import json
+          from pathlib import Path
+          from jsonschema import Draft202012Validator
+          schema = json.loads(Path("static/resume.schema.json").read_text())
+          sidecar = json.loads(Path(".well-known/resume.json").read_text())
+          Draft202012Validator(schema).validate(sidecar)
+          print("sidecar valid against schema")
+          EOF
+
+      - name: Verify cache-bust hash matches sidecar version_hash
+        if: hashFiles('.well-known/resume.json') != ''
+        run: |
+          EXPECTED=$(python -c "import json; print(json.load(open('.well-known/resume.json'))['version_hash'])")
+          COUNT=$(grep -c "/static/resume.pdf?v=$EXPECTED" index.html || true)
+          echo "Expected hash $EXPECTED appears $COUNT times in index.html"
+          # Don't hard-fail on count; the sidecar may legitimately predate an HTML edit.
+          # Just surface a warning if it diverges.
+          if [ "$COUNT" -eq 0 ]; then
+            echo "::warning::index.html has no link with the current sidecar's version_hash. Run 'python scripts/snap-resume.py' to sync."
+          fi
