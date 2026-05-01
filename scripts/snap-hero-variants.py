@@ -34,8 +34,10 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 SOURCE = REPO_ROOT / "static" / "originals" / "headshot-fullbody.jpg"
 TARGET = REPO_ROOT / "static" / "originals" / "headshot-fullbody-800.jpg"
 TARGET_W = 800
-TARGET_H = 533  # 800 * (798/1200) = 532.0; round up to 533 to match aspect within rounding
-JPEG_QUALITY = 82  # quality 82 keeps perceptual fidelity at ~30 KB for this content
+# Height is computed at runtime from source aspect ratio: round(798 * 800 / 1200) = 532.
+# We do NOT pin a TARGET_H constant — if the source is ever replaced with a different
+# aspect ratio, this auto-adapts. Output for the current 1200x798 source: 800x532.
+JPEG_QUALITY = 82  # quality 82 keeps perceptual fidelity at ~30-40 KB for this content
 
 
 def main() -> int:
