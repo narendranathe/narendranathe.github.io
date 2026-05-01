@@ -48,16 +48,30 @@ EXTERNAL_USER_AGENT = "Mozilla/5.0 (compatible; PortfolioLinkVerifier/1.0)"
 # "lenient pass" since we can't reliably verify reachability without
 # a real browser. The URL is assumed well-formed if we got that far.
 #
-# - LinkedIn: 999 (their bot guard), and 404 + 403 when unauthenticated
+# - LinkedIn: 999 (their bot guard), 403/405 on auth-walled HEAD.
+#   404 is DELIBERATELY NOT lenient: LinkedIn returns 404 for both
+#   bot-walled-but-valid profiles AND genuinely wrong/typo'd URLs,
+#   indistinguishable from outside. Hiding 404 would silently pass
+#   typos like /in/naren-edaraXXX. Specific URLs verified by hand
+#   from a real browser go in HOST_ALLOWLIST instead.
 # - GitHub raw + plain github: 403 on HEAD/some IPs
 # - doi.org: redirects to publisher pages that frequently 403 bots
 LENIENT_HOSTS: dict[str, frozenset[int]] = {
-    "linkedin.com": frozenset({403, 404, 405, 999}),
-    "www.linkedin.com": frozenset({403, 404, 405, 999}),
+    "linkedin.com": frozenset({403, 405, 999}),
+    "www.linkedin.com": frozenset({403, 405, 999}),
     "github.com": frozenset({403, 405, 999}),
     "raw.githubusercontent.com": frozenset({403, 405}),
     "doi.org": frozenset({403, 405}),
 }
+
+# Specific URLs the maintainer has verified by hand from a real
+# browser and that bot-wall the verifier on a 404. Adding here
+# acknowledges "this URL was confirmed working manually; the
+# verifier just can't reach it from a stdlib bot." Exact-URL match.
+HOST_ALLOWLIST: frozenset[str] = frozenset({
+    "https://www.linkedin.com/in/narendranathe/",
+    "https://linkedin.com/in/narendranathe/",
+})
 
 
 @dataclass
@@ -196,6 +210,8 @@ def _request(href: str, method: str) -> int | str:
 
 def check_external(ref: LinkRef) -> str | None:
     href = ref.href
+    if href in HOST_ALLOWLIST:
+        return None  # manually verified URL; bot can't reach but human did
     parsed = urllib.parse.urlparse(href)
     host = parsed.hostname or ""
 
