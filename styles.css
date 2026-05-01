@@ -1308,12 +1308,15 @@ body.splash-active { overflow: hidden; }
   border: 0;
 }
 
-/* Keep value+label paired (no wrap mid-stat) on >=600px viewports;
-   below that, allow wrap to satisfy WCAG 1.4.10 (reflow) at 320px. */
+/* Keep multi-digit values single-line (e.g. "130+", "3mo→14d") on
+   >=600px viewports, but allow LABELS to wrap freely so long ones
+   like "CAREER PAGES MONITORED" or "DISTRIBUTION SURFACES" don't
+   overflow the grid column and bleed into the neighboring stat or
+   the card edge. Below 600px, both wrap to satisfy WCAG 1.4.10
+   reflow at 320px. */
 @media (min-width: 600px) {
-  .impact-strip > .impact-stat {
+  .impact-strip .impact-value {
     white-space: nowrap;
-    flex-shrink: 0;
   }
 }
 

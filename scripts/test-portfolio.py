@@ -373,15 +373,23 @@ def test_css_has_print_block() -> None:
 
 
 def test_css_mobile_breakpoint_at_600px() -> None:
+    """Guard the desktop breakpoint that switches impact-strip values
+    from wrap-allowed (mobile, WCAG 1.4.10 reflow at 320px) to single-
+    line (>=600px). Targets .impact-value specifically — earlier
+    iterations applied nowrap to the whole .impact-stat which caused
+    long labels (e.g. "CAREER PAGES MONITORED") to overflow the grid
+    column."""
     css = STYLES_CSS.read_text(encoding="utf-8")
     has_breakpoint = re.search(
-        r"@media\s*\(\s*min-width:\s*600px\s*\)\s*\{[^}]*\.impact-stat",
+        r"@media\s*\(\s*min-width:\s*600px\s*\)\s*\{[^}]*\.impact-value[^}]*white-space\s*:\s*nowrap",
         css,
         flags=re.S,
     )
     assert has_breakpoint, (
-        "CSS missing @media (min-width: 600px) rule for .impact-stat — "
-        "needed for WCAG 1.4.10 reflow on small viewports."
+        "CSS missing @media (min-width: 600px) rule applying "
+        "white-space: nowrap to .impact-value — needed so multi-digit "
+        "values stay single-line on desktop while labels remain free "
+        "to wrap (otherwise labels overflow the grid column)."
     )
 
 
