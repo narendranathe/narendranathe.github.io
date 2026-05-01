@@ -344,6 +344,73 @@ def test_hero_uses_local_photo_not_external_cdn(html: str) -> None:
         )
 
 
+def test_hero_picture_has_mobile_variant(html: str) -> None:
+    """Hero photo (issue #79): the hero <img> must be wrapped in a
+    <picture> with a mobile <source> pointing at the 800px variant.
+    The 800px file must exist on disk and be smaller than the 1200px
+    source — otherwise the variant is pointless."""
+    start = html.find('<aside class="hero-visual"')
+    assert start != -1, "hero-visual <aside> block not found"
+    end = html.find("</aside>", start)
+    hero_block = html[start:end]
+
+    assert "<picture>" in hero_block, (
+        "hero <img> must be wrapped in <picture> for the mobile variant (#79)"
+    )
+    assert 'media="(max-width: 780px)"' in hero_block, (
+        "hero <picture> must include <source media=\"(max-width: 780px)\"> for mobile"
+    )
+    assert "headshot-fullbody-800.jpg" in hero_block, (
+        "hero <picture> must reference the 800px mobile variant"
+    )
+
+    src_path = REPO_ROOT / "static" / "originals" / "headshot-fullbody.jpg"
+    mobile_path = REPO_ROOT / "static" / "originals" / "headshot-fullbody-800.jpg"
+    assert mobile_path.exists(), (
+        f"mobile hero variant missing on disk: {mobile_path}. "
+        "Run: python scripts/snap-hero-variants.py"
+    )
+    src_bytes = src_path.stat().st_size
+    mobile_bytes = mobile_path.stat().st_size
+    assert mobile_bytes < src_bytes, (
+        f"mobile variant ({mobile_bytes}B) must be smaller than source ({src_bytes}B); "
+        "regenerate via snap-hero-variants.py with lower JPEG quality"
+    )
+    # Hard cap: 50 KB. Soft target was 30 KB; allow headroom for future
+    # quality bumps but fail if someone regenerates at quality 95+.
+    assert mobile_bytes <= 50 * 1024, (
+        f"mobile variant {mobile_bytes}B exceeds 50 KB cap; "
+        "regenerate via snap-hero-variants.py at lower JPEG quality"
+    )
+
+
+def test_hero_preload_uses_imagesrcset(html: str) -> None:
+    """Hero photo (issue #79): the <link rel="preload" as="image"> for
+    the hero must include imagesrcset + imagesizes mirroring the
+    <picture> in the hero. Without this, the preload scanner always
+    fetches the 1200px desktop variant, defeating the mobile variant
+    on Slow 4G."""
+    head_end = html.find("</head>")
+    assert head_end != -1
+    head = html[:head_end]
+    preload_match = re.search(
+        r'<link[^>]+rel="preload"[^>]+as="image"[^>]+>',
+        head,
+        flags=re.S,
+    )
+    assert preload_match, "hero preload <link rel=\"preload\" as=\"image\"> not found"
+    preload = preload_match.group(0)
+    assert "imagesrcset" in preload, (
+        "hero preload must include imagesrcset so mobile preloads the 800px variant"
+    )
+    assert "imagesizes" in preload, (
+        "hero preload must include imagesizes for the preload scanner to pick the right variant"
+    )
+    assert "headshot-fullbody-800.jpg" in preload, (
+        "hero preload imagesrcset must include the 800px variant"
+    )
+
+
 def test_no_inline_style_attribute_on_strips(inline_styles: list) -> None:
     assert not inline_styles, (
         f"Found inline style= attributes inside impact strips: {inline_styles}; "
@@ -997,6 +1064,8 @@ TESTS = [
     test_no_scrapped_exponenthr_outcomes,
     test_no_scrapped_exponenthr_outcomes_in_rendered_text,
     test_hero_uses_local_photo_not_external_cdn,
+    test_hero_picture_has_mobile_variant,
+    test_hero_preload_uses_imagesrcset,
     test_no_inline_style_attribute_on_strips,
     test_jetbrains_mono_loaded,
     test_css_uses_tabular_nums,
