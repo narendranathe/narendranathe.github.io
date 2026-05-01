@@ -142,7 +142,9 @@
     var OPEN_DELAY  = 80;
     var CLOSE_GRACE = 250;
 
-    var card, thumb, titleEl, captionEl;
+    // Closure-scoped so renderStatic() + renderSubstack() can swap them
+    // in/out of the card's `inner` container as the render mode changes.
+    var card, inner, thumb, textWrap, titleEl, captionEl;
     var lastTrigger = null;
     var openTimer = null;
     var closeTimer = null;
@@ -154,7 +156,7 @@
       card.id = 'hover-preview-card';
       card.setAttribute('popover', 'manual');
 
-      var inner = document.createElement('div');
+      inner = document.createElement('div');
       inner.className = 'hover-preview-card';
 
       thumb = document.createElement('img');
@@ -166,7 +168,7 @@
       thumb.setAttribute('height', '320');
       inner.appendChild(thumb);
 
-      var textWrap = document.createElement('div');
+      textWrap = document.createElement('div');
       textWrap.className = 'hover-preview-text';
       titleEl = document.createElement('p');
       titleEl.className = 'hover-preview-title';
