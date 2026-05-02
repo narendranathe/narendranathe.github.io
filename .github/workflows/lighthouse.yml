@@ -1,0 +1,56 @@
+name: Lighthouse CI
+
+# Production-grade perf audit. Runs against the live GitHub Pages
+# deploy (https://narendranathe.github.io/), unlike the legacy CCR
+# routine which got blocked by GH Pages' "host_not_allowed" guard
+# on datacenter IPs. GitHub Actions runners have public residential-
+# style IPs and get past that wall.
+#
+# Budget config: lighthouserc.json (root of repo).
+# Reports upload to lhci.dev temporary-public-storage; URL printed
+# in the workflow log + linked from the GitHub check.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+  schedule:
+    # Sundays 14:00 UTC = 9am CDT. Catches drift on weeks with no
+    # merges and complements the on-push run.
+    - cron: '0 14 * * 0'
+
+permissions:
+  contents: read
+  pages: read
+  # `pull-requests: write` would let the action drop a comment on the
+  # triggering PR. We ship without it for now — the workflow log + the
+  # lhci.dev report URL are sufficient signal. Add later if PR-comment
+  # surfacing becomes useful.
+
+concurrency:
+  group: lighthouse-ci
+  cancel-in-progress: false
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for Pages deploy to settle
+        # On push-to-main, the actions/deploy-pages workflow runs in
+        # parallel with this one. Lighthouse against a stale deploy
+        # gives misleading numbers. Sleep 60s so deploy-pages has
+        # time to flip the live origin to the just-merged commit.
+        if: github.event_name == 'push'
+        run: sleep 60
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          configPath: ./lighthouserc.json
+          temporaryPublicStorage: true
+          uploadArtifacts: true
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
