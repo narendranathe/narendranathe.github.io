@@ -985,6 +985,26 @@ def test_all_ids_unique(all_ids: list) -> None:
     )
 
 
+def test_all_local_links_resolve() -> None:
+    """Issue #43: every relative-path href and same-page #fragment in
+    every HTML file must resolve to a real file or element. External
+    URLs are deliberately NOT checked here — they're network-dependent
+    and flaky on CI; run `python scripts/verify-links.py --live` for
+    that. The local-only check is fast, deterministic, and catches the
+    classes of regression that actually break the site (typos in repo
+    slugs, removed pages, broken section anchors)."""
+    import subprocess
+    result = subprocess.run(
+        [sys.executable, str(REPO_ROOT / "scripts" / "verify-links.py")],
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    assert result.returncode == 0, (
+        f"verify-links.py reported failures:\n{result.stdout}\n{result.stderr}"
+    )
+
+
 # ------- Test runner -------
 TESTS = [
     test_index_html_exists,
@@ -1046,6 +1066,8 @@ TESTS = [
     test_skills_icon_files_present,
     test_skills_icon_byte_budgets,
     test_skills_pattern_doc_present,
+    # ----- Link verification (issue #43) -----
+    test_all_local_links_resolve,
 ]
 
 
