@@ -409,29 +409,64 @@ def test_hero_picture_has_mobile_variant(html: str) -> None:
 
 
 def test_hero_preload_uses_imagesrcset(html: str) -> None:
-    """Hero photo (issue #79): the <link rel="preload" as="image"> for
-    the hero must include imagesrcset + imagesizes mirroring the
-    <picture> in the hero. Without this, the preload scanner always
-    fetches the 1200px desktop variant, defeating the mobile variant
-    on Slow 4G."""
+    """Hero photo (issues #79 + #83): there must be a `type`-aware
+    preload PER format (AVIF + WebP + JPEG) so each browser only
+    fetches the format it will render via <picture>. A single
+    untyped JPEG preload would force a high-priority JPEG fetch
+    even on AVIF-supporting browsers, causing a double-fetch
+    (preloaded JPEG + picture-rendered AVIF) and defeating the
+    perf goal of the variant work.
+
+    Each preload must:
+    - Carry `type="image/<fmt>"` (Chrome 91+/Safari 17+/Firefox
+      respect the type filter; older browsers ignore it harmlessly)
+    - Carry `imagesrcset` referencing both the 800w and 1200w files
+    - Carry `imagesizes` matching the <picture>'s 860px breakpoint
+    - Carry `fetchpriority="high"` so the LCP candidate races the
+      stylesheet on cold loads."""
     head_end = html.find("</head>")
     assert head_end != -1
     head = html[:head_end]
-    preload_match = re.search(
+    preloads = re.findall(
         r'<link[^>]+rel="preload"[^>]+as="image"[^>]+>',
         head,
         flags=re.S,
     )
-    assert preload_match, "hero preload <link rel=\"preload\" as=\"image\"> not found"
-    preload = preload_match.group(0)
-    assert "imagesrcset" in preload, (
-        "hero preload must include imagesrcset so mobile preloads the 800px variant"
+    assert len(preloads) >= 3, (
+        f"expected >= 3 hero preloads (AVIF + WebP + JPEG), found {len(preloads)}. "
+        "Single-format preload causes double-fetch on AVIF/WebP browsers."
     )
-    assert "imagesizes" in preload, (
-        "hero preload must include imagesizes for the preload scanner to pick the right variant"
-    )
-    assert "headshot-fullbody-800.jpg" in preload, (
-        "hero preload imagesrcset must include the 800px variant"
+
+    found_fmts: set[str] = set()
+    for preload in preloads:
+        # Skip non-hero preloads (none today, but defensive)
+        if "headshot-fullbody" not in preload:
+            continue
+        for fmt, ext in (("image/avif", "avif"), ("image/webp", "webp"), ("image/jpeg", "jpg")):
+            if f'type="{fmt}"' in preload:
+                # Per-format invariants
+                assert "imagesrcset" in preload, (
+                    f"{fmt} preload missing imagesrcset"
+                )
+                assert "imagesizes" in preload, (
+                    f"{fmt} preload missing imagesizes"
+                )
+                assert 'fetchpriority="high"' in preload, (
+                    f"{fmt} preload missing fetchpriority=\"high\""
+                )
+                assert f"-800.{ext}" in preload and f"headshot-fullbody.{ext}" in preload, (
+                    f"{fmt} preload imagesrcset must include both the 800px and 1200px {ext} variants"
+                )
+                assert "(max-width: 860px)" in preload, (
+                    f"{fmt} preload imagesizes must use the 860px breakpoint"
+                )
+                found_fmts.add(fmt)
+
+    missing = {"image/avif", "image/webp", "image/jpeg"} - found_fmts
+    assert not missing, (
+        f"missing type-aware preloads for: {sorted(missing)}. Each format the "
+        "<picture> serves must have a matching preload so the browser only "
+        "fetches what it will render."
     )
 
 
