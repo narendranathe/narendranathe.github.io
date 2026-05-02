@@ -27,6 +27,7 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from html.parser import HTMLParser
 from pathlib import Path
@@ -71,6 +72,9 @@ LENIENT_HOSTS: dict[str, frozenset[int]] = {
 HOST_ALLOWLIST: frozenset[str] = frozenset({
     "https://www.linkedin.com/in/narendranathe/",
     "https://linkedin.com/in/narendranathe/",
+    # Testimonial-author profiles — manually verified from a real
+    # browser. LinkedIn 404s these to unauthenticated bots.
+    "https://www.linkedin.com/in/pranav-s-47356a58/",
 })
 
 
@@ -278,6 +282,8 @@ def main() -> int:
     p = argparse.ArgumentParser(description="Verify every link on the portfolio resolves.")
     p.add_argument("--live", action="store_true", help="Also check external URLs (slow, network-dependent)")
     p.add_argument("--json", action="store_true", help="Machine-readable JSON output")
+    p.add_argument("--max-workers", type=int, default=8,
+                   help="Parallelism for external (--live) checks. Default 8; raise carefully — high values can trip bot guards on hostile hosts.")
     args = p.parse_args()
 
     files = collect_html_files()
@@ -295,6 +301,7 @@ def main() -> int:
         all_refs.extend(refs)
 
     report = Report()
+    externals_to_check: list[LinkRef] = []
     for ref in all_refs:
         if is_skip(ref.href):
             report.skipped += 1
@@ -309,14 +316,24 @@ def main() -> int:
         if is_external(ref.href):
             report.checked_external += 1
             if args.live:
-                err = check_external(ref)
-                if err:
-                    report.failures.append((ref, err))
+                externals_to_check.append(ref)
             continue
         report.checked_local += 1
         err = check_local(ref, ids_by_file)
         if err:
             report.failures.append((ref, err))
+
+    # External (--live) checks fan out via ThreadPoolExecutor. Sequential
+    # at 72 URLs * 10s timeout each was up to 12 min worst-case; 8 workers
+    # collapses that to ~90 seconds without tripping bot guards.
+    if externals_to_check:
+        with ThreadPoolExecutor(max_workers=args.max_workers) as ex:
+            futures = {ex.submit(check_external, ref): ref for ref in externals_to_check}
+            for fut in as_completed(futures):
+                ref = futures[fut]
+                err = fut.result()
+                if err:
+                    report.failures.append((ref, err))
 
     out = report_json(report) if args.json else report_text(report)
     print(out)

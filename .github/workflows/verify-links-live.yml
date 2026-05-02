@@ -1,0 +1,96 @@
+name: Verify links (live external)
+
+# Weekly health check on every external link in the portfolio. The
+# local-only verifier runs in CI on every PR; this --live run catches
+# external link rot (LinkedIn URLs going stale, GitHub repos renamed,
+# OSS projects archived) that the local check can't see.
+#
+# Failure mode: opens a GitHub issue tagged `link-rot` with the
+# verifier output. Does NOT block any other workflow — link rot is a
+# nudge, not an emergency.
+#
+# See scripts/verify-links.py for the verifier itself.
+
+on:
+  schedule:
+    # Mondays at 14:00 UTC = 9am CDT. Pairs with the existing portfolio
+    # cadence (most other automations fire weekday mornings CDT).
+    - cron: '0 14 * * 1'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write  # to open the link-rot issue on failure
+
+concurrency:
+  group: verify-links-live
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run --live link verification
+        id: verify
+        # `set +e` so a non-zero exit from the verifier doesn't fail
+        # the step — we want to capture the output and decide what to
+        # do based on whether it succeeded.
+        run: |
+          set +e
+          python scripts/verify-links.py --live > /tmp/verify-output.txt 2>&1
+          rc=$?
+          set -e
+          # Echo to job log
+          cat /tmp/verify-output.txt
+          # Set output flag for the next step
+          if [ $rc -eq 0 ]; then
+            echo "result=ok" >> "$GITHUB_OUTPUT"
+          else
+            echo "result=fail" >> "$GITHUB_OUTPUT"
+          fi
+          # Always exit 0 so the workflow can proceed to issue-filing
+          exit 0
+
+      - name: Open link-rot issue on failure (debounced)
+        if: steps.verify.outputs.result == 'fail'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          # Debounce: if a link-rot issue is already open, comment on
+          # it instead of opening a new one. Avoids issue-spam on a
+          # weekly cron when a flaky host stays broken.
+          existing=$(gh issue list --state open --label link-rot --json number --jq '.[0].number' 2>/dev/null || echo "")
+          body_file=/tmp/issue-body.md
+          {
+            echo "Weekly --live link verification failed. See full output below."
+            echo
+            echo "**Workflow run:** https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            echo "**Fired at:** $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo
+            echo '```'
+            cat /tmp/verify-output.txt
+            echo '```'
+            echo
+            echo "Triage:"
+            echo "1. Reproduce locally: \`python scripts/verify-links.py --live\`"
+            echo "2. If the URL is genuinely dead: update or remove the link in HTML."
+            echo "3. If the URL is bot-walled but valid (verified in a browser): add to \`HOST_ALLOWLIST\` in \`scripts/verify-links.py\`."
+            echo "4. If the host is hostile to verifiers (returns specific status codes): add to \`LENIENT_HOSTS\` mapping."
+          } > "$body_file"
+
+          if [ -n "$existing" ] && [ "$existing" != "null" ]; then
+            echo "issue #$existing already open; appending comment"
+            gh issue comment "$existing" --body-file "$body_file"
+          else
+            echo "opening fresh issue"
+            gh issue create --title "link-rot: weekly --live verification failed" --label link-rot --body-file "$body_file"
+          fi
