@@ -1852,6 +1852,17 @@ body.splash-active { overflow: hidden; }
   transform: translateX(-50%) translateY(0);
 }
 
+/* WAI-ARIA APG tooltip pattern (#80): Esc on a focused tile sets
+   data-tooltip-suppressed; this rule keeps the tooltip hidden even
+   while :focus-visible still matches, so focus stays on the trigger
+   but the tooltip is dismissed. Suppression clears on the next
+   focus / mouseenter — see app.js. */
+.skill-icon[data-tooltip-suppressed]:hover > .skill-tooltip,
+.skill-icon[data-tooltip-suppressed]:focus-visible > .skill-tooltip {
+  opacity: 0;
+  pointer-events: none;
+}
+
 @media (max-width: 780px) {
   .skills-list {
     grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));

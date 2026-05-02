@@ -366,6 +366,75 @@ def test_hero_aside_no_data_reveal(html: str) -> None:
     )
 
 
+def test_hero_picture_has_mobile_variant(html: str) -> None:
+    """Hero photo (issue #79): the hero <img> must be wrapped in a
+    <picture> with a mobile <source> pointing at the 800px variant.
+    The 800px file must exist on disk and be smaller than the 1200px
+    source — otherwise the variant is pointless."""
+    start = html.find('<aside class="hero-visual"')
+    assert start != -1, "hero-visual <aside> block not found"
+    end = html.find("</aside>", start)
+    hero_block = html[start:end]
+
+    assert "<picture>" in hero_block, (
+        "hero <img> must be wrapped in <picture> for the mobile variant (#79)"
+    )
+    assert 'media="(max-width: 860px)"' in hero_block, (
+        "hero <picture> must include <source media=\"(max-width: 860px)\"> "
+        "to match the actual hero stacking breakpoint at styles.css:307. "
+        "(Earlier 780px was a mismatch — see test_hero_picture_breakpoint_matches_layout)"
+    )
+    assert "headshot-fullbody-800.jpg" in hero_block, (
+        "hero <picture> must reference the 800px mobile variant"
+    )
+
+    src_path = REPO_ROOT / "static" / "originals" / "headshot-fullbody.jpg"
+    mobile_path = REPO_ROOT / "static" / "originals" / "headshot-fullbody-800.jpg"
+    assert mobile_path.exists(), (
+        f"mobile hero variant missing on disk: {mobile_path}. "
+        "Run: python scripts/snap-hero-variants.py"
+    )
+    src_bytes = src_path.stat().st_size
+    mobile_bytes = mobile_path.stat().st_size
+    assert mobile_bytes < src_bytes, (
+        f"mobile variant ({mobile_bytes}B) must be smaller than source ({src_bytes}B); "
+        "regenerate via snap-hero-variants.py with lower JPEG quality"
+    )
+    # Hard cap: 50 KB. Soft target was 30 KB; allow headroom for future
+    # quality bumps but fail if someone regenerates at quality 95+.
+    assert mobile_bytes <= 50 * 1024, (
+        f"mobile variant {mobile_bytes}B exceeds 50 KB cap; "
+        "regenerate via snap-hero-variants.py at lower JPEG quality"
+    )
+
+
+def test_hero_preload_uses_imagesrcset(html: str) -> None:
+    """Hero photo (issue #79): the <link rel="preload" as="image"> for
+    the hero must include imagesrcset + imagesizes mirroring the
+    <picture> in the hero. Without this, the preload scanner always
+    fetches the 1200px desktop variant, defeating the mobile variant
+    on Slow 4G."""
+    head_end = html.find("</head>")
+    assert head_end != -1
+    head = html[:head_end]
+    preload_match = re.search(
+        r'<link[^>]+rel="preload"[^>]+as="image"[^>]+>',
+        head,
+        flags=re.S,
+    )
+    assert preload_match, "hero preload <link rel=\"preload\" as=\"image\"> not found"
+    preload = preload_match.group(0)
+    assert "imagesrcset" in preload, (
+        "hero preload must include imagesrcset so mobile preloads the 800px variant"
+    )
+    assert "imagesizes" in preload, (
+        "hero preload must include imagesizes for the preload scanner to pick the right variant"
+    )
+    assert "headshot-fullbody-800.jpg" in preload, (
+        "hero preload imagesrcset must include the 800px variant"
+    )
+
+
 def test_no_inline_style_attribute_on_strips(inline_styles: list) -> None:
     assert not inline_styles, (
         f"Found inline style= attributes inside impact strips: {inline_styles}; "
@@ -1027,6 +1096,172 @@ def test_all_local_links_resolve() -> None:
     )
 
 
+def test_skills_tooltip_esc_and_overflow_polish_in_app_js() -> None:
+    """Issue #80: app.js carries the skills-grid tooltip polish block:
+    Esc-to-dismiss (WAI-ARIA APG: hide tooltip, KEEP FOCUS on trigger)
+    + edge-tile overflow detector that shifts the tooltip horizontally
+    so it stays in viewport on narrow desktop widths and at 200%
+    browser zoom (WCAG 1.4.10).
+
+    Canary-level test: substring matching, not behavior verification.
+    Real behavior verification would require headless-browser tests
+    (Playwright/jsdom) — out of scope for this stdlib-only suite."""
+    js = APP_JS.read_text(encoding="utf-8")
+    assert ".skills-grid" in js, (
+        "app.js missing .skills-grid hook for the #80 tooltip polish block"
+    )
+    assert "shiftTooltipIfNeeded" in js, (
+        "app.js missing the edge-tile overflow detector (shiftTooltipIfNeeded) for #80"
+    )
+    assert "Escape" in js and "skill-icon" in js, (
+        "app.js missing the Esc-to-dismiss handler for skill-icon focus (#80)"
+    )
+    # APG canonical: Esc must hide tooltip while keeping focus on trigger.
+    # The implementation uses a data-tooltip-suppressed attribute, NOT blur().
+    assert "data-tooltip-suppressed" in js, (
+        "Esc handler must use data-tooltip-suppressed (APG: keep focus on "
+        "trigger), not blur() which sends focus to <body>"
+    )
+    assert ".blur()" not in js or "active.blur" not in js, (
+        "Esc handler should NOT call blur() on the active skill-icon — "
+        "use the data-tooltip-suppressed attribute pattern (WAI-ARIA APG)"
+    )
+    # Edge-shift transform must preserve translateY(0) so the shifted
+    # tooltip stays at its CSS-defined revealed position (CSS rest-state
+    # has translateY(4px); a translateX-only transform would mis-align).
+    assert "translateY(0)" in js, (
+        "edge-shift transform must include translateY(0) to preserve the "
+        "CSS hover lift; otherwise shifted tooltip sits 4px below intended"
+    )
+
+
+def test_skills_tooltip_suppression_css_rule_present() -> None:
+    """Issue #80: the data-tooltip-suppressed attribute set by the JS
+    Esc handler must have a matching CSS rule that hides the tooltip
+    while focus remains on the tile (APG pattern). Without this rule,
+    setting the attribute does nothing — the tooltip stays visible."""
+    css = STYLES_CSS.read_text(encoding="utf-8")
+    assert "data-tooltip-suppressed" in css, (
+        "styles.css missing the .skill-icon[data-tooltip-suppressed] CSS "
+        "rule that hides the tooltip while focus remains on the trigger. "
+        "The JS Esc handler depends on this — see #80."
+    )
+    # Sanity check that the rule actually hides (opacity: 0)
+    m = re.search(
+        r'\.skill-icon\[data-tooltip-suppressed\][^{]*\{[^}]*opacity\s*:\s*0',
+        css,
+        flags=re.S,
+    )
+    assert m, (
+        "data-tooltip-suppressed rule must include opacity: 0 to actually "
+        "hide the tooltip"
+    )
+
+
+def test_hero_picture_breakpoint_matches_layout() -> None:
+    """Issue #79: the <source media> + preload imagesizes breakpoint
+    must match the actual hero layout breakpoint in styles.css:307
+    (@media max-width: 860px). An off-by-80px mismatch means viewports
+    781-860px get the desktop variant served despite the layout being
+    in mobile single-column mode at max-width:300px — wasted bytes."""
+    html = INDEX_HTML.read_text(encoding="utf-8")
+    css = STYLES_CSS.read_text(encoding="utf-8")
+    # Confirm the 860px hero layout breakpoint still exists in CSS.
+    # Nested rules (`.hero { ... } .hero-grid { ... }`) make a single
+    # regex over `[^}]*` unreliable, so check both invariants
+    # separately: the @media rule + a `.hero-grid` 1-column rule.
+    assert re.search(r'@media\s*\(\s*max-width:\s*860px\s*\)', css), (
+        "expected @media (max-width: 860px) in styles.css for hero layout. "
+        "If the breakpoint moved, update both this test AND the index.html "
+        "<source media> + preload imagesizes to match."
+    )
+    assert re.search(r'\.hero-grid\s*\{\s*grid-template-columns:\s*1fr', css), (
+        "expected `.hero-grid { grid-template-columns: 1fr` somewhere in "
+        "styles.css (the mobile 1-column rule paired with the 860px breakpoint)"
+    )
+    # Picture <source> media must use the same 860px breakpoint
+    source_match = re.search(
+        r'<source\s+media="\(max-width:\s*860px\)"\s+srcset="static/originals/headshot-fullbody-800',
+        html,
+    )
+    assert source_match, (
+        "<picture> <source media> must be (max-width: 860px) to match the "
+        "hero layout breakpoint. Found different value — re-check index.html "
+        "+ styles.css alignment."
+    )
+    # Preload imagesizes must use the same 860px breakpoint
+    preload_match = re.search(
+        r'imagesizes="\(max-width:\s*860px\)\s+100vw,\s*1200px"',
+        html,
+    )
+    assert preload_match, (
+        "preload imagesizes must use (max-width: 860px) 100vw, 1200px to "
+        "match the <source media> + layout breakpoint"
+    )
+
+
+def test_hero_img_has_width_and_height() -> None:
+    """CLS=0 guard: the inner <img> in the hero <picture> must declare
+    width + height attributes so the browser reserves space before the
+    image loads. Removing these attributes silently regresses CLS."""
+    html = INDEX_HTML.read_text(encoding="utf-8")
+    start = html.find('<aside class="hero-visual"')
+    assert start != -1, "hero-visual <aside> not found"
+    end = html.find("</aside>", start)
+    hero = html[start:end]
+    img_match = re.search(r'<img\s+src="static/originals/headshot-fullbody\.jpg"[^>]*>', hero, flags=re.S)
+    assert img_match, "hero <img> not found"
+    img_tag = img_match.group(0)
+    assert 'width="1200"' in img_tag, (
+        "hero <img> must declare width=\"1200\" (CLS=0 guard)"
+    )
+    assert 'height="798"' in img_tag, (
+        "hero <img> must declare height=\"798\" (CLS=0 guard)"
+    )
+
+
+def test_hero_img_has_lcp_attributes() -> None:
+    """LCP guard: the inner <img> in the hero <picture> must carry
+    fetchpriority=\"high\" + loading=\"eager\" + decoding=\"async\" so
+    Chrome prioritizes the fetch and doesn't defer to layout. Each
+    attribute is independently load-bearing for the LCP target."""
+    html = INDEX_HTML.read_text(encoding="utf-8")
+    start = html.find('<aside class="hero-visual"')
+    assert start != -1, "hero-visual <aside> not found"
+    end = html.find("</aside>", start)
+    hero = html[start:end]
+    img_match = re.search(r'<img\s+src="static/originals/headshot-fullbody\.jpg"[^>]*>', hero, flags=re.S)
+    assert img_match, "hero <img> not found"
+    img_tag = img_match.group(0)
+    for attr in ('fetchpriority="high"', 'loading="eager"', 'decoding="async"'):
+        assert attr in img_tag, (
+            f"hero <img> missing {attr} — LCP target depends on this attribute"
+        )
+
+
+def test_hero_alt_text_includes_role() -> None:
+    """The hero <img> alt text must identify Naren AND his role
+    (Senior AI Platform Engineer), so screen-reader users get the
+    same role-context that sighted users see in the adjacent <h1>
+    + tagline. Per #69 spec + critique-agent B review."""
+    html = INDEX_HTML.read_text(encoding="utf-8")
+    start = html.find('<aside class="hero-visual"')
+    end = html.find("</aside>", start)
+    hero = html[start:end]
+    alt_match = re.search(
+        r'<img\s+src="static/originals/headshot-fullbody\.jpg"[^>]*alt="([^"]+)"',
+        hero,
+        flags=re.S,
+    )
+    assert alt_match, "hero <img> missing alt attribute"
+    alt = alt_match.group(1)
+    assert "Naren" in alt, f"hero alt must include the name: {alt!r}"
+    assert "Engineer" in alt or "Engineering" in alt, (
+        f"hero alt must include the role keyword (e.g. 'AI Platform "
+        f"Engineer'); got {alt!r}"
+    )
+
+
 # ------- Test runner -------
 TESTS = [
     test_index_html_exists,
@@ -1040,6 +1275,8 @@ TESTS = [
     test_no_scrapped_exponenthr_outcomes_in_rendered_text,
     test_hero_uses_local_photo_not_external_cdn,
     test_hero_aside_no_data_reveal,
+    test_hero_picture_has_mobile_variant,
+    test_hero_preload_uses_imagesrcset,
     test_no_inline_style_attribute_on_strips,
     test_jetbrains_mono_loaded,
     test_css_uses_tabular_nums,
@@ -1089,6 +1326,12 @@ TESTS = [
     test_skills_icon_files_present,
     test_skills_icon_byte_budgets,
     test_skills_pattern_doc_present,
+    test_skills_tooltip_esc_and_overflow_polish_in_app_js,
+    test_skills_tooltip_suppression_css_rule_present,
+    test_hero_picture_breakpoint_matches_layout,
+    test_hero_img_has_width_and_height,
+    test_hero_img_has_lcp_attributes,
+    test_hero_alt_text_includes_role,
     # ----- Link verification (issue #43) -----
     test_all_local_links_resolve,
 ]
