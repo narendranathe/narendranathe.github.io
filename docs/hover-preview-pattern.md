@@ -160,6 +160,7 @@ The default render mode is the static thumbnail + title + caption. A second mode
 ### Trigger annotation
 
 ```html
+<!-- Publication-root link: shows the 3 most-recent posts -->
 <a href="https://yourpub.substack.com" target="_blank" rel="noreferrer"
    data-hover-preview="/static/preview-substack.png"
    data-hover-embed="substack-feed"
@@ -168,7 +169,23 @@ The default render mode is the static thumbnail + title + caption. A second mode
    data-hover-caption="Weekly notes">
   Read on Substack
 </a>
+
+<!-- Specific-post link: pins THAT post first, then the 2 next
+     most-recent posts after it -->
+<a href="https://yourpub.substack.com/p/karpathys-llm-wiki-applied-to-a-multi"
+   target="_blank" rel="noreferrer"
+   data-hover-preview="/static/preview-substack.png"
+   data-hover-embed="substack-feed"
+   data-hover-feed="/static/substack-latest.json"
+   data-hover-title="Karpathy's LLM Wiki, applied"
+   data-hover-caption="GraphRAG implementation">
+  Read on Substack
+</a>
 ```
+
+**Per-trigger pin behavior:** the JS reads the trigger's `href`. If that URL matches one of the posts in the JSON, that post is rendered FIRST in the popup, followed by the 2 next most-recent posts (excluding the pinned one). For root-URL triggers — or triggers whose href doesn't match any post — the popup falls back to the top-3-most-recent default. URL match is normalized: trailing slash and `#fragment` are ignored, so `…/p/foo` and `…/p/foo/#section` resolve to the same post.
+
+**Why the parser keeps 10 posts even though the popup shows 3:** so the per-trigger pin lookup can resolve older posts that are no longer in the absolute top 3. Adjust `MAX_POSTS` in `scripts/snap-substack-feed.py` if you have a long-tailed publication and want the pin to find further-back posts.
 
 `data-hover-preview` stays as a fallback: if the JSON fetch fails (404 / network / CORS), the popup degrades to the static screenshot. `data-hover-title` is reused as the feed-card header.
 

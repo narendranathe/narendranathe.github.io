@@ -246,6 +246,29 @@
       return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
     }
 
+    function selectPostsForTrigger(allPosts, triggerHref) {
+      // Per-trigger pin: if the trigger's href is a specific post URL
+      // (not the publication root), find that post in the JSON and
+      // surface it FIRST, followed by the 2 next most recent posts
+      // (excluding the pinned one). For root-URL triggers — or any
+      // href that doesn't match a post — fall back to the top-3
+      // most-recent default.
+      if (!triggerHref) return allPosts.slice(0, 3);
+      // Normalize: ignore trailing slash + url fragment for match
+      var norm = function (u) { return (u || '').split('#')[0].replace(/\/$/, ''); };
+      var target = norm(triggerHref);
+      var pinned = null;
+      for (var i = 0; i < allPosts.length; i++) {
+        if (norm(allPosts[i].url) === target) {
+          pinned = allPosts[i];
+          break;
+        }
+      }
+      if (!pinned) return allPosts.slice(0, 3);
+      var others = allPosts.filter(function (p) { return p !== pinned; });
+      return [pinned].concat(others.slice(0, 2));
+    }
+
     function buildFeedDom(trigger, data) {
       var frag = document.createDocumentFragment();
       var header = document.createElement('p');
@@ -254,18 +277,19 @@
         trigger.getAttribute('data-hover-title') || 'Latest posts';
       frag.appendChild(header);
 
-      var posts = (data && data.posts) || [];
-      if (!posts.length) {
+      var allPosts = (data && data.posts) || [];
+      if (!allPosts.length) {
         var empty = document.createElement('p');
         empty.className = 'hp-feed-empty';
         empty.textContent = (data === null) ? 'Could not load latest posts.' : 'No posts yet.';
         frag.appendChild(empty);
         return frag;
       }
+      var posts = selectPostsForTrigger(allPosts, trigger.getAttribute('href'));
 
       var list = document.createElement('ul');
       list.className = 'hp-feed-list';
-      posts.slice(0, 3).forEach(function (post) {
+      posts.forEach(function (post) {
         var item = document.createElement('a');
         item.className = 'hp-feed-item';
         item.href = post.url;

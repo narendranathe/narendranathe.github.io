@@ -799,8 +799,11 @@ def test_substack_snapshot_json_schema() -> None:
     for key in ("publication", "url", "fetched_at", "posts"):
         assert key in data, f"substack-latest.json missing required field: {key}"
     assert isinstance(data["posts"], list), "posts must be a list"
-    assert 0 <= len(data["posts"]) <= 5, (
-        f"posts length {len(data['posts'])} unexpected; parser caps at 3"
+    # Parser keeps up to 10 posts so the per-trigger pin lookup can
+    # resolve older posts that aren't in the absolute top 3 anymore.
+    # The popup itself only shows max 3 at a time.
+    assert 0 <= len(data["posts"]) <= 10, (
+        f"posts length {len(data['posts'])} unexpected; parser caps at 10"
     )
     if data["posts"]:
         post = data["posts"][0]
@@ -836,15 +839,19 @@ def test_substack_triggers_have_embed_attrs(html: str) -> None:
 
 
 def test_app_js_has_substack_render_branch() -> None:
-    """app.js must implement the renderSubstack branch and the scroll-
-    aware repositioning listener; without either, the live-feed mode
-    is half-built."""
+    """app.js must implement the renderSubstack branch, the per-trigger
+    pin selector, and the scroll-aware repositioning listener; without
+    any one of them, the live-feed mode is half-built."""
     js = APP_JS.read_text(encoding="utf-8")
     assert "renderSubstack" in js, (
         "app.js missing renderSubstack() — live-feed render branch absent"
     )
     assert "buildFeedDom" in js, (
         "app.js missing buildFeedDom() — feed list construction absent"
+    )
+    assert "selectPostsForTrigger" in js, (
+        "app.js missing selectPostsForTrigger() — per-trigger pin lookup "
+        "(href -> matching post first, then 2 most recent) absent"
     )
     assert "data-hover-embed" in js, (
         "app.js never reads data-hover-embed attribute — render branch dead code"

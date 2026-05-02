@@ -48,7 +48,9 @@ DEFAULT_FEED = "https://narendranathe.substack.com/feed"
 TARGET = REPO_ROOT / "static" / "substack-latest.json"
 TIMEOUT_S = 15
 USER_AGENT = "Mozilla/5.0 (compatible; PortfolioSubstackSnap/1.0)"
-MAX_POSTS = 3
+MAX_POSTS = 10  # popup shows max 3 at a time, but we keep 10 in the JSON so
+                # the per-trigger pin lookup (href -> post) can resolve older
+                # posts that aren't in the absolute top 3 anymore.
 EXCERPT_MAX_CHARS = 220
 # Substack uses <content:encoded> in the content namespace; we read
 # <description> instead (always present, plain HTML, shorter for excerpts).
