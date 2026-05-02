@@ -1,0 +1,54 @@
+name: Substack snapshot
+
+# Periodically fetch the latest posts from the Substack RSS feed and
+# commit a same-origin JSON snapshot. The hover-preview popup reads
+# this file directly (no client-side CORS, no third-party tracking).
+#
+# See scripts/snap-substack-feed.py for the parser + output contract.
+
+on:
+  schedule:
+    # Every 4 hours. Substack publication is weekly cadence; 4h is
+    # plenty fresh, keeps commit log tidy. Adjust if you ever post
+    # multiple times per day and want sub-hour freshness.
+    - cron: '17 */4 * * *'
+  workflow_dispatch: {}  # manual fire from the Actions tab
+
+permissions:
+  contents: write  # commit + push the JSON snapshot
+
+concurrency:
+  group: substack-snapshot
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Fetch + parse Substack feed
+        run: python scripts/snap-substack-feed.py
+
+      - name: Commit snapshot if changed
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- static/substack-latest.json; then
+            echo "no change to substack-latest.json — skipping commit"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add static/substack-latest.json
+          # `[skip ci]` so the deploy workflow doesn't re-fire on
+          # this commit (deploy.yml already runs on push to main and
+          # we don't want a recursive build loop). Pages auto-deploys
+          # on push regardless.
+          git commit -m "chore(substack): refresh latest-posts snapshot [skip ci]"
+          git push

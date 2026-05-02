@@ -1629,13 +1629,13 @@ body.splash-active { overflow: hidden; }
 .hover-preview-card {
   display: grid;
   grid-template-rows: auto auto;
-  gap: 0.625rem;
-  width: 264px;
-  padding: 0.875rem;
+  gap: 0.5rem;
+  width: 220px;
+  padding: 0.625rem;
   background: var(--bg);
   color: var(--fg);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 12px;
   box-shadow:
     0 1px 2px rgba(0, 0, 0, 0.06),
     0 14px 36px -8px rgba(20, 14, 8, 0.22);
@@ -1649,10 +1649,10 @@ body.splash-active { overflow: hidden; }
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 240 / 320;
-  border-radius: 10px;
+  aspect-ratio: 4 / 3;
+  border-radius: 8px;
   background: #ffffff;
-  object-fit: contain;
+  object-fit: cover;
   opacity: 0;
   transform: scale(0.985);
   transition:
@@ -1689,9 +1689,76 @@ body.splash-active { overflow: hidden; }
 
 .hover-preview-caption {
   margin: 0;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--fg-muted);
-  line-height: 1.45;
+  line-height: 1.4;
+  /* Smaller card means less room for prose; clamp to 2 lines so a
+     long caption never blows up the card height past its sibling tile. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Substack live-feed mode: when the trigger has data-hover-embed=
+   "substack-feed", the JS swaps the static thumbnail+title+caption
+   for a stacked list of the 3 most recent posts (title + relative
+   date + 1-line excerpt). Source: build-time JSON snapshot generated
+   by .github/workflows/substack-snapshot.yml — same-origin fetch,
+   no CORS, no third-party tracking. */
+.hp-feed-header {
+  display: flex; align-items: center; gap: 0.4rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.66rem; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--fg-muted);
+}
+.hp-feed-header::before {
+  content: ""; width: 6px; height: 6px;
+  background: var(--accent-warm); border-radius: 50%;
+  flex-shrink: 0;
+}
+.hp-feed-list {
+  display: flex; flex-direction: column;
+  gap: 0.45rem;
+  margin: 0; padding: 0;
+  list-style: none;
+}
+.hp-feed-item {
+  display: block;
+  padding: 0.4rem 0.05rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: inherit;
+  transition: background 140ms ease;
+}
+.hp-feed-item + .hp-feed-item {
+  border-top: 1px solid var(--border-soft, var(--border));
+}
+.hp-feed-item:hover,
+.hp-feed-item:focus-visible {
+  background: var(--bg-alt);
+  outline: none;
+}
+.hp-feed-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0 0 0.15rem;
+  font-size: 0.78rem; font-weight: 600;
+  line-height: 1.3; color: var(--fg);
+}
+.hp-feed-meta {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.64rem; color: var(--fg-muted);
+  letter-spacing: 0.02em;
+}
+.hp-feed-empty {
+  padding: 0.6rem 0;
+  font-size: 0.72rem; color: var(--fg-muted);
+  font-style: italic;
 }
 
 /* Touch devices: hide the popover entirely. Mobile users get the

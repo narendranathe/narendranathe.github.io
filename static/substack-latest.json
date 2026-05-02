@@ -1,0 +1,67 @@
+{
+  "publication": "Narendranath Edara",
+  "url": "https://narendranathe.substack.com",
+  "fetched_at": "2026-05-02T01:19:27.118911Z",
+  "posts": [
+    {
+      "title": "Karpathy’s LLM Wiki, applied to a multi-repo system - what changes and what doesn’t",
+      "url": "https://narendranathe.substack.com/p/karpathys-llm-wiki-applied-to-a-multi",
+      "published_at": "2026-04-21T13:11:57Z",
+      "excerpt": "GraphRAG implementation"
+    },
+    {
+      "title": "I built a resume tailoring tool with Claude Code",
+      "url": "https://narendranathe.substack.com/p/i-built-a-resume-tailoring-tool-with",
+      "published_at": "2026-03-19T23:51:50Z",
+      "excerpt": "Your ability to get a job should not depend on your resume writing skills."
+    },
+    {
+      "title": "I Built a Cinematic Website in 10 Minutes Using Claude AI. Here’s Every Technical Decision I Made.",
+      "url": "https://narendranathe.substack.com/p/i-built-a-cinematic-website-in-10",
+      "published_at": "2026-02-07T21:43:11Z",
+      "excerpt": "What used to take days now takes minutes. But the engineering knowledge that makes it possible hasn’t changed."
+    },
+    {
+      "title": "Building My Portfolio: A Journey Through Design Decisions, Bugs, and Late-Night Debugging",
+      "url": "https://narendranathe.substack.com/p/building-my-portfolio-a-journey-through",
+      "published_at": "2026-01-30T14:34:16Z",
+      "excerpt": "From a blank HTML file to a dynamic, config-driven portfolio — here’s everything that worked, everything that broke, and what I learned along the way."
+    },
+    {
+      "title": "Building Real-Time Portfolio Risk Analytics",
+      "url": "https://narendranathe.substack.com/p/building-real-time-portfolio-risk",
+      "published_at": "2025-12-31T16:09:37Z",
+      "excerpt": "From 24-Hour Batch Jobs to 5-Second Insights"
+    },
+    {
+      "title": "Compute Cost ≠ Cloud Cost: Fix Architecture, Save Budget",
+      "url": "https://narendranathe.substack.com/p/compute-cost-cloud-cost-fix-architecture",
+      "published_at": "2025-12-08T14:21:49Z",
+      "excerpt": "A real incident that shows why workload isolation, observability, and replica testing matter more than chasing costs."
+    },
+    {
+      "title": "Row-Level Security (RLS) in SQL",
+      "url": "https://narendranathe.substack.com/p/row-level-security-rls-in-sql",
+      "published_at": "2025-09-29T12:57:24Z",
+      "excerpt": "Ensuring Fine-Grained Data Access Control"
+    },
+    {
+      "title": "Cross-Database Queries and Linked Servers",
+      "url": "https://narendranathe.substack.com/p/cross-database-queries-and-linked",
+      "published_at": "2025-09-26T12:49:26Z",
+      "excerpt": "Practical Patterns, Pitfalls, and Playbooks"
+    },
+    {
+      "title": "Temporal Tables and System-Versioned Tables",
+      "url": "https://narendranathe.substack.com/p/temporal-tables-and-system-versioned",
+      "published_at": "2025-09-24T13:07:48Z",
+      "excerpt": "Making Time Your Data’s Ally"
+    },
+    {
+      "title": "Window Frame Specification in SQL",
+      "url": "https://narendranathe.substack.com/p/window-frame-specification-in-sql",
+      "published_at": "2025-09-22T12:44:23Z",
+      "excerpt": "Precision Analytics at Scale"
+    }
+  ]
+}

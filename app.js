@@ -142,7 +142,9 @@
     var OPEN_DELAY  = 80;
     var CLOSE_GRACE = 250;
 
-    var card, thumb, titleEl, captionEl;
+    // Closure-scoped so renderStatic() + renderSubstack() can swap them
+    // in/out of the card's `inner` container as the render mode changes.
+    var card, inner, thumb, textWrap, titleEl, captionEl;
     var lastTrigger = null;
     var openTimer = null;
     var closeTimer = null;
@@ -154,7 +156,7 @@
       card.id = 'hover-preview-card';
       card.setAttribute('popover', 'manual');
 
-      var inner = document.createElement('div');
+      inner = document.createElement('div');
       inner.className = 'hover-preview-card';
 
       thumb = document.createElement('img');
@@ -166,7 +168,7 @@
       thumb.setAttribute('height', '320');
       inner.appendChild(thumb);
 
-      var textWrap = document.createElement('div');
+      textWrap = document.createElement('div');
       textWrap.className = 'hover-preview-text';
       titleEl = document.createElement('p');
       titleEl.className = 'hover-preview-title';
@@ -191,21 +193,173 @@
       var top = rt.bottom + pad;
       var left = rt.left + rt.width / 2 - rc.width / 2;
       var maxLeft = window.innerWidth - rc.width - pad;
+      var maxTop  = window.innerHeight - rc.height - pad;
       if (left < pad) left = pad;
       if (left > maxLeft) left = maxLeft;
       if (top + rc.height > window.innerHeight - pad) {
+        // Try flipping above the trigger if there's room there.
         top = rt.top - rc.height - pad;
       }
+      // Final clamp: keep popover inside the viewport even when the
+      // trigger has scrolled partly off-screen (the scroll listener
+      // re-calls this on every frame; without clamping, the popover
+      // drifts off the visible area when the trigger does).
+      if (top < pad) top = pad;
+      if (top > maxTop) top = maxTop;
       card.style.top  = top  + 'px';
       card.style.left = left + 'px';
     }
 
-    function open(trigger) {
-      ensureCard();
+    function clearChildren(el) {
+      // Safe DOM clear without using innerHTML (avoids XSS-by-mistake
+      // surface and pleases the repo's security lint hook).
+      while (el.firstChild) el.removeChild(el.firstChild);
+    }
+
+    // ---- Render-mode branch (substack-live follow-up) ----
+    // Static mode (default): reuses the cached thumb + title + caption
+    // children. Substack-feed mode: replaces inner with the live-feed
+    // list rendered from /static/substack-latest.json (snapshot built
+    // hourly by .github/workflows/substack-snapshot.yml). Cached per
+    // feed URL so the fetch only happens once per page load.
+    var renderMode = null;  // 'static' | 'substack-feed'
+    var feedCache = Object.create(null);
+    var feedFetching = Object.create(null);
+
+    function renderStatic(trigger) {
+      if (renderMode !== 'static') {
+        clearChildren(inner);
+        inner.appendChild(thumb);
+        inner.appendChild(textWrap);
+        renderMode = 'static';
+      }
       var src = trigger.getAttribute('data-hover-preview');
       if (thumb.getAttribute('src') !== src) thumb.setAttribute('src', src);
       titleEl.textContent   = trigger.getAttribute('data-hover-title')   || '';
       captionEl.textContent = trigger.getAttribute('data-hover-caption') || '';
+    }
+
+    function formatFeedDate(iso) {
+      if (!iso) return '';
+      var d = new Date(iso);
+      if (isNaN(d.getTime())) return iso;
+      return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    }
+
+    function selectPostsForTrigger(allPosts, triggerHref) {
+      // Per-trigger pin: if the trigger's href is a specific post URL
+      // (not the publication root), find that post in the JSON and
+      // surface it FIRST, followed by the 2 next most recent posts
+      // (excluding the pinned one). For root-URL triggers — or any
+      // href that doesn't match a post — fall back to the top-3
+      // most-recent default.
+      if (!triggerHref) return allPosts.slice(0, 3);
+      // Normalize: ignore trailing slash + url fragment for match
+      var norm = function (u) { return (u || '').split('#')[0].replace(/\/$/, ''); };
+      var target = norm(triggerHref);
+      var pinned = null;
+      for (var i = 0; i < allPosts.length; i++) {
+        if (norm(allPosts[i].url) === target) {
+          pinned = allPosts[i];
+          break;
+        }
+      }
+      if (!pinned) return allPosts.slice(0, 3);
+      var others = allPosts.filter(function (p) { return p !== pinned; });
+      return [pinned].concat(others.slice(0, 2));
+    }
+
+    function buildFeedDom(trigger, data) {
+      var frag = document.createDocumentFragment();
+      var header = document.createElement('p');
+      header.className = 'hp-feed-header';
+      header.textContent = (data && data.publication) ||
+        trigger.getAttribute('data-hover-title') || 'Latest posts';
+      frag.appendChild(header);
+
+      var allPosts = (data && data.posts) || [];
+      if (!allPosts.length) {
+        var empty = document.createElement('p');
+        empty.className = 'hp-feed-empty';
+        empty.textContent = (data === null) ? 'Could not load latest posts.' : 'No posts yet.';
+        frag.appendChild(empty);
+        return frag;
+      }
+      var posts = selectPostsForTrigger(allPosts, trigger.getAttribute('href'));
+
+      var list = document.createElement('ul');
+      list.className = 'hp-feed-list';
+      posts.forEach(function (post) {
+        var item = document.createElement('a');
+        item.className = 'hp-feed-item';
+        item.href = post.url;
+        item.target = '_blank';
+        item.rel = 'noreferrer';
+
+        var title = document.createElement('p');
+        title.className = 'hp-feed-title';
+        title.textContent = post.title;
+        item.appendChild(title);
+
+        var meta = document.createElement('p');
+        meta.className = 'hp-feed-meta';
+        meta.textContent = formatFeedDate(post.published_at);
+        item.appendChild(meta);
+
+        var li = document.createElement('li');
+        li.appendChild(item);
+        list.appendChild(li);
+      });
+      frag.appendChild(list);
+      return frag;
+    }
+
+    function renderSubstack(trigger) {
+      clearChildren(inner);
+      renderMode = 'substack-feed';
+      var feedUrl = trigger.getAttribute('data-hover-feed') || '/static/substack-latest.json';
+
+      if (feedCache[feedUrl] !== undefined) {
+        inner.appendChild(buildFeedDom(trigger, feedCache[feedUrl]));
+        return;
+      }
+
+      // Loading placeholder shown while the JSON is in-flight.
+      var loading = document.createElement('p');
+      loading.className = 'hp-feed-empty';
+      loading.textContent = 'Loading latest posts...';
+      inner.appendChild(loading);
+
+      if (!feedFetching[feedUrl]) {
+        feedFetching[feedUrl] = true;
+        fetch(feedUrl, { cache: 'default' })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (data) {
+            feedCache[feedUrl] = data;
+            // Re-render if the same trigger is still showing.
+            if (lastTrigger && lastTrigger.getAttribute('data-hover-feed') === feedUrl &&
+                card.matches(':popover-open')) {
+              clearChildren(inner);
+              inner.appendChild(buildFeedDom(lastTrigger, data));
+              requestAnimationFrame(function () { position(lastTrigger); });
+            }
+          })
+          .catch(function () {
+            feedCache[feedUrl] = null;
+            // Fallback: degrade to the static thumbnail render path.
+            if (lastTrigger === trigger) renderStatic(trigger);
+          });
+      }
+    }
+
+    function open(trigger) {
+      ensureCard();
+      var embedType = trigger.getAttribute('data-hover-embed');
+      if (embedType === 'substack-feed') {
+        renderSubstack(trigger);
+      } else {
+        renderStatic(trigger);
+      }
       if (!card.matches(':popover-open')) {
         try { card.showPopover(); } catch (_) { /* noop */ }
       }
@@ -255,6 +409,25 @@
         if (lastTrigger) lastTrigger.focus();
       }
     });
+
+    // Scroll-aware positioning: the popover is `position: fixed` and
+    // `position(trigger)` previously ran ONCE on open, leaving the
+    // card frozen at its original viewport coordinates while the
+    // trigger drifted away during scroll. Re-call position() on every
+    // scroll/resize while the card is open, throttled via rAF so
+    // momentum-scroll doesn't fire 120 times/second. Capture phase
+    // catches scroll events from internal scrollable containers
+    // (some don't bubble to window).
+    var rafScroll = null;
+    function onScrollOrResize() {
+      if (rafScroll || !card || !card.matches(':popover-open') || !lastTrigger) return;
+      rafScroll = requestAnimationFrame(function () {
+        position(lastTrigger);
+        rafScroll = null;
+      });
+    }
+    window.addEventListener('scroll', onScrollOrResize, { passive: true, capture: true });
+    window.addEventListener('resize', onScrollOrResize, { passive: true });
 
     Array.prototype.forEach.call(triggers, attach);
   }());
