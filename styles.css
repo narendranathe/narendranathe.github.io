@@ -1235,11 +1235,22 @@ body.splash-active { overflow: hidden; }
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   .wave-emoji         { animation: none; }
-#splash-screen      { transition: none; }
+  #splash-screen      { transition: none; }
   .sp-bracket-l,
   .sp-slash,
   .sp-bracket-r       { animation: none; stroke-dashoffset: 0; }
-  [data-reveal]       { transition: none; }
+  /* Reveal content IMMEDIATELY on reduced-motion. Just nuking the
+     transition (previous behavior) left blocks at opacity:0 + the
+     translateY offset until JS toggled .revealed — meaning a user
+     with reduced-motion AND JS disabled (or with throttled
+     IntersectionObserver) would see invisible content below the
+     fold. Override the initial state too so content is visible
+     regardless of JS state. (Issue #86) */
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none;
+  }
 }
 
 
