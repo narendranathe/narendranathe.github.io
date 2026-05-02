@@ -344,6 +344,28 @@ def test_hero_uses_local_photo_not_external_cdn(html: str) -> None:
         )
 
 
+def test_hero_aside_no_data_reveal(html: str) -> None:
+    """Issue #77: the <aside class="hero-visual"> MUST NOT carry a
+    data-reveal attribute. data-reveal sets opacity:0 + 0.55s fade
+    via styles.css [data-reveal] rules — Chrome's LCP algorithm
+    excludes opacity:0 elements as candidates, so wrapping the hero
+    img in data-reveal silently disqualifies it from being the LCP
+    element. The post-merge Lighthouse audit (2026-05-01T16:05Z)
+    measured Mobile LCP at 2854ms because of this exact bug.
+
+    Removing this regression guard (or re-adding data-reveal to the
+    hero aside) would re-introduce the LCP regression with no other
+    CI signal."""
+    m = re.search(r'<aside\s+class="hero-visual"[^>]*>', html)
+    assert m, "hero-visual <aside> not found in index.html"
+    aside_open = m.group(0)
+    assert "data-reveal" not in aside_open, (
+        f"hero-visual <aside> carries data-reveal — this disqualifies the "
+        f"hero img from being Chrome's LCP candidate (opacity:0 fence). "
+        f"See PR #81 / issue #77. Aside tag: {aside_open}"
+    )
+
+
 def test_no_inline_style_attribute_on_strips(inline_styles: list) -> None:
     assert not inline_styles, (
         f"Found inline style= attributes inside impact strips: {inline_styles}; "
@@ -1017,6 +1039,7 @@ TESTS = [
     test_no_scrapped_exponenthr_outcomes,
     test_no_scrapped_exponenthr_outcomes_in_rendered_text,
     test_hero_uses_local_photo_not_external_cdn,
+    test_hero_aside_no_data_reveal,
     test_no_inline_style_attribute_on_strips,
     test_jetbrains_mono_loaded,
     test_css_uses_tabular_nums,
