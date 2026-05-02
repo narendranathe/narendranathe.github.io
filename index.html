@@ -41,12 +41,22 @@
   <link rel="stylesheet" href="styles.css">
 
   <!-- LCP candidate: hero portrait, preload to start fetch before body parses.
-       imagesrcset + imagesizes mirror the <picture> in the hero so the preload
-       scanner fetches the 800px variant on mobile (saves ~30 KB on Slow 4G)
-       and the 1200px variant on desktop. Breakpoint matches styles.css:307
-       where the hero collapses to single-column at <=860px (the photo
-       renders at max-width:300px in that mode, so 800px source is plenty). -->
-  <link rel="preload" as="image"
+       Three type-aware preloads in priority order so the browser only
+       fetches the format it will render via <picture>. The `type=` filter
+       is honored by Chrome 91+, Safari 17+, Firefox; older browsers ignore
+       the type attribute and would fetch all three preloads — that tail
+       is microscopic in 2026 evergreen, and they fall through to the JPEG
+       <picture> source anyway. imagesrcset + imagesizes mirror the
+       <picture>'s mobile (max-width: 860px) breakpoint. -->
+  <link rel="preload" as="image" type="image/avif"
+        imagesrcset="static/originals/headshot-fullbody-800.avif 800w, static/originals/headshot-fullbody.avif 1200w"
+        imagesizes="(max-width: 860px) 100vw, 1200px"
+        fetchpriority="high">
+  <link rel="preload" as="image" type="image/webp"
+        imagesrcset="static/originals/headshot-fullbody-800.webp 800w, static/originals/headshot-fullbody.webp 1200w"
+        imagesizes="(max-width: 860px) 100vw, 1200px"
+        fetchpriority="high">
+  <link rel="preload" as="image" type="image/jpeg"
         href="static/originals/headshot-fullbody.jpg"
         imagesrcset="static/originals/headshot-fullbody-800.jpg 800w, static/originals/headshot-fullbody.jpg 1200w"
         imagesizes="(max-width: 860px) 100vw, 1200px"
@@ -154,6 +164,13 @@
 
           <div class="profile-frame hero-photo-stack">
             <picture>
+              <!-- AVIF first (smallest bytes; Chrome 85+ / Safari 16.4+ / Firefox 113+) -->
+              <source type="image/avif" media="(max-width: 860px)" srcset="static/originals/headshot-fullbody-800.avif">
+              <source type="image/avif" srcset="static/originals/headshot-fullbody.avif">
+              <!-- WebP second (universal modern; covers every evergreen browser) -->
+              <source type="image/webp" media="(max-width: 860px)" srcset="static/originals/headshot-fullbody-800.webp">
+              <source type="image/webp" srcset="static/originals/headshot-fullbody.webp">
+              <!-- JPEG fallback for the long tail; also matches the preload `href` -->
               <source media="(max-width: 860px)" srcset="static/originals/headshot-fullbody-800.jpg">
               <img src="static/originals/headshot-fullbody.jpg"
                    alt="Naren Edara, Senior AI Platform Engineer"
