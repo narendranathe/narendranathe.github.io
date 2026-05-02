@@ -154,6 +154,13 @@
 
           <div class="profile-frame hero-photo-stack">
             <picture>
+              <!-- AVIF first (smallest bytes; Chrome 85+ / Safari 16.4+ / Firefox 113+) -->
+              <source type="image/avif" media="(max-width: 860px)" srcset="static/originals/headshot-fullbody-800.avif">
+              <source type="image/avif" srcset="static/originals/headshot-fullbody.avif">
+              <!-- WebP second (universal modern; covers every evergreen browser) -->
+              <source type="image/webp" media="(max-width: 860px)" srcset="static/originals/headshot-fullbody-800.webp">
+              <source type="image/webp" srcset="static/originals/headshot-fullbody.webp">
+              <!-- JPEG fallback for the long tail; also matches the preload `href` -->
               <source media="(max-width: 860px)" srcset="static/originals/headshot-fullbody-800.jpg">
               <img src="static/originals/headshot-fullbody.jpg"
                    alt="Naren Edara, Senior AI Platform Engineer"

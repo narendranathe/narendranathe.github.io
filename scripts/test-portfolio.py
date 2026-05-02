@@ -435,6 +435,59 @@ def test_hero_preload_uses_imagesrcset(html: str) -> None:
     )
 
 
+def test_hero_picture_has_avif_and_webp_variants(html: str) -> None:
+    """Hero photo (issue #83): the <picture> must include AVIF and WebP
+    <source> rows BEFORE the JPEG fallback, with a mobile + desktop
+    pair for each. AVIF lands first because it has the smallest bytes;
+    WebP second; JPEG last as the universal fallback.
+
+    All 4 new variant files (avif/webp x desktop/mobile) must exist on
+    disk and be smaller than the source JPEG."""
+    start = html.find('<aside class="hero-visual"')
+    assert start != -1, "hero-visual <aside> not found"
+    end = html.find("</aside>", start)
+    hero = html[start:end]
+
+    # Source order matters: AVIF before WebP before JPEG.
+    avif_idx = hero.find('type="image/avif"')
+    webp_idx = hero.find('type="image/webp"')
+    assert avif_idx != -1, "<picture> missing AVIF <source> (issue #83)"
+    assert webp_idx != -1, "<picture> missing WebP <source> (issue #83)"
+    assert avif_idx < webp_idx, (
+        "AVIF <source> must come BEFORE WebP <source> in the <picture>; "
+        "browsers pick the first format they support"
+    )
+
+    # Both formats need a mobile pair (max-width: 860px) + desktop pair.
+    for fmt, sigil in (("AVIF", "avif"), ("WebP", "webp")):
+        mobile = re.search(
+            rf'<source\s+type="image/{sigil}"\s+media="\(max-width:\s*860px\)"\s+srcset="[^"]*-800\.{sigil}"',
+            hero,
+        )
+        desktop = re.search(
+            rf'<source\s+type="image/{sigil}"\s+srcset="[^"]*headshot-fullbody\.{sigil}"',
+            hero,
+        )
+        assert mobile, f"<picture> missing {fmt} mobile <source> with media=(max-width: 860px)"
+        assert desktop, f"<picture> missing {fmt} desktop <source>"
+
+    # Files exist + smaller than source JPEG.
+    src = REPO_ROOT / "static" / "originals" / "headshot-fullbody.jpg"
+    src_bytes = src.stat().st_size
+    for stem in ("headshot-fullbody", "headshot-fullbody-800"):
+        for ext in ("avif", "webp"):
+            p = REPO_ROOT / "static" / "originals" / f"{stem}.{ext}"
+            assert p.exists(), (
+                f"missing variant on disk: {p}. "
+                "Run: pip install pillow-avif-plugin && python scripts/snap-hero-variants.py"
+            )
+            assert p.stat().st_size < src_bytes, (
+                f"{p.name} ({p.stat().st_size}B) should be smaller than source "
+                f"JPEG ({src_bytes}B); regenerate via snap-hero-variants.py at "
+                f"the documented quality settings"
+            )
+
+
 def test_no_inline_style_attribute_on_strips(inline_styles: list) -> None:
     assert not inline_styles, (
         f"Found inline style= attributes inside impact strips: {inline_styles}; "
@@ -1419,6 +1472,7 @@ TESTS = [
     test_hero_aside_no_data_reveal,
     test_hero_picture_has_mobile_variant,
     test_hero_preload_uses_imagesrcset,
+    test_hero_picture_has_avif_and_webp_variants,
     test_no_inline_style_attribute_on_strips,
     test_jetbrains_mono_loaded,
     test_css_uses_tabular_nums,
