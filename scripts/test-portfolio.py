@@ -463,6 +463,40 @@ def test_css_has_print_block() -> None:
     assert has_print, "CSS does not include @media print block for impact-strip"
 
 
+def test_data_reveal_reduced_motion_fallback() -> None:
+    """Issue #86: under prefers-reduced-motion, [data-reveal] elements
+    must override the initial opacity:0 + translateY state so content
+    is visible even when JavaScript / IntersectionObserver hasn't run
+    (reduced-motion users with JS disabled were seeing blank space
+    below the fold). Check both opacity:1 and transform:none are
+    declared inside the reduced-motion media block for [data-reveal]."""
+    css = STYLES_CSS.read_text(encoding="utf-8")
+    # Find the prefers-reduced-motion block(s) and look for the
+    # [data-reveal] override inside one of them.
+    blocks = re.findall(
+        r"@media\s*\(\s*prefers-reduced-motion:\s*reduce\s*\)\s*\{(.+?)\n\}",
+        css,
+        flags=re.S,
+    )
+    found = False
+    for block in blocks:
+        m = re.search(
+            r"\[data-reveal\][^{]*\{[^}]*opacity\s*:\s*1[^}]*transform\s*:\s*none",
+            block,
+            flags=re.S,
+        )
+        if m:
+            found = True
+            break
+    assert found, (
+        "missing [data-reveal] reduced-motion override in styles.css. "
+        "Without `opacity: 1 !important; transform: none !important;` inside "
+        "the @media (prefers-reduced-motion: reduce) block, users with reduced "
+        "motion AND JS disabled see blank space below the fold (the initial "
+        "opacity:0 + translateY state never gets undone). See issue #86."
+    )
+
+
 def test_css_mobile_breakpoint_at_600px() -> None:
     """Guard the desktop breakpoint that switches impact-strip values
     from wrap-allowed (mobile, WCAG 1.4.10 reflow at 320px) to single-
@@ -1389,6 +1423,7 @@ TESTS = [
     test_jetbrains_mono_loaded,
     test_css_uses_tabular_nums,
     test_css_has_print_block,
+    test_data_reveal_reduced_motion_fallback,
     test_css_mobile_breakpoint_at_600px,
     test_css_uses_warm_palette_tokens,
     test_repo_context_hooks_card_present,
