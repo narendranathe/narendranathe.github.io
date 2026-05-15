@@ -34,6 +34,13 @@ jobs:
           python-version: '3.12'
 
       - name: Fetch + parse Substack feed
+        # Substack/Cloudflare intermittently 403s requests from GitHub-hosted
+        # runner egress IPs. A failed fetch leaves the existing snapshot in
+        # place; the commit step below will see no diff and exit cleanly.
+        # Soft-fail keeps scheduled runs green so we don't get email noise
+        # for an upstream block. Durable fix tracked separately (move fetch
+        # off Azure egress, e.g. Cloudflare Worker).
+        continue-on-error: true
         run: python scripts/snap-substack-feed.py
 
       - name: Commit snapshot if changed
