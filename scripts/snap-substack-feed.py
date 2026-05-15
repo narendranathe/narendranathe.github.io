@@ -36,6 +36,7 @@ import argparse
 import datetime as dt
 import html
 import json
+import os
 import re
 import sys
 import urllib.error
@@ -44,7 +45,12 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_FEED = "https://narendranathe.substack.com/feed"
+# Allow an env-var override so CI can route through a Cloudflare Worker proxy
+# (see infra/substack-proxy/README.md). Substack/Cloudflare returns 403 to
+# GitHub-hosted runner egress IPs but accepts requests from a residential IP,
+# so local runs without the env var keep working against the canonical URL.
+_HARDCODED_FEED = "https://narendranathe.substack.com/feed"
+DEFAULT_FEED = os.environ.get("SUBSTACK_FEED_URL", "").strip() or _HARDCODED_FEED
 TARGET = REPO_ROOT / "static" / "substack-latest.json"
 TIMEOUT_S = 15
 USER_AGENT = "Mozilla/5.0 (compatible; PortfolioSubstackSnap/1.0)"

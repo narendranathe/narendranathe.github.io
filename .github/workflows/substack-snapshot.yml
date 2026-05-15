@@ -5,6 +5,9 @@ name: Substack snapshot
 # this file directly (no client-side CORS, no third-party tracking).
 #
 # See scripts/snap-substack-feed.py for the parser + output contract.
+# See infra/substack-proxy/README.md for the Cloudflare Worker proxy that
+# this workflow routes through (Substack/Cloudflare 403s GitHub runner IPs
+# directly; the SUBSTACK_FEED_URL repo Variable points at the proxy).
 
 on:
   schedule:
@@ -34,13 +37,13 @@ jobs:
           python-version: '3.12'
 
       - name: Fetch + parse Substack feed
-        # Substack/Cloudflare intermittently 403s requests from GitHub-hosted
-        # runner egress IPs. A failed fetch leaves the existing snapshot in
-        # place; the commit step below will see no diff and exit cleanly.
-        # Soft-fail keeps scheduled runs green so we don't get email noise
-        # for an upstream block. Durable fix tracked separately (move fetch
-        # off Azure egress, e.g. Cloudflare Worker).
-        continue-on-error: true
+        env:
+          # Repo Variable (Settings -> Secrets and variables -> Actions ->
+          # Variables). Set to the deployed Cloudflare Worker URL, e.g.
+          # https://substack-proxy.<account>.workers.dev/feed. If unset, the
+          # script falls back to the hardcoded Substack URL (which 403s from
+          # GitHub runner IPs but works locally).
+          SUBSTACK_FEED_URL: ${{ vars.SUBSTACK_FEED_URL }}
         run: python scripts/snap-substack-feed.py
 
       - name: Commit snapshot if changed
