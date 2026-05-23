@@ -6,6 +6,30 @@ const CONFIG = {
 
     name: 'Narendranath Edara',
 
+    // ── Identity ───────────────────────────────────────────────────
+    // Single source of truth for name, role, meta tags, JSON-LD, OG/Twitter,
+    // canonical URL, footer statement, and external profile links. M3 will
+    // wire these into the 15 hardcoded surfaces in index.html.
+    identity: {
+        name:            'Narendranath Edara',
+        shortName:       'Naren',
+        role:            'Senior AI Platform Engineer',
+        location:        'Dallas TX',
+        title:           'Narendranath Edara | Senior AI Platform Engineer',
+        description:     'Narendranath Edara - Senior AI Platform Engineer building production LLM systems, retrieval pipelines, and governed AI-enabled data products.',
+        ogTitle:         'Narendranath Edara | Senior AI Platform Engineer',
+        ogDescription:   'Production AI systems that teams can run, govern, and trust.',
+        ogImage:         '/static/og-image.jpg?v=2026-04-28',
+        canonicalUrl:    'https://narendranathe.github.io',
+        headshot:        '/static/originals/headshot-fullbody.jpg',
+        footerStatement: 'Senior AI platform engineering across retrieval, workflow automation, reusable engines, and production delivery.',
+        sameAs:          ['https://linkedin.com/in/narendranathe', 'https://github.com/narendranathe', 'https://narendranathe.substack.com'],
+        twitterHandle:   '@narendranathe',
+        // Media repo URL - second GitHub Pages site for headshots, OG, previews, manifest.
+        // resume.pdf canonical stays at /static/resume.pdf in the portfolio repo.
+        mediaRepoUrl:    'https://narendranathe.github.io/resume2'
+    },
+
     // ── Availability Badge ─────────────────────────────────────────
     status: {
         available: true,
@@ -133,9 +157,9 @@ window.PORTFOLIO_CONFIG = {
         email:    'mailto:edara.narendranath@gmail.com'
     },
     identity: {
-        name:             CONFIG.name,
-        role:             'Senior AI Platform Engineer',
-        footerStatement:  'Senior AI platform engineering across retrieval, workflow automation, reusable engines, and production delivery.'
+        get name()            { return CONFIG.identity.name; },
+        get role()            { return CONFIG.identity.role; },
+        get footerStatement() { return CONFIG.identity.footerStatement; }
     },
     contactLinks: [
         { label: 'Email',    href: 'mailto:edara.narendranath@gmail.com' },
