@@ -8,3 +8,8 @@ pikepdf>=8.0
 # Pre-built wheels for win/mac/linux; no system poppler dep.
 # Pinned for byte-stable PNG output across regenerations.
 pymupdf==1.24.10
+# M3: render-portfolio.py template engine. Wide range pin — Jinja2 3.x API
+# (Environment, FileSystemLoader, autoescape, tojson filter) is stable
+# enough that we don't need an exact pin. Lower bound 3.0 ensures tojson
+# filter; upper bound <4.0 guards against future breaking changes.
+jinja2>=3.0,<4.0

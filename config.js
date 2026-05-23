@@ -13,6 +13,8 @@ const CONFIG = {
     identity: {
         name:            'Narendranath Edara',
         shortName:       'Naren',
+        firstName:       'Narendranath',
+        lastName:        'Edara',
         role:            'Senior AI Platform Engineer',
         location:        'Dallas TX',
         title:           'Narendranath Edara | Senior AI Platform Engineer',
