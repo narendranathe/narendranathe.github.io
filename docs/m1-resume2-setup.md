@@ -40,21 +40,25 @@ resume2/
   manifest.json
 ```
 
-Source files: copy from the portfolio repo's `static/` + `static/originals/`.
+Source files: copy from the portfolio repo's `static/` + `static/originals/`. Use the staging script — it builds the canonical layout and writes `manifest.json` with computed hashes:
 
 ```bash
-# From a local clone of narendranathe/resume2 at ../resume2 (relative to portfolio repo)
-cp static/originals/headshot-portrait.*           ../resume2/headshots/
-cp static/originals/headshot-fullbody.*           ../resume2/headshots/
-cp static/originals/headshot-fullbody-800.*       ../resume2/headshots/
-cp static/og-image.jpg                            ../resume2/og/og-image.jpg
-cp static/preview-linkedin.png                    ../resume2/previews/linkedin.png
-cp static/preview-substack.png                    ../resume2/previews/substack.png
-cp static/preview-github.png                      ../resume2/previews/github.png
-# manifest.json: see Step 3
+# From portfolio repo root
+bash scripts/m1-stage-resume2-assets.sh
+# -> build/resume2-staging/ now mirrors the layout above
+
+# Sync into a local clone of narendranathe/resume2 at ../resume2
+rsync -av build/resume2-staging/ ../resume2/
+
+cd ../resume2
+git add .
+git commit -m "feat: initial media layout"
+git push
 ```
 
-## Step 3: Create `manifest.json`
+The staging script reports each file's `version_hash` (first 8 chars of sha256) and bakes them into `manifest.json` so the cache-bust query strings in Step 7 are derived deterministically.
+
+## Step 3: `manifest.json` schema (auto-generated, for reference)
 
 Schema (paths are repo-root-relative, resolve against `https://narendranathe.github.io/resume2/`):
 
@@ -87,13 +91,7 @@ Schema (paths are repo-root-relative, resolve against `https://narendranathe.git
 
 Note: no `resume` field. Resume PDF stays at the portfolio repo's `/static/resume.pdf` and at `https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf` (the existing rolling Release). M4 manages the release publishing; M3's render pipeline reads `resume` URLs from `config.js`, not from this manifest.
 
-Compute the `version_hash` for the OG image:
-
-```bash
-shasum -a 256 ../resume2/og/og-image.jpg | cut -c1-8
-```
-
-Commit + push to `narendranathe/resume2@main`.
+The hashes (`*_version_hash` fields) are computed by `scripts/m1-stage-resume2-assets.sh` from the staged files' bytes. If you replace assets later, rerun the stager — manifest.json gets regenerated.
 
 ## Step 4: Branch protection on `narendranathe/resume2`
 
@@ -150,25 +148,76 @@ gh run download <RUN_ID> -n lighthouse-report -D /tmp/lh
 
 Commit `scripts/lighthouse-baseline.json` to the portfolio repo on the `feat/m1-resume2-tracer` branch (or merge it into `claude/beautiful-ptolemy-C8L4O` separately). M5's `scripts/lighthouse-delta-check.py` consumes this file on every Lighthouse run.
 
-## Step 7: Update one `<meta property="og:image">` in `index.html`
+## Step 7: Flip `CONFIG.identity` paths to point at resume2
 
-The validating live-site change for M1: pick the `<meta property="og:image">` tag in `index.html` (search for `og:image` — there should be one occurrence in the head) and update its URL from the current `/static/og-image.jpg?v=...` to `https://narendranathe.github.io/resume2/og/og-image.jpg?v=<NEW_HASH>` where `<NEW_HASH>` is the first 8 chars of the SHA-256 of the file in resume2.
+M3's render pipeline is already shipped on `claude/beautiful-ptolemy-C8L4O`. The template `index.html.j2` composes asset URLs as `{{ identity.canonicalUrl }}{{ identity.ogImage }}` and `{{ identity.canonicalUrl }}{{ identity.headshot }}` — so flipping the asset paths in `CONFIG.identity` flips every identity surface in the rendered HTML at once.
 
-Don't update the other 14 identity surfaces yet — M3 will template them out. M1's job is to prove the same-origin Pages architecture works end-to-end with ONE surface as a smoke test.
+Edit `config.js`:
 
-After committing this single-line change and the Pages deploy finishes (5-10 min lag), inspect the LinkedIn URL previewer (https://www.linkedin.com/post-inspector/inspect/https%3A%2F%2Fnarendranathe.github.io) to confirm the OG image still renders.
+```diff
+ identity: {
+     ...
+-    ogImage:    '/static/og-image.jpg?v=2026-04-28',
++    ogImage:    '/resume2/og/og-image.jpg?v=4d8934bf',
+     ...
+-    headshot:   '/static/originals/headshot-fullbody.jpg',
++    headshot:   '/resume2/headshots/fullbody.jpg?v=7dc275e2',
+     ...
+ }
+```
+
+Use the `version_hash` values from Step 2's `manifest.json` (or the staging script's stdout). The `/resume2/` prefix is the GH Pages project-page subpath — when prepended to `canonicalUrl` (`https://narendranathe.github.io`), it resolves to the resume2 Pages origin.
+
+Mirror the same edit in `config.template.js` placeholder values so forkers see the pattern.
+
+Re-render to apply the change:
+
+```bash
+python scripts/render-portfolio.py
+git diff index.html       # should show og:image, twitter:image, JSON-LD image all flipped to /resume2/ URLs
+```
+
+Commit `config.js` + `config.template.js` + `index.html` together. The Pages deploy pipeline (M6) re-renders on push, but committing the rendered output keeps local previews accurate.
+
+## Step 8: Decide what to do with the duplicate files in portfolio `static/`
+
+After Step 7, three files in portfolio `static/` are duplicated in `narendranathe/resume2`:
+
+- `static/og-image.jpg` -> `resume2/og/og-image.jpg`
+- `static/originals/headshot-fullbody.{jpg,avif,webp}` -> `resume2/headshots/fullbody.*`
+- `static/originals/headshot-fullbody-800.{jpg,avif,webp}` -> `resume2/headshots/fullbody-800.*`
+- `static/preview-{linkedin,substack,github}.png` -> `resume2/previews/*.png`
+
+Recommend: **delete the duplicates from portfolio `static/`** after the resume2 deploy is verified live. Reasons:
+- They're identity-bearing files, and the whole point of the migration is that identity lives in one place.
+- Keeping duplicates means future `snap-favicon.py` runs need to write to both repos (extra coordination cost).
+- The favicons (`favicon-*.png`, `favicon.ico`, `apple-touch-icon.png`, `favicon-512-maskable.png`, `site.webmanifest`) STAY in portfolio `static/` per scope-lock — those are brand chrome, not personal identity.
+
+```bash
+# AFTER verifying resume2 Pages serves the migrated files (Step 5 smoke checks):
+git rm static/og-image.jpg
+git rm static/preview-linkedin.png
+git rm static/preview-substack.png
+git rm static/preview-github.png
+git rm static/originals/headshot-fullbody.{jpg,avif,webp}
+git rm static/originals/headshot-fullbody-800.{jpg,avif,webp}
+# Keep static/originals/headshot-portrait.jpg (snap-favicon.py source-of-truth)
+# Keep favicons + site.webmanifest
+```
+
+Note: `scripts/snap-favicon.py` reads from `scripts/_in/headshot-*` to regenerate favicons; the `static/originals/` copies are downscaled archives. After deletion, the script still works (it doesn't read from `static/originals/`).
 
 ## Acceptance gate
 
 M1 is complete when all of the following are true:
 
 - [ ] `https://narendranathe.github.io/resume2/og/og-image.jpg` returns 200 + `Content-Type: image/jpeg`
-- [ ] `https://narendranathe.github.io/resume2/headshots/portrait.avif` returns 200 + `Content-Type: image/avif` (or browser-side `<picture>` fallback handles octet-stream; document which)
+- [ ] `https://narendranathe.github.io/resume2/headshots/fullbody.avif` returns 200 + `Content-Type: image/avif` (or `<picture>` fallback handles octet-stream)
 - [ ] `https://narendranathe.github.io/resume2/manifest.json` returns 200 + `Content-Type: application/json`
 - [ ] `?v=<hash>` query strings return 200 (cache-bust compat)
 - [ ] `_proto_test` tag create + delete cycle succeeds (no rulesets blocking)
 - [ ] `scripts/lighthouse-baseline.json` committed with real captured scores
-- [ ] `<meta property="og:image">` in `index.html` points at new origin
-- [ ] LinkedIn post-inspector shows the OG image renders from the new URL
-
-Only after these all pass should #102 (M2) be merged.
+- [ ] `CONFIG.identity.{ogImage,headshot}` in `config.js` point at `/resume2/...` paths
+- [ ] `python scripts/render-portfolio.py --check` passes (rendered HTML matches template render)
+- [ ] LinkedIn post-inspector at https://www.linkedin.com/post-inspector/inspect/https%3A%2F%2Fnarendranathe.github.io shows the OG image renders from the resume2 URL
+- [ ] Duplicate files removed from portfolio `static/` (optional cleanup per Step 8)

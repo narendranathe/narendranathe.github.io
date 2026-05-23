@@ -22,3 +22,6 @@ scripts/_in/
 scripts/_fonts/
 scripts/_tmp/
 *.psd
+
+# Asset migration staging (output of scripts/m1-stage-resume2-assets.sh)
+build/
