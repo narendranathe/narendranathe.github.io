@@ -13,7 +13,23 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:type" content="image/jpeg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="{{ identity.twitterHandle }}">
+  <meta name="twitter:title" content="{{ identity.ogTitle }}">
+  <meta name="twitter:description" content="{{ identity.ogDescription }}">
+  <meta name="twitter:image" content="{{ identity.canonicalUrl }}{{ identity.ogImage }}">
   <link rel="canonical" href="{{ identity.canonicalUrl }}">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "{{ identity.name }}",
+    "jobTitle": "{{ identity.role }}",
+    "url": "{{ identity.canonicalUrl }}",
+    "image": "{{ identity.canonicalUrl }}{{ identity.headshot }}",
+    "sameAs": {{ identity.sameAs | tojson }}
+  }
+  </script>
 
   <!-- Favicons: monogram "N" white-on-orange for tab (16/32/48); photo on iOS home screen + Android adaptive -->
   <!-- Cache-bust query string forces refresh of cached favicons after deploy -->
