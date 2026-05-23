@@ -1,12 +1,13 @@
 name: Verify links (live external)
 
 # Weekly health check on every external link in the portfolio. The
-# local-only verifier runs in CI on every PR; this --live run catches
-# external link rot (LinkedIn URLs going stale, GitHub repos renamed,
-# OSS projects archived) that the local check can't see.
+# local-only verifier runs in CI on every PR; this --mode live-strict
+# run catches external link rot (LinkedIn URLs going stale, GitHub
+# repos renamed, OSS projects archived) that the local check can't see,
+# AND asserts Content-Type on the cross-origin assets-repo URLs (M5).
 #
 # Failure mode: opens a GitHub issue tagged `link-rot` with the
-# verifier output. Does NOT block any other workflow — link rot is a
+# verifier output. Does NOT block any other workflow - link rot is a
 # nudge, not an emergency.
 #
 # See scripts/verify-links.py for the verifier itself.
@@ -38,14 +39,24 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Run --live link verification
+      - name: Run --mode live-strict link verification
         id: verify
         # `set +e` so a non-zero exit from the verifier doesn't fail
-        # the step — we want to capture the output and decide what to
+        # the step - we want to capture the output and decide what to
         # do based on whether it succeeded.
+        #
+        # live-strict extends the previous --live behaviour with:
+        # (a) seeded URLs targeting the assets repo's Pages site
+        #     (narendranathe.github.io/resume2) and the resume2 release
+        #     download base, and (b) Content-Type header assertions on
+        #     those URLs. See scripts/verify-links.py for the constants.
+        #
+        # The assets-repo URL is hardcoded as MEDIA_REPO_URL in the
+        # script; forkers should patch that constant rather than set
+        # an env var here.
         run: |
           set +e
-          python scripts/verify-links.py --live > /tmp/verify-output.txt 2>&1
+          python scripts/verify-links.py --mode live-strict > /tmp/verify-output.txt 2>&1
           rc=$?
           set -e
           # Echo to job log
@@ -71,7 +82,7 @@ jobs:
           existing=$(gh issue list --state open --label link-rot --json number --jq '.[0].number' 2>/dev/null || echo "")
           body_file=/tmp/issue-body.md
           {
-            echo "Weekly --live link verification failed. See full output below."
+            echo "Weekly --mode live-strict link verification failed. See full output below."
             echo
             echo "**Workflow run:** https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             echo "**Fired at:** $(date -u +%Y-%m-%dT%H:%M:%SZ)"
@@ -81,7 +92,7 @@ jobs:
             echo '```'
             echo
             echo "Triage:"
-            echo "1. Reproduce locally: \`python scripts/verify-links.py --live\`"
+            echo "1. Reproduce locally: \`python scripts/verify-links.py --mode live-strict\`"
             echo "2. If the URL is genuinely dead: update or remove the link in HTML."
             echo "3. If the URL is bot-walled but valid (verified in a browser): add to \`HOST_ALLOWLIST\` in \`scripts/verify-links.py\`."
             echo "4. If the host is hostile to verifiers (returns specific status codes): add to \`LENIENT_HOSTS\` mapping."

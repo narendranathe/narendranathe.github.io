@@ -54,3 +54,21 @@ jobs:
           uploadArtifacts: true
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+      - name: Set up Python for delta check
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Lighthouse delta check vs baseline
+        # Complementary to the absolute-threshold gate in lighthouserc.json:
+        # this catches creeping regressions that stay above the floor but
+        # drift downward (e.g. perf 0.99 -> 0.92 is still above 0.9 but
+        # is a 7-point drop worth flagging). The script reads
+        # scripts/lighthouse-baseline.json (committed by milestone M1)
+        # and the .lighthouseci/manifest.json the action just wrote.
+        #
+        # While M1 hasn't committed the baseline yet, the script warns
+        # and exits 0 - this step is safe to add in CI before the
+        # baseline lands.
+        run: python scripts/lighthouse-delta-check.py
