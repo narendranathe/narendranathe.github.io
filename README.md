@@ -4,6 +4,45 @@ Personal portfolio site for Narendranath Edara, a Senior AI Platform Engineer fo
 
 [Live site](https://narendranathe.github.io) | [LinkedIn](https://www.linkedin.com/in/narenedara/) | [GitHub](https://github.com/narendranathe)
 
+## Fork this portfolio
+
+This repo is set up as a [GitHub template repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository). Click **"Use this template"** at the top of [the repo page](https://github.com/narendranathe/narendranathe.github.io) and you can ship your own version in under 30 minutes. Identity surfaces (name, role, OG meta, headshot, JSON-LD, Twitter card) flow from `config.js` + a second repo you control; experience, projects, skills, and bio stay hand-edited in `index.html`.
+
+Architecture lives in [PRD #100](https://github.com/narendranathe/narendranathe.github.io/issues/100). The scope-lock decisions (asset repo conventions, render pipeline, CI gates) are at [issue #100 comment 4524042426](https://github.com/narendranathe/narendranathe.github.io/issues/100#issuecomment-4524042426).
+
+### Setup
+
+1. Click **"Use this template"** on this repo. GitHub creates `your-username.github.io` from the skeleton.
+
+2. Enable GitHub Pages on the new repo: Settings -> Pages -> Source: `main / (root)`.
+
+3. Create a SECOND repo for your media (any name - Naren uses `resume2`). Enable Pages on it the same way. This serves your headshots, OG image, social preview cards, and `manifest.json` from `https://your-username.github.io/<media-repo-name>/`. Your resume PDF stays at `/static/resume.pdf` in the portfolio repo so the LinkedIn signature URL stays stable across cuts.
+
+4. Drop your assets into the media repo in this layout (full schema + smoke-check script in [`docs/m1-resume2-setup.md`](docs/m1-resume2-setup.md)):
+
+   ```
+   /headshots/{portrait,fullbody}.{jpg,avif,webp}
+   /og/og-image.jpg
+   /previews/{linkedin,substack,github}.png
+   /manifest.json
+   ```
+
+5. Copy `config.template.js` to `config.js` and fill in `CONFIG.identity` (name, role, OG meta, social handles, your media repo's URL). One block, ~15 fields. Then edit `index.html` for your experience, projects, skills, and bio sections.
+
+6. Push to `main`. CI auto-renders `index.html.j2` against your config, runs link verification, and deploys to GitHub Pages.
+
+### What's hardcoded vs. config-driven
+
+| Surface | Source |
+|---|---|
+| Name, role, OG meta, JSON-LD, Twitter card, headshot, footer | `config.js` `CONFIG.identity` |
+| Status badge, terminal animation, recommendations, RSS, Konami metrics | `config.js` (other fields) |
+| Experience cards, project cards, skills grid, bio prose | `index.html` (hand-edited) |
+| Resume PDF | Your portfolio repo's `/static/resume.pdf` |
+| Headshots, OG image, social previews, manifest.json | Your media repo (e.g. `<user>/resume2`) |
+
+Identity migration is intentionally Tier 1 - body content stays hand-edited so you control the storytelling. See [issue #100](https://github.com/narendranathe/narendranathe.github.io/issues/100) for the architectural rationale (and tiers 2/3 if you want to extend further).
+
 ## What This Repo Represents
 
 This repository is the public source for my portfolio and career positioning. It is intentionally aligned to the roles I am targeting:
