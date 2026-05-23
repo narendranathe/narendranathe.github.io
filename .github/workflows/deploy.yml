@@ -21,6 +21,26 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install render deps
+        run: pip install -r scripts/requirements.txt
+
+      - name: Render identity from config.js + manifest.json (M3)
+        run: python scripts/render-portfolio.py
+
+      - name: Gate - local link verification (M5)
+        run: python scripts/verify-links.py --mode local
+
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
