@@ -1,12 +1,18 @@
 """Verify every link on the portfolio resolves.
 
-Two modes:
-  --local (default) checks relative paths exist on disk + fragment IDs
+Three modes (via --mode):
+  local (default) checks relative paths exist on disk + fragment IDs
   resolve to elements in the target file. Fast, deterministic, CI-safe.
 
-  --live ALSO hits external https:// URLs with a HEAD request and
+  live ALSO hits external https:// URLs with a HEAD request and
   reports 4xx/5xx. Slow + flaky (depends on third-party uptime); only
   use when you actually want to audit external links.
+
+  live-strict extends live with cross-origin asset URLs (the media
+  repo's Pages site and GitHub Release downloads) and additionally
+  asserts the response Content-Type header matches the file suffix.
+  Used by the M5 forkable-skeleton verifier to catch silent
+  mis-uploads on the assets repo.
 
 Outputs a single report. Exits 1 on any failure so CI can gate.
 
@@ -14,9 +20,11 @@ Stdlib-only. No new runtime deps.
 
 Usage
 -----
-    python scripts/verify-links.py              # local-only
-    python scripts/verify-links.py --live       # local + external
-    python scripts/verify-links.py --json       # machine-readable
+    python scripts/verify-links.py                        # local-only
+    python scripts/verify-links.py --mode live            # local + external
+    python scripts/verify-links.py --mode live-strict     # + assets-repo
+    python scripts/verify-links.py --live                 # DEPRECATED alias for --mode live
+    python scripts/verify-links.py --json                 # machine-readable
 """
 
 from __future__ import annotations
@@ -72,10 +80,32 @@ LENIENT_HOSTS: dict[str, frozenset[int]] = {
 HOST_ALLOWLIST: frozenset[str] = frozenset({
     "https://www.linkedin.com/in/narendranathe/",
     "https://linkedin.com/in/narendranathe/",
-    # Testimonial-author profiles — manually verified from a real
+    # Testimonial-author profiles - manually verified from a real
     # browser. LinkedIn 404s these to unauthenticated bots.
     "https://www.linkedin.com/in/pranav-s-47356a58/",
 })
+
+# ---------- live-strict mode constants ----------
+# The forkable-portfolio skeleton (M5) splits heavy media into a
+# sibling assets repo and publishes large binaries (resume PDF, etc.)
+# via GitHub Releases. live-strict mode crawls those URLs too.
+MEDIA_REPO_URL = "https://narendranathe.github.io/resume2"
+RELEASE_URL_BASE = "https://github.com/narendranathe/resume2/releases/download"
+
+# Expected Content-Type per file suffix. Servers occasionally serve
+# the right body with the wrong type (cached uploads, mis-configured
+# CDNs); the strict mode catches this. NO application/pdf entry on
+# purpose - per M5 scope-lock decision 2, the resume PDF stays at
+# /static/resume.pdf and is covered by the existing live mode.
+EXPECTED_CONTENT_TYPES: dict[str, tuple[str, ...]] = {
+    ".jpg":  ("image/jpeg",),
+    ".jpeg": ("image/jpeg",),
+    ".png":  ("image/png",),
+    ".avif": ("image/avif",),
+    ".webp": ("image/webp",),
+    ".json": ("application/json",),
+    ".svg":  ("image/svg+xml",),
+}
 
 
 @dataclass
@@ -240,6 +270,116 @@ def check_external(ref: LinkRef) -> str | None:
     return None
 
 
+# ---------- live-strict: seeded URLs + Content-Type assertion ----------
+# Synthetic file/line for seeded LinkRefs - they're not parsed out of
+# any HTML on disk, but the LinkRef dataclass needs a Path/line. Using
+# the verifier script itself keeps the failure reporter sensible.
+_SEEDED_FILE = Path(__file__).resolve()
+
+
+def seed_assets_urls(media_repo_url: str) -> list[LinkRef]:
+    """Synthesize LinkRefs for the canonical assets-repo asset paths.
+
+    These are the files the M1 milestone uploads to the media repo's
+    Pages site. Hardcoded for now - if the layout drifts, this list
+    needs an update. Mirrors the asset layout in narendranathe/resume2.
+    """
+    base = media_repo_url.rstrip("/")
+    paths = (
+        "/headshot.jpg",
+        "/headshot.webp",
+        "/headshot.avif",
+        "/og-image.png",
+        "/previews/index-preview.png",
+        "/previews/resume-preview.png",
+        "/manifest.json",
+    )
+    return [
+        LinkRef(file=_SEEDED_FILE, tag="seeded", href=f"{base}{p}", line=0)
+        for p in paths
+    ]
+
+
+def seed_release_urls() -> list[LinkRef]:
+    """Synthesize LinkRefs for the rolling `resume` tag + most-recent
+    dated release.
+
+    Hardcoded for now - could later call the GitHub API to discover
+    the actual latest dated tag. The rolling `resume` tag is what
+    public consumers fetch; the dated tag is the immutable backup.
+    """
+    # The dated tag is a snapshot; pinning a known-good value keeps the
+    # check deterministic. Bump when M1 cuts a fresh release.
+    dated_tag = "resume-2025-01-01"
+    paths = (
+        f"/resume/resume.pdf",
+        f"/{dated_tag}/resume.pdf",
+    )
+    return [
+        LinkRef(file=_SEEDED_FILE, tag="seeded", href=f"{RELEASE_URL_BASE}{p}", line=0)
+        for p in paths
+    ]
+
+
+def _request_with_headers(href: str, method: str = "HEAD", timeout: float = 10.0) -> tuple[int | str, dict[str, str]]:
+    """Variant of _request that also returns response headers.
+
+    Returns (status_or_error, headers_dict). Headers dict uses
+    lowercased keys for case-insensitive lookup. On error the headers
+    dict is empty.
+    """
+    req = urllib.request.Request(href, method=method, headers={"User-Agent": EXTERNAL_USER_AGENT})
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            headers = {k.lower(): v for k, v in resp.headers.items()}
+            return resp.status, headers
+    except urllib.error.HTTPError as exc:
+        # HTTPError still carries response headers - useful for debugging
+        # but we don't need them on the failure path.
+        return exc.code, {}
+    except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
+        return f"network error: {exc}", {}
+
+
+def check_external_strict(ref: LinkRef) -> str | None:
+    """Status check (delegates to check_external) PLUS Content-Type
+    assertion against EXPECTED_CONTENT_TYPES[suffix].
+
+    Returns an error string on Content-Type mismatch; None on pass. If
+    the URL's suffix isn't in EXPECTED_CONTENT_TYPES, no Content-Type
+    check runs (status-only - same behaviour as check_external).
+    """
+    # Status check first - reuse existing logic, including HEAD->GET
+    # fallback, lenient hosts, and host allowlist.
+    status_err = check_external(ref)
+    if status_err:
+        return status_err
+
+    parsed = urllib.parse.urlparse(ref.href)
+    suffix = Path(parsed.path).suffix.lower()
+    expected = EXPECTED_CONTENT_TYPES.get(suffix)
+    if not expected:
+        return None  # status-only check for unknown suffixes
+
+    # Need the Content-Type header. HEAD usually carries it; fall back
+    # to GET if a host stripped it (CDNs sometimes do).
+    status, headers = _request_with_headers(ref.href, "HEAD")
+    if isinstance(status, str) or status in (403, 405) or status >= 500:
+        status, headers = _request_with_headers(ref.href, "GET")
+        if isinstance(status, str):
+            return status
+
+    content_type = headers.get("content-type", "")
+    # Content-Type may include charset suffix (e.g. "application/json; charset=utf-8");
+    # split on ';' and compare the bare media type.
+    media_type = content_type.split(";", 1)[0].strip().lower()
+    if not media_type:
+        return f"missing Content-Type header (expected one of {expected})"
+    if media_type not in expected:
+        return f"Content-Type {media_type!r} not in expected {expected}"
+    return None
+
+
 # ---------- reporting ----------
 def report_text(report: Report) -> str:
     lines: list[str] = []
@@ -278,13 +418,45 @@ def report_json(report: Report) -> str:
 
 
 # ---------- main ----------
+def _is_strict_url(href: str) -> bool:
+    """True if href targets the assets-repo Pages site or the GitHub
+    Releases download base. These URLs get the Content-Type-asserting
+    strict check; everything else stays on the existing status check.
+    """
+    return href.startswith(MEDIA_REPO_URL) or href.startswith(RELEASE_URL_BASE)
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description="Verify every link on the portfolio resolves.")
-    p.add_argument("--live", action="store_true", help="Also check external URLs (slow, network-dependent)")
+    p.add_argument(
+        "--mode",
+        choices=("local", "live", "live-strict"),
+        default="local",
+        help="local (default): on-disk + fragment checks only. "
+             "live: also crawl external URLs. "
+             "live-strict: live + seeded assets-repo + Release URLs with Content-Type assertion.",
+    )
+    p.add_argument("--live", action="store_true",
+                   help="DEPRECATED: alias for --mode live. Will be removed in a future release.")
     p.add_argument("--json", action="store_true", help="Machine-readable JSON output")
     p.add_argument("--max-workers", type=int, default=8,
-                   help="Parallelism for external (--live) checks. Default 8; raise carefully — high values can trip bot guards on hostile hosts.")
+                   help="Parallelism for external (--mode live/live-strict) checks. Default 8; raise carefully - high values can trip bot guards on hostile hosts.")
     args = p.parse_args()
+
+    # Reconcile --live (deprecated) with --mode. If --live is set, force
+    # mode to "live" unless the user explicitly passed --mode (in which
+    # case --mode wins and --live is a no-op).
+    mode = args.mode
+    if args.live:
+        print(
+            "warning: --live is deprecated; use --mode live (or --mode live-strict) instead",
+            file=sys.stderr,
+        )
+        if mode == "local":
+            mode = "live"
+
+    do_external = mode in ("live", "live-strict")
+    do_strict = mode == "live-strict"
 
     files = collect_html_files()
     if not files:
@@ -315,7 +487,7 @@ def main() -> int:
             continue
         if is_external(ref.href):
             report.checked_external += 1
-            if args.live:
+            if do_external:
                 externals_to_check.append(ref)
             continue
         report.checked_local += 1
@@ -323,12 +495,25 @@ def main() -> int:
         if err:
             report.failures.append((ref, err))
 
-    # External (--live) checks fan out via ThreadPoolExecutor. Sequential
-    # at 72 URLs * 10s timeout each was up to 12 min worst-case; 8 workers
+    # live-strict also seeds canonical assets-repo + Release URLs that
+    # don't appear in any HTML on disk yet (M5 adds them; full HTML
+    # cutover lands in a later milestone).
+    if do_strict:
+        seeded = seed_assets_urls(MEDIA_REPO_URL) + seed_release_urls()
+        externals_to_check.extend(seeded)
+        report.checked_external += len(seeded)
+
+    # External checks fan out via ThreadPoolExecutor. Sequential at
+    # 72 URLs * 10s timeout each was up to 12 min worst-case; 8 workers
     # collapses that to ~90 seconds without tripping bot guards.
     if externals_to_check:
+        def _dispatch(ref: LinkRef) -> str | None:
+            if do_strict and _is_strict_url(ref.href):
+                return check_external_strict(ref)
+            return check_external(ref)
+
         with ThreadPoolExecutor(max_workers=args.max_workers) as ex:
-            futures = {ex.submit(check_external, ref): ref for ref in externals_to_check}
+            futures = {ex.submit(_dispatch, ref): ref for ref in externals_to_check}
             for fut in as_completed(futures):
                 ref = futures[fut]
                 err = fut.result()
