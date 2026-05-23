@@ -16,6 +16,43 @@ const CONFIG = {
     // ── Identity ──────────────────────────────────────────────────
     name: 'Your Name',
 
+    // ── Identity (single source of truth for name, role, meta tags) ─
+    // Every field below drives a specific surface in index.html:
+    //   name            -> hero name, JSON-LD <Person>, footer copyright
+    //   shortName       -> nav logo / short references
+    //   role            -> hero subtitle, JSON-LD jobTitle
+    //   location        -> JSON-LD addressLocality, contact section
+    //   title           -> <title> tag
+    //   description     -> <meta name="description">
+    //   ogTitle         -> <meta property="og:title">
+    //   ogDescription   -> <meta property="og:description">
+    //   ogImage         -> <meta property="og:image"> (path relative to mediaRepoUrl or absolute)
+    //   canonicalUrl    -> <link rel="canonical"> + <meta property="og:url">
+    //   headshot        -> hero portrait <img src>
+    //   footerStatement -> footer tagline under name
+    //   sameAs          -> JSON-LD sameAs array (external profile URLs)
+    //   twitterHandle   -> <meta name="twitter:creator"> (@handle)
+    //   mediaRepoUrl    -> base URL for a second GitHub Pages site hosting
+    //                      large media (headshots, OG previews). resume.pdf
+    //                      stays canonical at /static/resume.pdf in this repo.
+    identity: {
+        name:            'Your Name',
+        shortName:       'You',
+        role:            'Your Role',
+        location:        'Your City, ST',
+        title:           'Your Name | Your Role',
+        description:     'Your Name - Your Role building (one-line description of what you do).',
+        ogTitle:         'Your Name | Your Role',
+        ogDescription:   'Short, punchy social card description.',
+        ogImage:         '/static/og-image.jpg',
+        canonicalUrl:    'https://yourusername.github.io',
+        headshot:        '/static/originals/headshot.jpg',
+        footerStatement: 'One-line footer tagline that sums up your work.',
+        sameAs:          ['https://linkedin.com/in/yourusername', 'https://github.com/yourusername'],
+        twitterHandle:   '@yourusername',
+        mediaRepoUrl:    'https://yourusername.github.io/media'
+    },
+
     // ── Availability Badge (hero section) ─────────────────────────
     // Shows a pulsing green dot with hover tooltip in the hero
     status: {
