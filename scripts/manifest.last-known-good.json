@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-05-23",
+  "note": "Fallback manifest used when ${mediaRepoUrl}/manifest.json is unreachable. Update via M4's snap-resume.py (which writes this on each cut) or manually.",
+  "headshots": {
+    "portrait_jpg": "/headshots/portrait.jpg",
+    "portrait_avif": "/headshots/portrait.avif",
+    "portrait_webp": "/headshots/portrait.webp",
+    "fullbody_jpg": "/headshots/fullbody.jpg",
+    "fullbody_avif": "/headshots/fullbody.avif",
+    "fullbody_webp": "/headshots/fullbody.webp",
+    "fullbody_800_jpg": "/headshots/fullbody-800.jpg",
+    "fullbody_800_avif": "/headshots/fullbody-800.avif",
+    "fullbody_800_webp": "/headshots/fullbody-800.webp"
+  },
+  "og": {
+    "image": "/og/og-image.jpg",
+    "version_hash": "uncaptured"
+  },
+  "previews": {
+    "linkedin": "/previews/linkedin.png",
+    "substack": "/previews/substack.png",
+    "github": "/previews/github.png"
+  }
+}

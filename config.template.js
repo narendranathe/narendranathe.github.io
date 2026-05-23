@@ -38,6 +38,8 @@ const CONFIG = {
     identity: {
         name:            'Your Name',
         shortName:       'You',
+        firstName:       'Your First',
+        lastName:        'Your Last',
         role:            'Your Role',
         location:        'Your City, ST',
         title:           'Your Name | Your Role',
