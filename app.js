@@ -30,6 +30,7 @@
 
     var card = title.closest('.support-card');
     if (!card) return;
+    card.style.gridColumn = '1 / -1';
 
     var label = card.querySelector('.section-label');
     if (label) label.textContent = 'Enterprise Data Platform Automation';
@@ -104,9 +105,52 @@
       chips.appendChild(makeEl('span', 'chip', chipText));
     });
 
+    function diagramFigure(src, w, h, alt, caption) {
+      var fig = makeEl('figure', 'system-diagram-figure');
+      var img = makeEl('img', 'system-diagram');
+      img.src = src;
+      img.width = w;
+      img.height = h;
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.alt = alt;
+      fig.appendChild(img);
+      fig.appendChild(makeEl('figcaption', 'post-figcaption', caption));
+      return fig;
+    }
+
+    var execFig = diagramFigure(
+      'assets/diagrams/ssis-loadprep-executive-view.svg', 1600, 950,
+      'Executive view of SSIS_LoadPrep: a before/after for IT leaders showing manual handoffs becoming a governed control plane, with about an hour saved per copy-down, 67% less CDC ETL compute, and a deployment cycle compressed from three months to fourteen days.',
+      'Executive view — manual copy-down coordination becomes a governed control plane: it validates the target is safe before restore, runs the copy-down as explicit stages, repairs CDC state, and logs, notifies, and reruns safely.'
+    );
+
+    var techFig = diagramFigure(
+      'assets/diagrams/ssis-loadprep-technical-architecture.svg', 1800, 1100,
+      'SSIS_LoadPrep technical architecture: a four-layer state machine covering orchestration, a LIVE-server FINDSTRING guard with safe restore and AAG readiness checks, CDC cleanup of sys.databases and orphaned msdb.sysjobs with LSN reset, and an observe-and-rerun feedback loop.',
+      'Technical architecture — a LIVE-server FINDSTRING guard blocks before restore; CDC cleanup detects sys.databases and msdb.sysjobs and resets watermarks before downstream SSIS ETL; every stage feeds an idempotent log, notify, and rerun loop.'
+    );
+
+    var actions = makeEl('div', 'card-actions');
+    var walkthrough = makeEl('a', 'cs-btn', 'Architecture walkthrough');
+    walkthrough.href = 'https://github.com/narendranathe/narendranathe.github.io/blob/main/docs/ssis-loadprep-architecture.md';
+    walkthrough.target = '_blank';
+    walkthrough.rel = 'noreferrer';
+    actions.appendChild(walkthrough);
+    var fullDiagram = makeEl('a', 'text-link');
+    fullDiagram.href = 'assets/diagrams/ssis-loadprep-technical-architecture.svg';
+    fullDiagram.target = '_blank';
+    fullDiagram.rel = 'noreferrer';
+    fullDiagram.appendChild(makeEl('i', 'fas fa-sitemap'));
+    fullDiagram.appendChild(document.createTextNode(' Full technical diagram'));
+    actions.appendChild(fullDiagram);
+
+    card.appendChild(execFig);
     card.appendChild(p1);
     card.appendChild(p2);
+    card.appendChild(techFig);
     card.appendChild(details);
+    card.appendChild(actions);
     card.appendChild(chips);
   }());
 
