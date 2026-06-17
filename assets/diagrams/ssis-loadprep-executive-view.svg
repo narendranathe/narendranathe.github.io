@@ -1,87 +1,65 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="950" viewBox="0 0 1600 950" role="img" aria-labelledby="title desc">
   <title id="title">SSIS_LoadPrep executive architecture view</title>
-  <desc id="desc">Executive-friendly diagram showing how SSIS_LoadPrep converts manual payroll database refresh work into an automated, validated, observable copy-down platform.</desc>
+  <desc id="desc">Executive overview showing how SSIS_LoadPrep converts manual payroll database refresh work into an automated control plane with safety gates, CDC readiness, and observable outcomes.</desc>
+  
   <defs>
     <style>
-      .bg { fill: #fafaf8; }
-      .panel { fill: #ffffff; stroke: #e0dcd5; stroke-width: 2; rx: 18; }
-      .core { fill: #176b52; stroke: #0f4d3b; stroke-width: 2; rx: 22; }
-      .soft { fill: #f2f0eb; stroke: #e0dcd5; stroke-width: 2; rx: 16; }
-      .warn { fill: #fff5e6; stroke: #b5752a; stroke-width: 2; rx: 16; }
-      .text { font-family: Inter, Segoe UI, Arial, sans-serif; fill: #1a1818; }
-      .muted { fill: #5c5a55; }
-      .white { fill: #ffffff; }
-      .mono { font-family: Consolas, Menlo, monospace; }
-      .arrow { stroke: #176b52; stroke-width: 4; fill: none; marker-end: url(#arrowhead); }
-      .thin { stroke: #9b9490; stroke-width: 2; fill: none; marker-end: url(#arrowhead-muted); }
-      .metric { fill: #176b52; font-weight: 800; }
-      .tag { fill: #eae7e0; stroke: #e0dcd5; rx: 14; }
+      .bg{fill:#fafaf8}.card{fill:#fff;stroke:#ded8cf;stroke-width:2;rx:24}.soft{fill:#f3f0eb;stroke:#ded8cf;stroke-width:2;rx:18}
+      .green{fill:#176b52;stroke:#0f4d3b;stroke-width:2;rx:22}.amber{fill:#fff6e8;stroke:#b5752a;stroke-width:2;rx:18}.blue{fill:#edf4f8;stroke:#6387a6;stroke-width:2;rx:18}
+      .text{font-family:Inter,Segoe UI,Arial,sans-serif;fill:#1a1818}.muted{font-family:Inter,Segoe UI,Arial,sans-serif;fill:#5c5a55}.white{font-family:Inter,Segoe UI,Arial,sans-serif;fill:#fff}.mono{font-family:Consolas,Menlo,monospace;fill:#3a3733}
+      .arrow{stroke:#176b52;stroke-width:4;fill:none;marker-end:url(#arrow)}.arrow2{stroke:#9b9490;stroke-width:3;fill:none;marker-end:url(#arrow-gray)}.dash{stroke:#b5752a;stroke-width:3;stroke-dasharray:8 7;fill:none;marker-end:url(#arrow-amber)}
+      .metric{font-family:Inter,Segoe UI,Arial,sans-serif;fill:#176b52;font-weight:850}.small{font-size:14px}.label{font-family:Inter,Segoe UI,Arial,sans-serif;fill:#176b52;font-weight:800;letter-spacing:.08em}.pill{fill:#eae7e0;stroke:#ded8cf;rx:15}
     </style>
-    <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#176b52"/></marker>
-    <marker id="arrowhead-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#9b9490"/></marker>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#176b52"/></marker>
+    <marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#9b9490"/></marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#b5752a"/></marker>
   </defs>
 
-  <rect class="bg" width="1200" height="760"/>
-  <text x="60" y="64" class="text" font-size="34" font-weight="800">SSIS_LoadPrep: automated payroll database refresh orchestration</text>
-  <text x="60" y="100" class="text muted" font-size="18">Turns repeat DBA handoffs into a governed, repeatable Azure DevOps workflow for multi-client copy-downs.</text>
+  <rect class="bg" width="1600" height="950"/>
+  <text x="70" y="70" class="text" font-size="38" font-weight="850">SSIS_LoadPrep: database refresh control plane</text>
+  <text x="70" y="108" class="muted" font-size="20">For IT leaders: a repeatable, safety-first workflow for payroll-critical SQL Server copy-down requests.</text>
 
-  <rect class="panel" x="60" y="140" width="300" height="470"/>
-  <text x="90" y="180" class="text" font-size="22" font-weight="750">Before</text>
-  <text x="90" y="216" class="text muted" font-size="16">Manual refresh coordination</text>
-  <rect class="soft" x="90" y="250" width="240" height="72"/>
-  <text x="112" y="278" class="text" font-size="15" font-weight="700">20+ daily requests</text>
-  <text x="112" y="302" class="text muted" font-size="14">client copy-downs and refreshes</text>
-  <rect class="soft" x="90" y="346" width="240" height="72"/>
-  <text x="112" y="374" class="text" font-size="15" font-weight="700">AAG steps by hand</text>
-  <text x="112" y="398" class="text muted" font-size="14">restore, security, listeners</text>
-  <rect class="warn" x="90" y="442" width="240" height="92"/>
-  <text x="112" y="470" class="text" font-size="15" font-weight="700">CDC correctness risk</text>
-  <text x="112" y="494" class="text muted" font-size="14">stale jobs, broken LSNs,</text>
-  <text x="112" y="516" class="text muted" font-size="14">incremental ETL drift</text>
+  <rect class="card" x="70" y="160" width="370" height="560"/>
+  <text x="105" y="208" class="label" font-size="15">BEFORE</text>
+  <text x="105" y="245" class="text" font-size="28" font-weight="800">Manual handoffs</text>
+  <rect class="soft" x="105" y="295" width="300" height="95"/>
+  <text x="255" y="325" class="text" font-size="20" text-anchor="middle" font-weight="800"><tspan x="255" dy="0">20+ daily refresh</tspan><tspan x="255" dy="26">or copy-down requests</tspan></text>
+  <rect class="soft" x="105" y="420" width="300" height="95"/>
+  <text x="255" y="450" class="text" font-size="20" text-anchor="middle" font-weight="800"><tspan x="255" dy="0">Restore, security,</tspan><tspan x="255" dy="26">AAG listener checks</tspan></text>
+  <rect class="amber" x="105" y="545" width="300" height="110"/>
+  <text x="255" y="574" class="text" font-size="18" text-anchor="middle" font-weight="800"><tspan x="255" dy="0">Operational risk:</tspan><tspan x="255" dy="24">CDC jobs and LSN state</tspan><tspan x="255" dy="24">can break incremental ETL</tspan></text>
 
-  <rect class="core" x="430" y="190" width="340" height="360"/>
-  <text x="600" y="235" class="text white" font-size="28" font-weight="850" text-anchor="middle">SSIS_LoadPrep</text>
-  <text x="600" y="265" class="text white" font-size="16" text-anchor="middle">orchestration and safety control plane</text>
-  <rect x="470" y="305" width="260" height="48" rx="12" fill="#ffffff" opacity="0.16"/>
-  <text x="600" y="335" class="text white" font-size="15" text-anchor="middle">Validate target is not LIVE</text>
-  <rect x="470" y="365" width="260" height="48" rx="12" fill="#ffffff" opacity="0.16"/>
-  <text x="600" y="395" class="text white" font-size="15" text-anchor="middle">Batch clients and execute stages</text>
-  <rect x="470" y="425" width="260" height="48" rx="12" fill="#ffffff" opacity="0.16"/>
-  <text x="600" y="455" class="text white" font-size="15" text-anchor="middle">Repair CDC state before ETL</text>
-  <rect x="470" y="485" width="260" height="48" rx="12" fill="#ffffff" opacity="0.16"/>
-  <text x="600" y="515" class="text white" font-size="15" text-anchor="middle">Log, notify, and rerun safely</text>
+  <rect class="green" x="565" y="205" width="470" height="470"/>
+  <text x="800" y="265" class="white" font-size="34" font-weight="850" text-anchor="middle">SSIS_LoadPrep</text>
+  <text x="800" y="300" class="white" font-size="18" text-anchor="middle">automated orchestration layer</text>
+  <rect x="615" y="350" width="370" height="58" rx="16" fill="#fff" opacity="0.16"/>
+  <text x="800" y="374" class="white" font-size="17" text-anchor="middle" font-weight="750"><tspan x="800" dy="0">Validate target is safe before restore</tspan></text>
+  <rect x="615" y="430" width="370" height="58" rx="16" fill="#fff" opacity="0.16"/>
+  <text x="800" y="454" class="white" font-size="17" text-anchor="middle" font-weight="750"><tspan x="800" dy="0">Run copy-down as explicit stages</tspan></text>
+  <rect x="615" y="510" width="370" height="58" rx="16" fill="#fff" opacity="0.16"/>
+  <text x="800" y="534" class="white" font-size="17" text-anchor="middle" font-weight="750"><tspan x="800" dy="0">Repair CDC state before SSIS ETL</tspan></text>
+  <rect x="615" y="590" width="370" height="58" rx="16" fill="#fff" opacity="0.16"/>
+  <text x="800" y="614" class="white" font-size="17" text-anchor="middle" font-weight="750"><tspan x="800" dy="0">Log, notify, and rerun safely</tspan></text>
 
-  <rect class="panel" x="840" y="140" width="300" height="470"/>
-  <text x="870" y="180" class="text" font-size="22" font-weight="750">After</text>
-  <text x="870" y="216" class="text muted" font-size="16">Repeatable platform outcome</text>
-  <rect class="soft" x="870" y="250" width="240" height="72"/>
-  <text x="892" y="278" class="text metric" font-size="24">~1 hr</text>
-  <text x="970" y="278" class="text" font-size="15" font-weight="700">saved per copy-down</text>
-  <text x="892" y="302" class="text muted" font-size="14">manual orchestration removed</text>
-  <rect class="soft" x="870" y="346" width="240" height="72"/>
-  <text x="892" y="374" class="text metric" font-size="24">-67%</text>
-  <text x="968" y="374" class="text" font-size="15" font-weight="700">CDC ETL compute</text>
-  <text x="892" y="398" class="text muted" font-size="14">incremental path stabilized</text>
-  <rect class="soft" x="870" y="442" width="240" height="92"/>
-  <text x="892" y="470" class="text metric" font-size="24">3mo → 14d</text>
-  <text x="892" y="494" class="text" font-size="15" font-weight="700">deployment cycle</text>
-  <text x="892" y="516" class="text muted" font-size="14">CI/CD ownership compressed release flow</text>
+  <rect class="card" x="1160" y="160" width="370" height="560"/>
+  <text x="1195" y="208" class="label" font-size="15">AFTER</text>
+  <text x="1195" y="245" class="text" font-size="28" font-weight="800">Controlled platform</text>
+  <rect class="soft" x="1195" y="292" width="300" height="90"/>
+  <text x="1225" y="333" class="metric" font-size="32">~1 hr</text>
+  <text x="1320" y="325" class="text" font-size="18" font-weight="800">saved per</text>
+  <text x="1320" y="349" class="text" font-size="18" font-weight="800">copy-down</text>
+  <rect class="soft" x="1195" y="412" width="300" height="90"/>
+  <text x="1225" y="454" class="metric" font-size="32">-67%</text>
+  <text x="1320" y="447" class="text" font-size="18" font-weight="800">CDC ETL</text>
+  <text x="1320" y="471" class="text" font-size="18" font-weight="800">compute</text>
+  <rect class="soft" x="1195" y="532" width="300" height="100"/>
+  <text x="1225" y="574" class="metric" font-size="32">3mo→14d</text>
+  <text x="1225" y="604" class="text" font-size="18" font-weight="800">deployment cycle</text>
 
-  <path class="arrow" d="M 360 370 C 390 370, 400 370, 430 370"/>
-  <path class="arrow" d="M 770 370 C 800 370, 810 370, 840 370"/>
+  <path class="arrow" d="M440 440 C490 440 515 440 565 440"/>
+  <path class="arrow" d="M1035 440 C1085 440 1110 440 1160 440"/>
 
-  <rect class="tag" x="96" y="646" width="146" height="34"/>
-  <text x="169" y="668" class="text muted" font-size="13" text-anchor="middle">Payroll-critical</text>
-  <rect class="tag" x="260" y="646" width="160" height="34"/>
-  <text x="340" y="668" class="text muted" font-size="13" text-anchor="middle">Azure DevOps</text>
-  <rect class="tag" x="438" y="646" width="160" height="34"/>
-  <text x="518" y="668" class="text muted" font-size="13" text-anchor="middle">Always-On AAG</text>
-  <rect class="tag" x="616" y="646" width="145" height="34"/>
-  <text x="688" y="668" class="text muted" font-size="13" text-anchor="middle">SQL Server CDC</text>
-  <rect class="tag" x="779" y="646" width="150" height="34"/>
-  <text x="854" y="668" class="text muted" font-size="13" text-anchor="middle">Idempotent runs</text>
-  <rect class="tag" x="947" y="646" width="140" height="34"/>
-  <text x="1017" y="668" class="text muted" font-size="13" text-anchor="middle">Observability</text>
-
-  <text x="60" y="720" class="text muted" font-size="13">Talk track: I automated the database-refresh control plane, not just the deploy button — the system protects production, fixes CDC state, and makes high-volume copy-down work repeatable.</text>
+  <rect class="card" x="70" y="765" width="1460" height="120"/>
+  <text x="105" y="808" class="text" font-size="20" font-weight="800">One-sentence talk track</text>
+  <text x="105" y="835" class="muted" font-size="18" text-anchor="start" font-weight="500"><tspan x="105" dy="0">I automated the database-refresh control plane: it prevents unsafe targets, validates AAG readiness,</tspan><tspan x="105" dy="25">repairs CDC state, and makes high-volume payroll copy-downs repeatable.</tspan></text>
 </svg>
