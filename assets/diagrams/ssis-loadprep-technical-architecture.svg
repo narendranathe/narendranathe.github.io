@@ -1,103 +1,67 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1100" viewBox="0 0 1800 1100" role="img" aria-labelledby="title desc">
   <title id="title">SSIS_LoadPrep technical architecture diagram</title>
-  <desc id="desc">Technical diagram showing Azure DevOps orchestration, LIVE guard, AAG restore and listener validation, CDC job cleanup, SSIS incremental ETL, logging, and notifications.</desc>
+  <desc id="desc">Technical architecture for SSIS_LoadPrep showing Azure DevOps orchestration, LIVE guard, AAG copy-down stages, CDC cleanup, SSIS incremental ETL, and observability.</desc>
+  
   <defs>
     <style>
-      .bg { fill: #fafaf8; }
-      .swim { fill: #ffffff; stroke: #e0dcd5; stroke-width: 2; rx: 20; }
-      .box { fill: #f2f0eb; stroke: #d8d2c8; stroke-width: 2; rx: 14; }
-      .core { fill: #176b52; stroke: #0f4d3b; stroke-width: 2; rx: 16; }
-      .risk { fill: #fff5e6; stroke: #b5752a; stroke-width: 2; rx: 14; }
-      .data { fill: #eef6f2; stroke: #176b52; stroke-width: 2; rx: 14; }
-      .obs { fill: #f7f4ef; stroke: #b5752a; stroke-width: 2; rx: 14; }
-      .text { font-family: Inter, Segoe UI, Arial, sans-serif; fill: #1a1818; }
-      .muted { fill: #5c5a55; }
-      .white { fill: #ffffff; }
-      .mono { font-family: Consolas, Menlo, monospace; }
-      .arrow { stroke: #176b52; stroke-width: 3.5; fill: none; marker-end: url(#arrowhead); }
-      .dash { stroke: #b5752a; stroke-width: 3; fill: none; stroke-dasharray: 8 6; marker-end: url(#arrowhead-warm); }
-      .mutedLine { stroke: #9b9490; stroke-width: 2.5; fill: none; marker-end: url(#arrowhead-muted); }
-      .pill { fill: #eae7e0; stroke: #e0dcd5; rx: 13; }
+      .bg{fill:#fafaf8}.card{fill:#fff;stroke:#ded8cf;stroke-width:2;rx:24}.soft{fill:#f3f0eb;stroke:#ded8cf;stroke-width:2;rx:18}
+      .green{fill:#176b52;stroke:#0f4d3b;stroke-width:2;rx:22}.amber{fill:#fff6e8;stroke:#b5752a;stroke-width:2;rx:18}.blue{fill:#edf4f8;stroke:#6387a6;stroke-width:2;rx:18}
+      .text{font-family:Inter,Segoe UI,Arial,sans-serif;fill:#1a1818}.muted{font-family:Inter,Segoe UI,Arial,sans-serif;fill:#5c5a55}.white{font-family:Inter,Segoe UI,Arial,sans-serif;fill:#fff}.mono{font-family:Consolas,Menlo,monospace;fill:#3a3733}
+      .arrow{stroke:#176b52;stroke-width:4;fill:none;marker-end:url(#arrow)}.arrow2{stroke:#9b9490;stroke-width:3;fill:none;marker-end:url(#arrow-gray)}.dash{stroke:#b5752a;stroke-width:3;stroke-dasharray:8 7;fill:none;marker-end:url(#arrow-amber)}
+      .metric{font-family:Inter,Segoe UI,Arial,sans-serif;fill:#176b52;font-weight:850}.small{font-size:14px}.label{font-family:Inter,Segoe UI,Arial,sans-serif;fill:#176b52;font-weight:800;letter-spacing:.08em}.pill{fill:#eae7e0;stroke:#ded8cf;rx:15}
     </style>
-    <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#176b52"/></marker>
-    <marker id="arrowhead-warm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#b5752a"/></marker>
-    <marker id="arrowhead-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#9b9490"/></marker>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#176b52"/></marker>
+    <marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#9b9490"/></marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#b5752a"/></marker>
   </defs>
 
-  <rect class="bg" width="1400" height="900"/>
-  <text x="60" y="60" class="text" font-size="34" font-weight="850">SSIS_LoadPrep technical architecture</text>
-  <text x="60" y="94" class="text muted" font-size="18">A safety-first state machine for multi-client SQL Server copy-downs, CDC cleanup, and downstream SSIS reliability.</text>
+  <rect class="bg" width="1800" height="1100"/>
+  <text x="70" y="70" class="text" font-size="38" font-weight="850">SSIS_LoadPrep technical architecture</text>
+  <text x="70" y="108" class="muted" font-size="20">A database-refresh state machine for SQL Server copy-downs, CDC correctness, and SSIS incremental ETL readiness.</text>
 
-  <rect class="swim" x="50" y="130" width="1260" height="150"/>
-  <text x="78" y="166" class="text" font-size="18" font-weight="800">1. Request and orchestration layer</text>
-  <rect class="box" x="80" y="190" width="230" height="58"/>
-  <text x="195" y="215" class="text" font-size="15" font-weight="750" text-anchor="middle">Client refresh request</text>
-  <text x="195" y="237" class="text muted" font-size="13" text-anchor="middle">20+ daily copy-downs</text>
-  <rect class="core" x="395" y="184" width="280" height="70"/>
-  <text x="535" y="213" class="text white" font-size="17" font-weight="800" text-anchor="middle">Azure DevOps pipeline</text>
-  <text x="535" y="238" class="text white" font-size="13" text-anchor="middle">build → deploy → execute</text>
-  <rect class="box" x="760" y="190" width="220" height="58"/>
-  <text x="870" y="215" class="text" font-size="15" font-weight="750" text-anchor="middle">Parameter map</text>
-  <text x="870" y="237" class="text muted" font-size="13" text-anchor="middle">client, DB, server, mode</text>
-  <rect class="obs" x="1060" y="190" width="220" height="58"/>
-  <text x="1170" y="215" class="text" font-size="15" font-weight="750" text-anchor="middle">Run context</text>
-  <text x="1170" y="237" class="text muted" font-size="13" text-anchor="middle">structured logs and audit trail</text>
-  <path class="arrow" d="M 310 219 L 395 219"/>
-  <path class="arrow" d="M 675 219 L 760 219"/>
-  <path class="arrow" d="M 980 219 L 1060 219"/>
+  <rect class="card" x="60" y="150" width="1680" height="150"/>
+  <text x="95" y="195" class="label" font-size="15">1 · ORCHESTRATE</text>
+  <rect class="soft" x="95" y="218" width="270" height="58"/>
+  <text x="230" y="241" class="text" font-size="17" text-anchor="middle" font-weight="800"><tspan x="230" dy="0">Client refresh request</tspan></text>
+  <rect class="green" x="455" y="205" width="330" height="84"/>
+  <text x="620" y="235" class="white" font-size="18" text-anchor="middle" font-weight="850"><tspan x="620" dy="0">Azure DevOps pipeline</tspan><tspan x="620" dy="25">build → deploy → execute</tspan></text>
+  <rect class="soft" x="875" y="218" width="270" height="58"/>
+  <text x="1010" y="240" class="text" font-size="16" text-anchor="middle" font-weight="800"><tspan x="1010" dy="0">Parameter map</tspan><tspan x="1010" dy="23">client · db · server</tspan></text>
+  <rect class="soft" x="1235" y="218" width="270" height="58"/>
+  <text x="1370" y="240" class="text" font-size="16" text-anchor="middle" font-weight="800"><tspan x="1370" dy="0">Structured run context</tspan><tspan x="1370" dy="23">who · what · when</tspan></text>
+  <path class="arrow" d="M365 247 L455 247"/><path class="arrow" d="M785 247 L875 247"/><path class="arrow" d="M1145 247 L1235 247"/>
 
-  <rect class="swim" x="50" y="315" width="1260" height="205"/>
-  <text x="78" y="351" class="text" font-size="18" font-weight="800">2. Safety gates and AAG copy-down state machine</text>
-  <rect class="risk" x="80" y="382" width="250" height="82"/>
-  <text x="205" y="411" class="text" font-size="15" font-weight="800" text-anchor="middle">LIVE server guard</text>
-  <text x="205" y="435" class="text muted mono" font-size="13" text-anchor="middle">FINDSTRING hard stop</text>
-  <rect class="data" x="400" y="382" width="230" height="82"/>
-  <text x="515" y="411" class="text" font-size="15" font-weight="800" text-anchor="middle">Restore target DB</text>
-  <text x="515" y="435" class="text muted" font-size="13" text-anchor="middle">copy-down into safe env</text>
-  <rect class="data" x="700" y="382" width="230" height="82"/>
-  <text x="815" y="411" class="text" font-size="15" font-weight="800" text-anchor="middle">Security sync</text>
-  <text x="815" y="435" class="text muted" font-size="13" text-anchor="middle">users, roles, permissions</text>
-  <rect class="data" x="1000" y="382" width="250" height="82"/>
-  <text x="1125" y="411" class="text" font-size="15" font-weight="800" text-anchor="middle">AAG listener validation</text>
-  <text x="1125" y="435" class="text muted" font-size="13" text-anchor="middle">contained AG health checks</text>
-  <path class="arrow" d="M 330 423 L 400 423"/>
-  <path class="arrow" d="M 630 423 L 700 423"/>
-  <path class="arrow" d="M 930 423 L 1000 423"/>
-  <path class="dash" d="M 205 464 C 205 500, 535 502, 535 464"/>
-  <text x="372" y="503" class="text muted" font-size="13" text-anchor="middle">blocked before restore if target resolves as LIVE</text>
+  <rect class="card" x="60" y="340" width="1680" height="250"/>
+  <text x="95" y="385" class="label" font-size="15">2 · PROTECT AND COPY DOWN</text>
+  <rect class="amber" x="95" y="420" width="275" height="95"/>
+  <text x="232" y="450" class="text" font-size="18" text-anchor="middle" font-weight="850"><tspan x="232" dy="0">LIVE server guard</tspan><tspan x="232" dy="26">FINDSTRING hard stop</tspan></text>
+  <rect class="blue" x="470" y="420" width="275" height="95"/>
+  <text x="608" y="450" class="text" font-size="18" text-anchor="middle" font-weight="850"><tspan x="608" dy="0">Restore target DB</tspan><tspan x="608" dy="26">safe non-prod copy</tspan></text>
+  <rect class="blue" x="845" y="420" width="275" height="95"/>
+  <text x="982" y="450" class="text" font-size="18" text-anchor="middle" font-weight="850"><tspan x="982" dy="0">Security sync</tspan><tspan x="982" dy="26">users · roles · permissions</tspan></text>
+  <rect class="blue" x="1220" y="420" width="310" height="95"/>
+  <text x="1375" y="450" class="text" font-size="18" text-anchor="middle" font-weight="850"><tspan x="1375" dy="0">AAG readiness check</tspan><tspan x="1375" dy="26">listener and contained AG state</tspan></text>
+  <path class="arrow" d="M370 468 L470 468"/><path class="arrow" d="M745 468 L845 468"/><path class="arrow" d="M1120 468 L1220 468"/>
+  <path class="dash" d="M232 515 C232 560 608 560 608 515"/>
+  <text x="420" y="568" class="muted" font-size="15" text-anchor="middle">blocked before restore if target resolves as production</text>
 
-  <rect class="swim" x="50" y="555" width="1260" height="190"/>
-  <text x="78" y="591" class="text" font-size="18" font-weight="800">3. CDC correctness and downstream ETL protection</text>
-  <rect class="box" x="80" y="625" width="245" height="82"/>
-  <text x="202" y="654" class="text" font-size="15" font-weight="800" text-anchor="middle">CDC metadata check</text>
-  <text x="202" y="678" class="text muted mono" font-size="13" text-anchor="middle">sys.databases.cdc_enabled</text>
-  <rect class="risk" x="385" y="625" width="280" height="82"/>
-  <text x="525" y="654" class="text" font-size="15" font-weight="800" text-anchor="middle">Orphan CDC job cleanup</text>
-  <text x="525" y="678" class="text muted mono" font-size="13" text-anchor="middle">msdb.sysjobs name patterns</text>
-  <rect class="data" x="725" y="625" width="240" height="82"/>
-  <text x="845" y="654" class="text" font-size="15" font-weight="800" text-anchor="middle">Incremental reset</text>
-  <text x="845" y="678" class="text muted" font-size="13" text-anchor="middle">LSN and watermark sanity</text>
-  <rect class="core" x="1030" y="625" width="235" height="82"/>
-  <text x="1148" y="654" class="text white" font-size="15" font-weight="800" text-anchor="middle">SSIS CDC ETL</text>
-  <text x="1148" y="678" class="text white" font-size="13" text-anchor="middle">stable incremental packages</text>
-  <path class="arrow" d="M 325 666 L 385 666"/>
-  <path class="arrow" d="M 665 666 L 725 666"/>
-  <path class="arrow" d="M 965 666 L 1030 666"/>
+  <rect class="card" x="60" y="630" width="1680" height="250"/>
+  <text x="95" y="675" class="label" font-size="15">3 · CLEAN CDC AND RELEASE ETL</text>
+  <rect class="soft" x="95" y="710" width="285" height="95"/>
+  <text x="238" y="737" class="text" font-size="17" text-anchor="middle" font-weight="850"><tspan x="238" dy="0">Normal CDC check</tspan><tspan x="238" dy="25">sys.databases.cdc_enabled</tspan></text>
+  <rect class="amber" x="470" y="710" width="310" height="95"/>
+  <text x="625" y="737" class="text" font-size="17" text-anchor="middle" font-weight="850"><tspan x="625" dy="0">Orphan CDC job cleanup</tspan><tspan x="625" dy="25">msdb.sysjobs name patterns</tspan></text>
+  <rect class="soft" x="870" y="710" width="285" height="95"/>
+  <text x="1012" y="737" class="text" font-size="17" text-anchor="middle" font-weight="850"><tspan x="1012" dy="0">Incremental reset</tspan><tspan x="1012" dy="25">LSN and watermark sanity</tspan></text>
+  <rect class="green" x="1245" y="710" width="285" height="95"/>
+  <text x="1388" y="737" class="white" font-size="17" text-anchor="middle" font-weight="850"><tspan x="1388" dy="0">SSIS CDC ETL</tspan><tspan x="1388" dy="25">stable incremental packages</tspan></text>
+  <path class="arrow" d="M380 758 L470 758"/><path class="arrow" d="M780 758 L870 758"/><path class="arrow" d="M1155 758 L1245 758"/>
 
-  <rect class="swim" x="50" y="775" width="1260" height="80"/>
-  <text x="78" y="812" class="text" font-size="18" font-weight="800">4. Operational feedback loop</text>
-  <rect class="obs" x="360" y="795" width="190" height="38"/>
-  <text x="455" y="820" class="text" font-size="13" font-weight="750" text-anchor="middle">per-step logging</text>
-  <rect class="obs" x="600" y="795" width="190" height="38"/>
-  <text x="695" y="820" class="text" font-size="13" font-weight="750" text-anchor="middle">email notifications</text>
-  <rect class="obs" x="840" y="795" width="190" height="38"/>
-  <text x="935" y="820" class="text" font-size="13" font-weight="750" text-anchor="middle">safe reruns</text>
-  <path class="mutedLine" d="M 1148 707 C 1148 765, 935 765, 935 795"/>
-  <path class="mutedLine" d="M 535 254 C 535 295, 205 295, 205 382"/>
-
-  <rect class="pill" x="1020" y="48" width="120" height="30"/>
-  <text x="1080" y="68" class="text muted" font-size="12" text-anchor="middle">idempotent</text>
-  <rect class="pill" x="1155" y="48" width="150" height="30"/>
-  <text x="1230" y="68" class="text muted" font-size="12" text-anchor="middle">multi-client batch</text>
-  <text x="60" y="882" class="text muted" font-size="13">Developer explanation: the architecture handles both normal CDC state and post-drop orphaned jobs, then validates AAG/listener state before downstream SSIS incremental ETL runs.</text>
+  <rect class="card" x="60" y="920" width="1680" height="105"/>
+  <text x="95" y="965" class="label" font-size="15">4 · OBSERVE AND RERUN SAFELY</text>
+  <rect class="pill" x="470" y="957" width="210" height="38"/><text x="575" y="982" class="text" font-size="15" font-weight="800" text-anchor="middle">per-step logs</text>
+  <rect class="pill" x="760" y="957" width="230" height="38"/><text x="875" y="982" class="text" font-size="15" font-weight="800" text-anchor="middle">email notifications</text>
+  <rect class="pill" x="1070" y="957" width="220" height="38"/><text x="1180" y="982" class="text" font-size="15" font-weight="800" text-anchor="middle">idempotent reruns</text>
+  <path class="arrow2" d="M1388 805 C1388 900 1180 900 1180 957"/>
+  <text x="95" y="1056" class="muted" font-size="16">Engineer talk track: the value is not just restore automation; it is CDC correctness, AAG/listener validation, production-safe gating, and rerunnable SQL Server operations.</text>
 </svg>
