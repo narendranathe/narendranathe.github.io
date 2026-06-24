@@ -572,38 +572,4 @@
   }());
 }());
 
-/* ============================================================
-   CARD HOVER ANIMATIONS
-   Border-trace (silver → gold → grey) + interior spotlight.
-   Both follow the mouse in real time via CSS custom properties.
-   ============================================================ */
-(function () {
-  'use strict';
-
-  var SELECTOR = '.system-card, .support-card';
-
-  function onMouseMove(e) {
-    var card = this;
-    var rect = card.getBoundingClientRect();
-
-    // Percentage position for interior spotlight
-    var px = ((e.clientX - rect.left) / rect.width)  * 100;
-    var py = ((e.clientY - rect.top)  / rect.height) * 100;
-    card.style.setProperty('--mouse-x', px.toFixed(1) + '%');
-    card.style.setProperty('--mouse-y', py.toFixed(1) + '%');
-
-    // Angle from card centre for border-trace sweep
-    var cx = rect.left + rect.width  / 2;
-    var cy = rect.top  + rect.height / 2;
-    var deg = Math.atan2(e.clientY - cy, e.clientX - cx) * (180 / Math.PI);
-    card.style.setProperty('--border-angle', deg.toFixed(1) + 'deg');
-  }
-
-  Array.prototype.forEach.call(
-    document.querySelectorAll(SELECTOR),
-    function (card) {
-      card.addEventListener('mousemove', onMouseMove);
-    }
-  );
-}());
 
