@@ -571,59 +571,6 @@ button { font-family: inherit; cursor: pointer; }
 }
 .support-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
 
-/* ---- Border-trace sweep: silver → gold accent → grey follows mouse angle ---- */
-.system-card::before,
-.support-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1.5px;
-  background: conic-gradient(
-    from calc(var(--border-angle, 0deg) - 60deg),
-    transparent       0%,
-    rgba(220,228,245,0.92) 6%,
-    var(--accent-warm)    15%,
-    rgba(140,145,158,0.45) 28%,
-    transparent       42%
-  );
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: destination-out;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  pointer-events: none;
-}
-
-/* ---- Interior spotlight: warm radial glow follows cursor ---- */
-.system-card::after,
-.support-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(
-    380px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(181, 117, 42, 0.07) 0%,
-    transparent 68%
-  );
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-}
-
-.system-card:hover::before,
-.support-card:hover::before,
-.system-card:hover::after,
-.support-card:hover::after {
-  opacity: 1;
-}
-
 .support-card h3 {
   font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 500;
   color: var(--fg); margin: 0.35rem 0 0.75rem;
@@ -2050,4 +1997,5 @@ body.splash-active { overflow: hidden; }
   }
   .skill-tooltip::after { display: none; }
 }
+
 
