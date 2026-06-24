@@ -1,0 +1,41 @@
+name: Substack snapshot
+
+# Refreshes static/substack-latest.json daily so the hover-preview popup
+# always shows recent posts without client-side CORS fetches.
+# The snap-substack-feed.py script comments explain why a snapshot is needed
+# (Substack does not set Access-Control-Allow-Origin on its /feed endpoint).
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Fetch latest Substack posts
+        env:
+          SUBSTACK_FEED_URL: ${{ vars.SUBSTACK_FEED_URL || '' }}
+        run: python scripts/snap-substack-feed.py
+
+      - name: Commit snapshot if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add static/substack-latest.json
+          if git diff --cached --quiet; then
+            echo "No changes to snapshot — skipping commit"
+          else
+            git commit -m "chore: refresh Substack snapshot [skip ci]"
+            git push
+          fi
