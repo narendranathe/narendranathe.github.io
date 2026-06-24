@@ -562,13 +562,6 @@ button { font-family: inherit; cursor: pointer; }
   margin-top: 1.5rem;
   align-items: start;
 }
-/* The SSIS_LoadPrep card (DOM order #1) carries two full architecture
-   diagrams, so it spans the whole row on top. The ML Pipeline Projects card
-   (#2) and the repo-context-hooks card (#3) then share the second row below
-   it, in their original right/left columns. */
-.supporting-row > .support-card:nth-child(1) { grid-column: 1 / -1; grid-row: 1; }
-.supporting-row > .support-card:nth-child(2) { grid-column: 2; grid-row: 2; }
-.supporting-row > .support-card:nth-child(3) { grid-column: 1; grid-row: 2; }
 .support-card {
   background: var(--bg); border: 1px solid var(--border);
   border-radius: var(--r-lg); padding: 1.25rem 1.4rem; box-shadow: var(--shadow-sm);
@@ -593,12 +586,6 @@ button { font-family: inherit; cursor: pointer; }
   .systems-grid { grid-template-columns: 1fr; }
   .arch-grid { grid-template-columns: 1fr; }
   .supporting-row { grid-template-columns: 1fr; gap: 1rem; }
-  /* Mobile: drop the desktop row/column pinning so cards flow in DOM order. */
-  .supporting-row > .support-card:nth-child(1),
-  .supporting-row > .support-card:nth-child(2),
-  .supporting-row > .support-card:nth-child(3) {
-    grid-column: 1; grid-row: auto;
-  }
 }
 
 /* ============================================================
@@ -2005,3 +1992,4 @@ body.splash-active { overflow: hidden; }
   }
   .skill-tooltip::after { display: none; }
 }
+
