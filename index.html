@@ -841,27 +841,89 @@
 
         <!-- Supporting work -->
         <div class="supporting-row" data-reveal>
-          <article class="support-card">
-            <span class="section-label">Enterprise Data Platform</span>
-            <h3 id="card-azure">Azure Platform Engineering</h3>
-            <dl class="impact-strip" aria-labelledby="card-azure">
-              <div class="impact-stat">
-                <dt class="impact-value">3mo&rarr;14d</dt>
-                <dd class="impact-label">deployment cycle<span class="sr-only"> — release cadence cut from three months to fourteen days by owning CI/CD end-to-end through Azure DevOps; eliminated about eleven weeks of cross-team idle per release.</span></dd>
+          <article class="system-card">
+            <div class="system-body">
+              <span class="section-label">Enterprise Data Platform</span>
+              <h3 class="system-name" id="card-azure">Azure Platform Engineering</h3>
+              <dl class="impact-strip" aria-labelledby="card-azure">
+                <div class="impact-stat">
+                  <dt class="impact-value">3mo&rarr;14d</dt>
+                  <dd class="impact-label">deployment cycle<span class="sr-only"> — release cadence cut from three months to fourteen days by owning CI/CD end-to-end through Azure DevOps; eliminated about eleven weeks of cross-team idle per release.</span></dd>
+                </div>
+                <div class="impact-stat">
+                  <dt class="impact-value">-67%</dt>
+                  <dd class="impact-label">CDC ETL compute<span class="sr-only"> — CDC ETL runtime cut from thirty minutes to under eight minutes after reengineering full-table reloads into incremental merge-upserts.</span></dd>
+                </div>
+                <div class="impact-stat">
+                  <dt class="impact-value">~1hr</dt>
+                  <dd class="impact-label">saved per AAG copy-down<span class="sr-only"> — idempotent pipeline for Contained Always-On Availability Groups eliminated about an hour of manual orchestration on each of twenty-plus daily copy-down requests.</span></dd>
+                </div>
+              </dl>
+              <p class="system-desc">ExponentHR runs payroll for thousands of employers — when the data platform lags, paychecks are at risk. I inherited a 3-month release cycle, 30-minute ETL jobs, and fully manual database failover. Rebuilt each layer: Azure DevOps CI/CD cut the release window to 14 days; incremental CDC merge-upserts dropped ETL from 30 minutes to under 8; idempotent AAG copy-down pipelines removed an hour of manual steps from 20+ daily requests.</p>
+              <figure class="system-diagram-figure" aria-labelledby="diagram-az-title" aria-describedby="diagram-az-desc">
+                <svg class="system-diagram" viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" role="img">
+                  <title id="diagram-az-title">Azure Platform Engineering topology: Azure Repos triggers Azure Pipelines CI/CD, output flows to SQL Server CDC, then to AAG replica and Microsoft Fabric</title>
+                  <desc id="diagram-az-desc">Enterprise data platform at ExponentHR. Azure Repos triggers Azure Pipelines on every push — build, test, and deploy stages run end-to-end, compressing the release cycle from three months to fourteen days. SQL Server uses CDC incremental merge-upserts, cutting ETL compute by sixty-seven percent. An idempotent pipeline automates Contained Always-On Availability Group copy-downs, saving about an hour per request. Microsoft Fabric consumes the CDC stream for analytics.</desc>
+                  <defs>
+                    <marker id="arrow-az" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                      <path d="M0 0 L10 5 L0 10 Z" fill="currentColor"/>
+                    </marker>
+                  </defs>
+                  <g fill="none" stroke="currentColor" stroke-width="1.4" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="11">
+                    <rect x="10" y="58" width="118" height="80" rx="6"/>
+                    <text x="69" y="78" text-anchor="middle" fill="currentColor" font-weight="600">Azure Repos</text>
+                    <text x="69" y="96" text-anchor="middle" fill="currentColor" font-size="10">PR / push trigger</text>
+                    <text x="69" y="128" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">protected main</text>
+                    <rect x="148" y="40" width="158" height="116" rx="6" stroke="var(--accent-warm, #b5752a)" stroke-width="2"/>
+                    <text x="227" y="62" text-anchor="middle" fill="var(--accent-warm, #b5752a)" font-weight="600">Azure Pipelines</text>
+                    <text x="227" y="80" text-anchor="middle" fill="currentColor" font-size="10">CI/CD end-to-end</text>
+                    <text x="227" y="96" text-anchor="middle" fill="currentColor" font-size="10">build → test → deploy</text>
+                    <text x="227" y="112" text-anchor="middle" fill="currentColor" font-size="10">3mo → 14-day cycle</text>
+                    <text x="227" y="144" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">idempotent stages</text>
+                    <rect x="326" y="58" width="148" height="80" rx="6"/>
+                    <text x="400" y="78" text-anchor="middle" fill="currentColor" font-weight="600">SQL Server</text>
+                    <text x="400" y="96" text-anchor="middle" fill="currentColor" font-size="10">CDC incremental ETL</text>
+                    <text x="400" y="112" text-anchor="middle" fill="currentColor" font-size="10">30min → &lt;8min</text>
+                    <text x="400" y="130" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">merge-upsert</text>
+                    <rect x="494" y="44" width="118" height="58" rx="6" stroke="var(--accent, #176b52)" stroke-width="1.5"/>
+                    <text x="553" y="66" text-anchor="middle" fill="currentColor" font-weight="600">AAG Replica</text>
+                    <text x="553" y="84" text-anchor="middle" fill="currentColor" font-size="10">~1hr saved / copy-down</text>
+                    <rect x="494" y="114" width="118" height="58" rx="6"/>
+                    <text x="553" y="136" text-anchor="middle" fill="currentColor" font-weight="600">Microsoft Fabric</text>
+                    <text x="553" y="154" text-anchor="middle" fill="currentColor" font-size="10">analytics lakehouse</text>
+                    <line x1="128" y1="98" x2="148" y2="98" marker-end="url(#arrow-az)"/>
+                    <line x1="306" y1="98" x2="326" y2="98" marker-end="url(#arrow-az)"/>
+                    <line x1="474" y1="82" x2="494" y2="73" marker-end="url(#arrow-az)"/>
+                    <line x1="474" y1="114" x2="494" y2="133" marker-end="url(#arrow-az)"/>
+                    <text x="360" y="178" text-anchor="middle" fill="var(--fg-muted, #9b9490)" font-size="10">ExponentHR production platform · payroll-critical availability</text>
+                  </g>
+                </svg>
+                <figcaption class="post-figcaption">Figure: Azure platform topology — CI/CD pipeline, CDC incremental ETL, and AAG failover automation as deployed at ExponentHR.</figcaption>
+              </figure>
+              <div class="tech-chips">
+                <span class="chip">Azure DevOps</span><span class="chip">SQL Server</span>
+                <span class="chip">CDC ETL</span><span class="chip">AAG failover</span>
+                <span class="chip">Microsoft Fabric</span><span class="chip">SSIS</span>
               </div>
-              <div class="impact-stat">
-                <dt class="impact-value">-67%</dt>
-                <dd class="impact-label">CDC ETL compute<span class="sr-only"> — CDC ETL runtime cut from thirty minutes to under eight minutes after reengineering full-table reloads into incremental merge-upserts.</span></dd>
+              <div class="card-actions">
+                <button class="expand-btn" aria-expanded="false" data-label="Architecture walkthrough">Architecture walkthrough</button>
               </div>
-              <div class="impact-stat">
-                <dt class="impact-value">~1hr</dt>
-                <dd class="impact-label">saved per AAG copy-down<span class="sr-only"> — idempotent Azure DevOps pipeline for Contained Always-On Availability Groups (restore plus security plus CDC plus listener validation) eliminated about an hour of manual orchestration on each of twenty-plus daily copy-down requests.</span></dd>
+              <div class="arch-expand" hidden>
+                <div class="arch-grid">
+                  <div class="arch-box">
+                    <h4>CI/CD Pipeline</h4>
+                    <p>Azure DevOps pipelines with full build-test-deploy stages. Idempotent stage design means any re-run produces the same result. Release cadence moved from 3-month manual handoffs to 14-day automated cycles — about 11 weeks of cross-team idle eliminated per release.</p>
+                  </div>
+                  <div class="arch-box">
+                    <h4>CDC Incremental ETL</h4>
+                    <p>Replaced full-table SQL Server reloads with Change Data Capture merge-upserts. Only rows modified since the last run flow through the pipeline — runtime dropped from 30 minutes to under 8, compute cost down 67%. Downstream Microsoft Fabric workloads consume the CDC stream without full-refresh dependency.</p>
+                  </div>
+                  <div class="arch-box">
+                    <h4>AAG Copy-Down Automation</h4>
+                    <p>Contained Always-On Availability Group copy-downs previously required manual steps: restore, security grant, CDC reconfiguration, listener validation — roughly an hour per request across 20+ daily requests. An idempotent Azure DevOps pipeline now handles all four steps with full audit trail and rollback safety.</p>
+                  </div>
+                </div>
               </div>
-            </dl>
-            <p>Production data platform work at ExponentHR: CI/CD ownership compressed deployment from 3 months to 14 days, CDC ETL -67% compute cost, payroll-critical AAG database failover automation, idempotent Azure DevOps pipelines.</p>
-            <div class="support-chips">
-              <span class="chip">Azure DevOps</span><span class="chip">CDC ETL</span>
-              <span class="chip">AAG failover</span><span class="chip">Microsoft Fabric</span>
             </div>
           </article>
           <article class="support-card">
@@ -1325,3 +1387,4 @@
 
 </body>
 </html>
+
