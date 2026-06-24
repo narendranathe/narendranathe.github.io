@@ -28,12 +28,4 @@ This document supports the SSIS_LoadPrep portfolio card with two diagram levels:
 5. Once CDC state is clean, the process resets the incremental path so downstream SSIS packages do not inherit broken LSN or watermark state.
 6. Logs and email notifications give operators enough context to understand partial failures, rerun safely, and avoid ad-hoc DBA handoffs.
 
-## Interview positioning
 
-Use this framing when talking to hiring managers:
-
-> I did not just automate a SQL restore. I designed the control plane around production safety, CDC correctness, AAG validation, and repeatable multi-client execution. The architecture removed manual toil while reducing the chance of a payroll-impacting refresh mistake.
-
-Use this framing when talking to engineers:
-
-> The difficult part was preserving incremental ETL correctness after copy-downs. I handled both normal CDC metadata and orphaned CDC jobs left in `msdb.sysjobs`, then made the pipeline idempotent so retries and partial failures were safe.
