@@ -1351,6 +1351,23 @@
       </div>
     </section>
 
+    <!-- ===== HOW THIS SITE IS BUILT ===== -->
+    <section class="section section-alt" id="site-discipline" aria-label="How this site is built">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="section-label">How This Site Is Built</span>
+        </div>
+        <p class="section-subtitle" data-reveal style="max-width:72ch;">
+          This portfolio is itself CI-tested infrastructure. Every project card follows the
+          <a href="https://github.com/narendranathe/narendranathe.github.io/blob/main/docs/impact-strip-pattern.md" target="_blank" rel="noreferrer">impact-strip pattern contract</a>,
+          enforced by 17 structural assertions in <code>scripts/test-portfolio.py</code> on every push.
+          The resume link follows an RFC-8615 stable-URL protocol (<code>/.well-known/resume.json</code>) with a
+          content-hash cache-buster, verified by <code>scripts/snap-resume.py --self-test</code> in GitHub Actions -
+          the same design-for-recovery discipline I bring to production data platforms.
+        </p>
+      </div>
+    </section>
+
   </main>
 
   <!-- FOOTER -->
