@@ -9,7 +9,7 @@ const CONFIG = {
     // ── Availability Badge ─────────────────────────────────────────
     status: {
         available: true,
-        tagline: 'Senior AI Platform Engineer · Applied AI Systems · Open to Hybrid/Relocation',
+        tagline: 'Data Engineer · AI-Enabled Data Platforms · Open to Hybrid/Relocation',
         details: [
             { label: 'Response', value: '< 24 hours' },
             { label: 'Visa',     value: 'H1B Transfer' },
@@ -134,7 +134,7 @@ window.PORTFOLIO_CONFIG = {
     },
     identity: {
         name:             CONFIG.name,
-        role:             'Senior AI Platform Engineer',
+        role:             'Data Engineer, AI Platforms',
         footerStatement:  'Senior AI platform engineering across retrieval, workflow automation, reusable engines, and production delivery.'
     },
     contactLinks: [

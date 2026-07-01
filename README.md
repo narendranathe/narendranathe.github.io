@@ -1,6 +1,6 @@
 # Narendranath Edara Portfolio
 
-Personal portfolio site for Narendranath Edara, a Senior AI Platform Engineer focused on production LLM systems, retrieval pipelines, governed analytics, and backend AI infrastructure.
+Personal portfolio site for Narendranath Edara, a Data Engineer building AI-enabled data platforms, workflow automation, and retrieval systems - production ETL/CDC foundations with applied AI layers on top.
 
 [Live site](https://narendranathe.github.io) | [LinkedIn](https://www.linkedin.com/in/narenedara/) | [GitHub](https://github.com/narendranathe)
 
