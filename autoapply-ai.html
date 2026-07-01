@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Case study: AutoApply AI - end-to-end job application workflow platform with Chrome MV3 extension, FastAPI backend, 11 ATS adapters, and 6 LLM providers.">
+  <meta name="description" content="Case study: AutoApply AI - AI workflow automation platform connecting job discovery, document tailoring, form-state management, LLM routing, and application tracking into one auditable pipeline.">
   <meta name="author" content="Narendranath Edara">
   <meta property="og:title" content="AutoApply AI | Narendranath Edara">
-  <meta property="og:description" content="How I built an end-to-end AI workflow platform for discover, tailor, apply, and track - live on Fly.io.">
+  <meta property="og:description" content="An AI workflow automation platform: Chrome MV3 + FastAPI connecting discovery, document intelligence, LLM routing, and tracking. Private deployment on Fly.io; public launch gated by tracked security fixes.">
   <meta property="og:type" content="article">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,12 +32,12 @@
 
       <!-- Hero -->
       <section class="cs-hero">
-        <span class="cs-hero__kicker">Workflow Platform</span>
+        <span class="cs-hero__kicker">AI Workflow Automation Platform</span>
         <h1>AutoApply AI</h1>
         <p class="cs-hero__summary">
-          End-to-end workflow platform for the full job application journey: discover, tailor, apply, and track.
-          A Chrome MV3 extension with Shadow DOM isolation, a FastAPI backend on Fly.io, and a 9-page React dashboard
-          - all serving the same user journey from first job page visit to offer.
+          A Chrome MV3 + FastAPI workflow system that connects job discovery, document tailoring, form-state
+          management, LLM routing, and application tracking into one auditable pipeline. Shadow DOM isolation
+          on the client, a 9-page React dashboard, and RAG-grounded document intelligence on the backend.
         </p>
         <div class="cs-proof-strip">
           <span>11 ATS adapters</span>
@@ -45,7 +45,7 @@
           <span>40+ backend endpoints</span>
           <span>9-page dashboard</span>
           <span>355 backend tests</span>
-          <span>Live on Fly.io</span>
+          <span>Private deployment on Fly.io</span>
         </div>
         <div class="cs-links">
           <a href="https://github.com/narendranathe/autoapply-ai" class="text-link" target="_blank" rel="noreferrer">Open repo -&gt;</a>
@@ -150,8 +150,8 @@
       <section class="cs-section">
         <h2>Current State &amp; What's Next</h2>
         <p>
-          Phase 8 is complete: 355 backend tests, 0 TypeScript errors, 9-page dashboard on Vercel,
-          floating panel live on Fly.io. Four P0 security issues are tracked before public launch:
+          Phase 8 is complete: 355 backend tests, 0 TypeScript errors, 9-page dashboard on Vercel.
+          Private deployment is live on Fly.io; public launch is deliberately gated by four tracked P0 security fixes:
           an unauthenticated register endpoint, JWT bypass when Clerk URL is unset, offline queue
           hardcoded to localhost, and CORS wildcard when extension ID is unset.
         </p>
