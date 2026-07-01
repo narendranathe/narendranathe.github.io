@@ -32,12 +32,14 @@
 
       <!-- Hero -->
       <section class="cs-hero">
-        <span class="cs-hero__kicker">Reusable Engine</span>
+        <span class="cs-hero__kicker">Document Intelligence Engine</span>
         <h1>tailor-resume</h1>
         <p class="cs-hero__summary">
-          Extracted the resume tailoring core from AutoApply AI and shipped it as a standalone engine.
-          190 automated tests, four distribution surfaces (CLI, Streamlit, MCP, PyPI), and hosted on Fly.io.
-          The strongest engineering move was modularization - now the same pipeline powers multiple products.
+          A reusable document intelligence pipeline that parses unstructured career artifacts, maps evidence
+          to requirements, retrieves supporting proof, and renders structured outputs under a strict
+          no-fabrication constraint. Resume tailoring is the use case; the transferable system is
+          evidence-grounded document generation. 190 automated tests, four distribution surfaces
+          (CLI, Streamlit, MCP, PyPI) - extracted from AutoApply AI and shipped standalone.
         </p>
         <div class="cs-proof-strip">
           <span>190 automated tests</span>
@@ -163,6 +165,20 @@
           a role is out of reach given your actual experience - rather than producing a resume that
           technically passes keyword matching but misrepresents you in a screen. That's the design choice
           that makes it useful for real job searching rather than just demos.
+        </p>
+      </section>
+
+      <!-- Shipped vs Next -->
+      <section class="cs-section">
+        <h2>Shipped vs Next</h2>
+        <p>
+          <strong>Shipped:</strong> PyPI package, MCP server on Fly.io, Streamlit app, and CLI - four
+          surfaces from one core, with 190 tests and mocked LLM boundaries.
+          <strong>Status:</strong> Streamlit demo is public; the MCP server is live for agent use.
+          <strong>Known limitations:</strong> LaTeX rendering assumes the single-page template family;
+          evidence mapping quality depends on the master resume's coverage.
+          <strong>Next:</strong> wire the API into AutoApply AI's answer-generation flow and expand
+          the template family beyond single-page layouts.
         </p>
       </section>
 

@@ -9,40 +9,35 @@ const CONFIG = {
     // ── Availability Badge ─────────────────────────────────────────
     status: {
         available: true,
-        tagline: 'Senior AI Platform Engineer · Applied AI Systems · Open to Hybrid/Relocation',
+        tagline: 'Data Engineer · AI-Enabled Data Platforms · Open to Hybrid/Relocation',
         details: [
             { label: 'Response', value: '< 24 hours' },
             { label: 'Visa',     value: 'H1B Transfer' },
-            { label: 'Focus',    value: 'AI Platform · Applied AI · Backend AI' },
+            { label: 'Focus',    value: 'Senior DE · ML Engineer · AI/ML Platform' },
             { label: 'Location', value: 'Dallas TX · Hybrid / Relocation OK' }
         ]
     },
 
     // ── Hero Terminal Animation ────────────────────────────────────
     terminal: [
-        { type: 'cmd',    text: 'python nl_engine.py --query "overtime by dept Q4"' },
-        { type: 'output', text: '[FAISS] Classified: Payroll + Expenses (0.94 confidence)' },
-        { type: 'output', text: '[Claude] SQL plan generated: 4 tables, 2 joins, RLS enforced' },
-        { type: 'cmd',    text: 'POST /admin/reload-domain/pto' },
-        { type: 'output', text: '[OK] PTO hot-reloaded. 0 restarts. 400 clients updated.' },
-        { type: 'cmd',    text: 'pytest tests/test_semantic_catalog.py -v' },
-        { type: 'warn',   text: '✓  89 passed  ·  0 failed  ·  coverage: 97%' },
+        { type: 'cmd',    text: 'az pipelines run --name db-copydown --parameters env=staging' },
+        { type: 'output', text: '[OK] restore · security · CDC instance · AAG listener validated' },
+        { type: 'cmd',    text: 'python cdc_merge.py --mode incremental' },
+        { type: 'output', text: '[OK] merge-upsert complete · 30min full reload replaced · -67% compute' },
+        { type: 'cmd',    text: 'pytest backend/tests -q' },
+        { type: 'warn',   text: '✓  355 passed  ·  0 failed  ·  AutoApply backend' },
     ],
 
     // ── Konami Code Easter Egg ─────────────────────────────────────
     metrics: {
         experience_years:      4,
-        current_role:          'Data Engineer building AI platform systems @ ExponentHR',
-        enterprise_clients:    400,
-        catalog_columns:       '6000+',
+        current_role:          'Data Engineer @ ExponentHR - data platform + CI/CD ownership',
         gpa:                   4.0,
         sdlc_speedup:          '3 months to 14 days',
         etl_runtime:           '~30 min to under 8 min (67% faster)',
         compute_cost_cut:      '67%',
-        query_latency:         '12s to 4s',
-        support_tickets:       '-40%',
         ats_adapters:          11,
-        llm_providers:         5,
+        llm_providers:         6,
         anomaly_accuracy:      '95%+',
         azure_savings:         '$3,200/month',
         node_consolidation:    '20 nodes to 4-8 nodes',
@@ -134,7 +129,7 @@ window.PORTFOLIO_CONFIG = {
     },
     identity: {
         name:             CONFIG.name,
-        role:             'Senior AI Platform Engineer',
+        role:             'Data Engineer, AI Platforms',
         footerStatement:  'Senior AI platform engineering across retrieval, workflow automation, reusable engines, and production delivery.'
     },
     contactLinks: [

@@ -1,34 +1,42 @@
 # Narendranath Edara Portfolio
 
-Personal portfolio site for Narendranath Edara, a Senior AI Platform Engineer focused on production LLM systems, retrieval pipelines, governed analytics, and backend AI infrastructure.
+This repository powers my public portfolio: a focused story around data engineering, AI-enabled workflow systems, and production platform work.
+
+I am a Data Engineer who builds reliable data platforms first, then layers applied AI systems on top: RAG pipelines, multi-provider LLM routing, document intelligence, workflow automation, and backend services that can be tested, deployed, monitored, and reused.
+
+The central story: I can own the full path from data foundation to AI-enabled product - ETL, SQL, CI/CD, APIs, retrieval, testing, observability, and measurable business impact.
 
 [Live site](https://narendranathe.github.io) | [LinkedIn](https://www.linkedin.com/in/narenedara/) | [GitHub](https://github.com/narendranathe)
 
 ## What This Repo Represents
 
-This repository is the public source for my portfolio and career positioning. It is intentionally aligned to the roles I am targeting:
+Data Engineer building AI-enabled data platforms and workflow systems. I modernize ETL, CDC, SQL, CI/CD, and analytics foundations, then build applied AI layers on top: RAG pipelines, multi-provider LLM routing, document intelligence, FastAPI services, and production dashboards. My strongest value is owning the path from data foundation to AI-enabled product with measurable impact, testing, observability, and cost discipline.
 
-- AI Platform Engineer
-- Applied AI Engineer
-- Backend Engineer, AI
-- ML Platform Engineer
-- Software Engineer, AI Systems
+This repository is the public source for my portfolio and career positioning, aligned to the roles I am targeting:
 
-The site highlights the kind of work I want to keep doing: production AI systems with strong engineering discipline, not one-off demos.
+- Senior Data Engineer
+- ML Engineer
+- AI/ML Platform Engineer
+
+The site highlights the kind of work I want to keep doing: production data and AI systems with strong engineering discipline, not one-off demos.
 
 ## Featured Proof Points
 
+### ExponentHR (production)
+
+Deployment cycles compressed from 3 months to 14 days, CDC ETL reengineered from full reloads to incremental merge-upserts (30min to 8min runtime, -67% compute cost), and payroll-critical AAG database automation on Azure.
+
 ### AutoApply AI
 
-Full-stack applied AI system for job-search automation with FastAPI, Chrome extension workflows, multi-provider LLM routing, and production-minded architecture.
+AI workflow automation platform: Chrome MV3 + FastAPI connecting job discovery, document tailoring, form-state management, LLM routing, and application tracking. 355 backend tests, 40+ endpoints, 11 ATS adapters, 9-page dashboard. Private deployment on Fly.io; public launch gated by tracked security fixes.
 
 ### tailor-resume
 
-Packaged resume tailoring system with API surfaces, MCP support, testing, and developer tooling that reflects real software distribution concerns.
+Document intelligence engine extracted from AutoApply AI. 190 tests, 4 distribution surfaces (PyPI, MCP server, Streamlit, CLI), and a strict no-fabrication constraint.
 
-### Real-Time Fraud Detection Platform
+### JobScout
 
-Streaming ML platform work showing event-driven design, real-time inference, and production observability patterns.
+Direct-source job discovery across 130+ company career pages and 6 ATS platforms - data quality over aggregator noise.
 
 ## Stack
 
