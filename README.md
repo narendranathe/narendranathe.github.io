@@ -18,17 +18,21 @@ The site highlights the kind of work I want to keep doing: production data and A
 
 ## Featured Proof Points
 
+### ExponentHR (production)
+
+Deployment cycles compressed from 3 months to 14 days, CDC ETL reengineered from full reloads to incremental merge-upserts (30min to 8min runtime, -67% compute cost), and payroll-critical AAG database automation on Azure.
+
 ### AutoApply AI
 
-Full-stack applied AI system for job-search automation with FastAPI, Chrome extension workflows, multi-provider LLM routing, and production-minded architecture.
+AI workflow automation platform: Chrome MV3 + FastAPI connecting job discovery, document tailoring, form-state management, LLM routing, and application tracking. 355 backend tests, 40+ endpoints, 11 ATS adapters, 9-page dashboard. Private deployment on Fly.io; public launch gated by tracked security fixes.
 
 ### tailor-resume
 
-Packaged resume tailoring system with API surfaces, MCP support, testing, and developer tooling that reflects real software distribution concerns.
+Document intelligence engine extracted from AutoApply AI. 190 tests, 4 distribution surfaces (PyPI, MCP server, Streamlit, CLI), and a strict no-fabrication constraint.
 
-### Real-Time Fraud Detection Platform
+### JobScout
 
-Streaming ML platform work showing event-driven design, real-time inference, and production observability patterns.
+Direct-source job discovery across 130+ company career pages and 6 ATS platforms - data quality over aggregator noise.
 
 ## Stack
 
