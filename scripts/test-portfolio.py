@@ -1471,7 +1471,7 @@ def test_hero_img_has_lcp_attributes() -> None:
 
 def test_hero_alt_text_includes_role() -> None:
     """The hero <img> alt text must identify Naren AND his role
-    (Senior AI Platform Engineer), so screen-reader users get the
+    (Data Engineer), so screen-reader users get the
     same role-context that sighted users see in the adjacent <h1>
     + tagline. Per #69 spec + critique-agent B review."""
     html = INDEX_HTML.read_text(encoding="utf-8")
@@ -1489,6 +1489,59 @@ def test_hero_alt_text_includes_role() -> None:
     assert "Engineer" in alt or "Engineering" in alt, (
         f"hero alt must include the role keyword (e.g. 'AI Platform "
         f"Engineer'); got {alt!r}"
+    )
+
+
+# ------- Identity regression guard (issue #129) -------
+
+
+def test_public_identity_surfaces_use_canonical_title() -> None:
+    """Issue #129: no public surface may reintroduce the unverified
+    'Senior AI Platform Engineer' claim, and the key identity anchors
+    must carry the title-accurate Data Engineer positioning that
+    shipped on the fix/p0-positioning-batch branch."""
+    stale = "Senior AI Platform Engineer"
+
+    public_paths = (
+        INDEX_HTML,
+        REPO_ROOT / "README.md",
+        REPO_ROOT / "static" / "site.webmanifest",
+        REPO_ROOT / "content" / "posts" / "repo-context-hooks-supply-chain.html",
+        REPO_ROOT / "autoapply-ai.html",
+        REPO_ROOT / "tailor-resume.html",
+        REPO_ROOT / "jobscout.html",
+        REPO_ROOT / "portfolio-risk.html",
+        REPO_ROOT / "fintune.html",
+        REPO_ROOT / "fraud-detection.html",
+        REPO_ROOT / "config.js",
+    )
+    contents = {p: p.read_text(encoding="utf-8") for p in public_paths if p.exists()}
+    for path, body in contents.items():
+        assert stale not in body, (
+            f"{path.relative_to(REPO_ROOT)} still contains the stale "
+            f"'{stale}' identity claim"
+        )
+
+    index_html = contents[INDEX_HTML]
+    for required in (
+        '<meta property="og:title" content="Narendranath Edara | '
+        'Data Engineer - AI-Enabled Data Platforms">',
+        "<title>Narendranath Edara | Data Engineer - "
+        "AI-Enabled Data Platforms</title>",
+        '<span class="logo-role">Data Engineer &middot; AI Platforms</span>',
+    ):
+        assert required in index_html, f"index.html missing identity anchor: {required!r}"
+
+    readme = contents[REPO_ROOT / "README.md"]
+    assert "I am a Data Engineer who builds reliable data platforms first" in readme
+
+    manifest = contents[REPO_ROOT / "static" / "site.webmanifest"]
+    assert "Data Engineer building AI-enabled data platforms" in manifest
+
+    post = contents[REPO_ROOT / "content" / "posts" / "repo-context-hooks-supply-chain.html"]
+    assert '"jobTitle": "Data Engineer"' in post, (
+        "schema.org jobTitle must be the actual employment title, "
+        "not a branding string"
     )
 
 
@@ -1570,6 +1623,7 @@ TESTS = [
     test_hero_img_has_width_and_height,
     test_hero_img_has_lcp_attributes,
     test_hero_alt_text_includes_role,
+    test_public_identity_surfaces_use_canonical_title,
     # ----- Link verification (issue #43) -----
     test_all_local_links_resolve,
 ]
