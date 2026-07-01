@@ -1,6 +1,10 @@
 # Narendranath Edara Portfolio
 
-Personal portfolio site for Narendranath Edara, a Data Engineer building AI-enabled data platforms, workflow automation, and retrieval systems - production ETL/CDC foundations with applied AI layers on top.
+This repository powers my public portfolio: a focused story around data engineering, AI-enabled workflow systems, and production platform work.
+
+I am a Data Engineer who builds reliable data platforms first, then layers applied AI systems on top: RAG pipelines, multi-provider LLM routing, document intelligence, workflow automation, and backend services that can be tested, deployed, monitored, and reused.
+
+The central story: I can own the full path from data foundation to AI-enabled product - ETL, SQL, CI/CD, APIs, retrieval, testing, observability, and measurable business impact.
 
 [Live site](https://narendranathe.github.io) | [LinkedIn](https://www.linkedin.com/in/narenedara/) | [GitHub](https://github.com/narendranathe)
 
