@@ -6,15 +6,15 @@ Personal portfolio site for Narendranath Edara, a Data Engineer building AI-enab
 
 ## What This Repo Represents
 
-This repository is the public source for my portfolio and career positioning. It is intentionally aligned to the roles I am targeting:
+Data Engineer building AI-enabled data platforms and workflow systems. I modernize ETL, CDC, SQL, CI/CD, and analytics foundations, then build applied AI layers on top: RAG pipelines, multi-provider LLM routing, document intelligence, FastAPI services, and production dashboards. My strongest value is owning the path from data foundation to AI-enabled product with measurable impact, testing, observability, and cost discipline.
 
-- AI Platform Engineer
-- Applied AI Engineer
-- Backend Engineer, AI
-- ML Platform Engineer
-- Software Engineer, AI Systems
+This repository is the public source for my portfolio and career positioning, aligned to the roles I am targeting:
 
-The site highlights the kind of work I want to keep doing: production AI systems with strong engineering discipline, not one-off demos.
+- Senior Data Engineer
+- ML Engineer
+- AI/ML Platform Engineer
+
+The site highlights the kind of work I want to keep doing: production data and AI systems with strong engineering discipline, not one-off demos.
 
 ## Featured Proof Points
 
