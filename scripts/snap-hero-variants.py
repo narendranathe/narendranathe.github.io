@@ -2,14 +2,14 @@
 mobile (800) sizes (#79 + #83).
 
 Input: static/originals/headshot-fullbody.jpg (the photographer's master,
-1200x798, ~65 KB).
+1200x1500).
 
 Output (six files in static/originals/):
-  Desktop variants (1200x798):
+  Desktop variants (1200x1500):
     headshot-fullbody.jpg   -- input (NOT overwritten)
     headshot-fullbody.webp  -- new (~50% smaller than JPEG)
     headshot-fullbody.avif  -- new (~70% smaller than JPEG)
-  Mobile variants (800x532):
+  Mobile variants (800x1000):
     headshot-fullbody-800.jpg
     headshot-fullbody-800.webp
     headshot-fullbody-800.avif
