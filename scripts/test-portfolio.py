@@ -1445,8 +1445,8 @@ def test_hero_img_has_width_and_height() -> None:
     assert 'width="1200"' in img_tag, (
         "hero <img> must declare width=\"1200\" (CLS=0 guard)"
     )
-    assert 'height="798"' in img_tag, (
-        "hero <img> must declare height=\"798\" (CLS=0 guard)"
+    assert 'height="1500"' in img_tag, (
+        "hero <img> must declare height=\"1500\" (CLS=0 guard)"
     )
 
 
