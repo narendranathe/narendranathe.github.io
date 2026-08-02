@@ -6,7 +6,7 @@ I am a Data Engineer who builds reliable data platforms first, then layers appli
 
 The central story: I can own the full path from data foundation to AI-enabled product - ETL, SQL, CI/CD, APIs, retrieval, testing, observability, and measurable business impact.
 
-[Live site](https://narendranathe.github.io) | [LinkedIn](https://www.linkedin.com/in/narenedara/) | [GitHub](https://github.com/narendranathe)
+[Live site](https://narendranathe.github.io) | [LinkedIn](https://www.linkedin.com/in/narendranathe/) | [GitHub](https://github.com/narendranathe)
 
 ## What This Repo Represents
 
