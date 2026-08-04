@@ -349,3 +349,53 @@ Sorted by work item ID.
 | Sprint 2025.12.19 | Code management and release to testing |
 | DE Sprint 2026.03.05 | Data engineering sprint delivery |
 | DE Sprint 2026.04.02 | Data engineering sprint delivery |
+
+---
+
+## 13. Appendix: pulling the real work item data
+
+This document and the story bank were written from work item titles and client numbers, not from Azure DevOps itself. To verify root causes and recover specifics, connect the work item API.
+
+### Which server you need
+
+**Not** the Azure MCP Server (`@azure/mcp`, sometimes referred to as `Azure.Mcp.Server`). That server covers Azure **resources** - storage, Cosmos DB, Kusto, Monitor, SQL, AKS, Key Vault - and its "DevOps" section is Bicep, Terraform, Deploy, and Workbooks. It has no work item tools.
+
+Work items live in the **separate Azure DevOps MCP Server** (`@azure-devops/mcp`, repository `microsoft/azure-devops-mcp`), which exposes the `wit_*` toolset: `wit_my_work_items`, `wit_get_work_items_batch_by_ids`, and related tools, plus `repos`, `wiki`, and `build`.
+
+### Local, not remote
+
+Microsoft hosts a remote endpoint at `https://mcp.dev.azure.com/{organization}`, but per Microsoft's own documentation it authenticates via Microsoft Entra ID, and **Claude Code, Claude Desktop, Cursor, and Codex cannot currently authenticate to it.** Use the local server with a Personal Access Token.
+
+Requires Node.js 20+.
+
+```jsonc
+{
+  "mcpServers": {
+    "azure-devops": {
+      "command": "npx",
+      "args": ["-y", "@azure-devops/mcp", "<your-org-name>"],
+      "env": { "ADO_PAT": "<personal-access-token>" }
+    }
+  }
+}
+```
+
+A read-only PAT scoped to **Work Items (Read)** is sufficient for verification and is the right level of access for this purpose.
+
+### What to pull
+
+Batch-fetch by ID. The 25 IDs are in Section 12 above:
+
+```
+13803, 14825, 27353, 28369, 31554, 32478, 32495, 32896, 32979, 33436,
+33847, 33866, 34021, 34247, 34366, 34376, 34882, 35366, 36072, 36119,
+36204, 36207, 36429, 36904, 37005
+```
+
+For each, the fields worth recovering are the **repro steps and resolution notes** (the actual root cause), **linked commits or pull requests** (what shipped), **created and closed dates** (cycle time), and **discussion comments** (where the diagnosis lives).
+
+### Sources
+
+- [Enable AI assistance with Azure DevOps MCP Server](https://learn.microsoft.com/azure/devops/mcp-server/mcp-server-overview?view=azure-devops)
+- [Set up the remote Azure DevOps MCP Server](https://learn.microsoft.com/azure/devops/mcp-server/remote-mcp-server?view=azure-devops) - see the client authentication limitation
+- [What are the Azure MCP Server tools?](https://learn.microsoft.com/azure/developer/azure-mcp-server/tools/) - confirms no work item namespace
