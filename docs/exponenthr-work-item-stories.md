@@ -1,26 +1,40 @@
 # ExponentHR Work Item Story Bank
 
-Interview-ready stories for every work item delivered at ExponentHR during the 2025.12 to 2026.04 cycles.
+Interview-ready stories covering 2025 and 2026 year to date at ExponentHR.
 
 **Companion documents:**
-- [`exponenthr-2026-accomplishments.md`](./exponenthr-2026-accomplishments.md) - the factual delivery record
+- [`exponenthr-accomplishments.md`](./exponenthr-accomplishments.md) - the delivery record
 - [`career-positioning-2026.md`](./career-positioning-2026.md) - how to sell this in the 2026 market
 
 ---
 
 ## Before you use this
 
-> **Read this first.** The Azure DevOps connector is not available in this workspace, so these stories are reconstructed from work item titles, client numbers, and the platform metrics already established for the ExponentHR data platform. The **problem statements are accurate** - they come straight from the ticket titles. The **root causes are the defect class each title points to**, which is an informed reading, not a transcript of what you found.
+> **Read this first.** No Azure DevOps connector is available in this workspace, so these stories are reconstructed from work item titles, client numbers, and the platform metrics already established. The **problem statements are accurate** - they come from the ticket titles. The **root causes are the defect class each title points to**, which is an informed reading, not a transcript.
 >
-> Before you tell any of these in an interview, open the actual work item and confirm three things: the real root cause, the fix you actually shipped, and one number you can defend. An interviewer who probes a story you half-remember will find the seam. An interviewer who probes a story you lived will find more depth, which is exactly what you want.
->
-> Each Tier 1 story ends with a **Fill in** line naming the specifics worth recovering from Azure DevOps.
+> Before telling any of these in an interview, open the work item and confirm three things: the real root cause, what you actually shipped, and one number you can defend. Each Tier 1 story ends with a **Fill in** line naming what to recover.
 
 ### How the tiers work
 
-- **Tier 1 (9 stories)** - full STAR treatment, follow-up questions, and what each one proves. These carry your interviews.
-- **Tier 2 (11 stories)** - one compact paragraph each. Use as supporting evidence or when an interviewer asks for a second example.
-- **Section 12** maps common interview questions to the story that answers them.
+- **Tier 1 (13 stories)** - full STAR, follow-up questions, what each proves. These carry your interviews.
+- **Tier 2** - one paragraph each, for second examples and breadth.
+- **Section 15** maps interview questions to stories.
+
+Stories are tagged `[2025]`, `[2026]`, or `[both years]`.
+
+---
+
+## The story above the stories
+
+Before any individual ticket, know the shape of the two years. This framing is worth more than any single story, and most candidates cannot offer anything like it.
+
+> "My first year was correctness. I worked about 29 items across the whole warehouse - vouchers, deduction basis logic, W-4, time punches, benefits, employee action notices - plus production hotfixes and release support across eight cycles. By the end of it I knew every way that warehouse could go wrong.
+>
+> That is what earned the second year. In 2026 I stopped fixing rows and started owning the machinery: CI/CD end to end, CDC rebuilt from full reloads to incremental, the availability group copy-down automated, new dimensional models from scratch.
+>
+> The turning point was in the middle. In 2025 I built a validation framework called Data Checker, because I got tired of learning about defects from clients. And I worked out and documented how to deploy CDC schema changes safely. Those two are why the 2026 platform work was possible at all."
+
+**Why this works:** it answers "are you senior?" without you having to claim it. You describe a progression from reactive to architectural, with a named turning point. Interviewers hear trajectory.
 
 ---
 
@@ -28,373 +42,495 @@ Interview-ready stories for every work item delivered at ExponentHR during the 2
 
 ---
 
-## Story 1: Four clients, one root cause
+## Story 1: Building the thing that finds the bugs `[2025]`
+
+**Workstream:** Data Checker implementation with control table; deployment on training03
+
+### Situation
+Every data defect I worked in 2025 - and there were 29 of them - arrived the same way: a client noticed. Wrong voucher descriptions, duplicated allocations, missing login activity, incorrect accrual for terminated employees. The warehouse had no systematic validation. The detection mechanism was a customer complaint.
+
+### Task
+Nobody assigned this. The assigned work was the tickets.
+
+### Action
+Built **Data Checker**, a validation framework driven by a **control table**. The design decision that matters: validation rules are **configuration, not code**. A new check is a row in the control table, not a script someone writes and forgets. That makes coverage additive and cheap - the reason ad hoc validation scripts always decay is that adding one is a development task.
+
+Deployment crossed a team boundary. Getting it running on `training03` meant working through security and connection string issues with IT.
+
+### Result
+The warehouse moved from client-reported defect discovery toward systematic validation.
+
+### Why this is your most important 2025 story
+Every other item in that year is "I fixed a bug." This one is **"I noticed we were finding bugs the wrong way and built the mechanism to fix that."** It is the single clearest piece of evidence that you operate above ticket level.
+
+It is also the most **marketable** thing in your record. Data quality and observability is one of the hottest areas in data engineering right now, and a control-table-driven validation framework is architecturally the same idea as dbt tests and Great Expectations: declarative, metadata-driven assertions that run as part of the pipeline. **You built one before you had the vocabulary for it.**
+
+Say that explicitly: *"I built the concept before I knew the tools existed. When I picked up dbt tests, it was the same idea with better ergonomics."*
+
+### Follow-ups to expect
+- *"What checks did it run?"* - Recover specifics. Row counts, null rates, referential integrity, grain uniqueness are the likely families.
+- *"How did you decide what to check?"* - Your defect history is the answer. You had 29 examples of what goes wrong.
+- *"What would you do differently?"* - Run it in CI rather than as a separate process, and fail the load on critical check failure. That is the honest gap and it shows you know where the idea goes next.
+
+**Fill in:** how many tables and checks it covered, whether it caught defects before clients did, whether the team still uses it.
+
+---
+
+## Story 2: Four clients, one root cause `[2026]`
 
 **Work items:** 28369, 34882, 32979 (00169), 33847 (10106), 33866 (10106), 34021 (00612), 32896 (00745)
 
 ### Situation
-`Fact_PTOSummary` generated a steady stream of client escalations. Four tenants filed four differently-worded tickets over several months. Client 00169 said the accrual rate was wrong. Client 10106 said rates were displaying as `1E-05`, and separately that rates were showing against plans employees were not eligible for. Client 00612 said employees were missing from the summary entirely. Client 00745 said the data was stale.
+`Fact_PTOSummary` generated a steady stream of escalations. Four tenants, four differently-worded tickets. 00169: wrong accrual rate. 10106: rates displaying as `1E-05`, and rates showing against plans employees were not eligible for. 00612: employees missing entirely. 00745: stale data.
+
+Related history: back in 2025, `16805` had accrued hours displaying incorrectly for a terminated employee with a cleared balance. **This surface had been producing defects for over a year.**
 
 ### Task
-The assigned work was four separate bug tickets. Closing them individually was the expected path and would have been defensible.
+Four bug tickets. Closing them individually was the expected path.
 
 ### Action
-I refused to treat them as four bugs. Lined up side by side, the failure modes pointed at one thing: **accrual rate was being derived inline during the load rather than sourced from a modeled, plan-aware definition.** Logic derived in flight drifts across tenants, loses numeric precision, and has no natural place to enforce eligibility rules. That single design choice explains all four symptoms.
+Lined up together, the failure modes pointed at one design choice: **accrual rate was derived inline during the load rather than sourced from a modeled, plan-aware definition.** In-flight logic drifts across tenants, loses precision, and has nowhere to enforce eligibility. That one choice explains all four symptoms.
 
-So I fixed the model instead of the rows:
-
-1. Added a dedicated table for PTO accrual information (28369), making accrual rate and plan configuration a stored, versioned data asset rather than a recomputation on every refresh.
-2. Raised a formal change request for the accrual rate calculation (34882) so the corrected logic shipped once, under review, to every tenant - rather than four divergent patches.
-3. Enforced plan eligibility in the model (33866), so a rate can only attach to a plan the employee actually participates in.
-4. Corrected numeric type handling (33847) so rates carry the precision and scale the business expects instead of leaking float artifacts into user-facing reports.
-5. Fixed the population path dropping employees (34021) and the refresh path causing staleness (32896).
+1. Added a dedicated PTO accrual table (28369) - accrual rate and plan configuration became a stored, versioned asset.
+2. Raised a formal change request for the rate calculation (34882) so corrected logic shipped once, reviewed, to every tenant.
+3. Enforced plan eligibility (33866), corrected numeric precision (33847), restored employee coverage (34021), fixed the refresh path (32896).
+4. Corrected approval semantics in `Fact_PTODetails` (27353) so unapproved records carry NULL rather than a fabricated `12/31/1900`.
 
 ### Result
-All four client tickets closed, and the defect class closed with them. PTO accrual moved from a recurring escalation source to a modeled subject area with enforced eligibility.
+Four tickets closed, and the defect class closed with them.
 
-### Why this story lands
-PTO balance is not a dashboard number. Employees plan against it, managers approve against it, and at termination **it converts to money**. Say that sentence in the interview. It reframes the work from "fixed a reporting bug" to "protected a payout obligation."
+### Why it lands
+PTO balance is not a dashboard number. Employees plan against it, managers approve against it, and **at termination it converts to money.** Say that sentence.
 
 ### What it proves
-Systems thinking over ticket-closing. The instinct to ask "why is this the fifth ticket in this area" is the difference between a mid-level and a senior engineer, and this is the cleanest demonstration of it you have.
+Systems thinking over ticket-closing, and the judgment to route a structural change through the change request process rather than going around it.
 
 ### Follow-ups to expect
-- *"How did you convince your team to do the bigger fix?"* - The change request (34882) is your answer. You did not go rogue; you routed the structural change through the process that exists for structural changes.
-- *"How did you know it was one root cause and not four?"* - The `1E-05` and the ineligible-plan rates are the tell. A float precision artifact and a missing eligibility filter both mean the rate is being computed somewhere it should be looked up.
-- *"What would you do differently?"* - Honest answer: catch it earlier. Four tickets is three too many. A grain and eligibility test on the summary table would have surfaced this on the first client.
+- *"How did you know it was one cause and not four?"* - The `1E-05` and the ineligible-plan rates are the tell. A float artifact and a missing eligibility filter both mean the rate is being computed where it should be looked up.
+- *"How did you get buy-in?"* - The change request. You did not go rogue.
+- *"What would you do differently?"* - Catch it earlier. Counting 2025, this surface produced defects for over a year. A grain and eligibility check in Data Checker would have surfaced it sooner - **and you can say that, because you built Data Checker.**
 
-**Fill in:** how many employees or plans were affected, how long the cluster ran before you connected the tickets, whether escalation volume for this table dropped afterward.
+**Fill in:** employees or plans affected, whether escalation volume dropped.
 
 ---
 
-## Story 2: Making the warehouse agree with the product by construction
+## Story 3: Thirty minutes to eight, and defending it `[both years]`
+
+**Work:** CDC schema change deployment process (2025); CDC incremental reengineering (2026); 00630 CDC incremental failure (2026)
+
+### Situation
+The warehouse refreshed via full-table reloads - roughly 30 minutes, with compute cost scaling to total table size rather than to what changed.
+
+### Task
+Cut runtime and cost without risking correctness on a payroll-critical platform.
+
+### Action
+This is a two-year story, and the sequencing is the point.
+
+**2025 - groundwork.** Before touching the pipeline I researched, tested, and documented the **CDC schema change deployment process**. You cannot safely rebuild a CDC pipeline until you know what happens when a source table changes underneath it.
+
+**2026 - the rebuild.** Reengineered from full reloads to **incremental merge-upserts**, processing only changed rows. The engineering that matters is not the merge - it is making the incremental path safe to rerun. Incremental loads fail in ways full reloads do not: broken watermarks, bad LSN state, partial application. Built it idempotent so a failed run reruns cleanly instead of requiring a DBA to reason about half-applied state.
+
+**2026 - defending it.** Client 00630 hit a CDC incremental failure. Highest-stakes failure mode on the platform: when incremental breaks, the options are a slow full reload or stale client data, and neither is acceptable on payroll. Diagnosed and restored the incremental path **without falling back to full reload.**
+
+### Result
+30 minutes to under 8. Compute cost down 67%. When it broke in production, restored on the fast path.
+
+### Why it lands
+Cost reduction is the most fundable thing on a 2026 data team. But the arc is what separates this from a resume bullet: **you did the safety research first, built the optimization second, and defended it under production failure third.** Most candidates can show a speedup. Almost none can show that sequence.
+
+**Fill in:** the actual 00630 root cause, your reconciliation method against full reload, client impact duration.
+
+---
+
+## Story 4: Schema evolution on a CDC source `[2025]`
+
+**Workstream:** CDC schema change deployment process - research, testing, documentation
+
+### Situation
+CDC capture instances are bound to a table definition. When a source table changes, things break in quiet ways: capture can fail, the new column can be silently dropped from the capture instance, or the instance needs rebuilding with a gap to reconcile. The team had no established process.
+
+### Task
+Not assigned as a ticket. I took it on because I could see it coming.
+
+### Action
+Researched the failure modes, tested the approaches against real schema changes, and **wrote the process down for the team.** Related items in the same period were the concrete instances: `32319` (schema changes on `Dim_TimePunchType`) and `32344` (Cosmos Expense table additions, schema changes, and constraints).
+
+### Result
+A documented, tested process the team follows, and the foundation the 2026 CDC incremental reengineering was built on.
+
+### Why you must have this story ready
+**"How do you handle schema evolution on a CDC source?" is the standard senior follow-up to any CDC story.** Most candidates answer hypothetically. You researched it, tested it, documented it, and then built on it.
+
+The documentation matters as much as the research. Writing it down for the team is a seniority signal that interviewers specifically look for and rarely find.
+
+### Follow-ups to expect
+- *"Walk me through what happens when a column is added."* - Know your actual process end to end.
+- *"How do you handle a column type change?"* - Harder case. Have a position.
+- *"How do you backfill the gap after rebuilding a capture instance?"* - The question underneath the question.
+
+**Fill in:** the actual process steps, where the documentation lives, whether the team adopted it.
+
+---
+
+## Story 5: The silent money bug `[2025]`
+
+**Work items:** 14020, 14030, 16069, 31483, 13803
+
+### Situation
+Four tickets across three recurring item types, all saying nearly the same thing:
+
+- `[Deduction Rec Item Based On] may not have all basis`
+- `[ER Rec Item Based On] may not have all basis`
+- `DW incorrect result for [Earning Rec Item Based On]`
+- `[ER Contrib Total Comp Category] not getting Base Salary`
+
+### Task
+Four separate tickets on paper.
+
+### Action
+One shared root cause: **the basis resolution was incomplete.** The set of values a recurring item could be calculated against did not cover every valid case. `14020` is the same defect stated differently - the employer contribution category was missing base salary, its most significant component.
+
+I also carried `13803` (incorrect employer contribution code) to code complete in 2025; it released in the 2026 cycle.
+
+### Result
+Basis coverage completed across deduction, earning, and employer contribution item types.
+
+### Why this is your best "consequences" story
+**Nothing errors.** A partial basis produces a plausible number that is simply too small, applied to real employee deductions and real employer contributions. No exception, no alert, no anomalous-looking report. Just money that is quietly wrong for anyone whose basis included the missing component.
+
+That is a better answer to "tell me about a bug with real consequences" than any crash story, because the danger is precisely that it does not crash.
+
+### What it proves
+Domain depth in payroll calculation, and pattern recognition - you saw "may not have all basis" appear across three item types and treated it as one problem.
+
+### Follow-ups to expect
+- *"How did you find the missing basis values?"* - Recover this. Comparing against the source's valid set is the likely method.
+- *"How would you prevent it?"* - **A Data Checker rule asserting basis completeness.** Connect your own two stories; interviewers notice when your work coheres.
+
+**Fill in:** which basis values were missing, financial impact if quantified, whether all three item types shipped together.
+
+---
+
+## Story 6: When incremental and full load disagree `[2025]`
+
+**Work items:** 16462, 27638 (00704)
+
+### Situation
+Contractors were appearing in W-4 election data where they did not belong - and critically, the ticket noted it was **the incrementals** adding them. Separately, client 00704's full load needed a join change in `Fact_EmpW4Elections` (27638).
+
+### Task
+Stop contractors entering `Dim_W4ElectionData` and `Fact_W4ElectionData`.
+
+### Action
+The detail that matters is *incremental only*. When a defect appears on the incremental path but not the full load, the two paths **disagree about what qualifies for inclusion** - the incremental filter was not enforcing the same population rule as the full load.
+
+This class of bug is dangerous for a specific reason: **a full reload appears to fix it.** The bad rows vanish, everyone moves on, and the cause is still there waiting for the next incremental run. The fix has to be reconciling the population logic across both paths, not reloading.
+
+### Result
+Population rules aligned across full and incremental paths.
+
+### Why this story is stronger than it looks
+It shows you read the *shape* of a bug report, not just its content. "Incrementals appear to be adding contractors" contains its own diagnosis if you know what to listen for, and most engineers would have reloaded and closed it.
+
+It also sets up a great line about your CDC work: *"That is why, when I rebuilt the CDC pipeline the next year, reconciling incremental against full reload was the first thing I validated."*
+
+### Follow-ups to expect
+- *"How do you test that the two paths agree?"* - Run both, compare row counts and checksums. Have this ready; it is the real question.
+- *"Would a full reload have fixed it?"* - Temporarily, and that is the trap. Say so.
+
+**Fill in:** the actual population rule that diverged, how you validated the fix.
+
+---
+
+## Story 7: Two hotfixes under payroll pressure `[2025]`
+
+**Work items:** 29885, 30559
+
+### Situation
+Two defects that could not wait for a release.
+
+**29885:** `Fact_PayVoucherDetail` was **replicating the 09/05/25 payroll run.** Duplicated payroll data, on a dated payroll cycle.
+
+**30559:** the `Field` column length differed between the base table and `Dim_EAN`. Length mismatches **truncate silently on load** - no error, values just arrive shortened.
+
+### Task
+Ship both outside the normal release cycle.
+
+### Action
+Diagnosed and shipped as hotfixes. `29885` meant identifying why the voucher detail load was reproducing an entire payroll run's rows - a grain or rerun-idempotency failure on the most sensitive table in the warehouse. `30559` meant reconciling the schema mismatch and dealing with values already truncated.
+
+### Result
+Both resolved out of cycle.
+
+### Why to use this
+Two things interviewers want evidence of: **you can work under production pressure**, and **you have shipped outside the safety of a normal release**. Hotfix experience is a proxy for trust - organizations do not let junior engineers hotfix payroll tables.
+
+The `30559` detail is also a good "silent failure" example: a length mismatch does not throw. It truncates.
+
+### Follow-ups to expect
+- *"What was your rollback plan?"* - Have an answer. Hotfix questions are really risk-management questions.
+- *"How did you verify the fix before shipping?"* - The core of hotfix discipline.
+- *"How did you prevent recurrence?"* - Ideal place to mention Data Checker.
+
+**Fill in:** actual root causes, turnaround time, how you validated under time pressure.
+
+---
+
+## Story 8: An hour of DBA work, twenty times a day `[2026]`
+
+**Work items:** 31554, Copy Down tool enhancement, Copy Down automation YAML
+
+### Situation
+Support, testing, and bug reproduction all needed refreshed client databases - 20+ requests daily. On contained Always-On Availability Groups this is much harder than a restore: remove the database from the AG, restore, reconcile security and CDC state, validate listener health. Every step manual, on a payroll-critical cluster, where a missed step leaves a database half-joined.
+
+### Action
+Built and hardened the SQL Copy Down tool as a one-click **idempotent** Azure DevOps pipeline covering the full sequence.
+
+Three decisions worth naming:
+
+1. **A LIVE-server guard before any restore logic runs.** A hard stop, because the failure it prevents is copying down over production.
+2. **Idempotency.** A failed run reruns safely. Without it, partial failure means a DBA reasoning about unknown state at an unknown hour.
+3. **Logging detailed enough to diagnose partial failures** without an ad hoc DBA handoff.
+
+Validated the contained AAG path on **Env006 against SQL Server 2025** (31554) - catching version incompatibility on a test environment rather than mid-request. Then moved the tool's own deployment onto Azure Pipelines so the automation ships through the same governed path as everything else.
+
+### Result
+~1 hour of manual orchestration removed per request, 20+ requests per day. The operation became rerunnable rather than requiring DBA intervention on partial failure.
+
+### What it proves
+Not "I wrote a script" - guard rails, idempotency, version validation ahead of need, and treating the automation itself as a deployable product.
+
+### Follow-ups to expect
+- *"How did you make it idempotent?"* - The core question. Be specific about state checks.
+- *"Why a hard stop rather than a warning?"* - The cost is asymmetric. Warnings get clicked through.
+
+**Fill in:** hours saved per month, whether support self-serves now, environments covered.
+
+---
+
+## Story 9: Ten release cycles and a 3-month problem `[both years]`
+
+**Work:** 8 release cycles in 2025, 2 DE sprints in 2026, CI/CD ownership
+
+### Situation
+The deployment cycle ran roughly 3 months. The bottleneck was not build time - it was cross-team idle time, handoffs waiting on handoffs.
+
+### Action
+**2025:** supported release execution across eight cycles - Sprint 6.27, SSRS 2025.07.28, 8.15, 8.22, 2025.09.15, 2025.11.07, 2025.12.15, 2025.12.19 - including SSRS release branch refresh and code management into testing. That is where I learned where the time actually went.
+
+**2026:** took end-to-end ownership of CI/CD through Azure DevOps and drove delivery across DE Sprints 2026.03.05 and 2026.04.02.
+
+### Result
+Cycle time from **3 months to 14 days**, removing roughly 11 weeks of idle time per release.
+
+### Why this story makes the others credible
+A 14-day cycle is why the accrual change request (Story 2) was worth attempting. Under a 3-month cycle a structural fix is a two-quarter bet and nobody approves it. **Fast release cadence is what makes root-cause fixes rational instead of reckless.**
+
+Say that connection out loud. Most candidates list velocity metrics and correctness work as unrelated bullets. Presenting them as cause and effect is a more senior claim than "I made it faster."
+
+The 2025 half also matters: you did not arrive and reorganize the release process. You worked inside it for eight cycles first, then changed it.
+
+### Follow-ups to expect
+- *"What was actually taking 3 months?"* - Be specific about which handoffs you removed.
+- *"What did you keep?"* - Have an answer about a gate you deliberately did not remove. On payroll, some friction is correct.
+
+**Fill in:** which gates you removed, which you kept and why, whether defect escape rate changed.
+
+---
+
+## Story 10: Shipping to a legislated deadline `[2025]`
+
+**Work:** Sprint 2025.12.15 - SECURE 2.0 and Clock Out Type enhancement
+
+### Situation
+SECURE 2.0 is US retirement legislation with provisions phasing in across multiple years. Payroll platforms have to support it. The deadline is set by law.
+
+### Action
+Delivered the data layer support through the 2025.12.15 release, alongside the Clock Out Type enhancement.
+
+### Result
+Shipped on cycle.
+
+### Why to use this story
+Almost every other item in your record is a defect fix or an internal improvement. **This is regulatory compliance delivery on a deadline you did not control and could not negotiate.**
+
+That is a different kind of evidence. It says you can work to an external mandate with real consequences, in a domain where "we will get it in the next release" is not available.
+
+It also demonstrates domain depth. Retirement plan legislation, contribution and match mechanics, and payroll data are specialized. Combined with the W-4 tax work and the deduction basis work, you can credibly say **payroll and benefits data is a domain you know**, not just a place you happened to work. Domain expertise commands a premium.
+
+### Follow-ups to expect
+- *"What did SECURE 2.0 require on the data side?"* - Recover the specifics before using this story.
+- *"How did you validate compliance?"* - Testing and sign-off process.
+
+**Fill in:** what the provisions required, your scope versus the team's, how it was validated.
+
+---
+
+## Story 11: Making the warehouse agree with the product `[2026]`
 
 **Work items:** 36904, 34376 (00194), 36207, 36072
 
 ### Situation
 `Dim_PerformanceReviewDetails` was failing in both directions at once. Client 00194 was getting extra rows. Other clients were missing data entirely.
 
-### Task
-Fix the row counts. The obvious move was to tune the join predicates and add a DISTINCT until 00194's numbers looked right.
-
 ### Action
-Over-population and under-population in the same object is a specific signal: it means **the warehouse's row-selection logic and the application's row-selection logic had diverged.** The web application knew which review record counted. The ETL was approximating.
+Over-population and under-population in the same object is a specific signal: **the warehouse's row-selection logic and the application's had diverged.** The application knew which review record counted; the ETL was approximating.
 
-Tuning predicates would have made one client's numbers look right by coincidence and left everyone else wrong. So I implemented the web application's actual selection logic in the load (36904). That makes the warehouse agree with the product **by construction**, for every tenant, instead of by luck for the tenant who complained loudest.
+Tuning predicates would have made one client right by coincidence. Instead I implemented the web application's actual selection logic in the load (36904), making the warehouse agree with the product **by construction**, for every tenant. The extra rows (34376) resolved as a consequence.
 
-The extra rows for 00194 (34376) then resolved as a consequence rather than as a separate fix.
+That left clients already under-reported, so I shipped a maintenance package to backfill (36072, 36207) rather than only fixing forward.
 
-That left the clients who had already been under-reported. Fixing forward would have left their history permanently wrong, so I shipped a maintenance package to backfill the missing data (36072, 36207).
-
-### Result
-Review data that matches what users see in the application, plus a repair path for history that was already incorrect.
+Related: `16383` in 2025 was `Dim_PerformanceGoals` not recognizing `Status 98` - the same subject area and the same class of incomplete domain handling.
 
 ### What it proves
-Source-of-truth discipline, and the willingness to cross a team boundary to get the real logic instead of reverse-engineering it from output. Also: caring about the data that was already wrong, not just the data going forward. Interviewers notice that.
+Source-of-truth discipline, willingness to cross a team boundary for the real logic, and caring about data that was already wrong.
 
 ### Follow-ups to expect
-- *"How did you get the application logic?"* - Be ready to describe the collaboration with the app team. If you read the application code directly, say so; that is a strength.
-- *"Isn't duplicating application logic in the ETL a coupling problem?"* - Yes, and it is the right trade here. The alternative was permanent drift. The better long-term answer is a shared definition or the application exposing the selection as a contract, and saying that shows architectural maturity.
+- *"Isn't duplicating application logic in the ETL a coupling problem?"* - Yes, and it is the right trade here. The better long-term answer is a shared definition or the application exposing selection as a contract. Saying that shows architectural maturity.
 
-**Fill in:** how many rows the backfill corrected, how many tenants were affected, whether the app team owns the logic now.
+**Fill in:** rows corrected by the backfill, tenants affected, who owns the logic now.
 
 ---
 
-## Story 3: Thirty minutes to eight, and then defending it
-
-**Work items:** CDC ETL reengineering, plus the 00630 CDC incremental failure
-
-### Situation
-The reporting warehouse refreshed via full-table reloads. Runtime was roughly 30 minutes, and the compute cost scaled with total table size rather than with what had actually changed.
-
-### Task
-Reduce ETL runtime and cost without risking correctness on a payroll-critical platform.
-
-### Action
-Reengineered the CDC pipeline from full reloads to **incremental merge-upserts**, so each run processes only changed rows. The engineering that matters here is not the merge itself - it is making the incremental path safe to rerun. Incremental loads fail in ways full reloads do not: broken watermarks, bad LSN state, partial application. I built the path to be idempotent so a failed run could be rerun cleanly rather than requiring a DBA to reason about half-applied state.
-
-Later, client 00630 hit a CDC incremental failure. This is the highest-stakes failure mode on the platform: when incremental breaks, your options are a slow full reload or stale client data, and neither is acceptable on payroll. I diagnosed and restored the incremental path so the client returned to normal cadence **without falling back to full reload.**
-
-### Result
-Runtime dropped from 30 minutes to under 8 minutes. Compute cost fell 67%. When it broke in production, it was restored on the fast path rather than degraded to the slow one.
-
-### Why this story lands
-Cost reduction is the single most fundable thing on a 2026 data team. But the second half is what separates this from a resume bullet: **you built the optimization and then defended it under production failure.** Plenty of engineers can show a speedup. Fewer can show they kept it working.
-
-### What it proves
-Performance and cost engineering, plus production incident response. Lead with the number, close with the incident.
-
-### Follow-ups to expect
-- *"How did you validate the incremental load matched the full reload?"* - Have a reconciliation answer ready. Row counts and checksums against a full reload run is the standard approach.
-- *"What broke for 00630?"* - Recover this from Azure DevOps. CDC incremental failures usually trace to capture instance state, LSN or watermark drift, or schema change on the source. Know which one it was.
-- *"How do you handle schema evolution on a CDC source?"* - Expect this. It is the standard senior follow-up on any CDC story.
-
-**Fill in:** the actual 00630 root cause, your reconciliation method, and how long the client was affected.
-
----
-
-## Story 4: An hour of DBA work, twenty times a day
-
-**Work items:** 31554, SQL Copy Down tool enhancement, Copy Down automation YAML update
-
-### Situation
-Support, testing, and bug reproduction all needed refreshed copies of client databases - 20+ requests per day. On contained Always-On Availability Groups this is materially harder than a restore: the database must be removed from the availability group, restored, have security and CDC state reconciled, and be validated back into a healthy listener configuration. Every step was manual, on a payroll-critical cluster, where a missed step leaves a database half-joined.
-
-### Task
-Make the operation repeatable and safe.
-
-### Action
-Built and hardened the SQL Copy Down tool as a one-click, **idempotent** Azure DevOps pipeline covering the full sequence: restore, security sync, CDC state reconciliation, and contained AAG listener validation.
-
-Three design decisions worth naming in an interview:
-
-1. **A LIVE-server guard before any restore logic runs.** A hard stop, because the failure mode this prevents is copying down over production.
-2. **Idempotency.** A failed run can be safely rerun. Without that, a partial failure means a DBA reasoning about unknown state at an unknown hour.
-3. **Logging and notification detailed enough to diagnose partial failures** without an ad-hoc DBA handoff.
-
-I then validated the contained AAG drop and copy-down path on **Env006 against SQL Server 2025** (31554), catching version incompatibility on a test environment rather than discovering it mid-request. Finally I moved the tool's own deployment onto Azure Pipelines via YAML, so the automation ships through the same governed path as everything else.
-
-### Result
-Roughly **1 hour of manual orchestration removed per request, against 20+ requests per day.** The operation became rerunnable instead of requiring DBA intervention on partial failure.
-
-### What it proves
-This is your strongest platform story. It is not "I wrote a script" - it is guard rails, idempotency, version validation ahead of need, and treating the automation itself as a deployable product. That is platform engineering, and it maps directly onto how modern teams think about environment provisioning and dev-prod parity.
-
-### Follow-ups to expect
-- *"How did you make it idempotent?"* - The core question. Be specific about state checks before each step.
-- *"What happens if it fails halfway?"* - Your logging and rerun design is the answer.
-- *"Why a hard stop rather than a warning?"* - Because the cost of the mistake is asymmetric. Warnings get clicked through.
-
-**Fill in:** total hours saved per month, whether support self-serves now, how many environments it covers.
-
----
-
-## Story 5: Three months to fourteen days
-
-**Work items:** Sprint 2025.12.19, DE Sprint 2026.03.05, DE Sprint 2026.04.02, plus CI/CD ownership
-
-### Situation
-The deployment cycle ran roughly 3 months. The bottleneck was not build time - it was cross-team idle time, handoffs waiting on other handoffs.
-
-### Task
-Own code management and release execution for the data engineering team.
-
-### Action
-Took end-to-end ownership of CI/CD through Azure DevOps and drove release execution across three cycles, including code management and release to testing for 2025.12.19 and delivery for DE Sprints 2026.03.05 and 2026.04.02.
-
-### Result
-Cycle time went from **3 months to 14 days**, removing roughly 11 weeks of idle time per release.
-
-### Why this story matters more than it looks
-This is the story that makes every other story credible. A 14-day cycle is why the accrual change request (Story 1) was worth attempting at all - under a 3-month cycle, a structural fix is a two-quarter bet and nobody approves it. Fast release cadence is what makes root-cause fixes rational instead of reckless.
-
-**Say that connection out loud in an interview.** Most candidates present velocity metrics and correctness work as unrelated bullet points. Presenting them as cause and effect demonstrates you understand why delivery speed matters, which is a different and more senior claim than "I made it faster."
-
-### What it proves
-Ownership beyond your assigned lane, and an understanding that process constraints determine which engineering decisions are even available to you.
-
-### Follow-ups to expect
-- *"What was actually taking 3 months?"* - Be specific about which handoffs you removed.
-- *"What did you keep?"* - Have an answer about a gate you deliberately did not remove. On payroll, some friction is correct, and knowing which is the senior signal.
-- *"How did you get buy-in?"* - This was a cross-team change; describe the organizational side.
-
-**Fill in:** which specific gates you removed, which you kept and why, whether defect escape rate changed.
-
----
-
-## Story 6: A status code in a numeric column, in tax data
-
-**Work items:** 14825, 34366
-
-### Situation
-Two W-4 defects, one shape. `[W4 State Allowances]` was carrying the state filing status **and** the allowances value packed into one field. Separately, `Dim_W4ElectionData` was carrying election status inside the allowances value.
-
-### Task
-Separate the concerns.
-
-### Action
-Both are the same violation: **one attribute per column.** Any consumer treating allowances as a numeric quantity - withholding calculation, compliance reporting, any aggregate - was reading a contaminated value. I split them so filing status and election status live in their own attributes and the allowances field holds allowances only.
-
-### Result
-Clean, correctly typed W-4 election data.
-
-### Why this story lands
-This looks like the smallest item in the list. Use it anyway, because of the domain: **this is tax withholding input data.** The correctness bar is regulatory, not analytical. A wrong allowances value is not a bad chart - it is an under-withheld employee and a compliance exposure.
-
-It is also a genuinely good answer to "tell me about a time you caught something others missed," because a packed field does not throw an error. It silently returns a plausible number. Nothing fails; the value is just wrong.
-
-### What it proves
-Data contract thinking, and the judgment to treat a small ticket as important because of what it touches rather than how big it is.
-
-### Follow-ups to expect
-- *"How did you find it?"* - Recover this. Whether it came from a client report or your own review changes the story significantly, and the second version is much stronger.
-- *"How would you prevent this class of defect?"* - Type constraints and column-level contracts at ingestion. This is your natural bridge to talking about data quality tooling.
-
-**Fill in:** how it was discovered, and whether any downstream withholding calculations were affected.
-
----
-
-## Story 7: Fix all three repos, not the one that shouted
-
-**Work item:** 36429
-
-### Situation
-Reporting databases could not be created from the `release/2025.07.25` branch. This is a pipeline-blocking failure: if you cannot build a reporting database from the release branch, you cannot validate the release. Everything downstream stops.
-
-### Task
-Unblock the release.
-
-### Action
-The root cause was not in the data or the schema - it was in the pipeline definitions. An agent name in the YAML no longer resolved.
-
-The minimum fix was one line in the repo that surfaced the error. Instead I checked all the pipeline definitions and updated the agent name across **all three affected repositories: Full Load, Incremental, and Employer Reports.** The other two had the same stale reference and had simply not been built yet. Fixing only the loud one would have meant the identical failure ambushing the next person who touched either of the others.
-
-### Result
-Release validation unblocked, and the same failure prevented in two repositories that had not surfaced it yet.
-
-### What it proves
-Preventive thinking, and treating pipeline configuration as real code with real blast radius. It is a small story that tells an interviewer exactly how you work: when you find a bug, you ask where else it lives.
-
-### Follow-ups to expect
-- *"How did you know the other two had it?"* - You checked. Say so plainly.
-- *"How would you prevent config drift across repos?"* - Shared or templated pipeline definitions. Good opening to discuss pipeline-as-code patterns.
-
-**Fill in:** how long the release was blocked, and whether you templated the shared config afterward.
-
----
-
-## Story 8: Point-in-time correctness
+## Story 12: Point-in-time correctness `[2026]`
 
 **Work item:** 34247 (00747)
 
 ### Situation
 Client 00747 had incorrect effective end dates in `Dim_EmpInfoHistory`.
 
-### Task
-Fix the end-dating.
-
 ### Action
-This is the correctness backbone of a Type 2 slowly changing dimension. If end dates are wrong, validity intervals either **overlap** or leave **gaps**. Ask "what was this employee's status on the pay date" and you get two answers or none. Every point-in-time query against employee history becomes unreliable, and on an HR platform that means every historical payroll and benefits question.
+This is the correctness backbone of a Type 2 slowly changing dimension. Wrong end dates mean validity intervals **overlap** or leave **gaps**. Ask "what was this employee's status on the pay date" and you get two answers or none - so every historical payroll and benefits question becomes unreliable.
 
-I corrected the end-dating so intervals close properly and a point-in-time lookup returns exactly one valid row.
+Corrected the end-dating so intervals close properly and a point-in-time lookup returns exactly one valid row.
 
-### Result
-Reliable historical employee lookups for 00747.
+### Why it punches above its size
+**SCD Type 2 correctness is a classic senior interview topic.** Interviewers ask because it separates people who have modeled dimensions in production from people who have read about them. You have a real production instance.
 
-### Why this story punches above its size
-SCD Type 2 correctness is a **classic senior data engineering interview topic**. Interviewers ask about it specifically because it separates people who have modeled dimensions in production from people who have read about them. You have a real production instance of it. That is worth more than a textbook answer.
-
-This is also your natural bridge to modern tooling: dbt snapshots solve exactly this problem, and being able to say "I have debugged this by hand, so I know what snapshots are protecting me from" is a strong answer.
+It is also your bridge to modern tooling: dbt snapshots solve exactly this. *"I have debugged Type 2 end-dating by hand, so I know what snapshots are protecting me from."*
 
 ### Follow-ups to expect
-- *"Overlapping or gapping?"* - Know which. They have different causes.
-- *"How do you test for it?"* - Assert no overlapping intervals per entity, and that exactly one row is current. Have this ready; it is the real question underneath.
-- *"How would you do this in dbt?"* - Snapshots. Make the connection yourself before they ask.
+- *"Overlapping or gapping?"* - Know which. Different causes.
+- *"How do you test for it?"* - Assert no overlapping intervals per entity, exactly one current row. This is the real question.
 
-**Fill in:** whether intervals overlapped or gapped, the root cause, and how you validated the fix.
+**Fill in:** overlap or gap, root cause, validation method.
 
 ---
 
-## Story 9: Building a subject area from nothing
+## Story 13: Building a subject area from nothing `[2026]`
 
-**Work item:** Attestations dimensional model (no ticket number)
+**Work:** Attestations dimensional model
 
 ### Situation
-Attestations existed in the application but had no warehouse representation. Compliance data that could not be reported on, trended, or audited alongside the rest of the HR data.
-
-### Task
-Design and build the dimensional model.
+Attestations existed in the application but had no warehouse representation - compliance data that could not be reported, trended, or audited alongside the rest of the HR data.
 
 ### Action
-Greenfield modeling rather than defect repair: established the fact grain, built conformed dimensions so attestations join cleanly to the existing employee and organizational dimensions, and integrated it into the warehouse's load and release process.
+Greenfield modeling: established the fact grain, built conformed dimensions so attestations join cleanly to existing employee and organizational dimensions, and integrated it into the load and release process.
 
 ### Result
-Attestations became a reportable, auditable subject area.
+A reportable, auditable subject area.
 
-### Why you need this story in the rotation
-Everything else in your year is repair work. Excellent repair work, but repair work. **An interviewer scanning your list will wonder whether you can build, or only fix.** This is the answer, and you should volunteer it rather than wait to be asked.
+### Why you need this in the rotation
+Most of your record is repair work. Excellent repair work, but an interviewer scanning it will wonder **whether you can build or only fix.** This is the answer, and you should volunteer it rather than wait.
 
-Pair it with the Cosmos Expense SSRS work (Tier 2) as a second build example.
-
-### What it proves
-Kimball dimensional modeling from a blank page: grain definition, conformed dimensions, integration with an existing warehouse. That is a design skill, and it is distinct from everything else in the record.
+Pair with Cosmos Expense (Tier 2), where you scripted the schema foundation in 2025 (`32344`) and delivered SSRS support in 2026 - a build you carried across both years.
 
 ### Follow-ups to expect
-- *"What grain did you choose and why?"* - The central question in dimensional design. Have a crisp answer.
-- *"How did you conform it to existing dimensions?"* - Be specific about which dimensions it reuses.
-- *"What did you get wrong?"* - Have something. A model you would grain differently in hindsight is a strong, credible answer.
+- *"What grain did you choose and why?"* - The central question in dimensional design.
+- *"What did you get wrong?"* - Have something. A model you would grain differently in hindsight is credible.
 
-**Fill in:** the actual grain, which conformed dimensions it reuses, who consumes it now.
+**Fill in:** the grain, which conformed dimensions it reuses, who consumes it.
 
 ---
 
 # Tier 2: Supporting stories
 
-One paragraph each. Use these when an interviewer wants a second example, or to show breadth across the platform.
+### SSRS server crash root cause analysis `[2025]`
+Not "restarted the server" - root cause analysis on a production SSRS crash. *Use for "tell me about a production incident" if you want a second example after the 00630 CDC failure, or when asked about ownership beyond your assigned lane.*
 
-### 32478 - Merge conflict on Dim_StatsReportType (Client 00994)
-Client 00994's load was **hard-failing** on a MERGE - the case where a target row matches more than one source row, so the statement cannot decide which update wins and aborts. Not a soft data-quality issue: the load stops and the client's data goes stale until someone fixes it. I resolved the ambiguity in the source-to-target key relationship so each target row matches at most one source row. *Use this when asked about grain, MERGE semantics, or debugging a failing load.*
+### 29973 - Orphaned dimension key in Fact_TimePunches `[2025]`
+`Fact_TimePunches` carried a `Dim_TimeSourceID` that did not exist in `Dim_TimeSource` - a textbook referential integrity failure. The consequence is subtle: an inner join makes those punches **vanish from reports** while the rows still sit in the fact table, so the data looks present and reports silently under-count. Fixing it means repairing the data and closing the write path that allowed an unmatched key. *Strong answer for "how do you enforce referential integrity" and a natural lead-in to Data Checker.*
 
-### 32495 - Voucher duplicated in Fact_PayVoucherDetail (Client 00810)
-An employee's voucher appeared twice in the pay voucher fact. Duplication in a pay fact is directly money-adjacent - it inflates what reconciliation reports show as paid. Root cause was a grain mismatch between the declared fact grain and the source's real grain, causing fan-out on a join. Fixed by restoring grain integrity rather than adding a deduplication step downstream. *Pairs naturally with 37005 below - same domain, opposite symptom.*
+### 31313, 31622, 32478 - Three MERGE failures, one cause `[both years]`
+`Dim_EmpW4Election` for client 630 (2025), `Dim_Author` for 00336 (2025), `Dim_StatsReportType` for 00994 (2026). All the same failure: a target row matched by more than one source row, so MERGE cannot decide which update wins and aborts. **These are hard failures** - the load stops and client data goes stale until someone fixes it. Each was resolved by fixing the source-to-target key relationship so one target row matches at most one source row. *Tell all three together. Three instances of one root cause across two years is a much better answer than one instance, and it sets up "what would you do differently" - a uniqueness check on the source would have caught every one.*
 
-### 37005 - Dim_PayDemographics missing vouchers (Client 00982)
-The mirror image of 32495: vouchers absent from the pay demographics dimension. Duplication and omission in the same domain are usually the same root cause seen from two sides - when declared grain and real grain disagree, one join path fans out while another filters out. Closed the gap so voucher coverage was complete. *Tell this immediately after 32495; the pairing is the insight.*
+### 16383, 30856 - Status domain gaps `[2025]`
+`Dim_PerformanceGoals` not recognizing `Status 98`, and EAN 269367 showing `Approved` when it should be `Completed`. Same class: the warehouse's set of valid status values was narrower than the source's, so unmapped statuses fall through to a default or fail to match. Workflow status drives what users act on, so this is operational, not cosmetic. *Good for "tell me about an assumption that turned out wrong."*
 
-### 13803 - Incorrect ER contribution code used
-An employer contribution was being applied under the wrong code. Contribution codes drive employer-side cost reporting and downstream filings, so a mis-mapped code is not a labeling problem - it lands in numbers the employer reports externally. Corrected the mapping. *Use for "tell me about a bug with real-world consequences."*
+### 14825, 34366 - A status code in a numeric column `[2026]`
+`[W4 State Allowances]` carried state filing status **and** the allowances value in one field; `Dim_W4ElectionData` carried election status inside the allowances value. One violation, twice: **one attribute per column.** Any consumer treating allowances as numeric - withholding calculation, compliance reporting, any aggregate - read a contaminated value. Separated so each attribute stands alone. *Small tickets, big domain: this is tax withholding input, so the bar is regulatory. Also a clean answer to "a bug that did not throw an error" - a packed field silently returns a plausible number.*
 
-### 36204 - Add MatchSH2Adj column to ssrs_UpdateRecurring
-Added the `MatchSH2Adj` column to the `ssrs_UpdateRecurring` stored procedure so the match adjustment value flows through the recurring update path into SSRS reporting instead of being invisible to the reports that needed it. *Small, but shows you work across the full stack from procedure to report.*
+### 16552, 16518 - Attribute resolution, and fixing at the source `[2025]`
+Voucher code short description and PIECEWORK allocation description both resolving incorrectly. `16518` is the one to tell: the root cause was in **ODS**, upstream of the warehouse, so the fix went back to the source and through testing rather than being patched in the warehouse. *Use for "tell me about resisting a quick fix." Patching downstream would have been faster and would have left the wrong data flowing to every other consumer.*
 
-### 35366 - Fact_TimeAllocation duplicate rows (Client 00877)
-Duplicate rows in the time allocation fact. Time allocation feeds labor distribution and cost attribution, so duplicates **inflate charged hours against projects and cost centers** - a billing and cost-accounting problem, not just a reporting one. Two-part fix: corrected the load so duplicates stopped being produced, then built a maintenance job to clean the stale and duplicate records already sitting in the table, shipped as a **limited maintenance package scoped to 00877**. The scoping is the interesting part - a tenant-scoped package shipped on its own timeline without waiting for a full release and without touching tenants that did not need it. *Use for "tell me about a time you fixed both the cause and the damage," or for blast-radius reasoning.*
+### 16421, 28168, 32495, 37005 - The voucher grain thread `[both years]`
+Duplication in Misc. Adjustment Allocation (2025), duplication in `Fact_PayVoucherAllocation` (2025), a duplicated voucher for 00810 (2026), and missing vouchers for 00982 (2026). Duplication and omission in one domain are usually the same root seen from two sides: when declared grain and real grain disagree, one join path fans out while another filters out. *Tell the duplication and the omission together - the pairing is the insight.*
 
-### 36119 - Deadlock on client databases for stored procedures
-Stored procedures on client databases were deadlocking. This is the worst class of production defect to chase: load-dependent and intermittent, passes every test, then fails under real concurrency, and the victim transaction dies with work half-done. Addressed the contention so concurrent execution completes reliably. *Strong answer for "hardest bug you have debugged" - lead with why deadlocks resist normal debugging.*
+### 35366 - Fact_TimeAllocation duplicates and cleanup `[2026]`
+Duplicate rows inflating charged hours against projects and cost centers - a cost-accounting problem, not just reporting. Two-part fix: stopped the load producing duplicates, then built a maintenance job for records already in the table, shipped as a **limited maintenance package scoped to 00877** so it did not wait on a full release or touch tenants that did not need it. *Use for "fixed both the cause and the damage," or for blast-radius reasoning.* Continuity: `31616` was the same table missing punch data for 00979 in 2025.
 
-### 33436 - Reissued vouchers missing (Client 00810) - handed off
-Triaged and handed to a colleague. Voucher reissue is a distinct upstream event lifecycle from original issuance, and it belonged with the owner of that path rather than being worked around in the reporting layer. *Do not hide this one. "I diagnosed it, determined it belonged upstream, and handed it to the right owner with context" is a better answer than pretending you closed everything. Interviewers trust candidates who distinguish what they own from what they routed.*
+### 36119 - Deadlocks on client databases `[2026]`
+Stored procedures deadlocking on client databases. The worst class of production defect to chase: load-dependent, intermittent, passes every test, then fails under real concurrency with the victim transaction dying half-done. *Strong "hardest bug you have debugged" answer - lead with why deadlocks resist normal debugging.*
 
-### Cosmos Expense Project - SSRS support
-Provided reporting-layer support for the Cosmos Expense project so expense data reaches SSRS through the same governed warehouse path as everything else, rather than through a one-off extract. *Use as a second build example alongside Attestations, and as evidence you resist one-off pipelines.*
+### 36429 - Fix all three repos, not the one that shouted `[2026]`
+Reporting databases could not be built from `release/2025.07.25` - release-blocking, because you cannot validate a release you cannot build. Root cause was a stale agent name in the pipeline YAML. The minimum fix was one repo; I updated **all three** (Full Load, Incremental, Employer Reports) because the other two carried the same stale reference and simply had not been built yet. *Small story that tells an interviewer exactly how you work: when you find a bug, you ask where else it lives.*
 
-### 27353 - Fact_PTODetails approval flag and 12/31/1900 dates
-Every record in the PTO details fact was being stamped with an approval date of **12/31/1900** - the SQL Server zero-date sentinel - and carrying an incorrect approved flag. This is a technical default escaping into business data: nothing errors, but the approval audit trail is fiction. Corrected the approval semantics so the flag reflects the real approval event and unapproved records carry NULL rather than a fabricated date. *Excellent answer for "a bug that did not throw an error." Also a clean way to talk about representing absence correctly instead of substituting a placeholder that reads as data.*
+### 27353 - The 12/31/1900 approval date `[2026]`
+Every record in `Fact_PTODetails` stamped with `12/31/1900` - the SQL Server zero-date sentinel - plus an incorrect approved flag. A technical default escaping into business data: nothing errors, but the **approval audit trail is fiction**. Corrected so the flag reflects the real approval event and unapproved records carry NULL. *Excellent for "a bug that did not throw an error," and a clean way to discuss representing absence correctly instead of substituting a placeholder that reads as data.*
 
-### 32896 / 32979 - Fact_PTOSummary staleness and wrong rates
-Covered in depth as part of Story 1. Mentioned separately here because they are individually ticketed and may come up by number.
+### 30497, 25661, 14778, 28947 - The missing-data cluster `[2025]`
+`Fact_BenEnroll` missing updated enrollment information; `Fact_StatsLogon` missing login activity; `Fact_StatsReports` not reflecting job and classification fields; the 00972 Weekly Store Report. All the same shape: **rows or attributes that should be present and are not.** *Use to make the point that missing data is harder to catch than wrong data - the report renders cleanly and simply under-reports, so nothing looks anomalous.*
+
+### 29462 - ShrinkDB optimization `[2025]`
+Storage and performance optimization in VC. *Minor, but useful when asked about cost or storage management.*
+
+### 31617 - Inconsistent payroll amounts for 00630 `[2025]`
+Custom reporting showing payroll amounts that did not agree with each other. Inconsistency across reports usually means two paths computing one figure differently - a modeling problem, not arithmetic. *Note the continuity: this is the same client whose CDC incremental path you later owned and restored in 2026.*
+
+### 33436 - Reissued vouchers, handed off `[2026]`
+Triaged and handed to a colleague. Voucher reissue is a distinct upstream event lifecycle and belonged with the owner of that path. *Do not hide this. "I diagnosed it, determined it belonged upstream, and handed it off with context" is a better answer than pretending you closed everything. Interviewers trust candidates who distinguish what they own from what they routed.*
+
+### 16235 - Rerouting incorrect in some instances `[2025]`
+A workflow routing defect affecting some instances. *"In some instances" is the interesting part - intermittent, conditional defects are harder than deterministic ones because reproduction is the whole battle.*
 
 ---
 
-# Section 12: Question-to-story map
+# Section 15: Question-to-story map
 
 | If they ask... | Tell... |
 |---|---|
-| "Walk me through a technical problem you are proud of" | Story 1 (accrual cluster) |
-| "Tell me about improving performance or reducing cost" | Story 3 (CDC, 30 min to 8 min, -67%) |
-| "Describe something you automated" | Story 4 (Copy Down tool) |
-| "Tell me about a production incident" | Story 3 second half (00630), or 36119 (deadlocks) |
-| "Hardest bug you have debugged" | 36119 (deadlocks) - lead with why they resist debugging |
-| "A bug that did not throw an error" | 27353 (12/31/1900) or Story 6 (W-4) |
-| "Tell me about data modeling experience" | Story 9 (Attestations) then Story 8 (SCD Type 2) |
-| "Explain slowly changing dimensions" | Story 8 - you have a production instance, not a definition |
-| "Tell me about working with another team" | Story 2 (application logic alignment) |
-| "A time you went beyond your assigned task" | Story 7 (three repos) or Story 5 (CI/CD ownership) |
-| "How do you handle competing priorities?" | Story 1 - four clients, one structural fix |
-| "Tell me about a mistake or something you would redo" | Story 1 follow-up: four tickets was three too many |
-| "Something you did not finish / had to hand off" | 33436 - answer it straight |
-| "How do you ensure data quality?" | Story 6 plus the four defect classes in the accomplishments doc |
-| "Experience with CI/CD" | Story 5, then Story 4 and Story 7 |
-| "Tell me about ambiguity" | Story 2 - divergent logic with no documented source of truth |
-| "Why should we hire you?" | Story 5 connected to Story 1: fast delivery is what makes structural fixes possible |
+| "Walk me through your background" | The story above the stories - the two-year arc |
+| "Technical problem you are proud of" | Story 2 (accrual cluster) or Story 1 (Data Checker) |
+| "Tell me about something you built" | Story 1 (Data Checker), Story 13 (Attestations) |
+| "Improving performance or reducing cost" | Story 3 (CDC, 30 min to 8, -67%) |
+| "How do you ensure data quality?" | **Story 1.** This is your best answer and most candidates have nothing comparable |
+| "Describe something you automated" | Story 8 (Copy Down) |
+| "Tell me about a production incident" | Story 3 second half (00630), Story 7 (hotfixes), SSRS crash RCA |
+| "Hardest bug you have debugged" | 36119 (deadlocks) or Story 6 (incremental divergence) |
+| "A bug that did not throw an error" | **Story 5 (basis logic)**, 27353 (12/31/1900), or 14825 (W-4) |
+| "A bug with real-world consequences" | Story 5 (silent money), Story 10 (SECURE 2.0) |
+| "Explain slowly changing dimensions" | Story 12 - a production instance, not a definition |
+| "How do you handle CDC schema evolution?" | **Story 4.** Have this ready; it is the standard senior CDC follow-up |
+| "Data modeling experience" | Story 13 (Attestations), then Story 12 (SCD Type 2) |
+| "Working with another team" | Story 11 (app logic), Story 1 (IT on training03) |
+| "Going beyond your assigned task" | Story 1, Story 4, or 36429 (three repos) |
+| "Competing priorities" | Story 2 - four clients, one structural fix |
+| "A mistake or something you would redo" | Story 2 - counting 2025, that surface leaked for over a year |
+| "Something you handed off" | 33436 - answer it straight |
+| "Experience with CI/CD" | Story 9, then Story 8 and 36429 |
+| "Ambiguity" | Story 11 - divergent logic, no documented source of truth |
+| "Resisting a quick fix" | 16518 - fixed in ODS, not patched downstream |
+| "Regulatory or compliance work" | Story 10 (SECURE 2.0), plus the W-4 items |
+| "Why should we hire you?" | The two-year arc: correctness earned the platform ownership |
 
 ---
 
-## Three habits these stories demonstrate
+## Four habits these stories demonstrate
 
-Whatever the question, these are the through-lines worth surfacing. They are more memorable than any individual ticket.
+More memorable than any individual ticket. Surface these whatever the question.
 
-1. **When a bug appears repeatedly, fix the model, not the row.** Story 1 is the proof: four tickets, one design flaw, one structural fix.
-2. **When you find a bug, ask where else it lives.** Story 7: three repos, not one. Story 2: every tenant, not just the one that complained.
-3. **Fix the damage, not just the cause.** 35366 and Story 2 both shipped backfills. Stopping the bleeding is half the job; the data that is already wrong stays wrong until someone repairs it.
+1. **When a bug appears repeatedly, fix the model, not the row.** Story 2: four tickets, one design flaw. Story 5: four tickets, one incomplete basis.
+2. **When you find a bug, ask where else it lives.** 36429: three repos, not one. Story 11: every tenant, not just the complainer. The three MERGE failures: one cause, found three times.
+3. **Fix the damage, not just the cause.** Story 11 and 35366 both shipped backfills. Stopping the bleeding is half the job.
+4. **When you keep finding defects the same way, change the way you find them.** Story 1. This is the habit that separates the two years, and the one worth leading with.

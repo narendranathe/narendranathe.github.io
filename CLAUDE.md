@@ -52,29 +52,40 @@ Never use en dashes (-) or em dashes (--). Use hyphens (-) for all cases: ranges
 
 ## Owner Context: ExponentHR Work Record
 
-The site owner is a Data Engineer at ExponentHR (Jul 2024 to present). The 2025.12 to 2026.04 work record is documented in `docs/` and should be treated as the source of truth when writing or revising portfolio content about that role.
+The site owner is a Data Engineer at ExponentHR (Jul 2024 to present). The 2025 and 2026-to-date work record is documented in `docs/` and is the source of truth when writing or revising portfolio content about that role.
 
 | Document | Contents |
 |---|---|
-| `docs/exponenthr-2026-accomplishments.md` | Delivery record: 25 work items, 11 client tenants, 3 sprint cycles, grouped by theme |
-| `docs/exponenthr-work-item-stories.md` | STAR stories per work item, interview-ready, with a question-to-story map |
+| `docs/exponenthr-accomplishments.md` | Delivery record: 53 work items across 2025 and 2026, 16 tenants, 10 release cycles |
+| `docs/exponenthr-work-item-stories.md` | 13 Tier 1 STAR stories plus supporting stories, with a question-to-story map |
 | `docs/career-positioning-2026.md` | 2026 market positioning, target roles, resume bullets, gap analysis |
+
+### The two-year arc (lead with this, not the ticket count)
+
+- **2025 was the correctness year:** 29 work items across the whole warehouse, 8 release cycles, 2 production hotfixes, SSRS server crash RCA. Built **Data Checker** (control-table-driven validation framework) and researched/tested/documented the **CDC schema change deployment process**.
+- **2026 is the platform year:** 25 work items, CI/CD ownership, CDC incremental reengineering, AAG Copy Down automation, new dimensional models.
+- **The second year was earned by the first.** Data Checker and the CDC schema process are the hinge.
 
 ### Established metrics (safe to reuse)
 
 - Release cycle: 3 months -> 14 days (Azure DevOps CI/CD ownership, ~11 weeks idle time removed per release)
 - CDC ETL: 30 min -> under 8 min, compute cost -67% (full reloads -> incremental merge-upserts)
 - AAG Copy Down: ~1 hour manual orchestration removed per request, 20+ requests/day
-- Correctness: 25 work items across 11 tenants (00169, 00194, 00612, 00630, 00745, 00747, 00810, 00877, 00982, 00994, 10106)
+- Scope: 53 unique work items, 16 client tenants, 10 release cycles across 2025 and 2026
+- Tenants: 00169, 00194, 00336, 00479, 00612, 00630, 00704, 00745, 00747, 00810, 00877, 00972, 00979, 00982, 00994, 10106
 
-### Recurring defect classes found across the year
+### Most undervalued assets
 
-Useful framing whenever this work is described: (1) sentinel values escaping into business data (12/31/1900 dates, 1E-05 rates), (2) grain violations causing duplicate rows and MERGE conflicts, (3) missing filters and joins causing absent rows, (4) composite fields packing a status code into a numeric column. The through-line is **fix the model, not the row**.
+When positioning this work, these are worth more than the ticket count: **Data Checker** (declarative data quality, the direct analog of dbt tests), the **documented CDC schema evolution process** (the standard senior CDC interview question), **SECURE 2.0** delivery (regulatory compliance on a legislated deadline), and the **two payroll hotfixes plus crash RCA** (production trust).
+
+### Recurring defect classes
+
+Useful framing whenever this work is described: (1) sentinel values escaping into business data (12/31/1900 dates, 1E-05 rates), (2) grain violations causing duplicate rows and three MERGE failures, (3) missing filters and joins causing absent rows, (4) composite fields packing a status code into a numeric column, (5) incomplete domain and calculation-basis coverage, (6) full-load versus incremental path divergence. The through-line is **fix the model, not the row**.
 
 ### Known gap
 
-`index.html` currently carries only three ExponentHR bullets, all platform-focused. The data correctness and dimensional modeling work - over half the year - is not represented. Use the rewritten bullets in `docs/career-positioning-2026.md` section 5 when updating the experience section.
+`index.html` carries only three ExponentHR bullets, all 2026 platform work. The entire 2025 year - including Data Checker and SECURE 2.0 - is unrepresented. Use the rewritten bullets in `docs/career-positioning-2026.md` section 6 when updating the experience section.
 
 ### Provenance caveat
 
-The work item root causes in these docs are **reconstructed from Azure DevOps ticket titles**, not fetched from Azure DevOps itself (no ADO connector was available when they were written). Problem statements are accurate; root causes are the defect class each title implies. See the appendix of the accomplishments doc for connector setup. Verify before treating any root cause as fact.
+Work item root causes in these docs are **reconstructed from Azure DevOps ticket titles**, not fetched from Azure DevOps (no ADO connector available when written). Problem statements are accurate; root causes are the defect class each title implies. Note: `Azure.Mcp.Server` (`@azure/mcp`) does NOT expose work items - that requires the separate `@azure-devops/mcp` server. See the accomplishments doc appendix. Verify before treating any root cause as fact.
