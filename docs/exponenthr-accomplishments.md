@@ -30,14 +30,14 @@ Two years of work with a clear shape:
 
 | Measure | 2025 | 2026 YTD | Total |
 |---|---|---|---|
-| Resolved work items | 29 | 25 | **53 unique** |
+| Work items | 29 | 25 | **53 unique** |
 | Unticketed workstreams | 6 | 5 | 11 |
 | Release and sprint cycles | 8 | 2 | **10** |
 | Distinct client organizations served | 6 | 11 | **16 unique** |
 | Production hotfixes | 2 | - | 2 |
 | New frameworks or subject areas built from scratch | 2 | 2 | 4 |
 
-One item spans both years: code complete in 2025, released in 2026. It is counted once.
+One item spans both years: code complete in 2025, released in 2026. It is counted once. Of the 53, **52 are resolved and 1 is still open** (the paid-leave approval-flag defect in Section 12) - do not describe the full 53 as resolved or closed.
 
 ### Platform metrics
 
@@ -187,7 +187,7 @@ The center of gravity shifts. Fewer "why is this row wrong" tickets, more "why d
 
 ## 12. Paid-leave accrual
 
-Eight resolved items, four client organizations, one root cause. The clearest example of fixing the model instead of the row.
+Eight items, four client organizations, one root cause - seven resolved, one still open. The clearest example of fixing the model instead of the row.
 
 Four clients reported four different-looking problems: stale balances, a wrong accrual rate, rates rendering as a floating-point artifact and rates appearing against ineligible plans, and missing employees from an accrual summary. Separately, a related fact table was stamping every row with a fabricated approval date - the SQL Server zero-date sentinel value - and carrying an incorrect approval flag.
 
@@ -304,7 +304,7 @@ The CDC row is the clearest: the 2025 research and documentation is why the 2026
 
 ## 20. The recurring defect classes
 
-Six classes account for most of the 53 resolved work items. Naming them is what turns a long defect list into a much shorter list of real fixes.
+Six classes account for most of the 53 work items. Naming them is what turns a long defect list into a much shorter list of real fixes.
 
 ### 1. Sentinel and default values escaping into business data
 A fabricated zero-date sentinel value standing in for a real approval date, and a floating-point display artifact standing in for a clean accrual rate. A technical default or float artifact reaching a user as though it were a real business value. Nothing errors; the value is simply fiction. The fix is making absence representable - NULL where nothing happened, correct precision where a value exists.
@@ -335,6 +335,7 @@ The strongest example is the paid-leave accrual cluster - four clients, four dif
 - One voucher-reissue item was **triaged and handed off** - it belonged with the owner of the upstream reissue lifecycle, not this role.
 - One allocation-description defect had its root cause in the upstream operational data store; the **data fix was sent back to testing** rather than patched in the warehouse.
 - One employer-contribution-code item was code complete in 2025 and released in 2026, counted once.
+- One paid-leave item (the approval-flag/fabricated-date defect, Section 12) is **still open**, actively being diagnosed - not resolved. Of the 53 total work items, 52 are resolved.
 - All other resolved items were delivered through the release cycles described in Sections 11 and 18.
 
 Where this document states a root cause, it describes the defect class the work item represents. The platform metrics quoted (3 months to 14 days, 30 min to under 8 min, -67% compute, ~1 hour per provisioning request, 20+ daily requests) are the established measured figures.

@@ -93,13 +93,13 @@ The following points are built from a two-year record of production data enginee
 
 ## 6. Tracing four differently-reported client defects to one shared root cause, and fixing the model instead of four symptoms
 
-**Situation:** Four separate client organizations, on a shared paid-leave accrual data model, each reported a differently worded defect over time: an incorrect accrual rate, values displaying as a floating-point artifact instead of a clean number, accrual showing against plans an employee was not even eligible for, and stale balances not reflecting recent activity. A related defect on the same data surface had already been open for over a year.
+**Situation:** Four separate client organizations, on a shared paid-leave accrual data model, each reported a differently worded defect over time: an incorrect accrual rate, values displaying as a floating-point artifact instead of a clean number, accrual showing against plans an employee was not even eligible for, and stale balances not reflecting recent activity. A separate, longer-standing defect on the same data surface remains open and unresolved as of this writing - it is not part of this four-client cluster and was not closed by this fix.
 
 **Task:** Trace differently worded, independently reported symptoms to a shared root cause and ship one structural, modeled fix instead of patching each report individually.
 
 **Action:** Identified that the accrual rate was being derived inline during the ETL load rather than sourced from a modeled, plan-aware definition - a design choice that explains all four symptoms at once: inline derivation drifts across tenants, loses numeric precision, and has nowhere to enforce plan eligibility. Replaced it with a dedicated, versioned accrual data table, and contributed the eligibility-enforcement design that closed the ineligible-plan symptom specifically.
 
-**Result:** Shipped the structural, modeled fix that the resolution of all four client-reported symptoms depended on, closing a defect surface that individual patches had not resolved for over a year. Paid-leave balance is not a cosmetic report number - employees plan time off against it, managers approve time off against it, and at termination it converts directly into a payout, so a wrong accrual rate is a real financial liability, not a display bug.
+**Result:** Shipped the structural, modeled fix that the resolution of all four client-reported symptoms depended on. Paid-leave balance is not a cosmetic report number - employees plan time off against it, managers approve time off against it, and at termination it converts directly into a payout, so a wrong accrual rate is a real financial liability, not a display bug.
 
 > Traced four independently reported client defects on a paid-leave accrual model to one shared root cause - rate computed inline in the ETL instead of sourced from a model - and replaced it with a versioned, eligibility-aware accrual table, closing a defect class that had been recurring for over a year.
 
