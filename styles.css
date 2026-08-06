@@ -1553,7 +1553,7 @@ body.splash-active { overflow: hidden; }
   .post-section code {
     background: #2a2522;
   }
-  .system-diagram { color: #f0f0f0; }
+  .post-body .system-diagram { color: #f0f0f0; }
   .post-figcaption,
   .post-meta,
   .post-footer { color: #b0a8a0; }
