@@ -47,16 +47,18 @@
        the type attribute and would fetch all three preloads — that tail
        is microscopic in 2026 evergreen, and they fall through to the JPEG
        <picture> source anyway. imagesrcset + imagesizes mirror the
-       <picture>'s mobile (max-width: 860px) breakpoint. -->
-  <link rel="preload" as="image" type="image/avif"
+       <picture>'s mobile (max-width: 860px) breakpoint. The media filter
+       (min-width: 861px) keeps phones from downloading a portrait the
+       mobile layout no longer renders. -->
+  <link rel="preload" as="image" type="image/avif" media="(min-width: 861px)"
         imagesrcset="static/originals/headshot-fullbody-800.avif 800w, static/originals/headshot-fullbody.avif 1200w"
         imagesizes="(max-width: 860px) 100vw, 1200px"
         fetchpriority="high">
-  <link rel="preload" as="image" type="image/webp"
+  <link rel="preload" as="image" type="image/webp" media="(min-width: 861px)"
         imagesrcset="static/originals/headshot-fullbody-800.webp 800w, static/originals/headshot-fullbody.webp 1200w"
         imagesizes="(max-width: 860px) 100vw, 1200px"
         fetchpriority="high">
-  <link rel="preload" as="image" type="image/jpeg"
+  <link rel="preload" as="image" type="image/jpeg" media="(min-width: 861px)"
         href="static/originals/headshot-fullbody.jpg"
         imagesrcset="static/originals/headshot-fullbody-800.jpg 800w, static/originals/headshot-fullbody.jpg 1200w"
         imagesizes="(max-width: 860px) 100vw, 1200px"
@@ -135,6 +137,12 @@
             <a href="https://github.com/narendranathe" class="btn btn-ghost" target="_blank" rel="noreferrer">GitHub</a>
             <a href="mailto:edara.narendranath@gmail.com" class="btn btn-ghost">Email</a>
           </div>
+          <nav class="hero-toc" aria-label="Section shortcuts">
+            <a href="#proof">Proof</a>
+            <a href="#experience">Before Engineering</a>
+            <a href="#systems">Projects</a>
+            <a href="#connect">Contact</a>
+          </nav>
         </div>
 
         <aside class="hero-visual">
@@ -193,7 +201,7 @@
                   <dd class="impact-label">AAG failover<span class="sr-only"> - automated copy-down for Contained Always-On Availability Groups, 20-plus payroll-critical requests daily.</span></dd>
                 </div>
               </dl>
-              <p class="system-desc">Idempotent MERGE upserts with fn_cdc_get_all_changes, safe retry on failed runs.</p>
+              <p class="system-desc">Idempotent MERGE upserts via fn_cdc_get_all_changes with safe retry.</p>
             </div>
           </article>
 
@@ -216,7 +224,7 @@
                   <dd class="impact-label">fraud flagged<span class="sr-only"> - 2,034 fraudulent transactions out of 100,000 processed.</span></dd>
                 </div>
               </dl>
-              <p class="system-desc">LightGBM behind a 3-state circuit breaker, pre-inference PII redaction, drift monitors on live features.</p>
+              <p class="system-desc">LightGBM, 3-state circuit breaker, pre-inference PII redaction.</p>
               <div class="card-actions">
                 <a class="text-link" href="https://github.com/narendranathe/fraud-detection-ml-platform" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> fraud-detection-ml-platform</a>
                 <a class="text-link" href="https://github.com/narendranathe/fintune" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> fintune</a>
@@ -240,10 +248,10 @@
                 </div>
                 <div class="impact-stat">
                   <dt class="impact-value">85%</dt>
-                  <dd class="impact-label">CI coverage gate<span class="sr-only"> - zero runtime dependencies; Sigstore-signed PyPI releases.</span></dd>
+                  <dd class="impact-label">CI coverage gate<span class="sr-only"> - zero runtime dependencies, Sigstore-signed PyPI releases.</span></dd>
                 </div>
               </dl>
-              <p class="system-desc">Hooks checkpoint agent state into repo files; resume reads from disk, not re-prompts.</p>
+              <p class="system-desc">Hooks checkpoint session state into repo files.</p>
               <div class="card-actions">
                 <a class="text-link" href="https://github.com/narendranathe/repo-context-hooks" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> repo-context-hooks</a>
               </div>
@@ -284,7 +292,7 @@
                   <dd class="impact-label">order growth<span class="sr-only"> - in the metros where the pricing output was applied.</span></dd>
                 </div>
               </dl>
-              <p class="system-desc">Daily competitor price crawls fed a per-metro pricing model.</p>
+              <p class="system-desc">Daily price crawls fed a per-metro pricing model.</p>
             </div>
           </article>
 
@@ -307,7 +315,7 @@
                   <dd class="impact-label">ROI gain<span class="sr-only"> - from optimized inventory allocation.</span></dd>
                 </div>
               </dl>
-              <p class="system-desc">Per-SKU demand forecasts set inventory allocation for each fulfillment center.</p>
+              <p class="system-desc">Per-SKU demand forecasts set warehouse inventory allocation.</p>
             </div>
           </article>
 
@@ -413,6 +421,9 @@
           <p class="section-subtitle">Tests, documentation, and release history are in the repos.</p>
         </div>
 
+        <details class="projects-toggle">
+          <summary>Show the five repositories</summary>
+
         <ol class="kicker-list" data-reveal>
           <li class="kicker-item">
             <span class="kicker"><a class="text-link" href="https://github.com/narendranathe/repo-context-hooks" target="_blank" rel="noreferrer">repo-context-hooks</a></span>
@@ -435,6 +446,7 @@
             <p>Real-time VaR at 47.8 TPS with under 5 s latency.</p>
           </li>
         </ol>
+        </details>
 
       </div>
     </section>
@@ -444,6 +456,7 @@
   <!-- FOOTER -->
   <footer class="site-footer" id="connect">
     <div class="container footer-inner">
+      <p class="footer-cta">I am currently exploring senior data engineering roles at companies where data is money-adjacent. <a href="mailto:edara.narendranath@gmail.com?subject=Re%3A%20Data%20Engineering%20-%20%5BCompany%20Name%5D">Email me</a>.</p>
       <div class="footer-left">
         <span class="footer-name">Narendranath Edara</span>
         <span class="footer-tagline">Data Engineer &middot; AI-Enabled Data Platforms &middot; Dallas TX</span>
