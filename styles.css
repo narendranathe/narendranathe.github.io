@@ -1857,7 +1857,7 @@ body.splash-active { overflow: hidden; }
   border-color: var(--accent-warm);
   color: var(--fg);
   background: var(--bg-alt);
-  transform: translateY(-1px);
+  transform: translateY(-4px);
   outline: none;
 }
 
@@ -1886,38 +1886,26 @@ body.splash-active { overflow: hidden; }
 
 .skill-tooltip {
   position: absolute;
-  bottom: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%) translateY(4px);
+  inset: 0;
   z-index: 5;
-  padding: 0.55rem 0.7rem;
-  width: max-content;
-  max-width: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0.5rem;
   background: var(--fg);
   color: var(--bg);
   font-size: 0.72rem;
   line-height: 1.45;
   border-radius: var(--r);
-  box-shadow: var(--shadow-md);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 180ms ease, transform 180ms ease;
-}
-
-.skill-tooltip::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 5px solid transparent;
-  border-top-color: var(--fg);
+  transition: opacity 180ms ease;
 }
 
 .skill-icon:hover > .skill-tooltip,
 .skill-icon:focus-visible > .skill-tooltip {
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
 }
 
 /* WAI-ARIA APG tooltip pattern (#80): Esc on a focused tile sets
@@ -1967,9 +1955,7 @@ body.splash-active { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .skill-icon { transition: none; }
   .skill-icon:hover, .skill-icon:focus-visible { transform: none; }
-  .skill-tooltip { transition: none; transform: translateX(-50%); }
-  .skill-icon:hover > .skill-tooltip,
-  .skill-icon:focus-visible > .skill-tooltip { transform: translateX(-50%); }
+  .skill-tooltip { transition: none; }
 }
 
 @media print {

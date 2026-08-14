@@ -519,45 +519,18 @@
     var grid = document.querySelector('.skills-grid');
     if (!grid) return;
 
-    var rootFontPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-    var EDGE_MARGIN = Math.round(rootFontPx * 0.75);
-
     function clearSuppression(tile) {
       tile.removeAttribute('data-tooltip-suppressed');
-    }
-
-    function shiftTooltipIfNeeded(tile) {
-      var tooltip = tile.querySelector('.skill-tooltip');
-      if (!tooltip) return;
-      tooltip.style.transform = '';
-      var rect = tooltip.getBoundingClientRect();
-      var vw = window.innerWidth;
-      var overshootRight = rect.right - (vw - EDGE_MARGIN);
-      var overshootLeft = EDGE_MARGIN - rect.left;
-      if (overshootRight > 0) {
-        tooltip.style.transform = 'translateX(calc(-50% - ' + overshootRight + 'px)) translateY(0)';
-      } else if (overshootLeft > 0) {
-        tooltip.style.transform = 'translateX(calc(-50% + ' + overshootLeft + 'px)) translateY(0)';
-      }
-    }
-
-    function clearShift(tile) {
-      var tooltip = tile.querySelector('.skill-tooltip');
-      if (tooltip) tooltip.style.transform = '';
     }
 
     forEachNode(grid.querySelectorAll('.skill-icon'), function (tile) {
       tile.addEventListener('mouseenter', function () {
         clearSuppression(tile);
-        shiftTooltipIfNeeded(tile);
       });
       tile.addEventListener('focus', function () {
         clearSuppression(tile);
-        shiftTooltipIfNeeded(tile);
       });
-      tile.addEventListener('mouseleave', function () { clearShift(tile); });
       tile.addEventListener('blur', function () {
-        clearShift(tile);
         clearSuppression(tile);
       });
     });

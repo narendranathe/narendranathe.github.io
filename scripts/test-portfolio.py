@@ -43,13 +43,12 @@ SKILLS_MAX_TOTAL_BYTES = 60 * 1024
 
 # #70 hover-preview budget: 30 KB per asset matches #67's resume-preview budget.
 HOVER_PREVIEW_BUDGET_BYTES = 30 * 1024
-# Minimum trigger count: 4 resume + 6 LinkedIn (3 testimonials + peer-CTA + contact + footer)
-# + 1 GitHub + 7 Substack (3 writing CTAs + hero CTA + peer-CTA + contact + footer) = 18.
-# We use 14 as the floor to allow minor markup churn without test thrash.
-HOVER_PREVIEW_MIN_TRIGGERS = 14
-HOVER_PREVIEW_MIN_RESUME_TRIGGERS = 4
-HOVER_PREVIEW_MIN_LINKEDIN_TRIGGERS = 5
-HOVER_PREVIEW_MIN_SUBSTACK_TRIGGERS = 5
+# Minimum trigger count after the lean restructure: 3 resume (header, mobile, hero)
+# + 2 LinkedIn (hero, footer) + 1 GitHub (footer) + 1 Substack (footer) = 7.
+HOVER_PREVIEW_MIN_TRIGGERS = 7
+HOVER_PREVIEW_MIN_RESUME_TRIGGERS = 3
+HOVER_PREVIEW_MIN_LINKEDIN_TRIGGERS = 2
+HOVER_PREVIEW_MIN_SUBSTACK_TRIGGERS = 1
 
 REQUIRED_POST_SECTIONS = ("problem", "constraints", "design", "tradeoffs", "outcome")
 POST_MIN_WORDS = 1500
@@ -701,20 +700,6 @@ def test_supply_chain_post_no_scrapped_outcomes() -> None:
         )
 
 
-def test_index_links_to_supply_chain_post(html: str) -> None:
-    assert "content/posts/repo-context-hooks-supply-chain.html" in html, (
-        "index.html missing link to the supply-chain write-up; "
-        "Architecture & Write-Ups section should link the post."
-    )
-
-
-def test_index_has_architecture_section(html: str) -> None:
-    assert 'id="architecture"' in html, (
-        "index.html missing the Architecture & Write-Ups section "
-        "(issue #56 acceptance criteria)."
-    )
-
-
 # ----- System diagrams (issue #58) -----
 SYSTEM_DIAGRAM_RE = re.compile(
     r'<svg[^>]*class="system-diagram"[^>]*>.*?</svg>', re.S
@@ -723,29 +708,6 @@ SYSTEM_DIAGRAM_RE = re.compile(
 # Hand-authored diagrams in this repo run 3-5 KB each; the gate keeps
 # regressions (e.g., an Excalidraw export sneaking in) loud.
 SYSTEM_DIAGRAM_PAGE_BUDGET_BYTES = 30 * 1024  # 30 KB
-
-
-def test_index_has_two_system_diagrams(html: str) -> None:
-    """Issue #58: D1 (AutoApply AI) + D2 (Portfolio-Risk) inline SVGs.
-
-    Both diagrams live in the home index.html (D1 inside the AutoApply
-    arch-expand, D2 inside the Portfolio Risk Analytics ml-project-entry).
-    There is no separate content/posts/<slug>.html for either project,
-    so the home page is the single target location for both diagrams."""
-    diagrams = SYSTEM_DIAGRAM_RE.findall(html)
-    assert len(diagrams) >= 2, (
-        f"index.html must contain at least 2 inline <svg class=\"system-diagram\"> "
-        f"elements (D1 AutoApply AI + D2 Portfolio-Risk per issue #58); "
-        f"found {len(diagrams)}."
-    )
-    # Sanity-check both diagrams reference the right diagram IDs.
-    body = "\n".join(diagrams)
-    assert "diagram-d1-autoapply" in body, (
-        "D1 AutoApply AI diagram missing (expected id namespace 'diagram-d1-autoapply-*')."
-    )
-    assert "diagram-d2-portfolio-risk" in body, (
-        "D2 Portfolio-Risk diagram missing (expected id namespace 'diagram-d2-portfolio-risk-*')."
-    )
 
 
 def test_each_system_diagram_has_title_and_desc(html: str) -> None:
@@ -1111,13 +1073,14 @@ def test_skills_section_present(html: str) -> None:
     assert "Stack I work in daily" in block, (
         "skills section missing 'Stack I work in daily' h2 title"
     )
-    # Section ordering: skills must come AFTER experience and BEFORE proof
+    # Section ordering after the lean restructure: proof first, then
+    # experience (Before Engineering), then skills.
+    pos_proof = html.find('id="proof"')
     pos_experience = html.find('id="experience"')
     pos_skills = html.find('id="skills"')
-    pos_proof = html.find('id="proof"')
-    assert -1 < pos_experience < pos_skills < pos_proof, (
-        f"section order broken: experience={pos_experience} "
-        f"skills={pos_skills} proof={pos_proof} (expected ascending)"
+    assert -1 < pos_proof < pos_experience < pos_skills, (
+        f"section order broken: proof={pos_proof} "
+        f"experience={pos_experience} skills={pos_skills} (expected ascending)"
     )
 
 
@@ -1327,21 +1290,20 @@ def test_all_local_links_resolve() -> None:
 
 
 def test_skills_tooltip_esc_and_overflow_polish_in_app_js() -> None:
-    """Issue #80: app.js carries the skills-grid tooltip polish block:
-    Esc-to-dismiss (WAI-ARIA APG: hide tooltip, KEEP FOCUS on trigger)
-    + edge-tile overflow detector that shifts the tooltip horizontally
-    so it stays in viewport on narrow desktop widths and at 200%
-    browser zoom (WCAG 1.4.10).
+    """Issue #80: app.js carries the skills-grid tooltip block:
+    Esc-to-dismiss (WAI-ARIA APG: hide tooltip, KEEP FOCUS on trigger).
+
+    The tooltip now overlays the tile itself (CSS inset: 0), so there is
+    no sideways bubble and no JS edge-shift detector. The old
+    shiftTooltipIfNeeded helper was removed by design; its return is a
+    regression.
 
     Canary-level test: substring matching, not behavior verification.
     Real behavior verification would require headless-browser tests
     (Playwright/jsdom) — out of scope for this stdlib-only suite."""
     js = APP_JS.read_text(encoding="utf-8")
     assert ".skills-grid" in js, (
-        "app.js missing .skills-grid hook for the #80 tooltip polish block"
-    )
-    assert "shiftTooltipIfNeeded" in js, (
-        "app.js missing the edge-tile overflow detector (shiftTooltipIfNeeded) for #80"
+        "app.js missing .skills-grid hook for the #80 tooltip block"
     )
     assert "Escape" in js and "skill-icon" in js, (
         "app.js missing the Esc-to-dismiss handler for skill-icon focus (#80)"
@@ -1352,16 +1314,13 @@ def test_skills_tooltip_esc_and_overflow_polish_in_app_js() -> None:
         "Esc handler must use data-tooltip-suppressed (APG: keep focus on "
         "trigger), not blur() which sends focus to <body>"
     )
-    assert ".blur()" not in js or "active.blur" not in js, (
+    assert "active.blur" not in js, (
         "Esc handler should NOT call blur() on the active skill-icon — "
         "use the data-tooltip-suppressed attribute pattern (WAI-ARIA APG)"
     )
-    # Edge-shift transform must preserve translateY(0) so the shifted
-    # tooltip stays at its CSS-defined revealed position (CSS rest-state
-    # has translateY(4px); a translateX-only transform would mis-align).
-    assert "translateY(0)" in js, (
-        "edge-shift transform must include translateY(0) to preserve the "
-        "CSS hover lift; otherwise shifted tooltip sits 4px below intended"
+    assert "shiftTooltipIfNeeded" not in js, (
+        "tooltip overlays the tile now (CSS inset: 0); the edge-shift "
+        "detector was removed — reintroducing it is a regression"
     )
 
 
@@ -1577,10 +1536,7 @@ TESTS = [
     test_supply_chain_post_word_count_in_range,
     test_supply_chain_post_has_inline_svg_diagram,
     test_supply_chain_post_no_scrapped_outcomes,
-    test_index_links_to_supply_chain_post,
-    test_index_has_architecture_section,
     # ----- System diagrams (issue #58) -----
-    test_index_has_two_system_diagrams,
     test_each_system_diagram_has_title_and_desc,
     test_each_system_diagram_uses_currentcolor,
     test_index_inline_system_diagram_byte_budget,
