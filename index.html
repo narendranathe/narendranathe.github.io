@@ -47,9 +47,7 @@
        the type attribute and would fetch all three preloads — that tail
        is microscopic in 2026 evergreen, and they fall through to the JPEG
        <picture> source anyway. imagesrcset + imagesizes mirror the
-       <picture>'s mobile (max-width: 860px) breakpoint. The media filter
-       (min-width: 861px) keeps phones from downloading a portrait the
-       mobile layout no longer renders. -->
+       <picture>'s mobile (max-width: 860px) breakpoint. -->
   <link rel="preload" as="image" type="image/avif" media="(min-width: 861px)"
         imagesrcset="static/originals/headshot-fullbody-800.avif 800w, static/originals/headshot-fullbody.avif 1200w"
         imagesizes="(max-width: 860px) 100vw, 1200px"
