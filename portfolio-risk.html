@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Case study: Real-Time Portfolio Risk Analytics - streaming VaR calculations at 100ms update cycles, built with Kafka, Apache Spark, FastAPI, and Streamlit.">
+  <meta name="description" content="Case study: Real-Time Portfolio Risk Analytics (in progress) - Kafka to Spark historical-simulation VaR shipped; the FastAPI/Streamlit layer still falls back to generated data pending a CSV sink.">
   <meta name="author" content="Narendranath Edara">
   <meta property="og:title" content="Portfolio Risk Analytics | Narendranath Edara">
   <meta property="og:type" content="article">
@@ -29,19 +29,20 @@
 
       <!-- Hero -->
       <section class="cs-hero">
-        <span class="cs-hero__kicker">ML Infrastructure</span>
+        <span class="cs-hero__kicker">ML Infrastructure &middot; In Progress</span>
         <h1>Real-Time Portfolio Risk Analytics</h1>
         <p class="cs-hero__summary">
-          A streaming financial risk platform: Kafka-driven market data ingestion,
-          Apache Spark Structured Streaming for rolling VaR calculations, FastAPI for
-          risk query endpoints, and a Streamlit dashboard with live P&amp;L and exposure
-          breakdowns. Built to process multi-asset portfolios with sub-second risk metric updates.
+          A streaming financial risk platform, in progress: Kafka-driven market data ingestion
+          and Apache Spark Structured Streaming for rolling historical-simulation VaR are built
+          and running. The FastAPI risk API and Streamlit dashboard are built against that design,
+          but the Spark-to-FastAPI handoff is console-only today - a CSV sink is planned, not
+          wired - so the API currently falls back to generated data rather than live Spark output.
         </p>
         <div class="cs-proof-strip">
-          <span>Sub-second VaR updates</span>
-          <span>Multi-asset portfolios</span>
+          <span>In progress</span>
+          <span>Multi-asset design</span>
           <span>Historical simulation VaR</span>
-          <span>Live P&amp;L tracking</span>
+          <span>Console-sink demo</span>
           <span>REST risk API</span>
           <span>Streamlit dashboard</span>
         </div>
@@ -65,16 +66,16 @@
       <!-- Metrics -->
       <div class="cs-metrics">
         <div class="cs-metric">
-          <span class="cs-metric-num">&lt;1s</span>
-          <span class="cs-metric-lbl">VaR update latency</span>
+          <span class="cs-metric-num">5s</span>
+          <span class="cs-metric-lbl">Spark tumbling window</span>
         </div>
         <div class="cs-metric">
-          <span class="cs-metric-num">500+</span>
-          <span class="cs-metric-lbl">price ticks/sec</span>
+          <span class="cs-metric-num">50 TPS</span>
+          <span class="cs-metric-lbl">synthetic market ticks</span>
         </div>
         <div class="cs-metric">
-          <span class="cs-metric-num">95%</span>
-          <span class="cs-metric-lbl">VaR confidence level</span>
+          <span class="cs-metric-num">95% / 99%</span>
+          <span class="cs-metric-lbl">VaR confidence levels</span>
         </div>
         <div class="cs-metric">
           <span class="cs-metric-num">30-day</span>
@@ -138,7 +139,8 @@
               A Kafka producer simulates realistic equity price ticks: mid-price with configurable
               bid-ask spread, volume weighting, and random walk drift. Produces to a
               <code>market_data</code> topic partitioned by ticker symbol for ordering guarantees
-              within each instrument. Tested to 500+ ticks/second sustained.
+              within each instrument. Currently configured at 50 synthetic ticks/second across
+              5 partitions on a single-node local cluster.
             </p>
           </div>
           <div class="arch-box">
@@ -147,8 +149,9 @@
               Spark Structured Streaming joins live price ticks against a position snapshot loaded
               at startup. For each 5-second micro-batch, it computes mark-to-market P&amp;L, updates
               the rolling 30-day return history, and recalculates Historical Simulation VaR at 95%
-              confidence. Results are written to the <code>risk_snapshots</code> Kafka topic and
-              persisted to PostgreSQL.
+              confidence. Today the results print to a console sink (stdout); a CSV file sink to
+              hand results to FastAPI is planned but not yet wired, so the API currently falls
+              back to generated data.
             </p>
           </div>
           <div class="arch-box">
@@ -156,9 +159,10 @@
             <p>
               FastAPI exposes risk query endpoints: current VaR by portfolio or asset class,
               historical VaR timeseries, position-level attribution, and scenario analysis.
-              Redis caches the most recent risk snapshot per portfolio for sub-millisecond
-              API response times. Streamlit polls the API every 2 seconds and renders
-              live P&amp;L curves, VaR gauges, and exposure heatmaps.
+              Redis is designed to cache the most recent risk snapshot per portfolio for fast
+              API response times, once the Spark-to-FastAPI handoff is wired. Until then, Streamlit
+              polls the API every 2 seconds and renders P&amp;L curves, VaR gauges, and exposure
+              heatmaps against generated data.
             </p>
           </div>
         </div>
@@ -191,9 +195,10 @@
 
       <!-- Streamlit dashboard -->
       <section class="cs-section">
-        <h2>Live Risk Dashboard</h2>
+        <h2>Risk Dashboard (In Progress)</h2>
         <p>
-          The Streamlit dashboard refreshes every 2 seconds and renders four panels:
+          The Streamlit dashboard refreshes every 2 seconds and renders four panels, currently
+          against generated data until the Spark-to-FastAPI CSV sink is wired:
         </p>
         <ul>
           <li><strong>Portfolio P&amp;L curve</strong> - intraday cumulative P&amp;L with entry price baseline</li>
@@ -224,7 +229,7 @@
           </div>
           <div class="cs-lesson worked">
             <h4>What worked</h4>
-            <p><strong>Redis position cache.</strong> Loading position data once at startup and caching in Redis eliminated repeated PostgreSQL reads on every Spark micro-batch. API response times stayed sub-millisecond even at peak tick rates.</p>
+            <p><strong>Redis position cache.</strong> Loading position data once at startup and caching in Redis avoids repeated PostgreSQL reads on every Spark micro-batch by design - the intended path for fast API response times once the Spark-to-FastAPI handoff is wired.</p>
           </div>
           <div class="cs-lesson failed">
             <h4>What failed</h4>
