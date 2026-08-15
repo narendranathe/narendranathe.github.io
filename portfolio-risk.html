@@ -258,7 +258,7 @@
         <ul>
           <li>Stressed VaR: secondary calculation using 2008, 2020, and 2022 historical stress periods as scenario overlays</li>
           <li>WebSocket push: replace Streamlit polling with SSE or WebSocket from FastAPI, driving real-time dashboard updates on each Spark micro-batch completion</li>
-          <li>Greeks for options: extend the position model to include delta, gamma, and vega exposure if options are in the portfolio - changes VaR computation significantly</li>
+          <li>Greeks for options: extend the position model to include delta, gamma, and vega exposure if options are in the portfolio - changes the VaR computation, not just its inputs</li>
           <li>Backtesting harness: replay 6-month historical data through the VaR engine and count breaches, validate the 95% confidence level is actually 95% over time</li>
           <li>Multi-currency support: normalize positions to a base currency using FX rates from a secondary Kafka topic, enabling cross-currency portfolio risk</li>
         </ul>

@@ -138,7 +138,7 @@
             <h4>Monitoring layer</h4>
             <p>
               A scheduled crawler visits 153 company career pages on a configurable cadence.
-              Dynamic pages (SPA-heavy sites like Workday, Greenhouse) are handled with
+              JavaScript-rendered pages (Workday, Greenhouse) are handled with
               Playwright for JavaScript rendering. Static pages use BeautifulSoup. The
               crawler detects which ATS platform each company uses and routes accordingly.
             </p>
@@ -229,11 +229,11 @@
           </div>
           <div class="cs-lesson failed">
             <h4>What failed</h4>
-            <p><strong>Bot detection on Workday pages.</strong> Workday's client-side rendering triggers bot detection on some domains even with Playwright. Had to add randomized request timing and user-agent rotation, which slowed the crawler significantly on Workday-hosted sites.</p>
+            <p><strong>Bot detection on Workday pages.</strong> Workday's client-side rendering triggers bot detection on some domains even with Playwright. Had to add randomized request timing and user-agent rotation, which slowed the crawler on Workday-hosted sites.</p>
           </div>
           <div class="cs-lesson worked">
             <h4>What worked</h4>
-            <p><strong>Sponsorship-aware ranking.</strong> Surfacing sponsorship-likely companies at the top of results cut irrelevant application attempts significantly. The H1B lookup table, even when incomplete, dramatically improves signal quality for international candidates.</p>
+            <p><strong>Sponsorship-aware ranking.</strong> Surfacing sponsorship-likely companies at the top of results cut irrelevant application attempts. The H1B lookup table, even when incomplete, improves signal quality for international candidates.</p>
           </div>
           <div class="cs-lesson failed">
             <h4>What failed</h4>

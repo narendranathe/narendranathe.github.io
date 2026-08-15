@@ -431,6 +431,78 @@ def test_fit_blocks_each_name_a_gap(html: str) -> None:
         )
 
 
+# Words that make copy read as generated rather than written, and empty
+# intensifiers that stand in for a number. Checked against rendered text
+# on every public surface, because the mechanical cost is real: templated
+# phrasing reaches for broad wording instead of the requisition's own
+# terms, which is exactly what a keyword match scores badly.
+#
+# "dynamic" and "ecosystem" are on the list despite having legitimate
+# technical senses (autoscaled nodes, a Dependabot package-ecosystem).
+# In every case here a more specific word existed and was used instead,
+# so the guard costs nothing and stops the vague sense creeping back.
+BANNED_WORDS: tuple[str, ...] = (
+    "delve", "leverage", "robust", "seamless", "cutting-edge", "passionate",
+    "dynamic", "innovative", "transformative", "synergy", "utilize",
+    "spearhead", "results-driven", "thought leader", "best-in-class",
+    "world-class", "game-changing", "empower", "unlock", "supercharge",
+    "ecosystem", "holistic",
+    # Empty adverbs: each one is a number the sentence declined to give.
+    "quickly", "efficiently", "effectively", "seamlessly", "significantly",
+    "successfully", "dramatically",
+)
+
+
+def test_no_banned_words_in_visible_copy() -> None:
+    """No banned word or empty adverb in rendered text on any public page.
+
+    Rendered text, not raw HTML: an attribute or a class name may contain
+    these strings harmlessly, and a false positive on `class="dynamic"`
+    would push someone to weaken the guard rather than fix the copy."""
+    failures: list[str] = []
+    for rel in PUBLIC_SURFACES:
+        path = REPO_ROOT / rel
+        if not path.exists():
+            continue
+        body = path.read_text(encoding="utf-8")
+        text = extract_visible_text(body) if rel.endswith(".html") else body
+        lowered = text.lower()
+        for word in BANNED_WORDS:
+            for m in re.finditer(rf"\b{re.escape(word)}", lowered):
+                ctx = text[max(0, m.start() - 45):m.end() + 45].strip()
+                failures.append(f"{rel}: {word!r} in ...{ctx}...")
+    assert not failures, (
+        "banned word or empty adverb in visible copy:\n  "
+        + "\n  ".join(failures)
+    )
+
+
+def test_no_en_or_em_dashes_in_public_copy() -> None:
+    """CLAUDE.md: hyphens for every case, never en or em dashes.
+
+    Easy to reintroduce by pasting from anywhere that autocorrects, and
+    invisible in review at small sizes, so it is checked rather than
+    remembered."""
+    failures: list[str] = []
+    for rel in PUBLIC_SURFACES:
+        path = REPO_ROOT / rel
+        if not path.exists():
+            continue
+        body = path.read_text(encoding="utf-8")
+        # Literal characters AND the HTML entities that render as them.
+        # The entity form is the one that slips through review: an
+        # &mdash; looks like markup in a diff and like an em dash on the
+        # page. 24 of them were live when this guard was first written.
+        dash_re = r"[\u2013\u2014]|&mdash;|&ndash;|&#8211;|&#8212;|&#x201[34];"
+        for m in re.finditer(dash_re, body):
+            ctx = body[max(0, m.start() - 45):m.end() + 45].replace("\n", " ").strip()
+            failures.append(f"{rel}: ...{ctx}...")
+    assert not failures, (
+        "en or em dash in public copy (CLAUDE.md requires hyphens):\n  "
+        + "\n  ".join(failures[:20])
+    )
+
+
 def test_claims_register_in_sync_with_page() -> None:
     """The claims register must be generated from the page, not kept by
     hand, and must not publish anything unresolved.
@@ -1735,6 +1807,8 @@ TESTS = [
     test_hero_claims_carry_ground_truth_ids,
     test_fit_blocks_each_name_a_gap,
     test_claims_register_in_sync_with_page,
+    test_no_banned_words_in_visible_copy,
+    test_no_en_or_em_dashes_in_public_copy,
     test_hero_uses_local_photo_not_external_cdn,
     test_hero_aside_no_data_reveal,
     test_hero_picture_has_mobile_variant,

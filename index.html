@@ -44,7 +44,7 @@
        Three type-aware preloads in priority order so the browser only
        fetches the format it will render via <picture>. The `type=` filter
        is honored by Chrome 91+, Safari 17+, Firefox; older browsers ignore
-       the type attribute and would fetch all three preloads — that tail
+       the type attribute and would fetch all three preloads - that tail
        is microscopic in 2026 evergreen, and they fall through to the JPEG
        <picture> source anyway. imagesrcset + imagesizes mirror the
        <picture>'s mobile (max-width: 860px) breakpoint. -->
@@ -217,22 +217,6 @@
       </div>
     </section>
 
-    <!-- ===== WHERE I CREATE VALUE ===== -->
-    <section class="section" id="value" aria-label="Where I create value">
-      <div class="container">
-        <div class="section-head" data-reveal>
-          <span class="section-label">Where I Create Value</span>
-          <h2 class="section-title">The operating model behind every project below.</h2>
-        </div>
-        <ul class="hero-proof" data-reveal style="max-width:78ch;">
-          <li><span class="proof-dot"></span><span><strong>I modernize data platforms:</strong> ETL, CDC, SQL, deployment automation, and cost reduction - the ExponentHR production work.</span></li>
-          <li><span class="proof-dot"></span><span><strong>I build backend workflow systems:</strong> FastAPI, Redis, PostgreSQL, Chrome MV3, and production dashboards.</span></li>
-          <li><span class="proof-dot"></span><span><strong>I apply AI where the workflow has real context:</strong> RAG, LLM routing, document intelligence, and answer generation.</span></li>
-          <li><span class="proof-dot"></span><span><strong>I ship with engineering discipline:</strong> tests, observability, CI/CD, auth, security tradeoffs, and explicit deployment boundaries.</span></li>
-        </ul>
-      </div>
-    </section>
-
     <!-- ===== EXPERIENCE =====
          Case entries, not resume bullets: each one states the problem,
          what changed and from what baseline, the scope it covered, and
@@ -297,7 +281,7 @@
                   <figure class="system-diagram-figure" aria-labelledby="diagram-az-title" aria-describedby="diagram-az-desc">
                                   <svg class="system-diagram" viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" role="img">
                                     <title id="diagram-az-title">Azure Platform Engineering topology: Azure Repos triggers Azure Pipelines CI/CD, output flows to SQL Server CDC, then to AAG replica and Microsoft Fabric</title>
-                                    <desc id="diagram-az-desc">Enterprise data platform at ExponentHR. Azure Repos triggers Azure Pipelines on every push — build, test, and deploy stages run end-to-end, compressing the release cycle from three months to fourteen days. SQL Server uses CDC incremental merge-upserts, cutting ETL compute by sixty-seven percent. An idempotent pipeline automates Contained Always-On Availability Group copy-downs, saving about an hour per request. Microsoft Fabric semantic models consume the CDC stream for reporting.</desc>
+                                    <desc id="diagram-az-desc">Enterprise data platform at ExponentHR. Azure Repos triggers Azure Pipelines on every push - build, test, and deploy stages run end-to-end, compressing the release cycle from three months to fourteen days. SQL Server uses CDC incremental merge-upserts, cutting ETL compute by sixty-seven percent. An idempotent pipeline automates Contained Always-On Availability Group copy-downs, saving about an hour per request. Microsoft Fabric semantic models consume the CDC stream for reporting.</desc>
                                     <defs>
                                       <marker id="arrow-az" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
                                         <path d="M0 0 L10 5 L0 10 Z" fill="currentColor"/>
@@ -332,7 +316,7 @@
                                       <text x="360" y="178" text-anchor="middle" fill="var(--fg-muted, #9b9490)" font-size="10">ExponentHR production platform · payroll-critical availability</text>
                                     </g>
                                   </svg>
-                                  <figcaption class="post-figcaption">Figure: Azure platform topology — CI/CD pipeline, CDC incremental ETL, and AAG failover automation as deployed at ExponentHR.</figcaption>
+                                  <figcaption class="post-figcaption">Figure: Azure platform topology - CI/CD pipeline, CDC incremental ETL, and AAG failover automation as deployed at ExponentHR.</figcaption>
                                 </figure>
                 </div>
                 <div class="case" data-gt-id="E2-CICD, E3-FABRIC, E-REPORTAUTO">
@@ -569,7 +553,7 @@
         <div class="section-head" data-reveal>
           <span class="section-label">Stack</span>
           <h2 class="section-title">Stack I work in daily.</h2>
-          <p class="section-subtitle">Senior+ AI/ML platform tools, organized by domain. Hover or focus a tile for one-line context. Every tile is a tool I've shipped with — no aspirational filler.</p>
+          <p class="section-subtitle">Organized by domain, and limited to tools I have shipped with. Hover or focus a tile for the specific thing it was used for, which is the only reason a stack list is worth reading - no aspirational filler.</p>
         </div>
 
         <div class="skills-grid" data-reveal>
@@ -582,7 +566,7 @@
               <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-gpt-4o"><img src="static/skills/gpt-4o.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">GPT-4o</span><span id="skill-tip-gpt-4o" role="tooltip" class="skill-tooltip">OpenAI fallback in the multi-LLM cascade</span></span></li>
               <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-huggingface"><img src="static/skills/huggingface.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Hugging Face</span><span id="skill-tip-huggingface" role="tooltip" class="skill-tooltip">Transformers + sentence-embedding models for RAG</span></span></li>
               <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-langchain"><img src="static/skills/langchain.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">LangChain</span><span id="skill-tip-langchain" role="tooltip" class="skill-tooltip">RAG orchestration where prompt-chain depth justifies it</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-mcp"><img src="static/skills/mcp.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">MCP</span><span id="skill-tip-mcp" role="tooltip" class="skill-tooltip">Model Context Protocol — shipped tailor-resume MCP server</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-mcp"><img src="static/skills/mcp.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">MCP</span><span id="skill-tip-mcp" role="tooltip" class="skill-tooltip">Model Context Protocol - shipped tailor-resume MCP server</span></span></li>
             </ul>
           </div>
 
@@ -591,7 +575,7 @@
             <ul class="skills-list">
               <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-python"><img src="static/skills/python.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Python</span><span id="skill-tip-python" role="tooltip" class="skill-tooltip">Primary backend + ML language across every system</span></span></li>
               <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-typescript"><img src="static/skills/typescript.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">TypeScript</span><span id="skill-tip-typescript" role="tooltip" class="skill-tooltip">Chrome MV3 extension + type-safe API contracts</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-sql"><img src="static/skills/sql.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">SQL</span><span id="skill-tip-sql" role="tooltip" class="skill-tooltip">Postgres-flavored — query-tuning, partitions, EXPLAIN</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-sql"><img src="static/skills/sql.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">SQL</span><span id="skill-tip-sql" role="tooltip" class="skill-tooltip">Postgres-flavored - query-tuning, partitions, EXPLAIN</span></span></li>
               <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-fastapi"><img src="static/skills/fastapi.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">FastAPI</span><span id="skill-tip-fastapi" role="tooltip" class="skill-tooltip">Async Python backend on every shipped service</span></span></li>
               <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-pydantic"><img src="static/skills/pydantic.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Pydantic</span><span id="skill-tip-pydantic" role="tooltip" class="skill-tooltip">Schema validation at every API boundary</span></span></li>
               <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-streamlit"><img src="static/skills/streamlit.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Streamlit</span><span id="skill-tip-streamlit" role="tooltip" class="skill-tooltip">Internal dashboards + Tailor-Resume UI</span></span></li>
@@ -626,8 +610,8 @@
               <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-azure"><img src="static/skills/azure.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Azure</span><span id="skill-tip-azure" role="tooltip" class="skill-tooltip">Daily platform - SQL Server, AAG, Fabric, AKS</span></span></li>
               <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-azure-devops"><img src="static/skills/azure-devops.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Azure DevOps</span><span id="skill-tip-azure-devops" role="tooltip" class="skill-tooltip">CI/CD owned end to end - release cycle 3 months to 14 days</span></span></li>
               <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-docker"><img src="static/skills/docker.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Docker</span><span id="skill-tip-docker" role="tooltip" class="skill-tooltip">Multi-stage builds for every shipped service</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-kubernetes"><img src="static/skills/kubernetes.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Kubernetes</span><span id="skill-tip-kubernetes" role="tooltip" class="skill-tooltip">AKS with horizontal pod autoscaling - 20 static nodes to 4-8</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-fly"><img src="static/skills/fly.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Fly.io</span><span id="skill-tip-fly" role="tooltip" class="skill-tooltip">AutoApply AI production region — IAD + DFW</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-kubernetes"><img src="static/skills/kubernetes.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Kubernetes</span><span id="skill-tip-kubernetes" role="tooltip" class="skill-tooltip">AKS with horizontal pod autoscaling - 20 static nodes to 4-8 autoscaled</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-fly"><img src="static/skills/fly.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Fly.io</span><span id="skill-tip-fly" role="tooltip" class="skill-tooltip">AutoApply AI production region - IAD + DFW</span></span></li>
             </ul>
           </div>
 
@@ -638,7 +622,7 @@
               <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-grafana"><img src="static/skills/grafana.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Grafana</span><span id="skill-tip-grafana" role="tooltip" class="skill-tooltip">Dashboards for ingest lag + provider latency</span></span></li>
               <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-sentry"><img src="static/skills/sentry.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Sentry</span><span id="skill-tip-sentry" role="tooltip" class="skill-tooltip">Backend + extension error tracking on AutoApply</span></span></li>
               <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-mlflow"><img src="static/skills/mlflow.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">MLflow</span><span id="skill-tip-mlflow" role="tooltip" class="skill-tooltip">Experiment tracking for fraud-detection pipelines</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-github-actions"><img src="static/skills/github-actions.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">GitHub Actions</span><span id="skill-tip-github-actions" role="tooltip" class="skill-tooltip">CI on every repo — lint, types, tests, deploy</span></span></li>
+              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-github-actions"><img src="static/skills/github-actions.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">GitHub Actions</span><span id="skill-tip-github-actions" role="tooltip" class="skill-tooltip">CI on every repo - lint, types, tests, deploy</span></span></li>
             </ul>
           </div>
 
@@ -748,7 +732,7 @@
               <span class="ledger-from">20 static nodes</span>
               <span class="ledger-arrow" aria-hidden="true">&rarr;</span>
               <span class="sr-only">to</span>
-              <span class="ledger-to">4 to 8 dynamic</span>
+              <span class="ledger-to">4 to 8 autoscaled</span>
             </p>
             <p class="ledger-what">anomaly-detection compute</p>
             <p class="ledger-line"><span class="ledger-key">Method</span>Workloads migrated off static D-series VMs onto AKS with horizontal pod autoscaling, sized to actual load rather than peak.</p>
@@ -790,19 +774,19 @@
               <dl class="impact-strip" aria-labelledby="card-fraud">
                 <div class="impact-stat">
                   <dt class="impact-value">1.12ms</dt>
-                  <dd class="impact-label">P99 scoring latency<span class="sr-only"> &mdash; P99 of one point one two milliseconds, with P50 at 0.45 and P95 at 0.89, measured at 100 transactions per second.</span></dd>
+                  <dd class="impact-label">P99 scoring latency<span class="sr-only"> - P99 of one point one two milliseconds, with P50 at 0.45 and P95 at 0.89, measured at 100 transactions per second.</span></dd>
                 </div>
                 <div class="impact-stat">
                   <dt class="impact-value">100</dt>
-                  <dd class="impact-label">TPS sustained<span class="sr-only"> &mdash; Producer streams one hundred transactions per second into a partitioned Kafka topic.</span></dd>
+                  <dd class="impact-label">TPS sustained<span class="sr-only"> - Producer streams one hundred transactions per second into a partitioned Kafka topic.</span></dd>
                 </div>
                 <div class="impact-stat">
                   <dt class="impact-value">100K</dt>
-                  <dd class="impact-label">synthetic rows<span class="sr-only"> &mdash; One hundred thousand generated transactions, of which 2,034 are labeled fraud.</span></dd>
+                  <dd class="impact-label">synthetic rows<span class="sr-only"> - One hundred thousand generated transactions, of which 2,034 are labeled fraud.</span></dd>
                 </div>
                 <div class="impact-stat">
                   <dt class="impact-value">2.03%</dt>
-                  <dd class="impact-label">generated fraud rate<span class="sr-only"> &mdash; Two thousand and thirty-four fraud rows out of one hundred thousand.</span></dd>
+                  <dd class="impact-label">generated fraud rate<span class="sr-only"> - Two thousand and thirty-four fraud rows out of one hundred thousand.</span></dd>
                 </div>
               </dl>
               <dl class="card-lines">
@@ -825,24 +809,24 @@
               <dl class="impact-strip" aria-labelledby="card-hooks">
                 <div class="impact-stat">
                   <dt class="impact-value">330+</dt>
-                  <dd class="impact-label">tests at v1.0<span class="sr-only"> &mdash; Three hundred and thirty plus tests: unit, contract tests on the public surface, and Hypothesis property tests.</span></dd>
+                  <dd class="impact-label">tests at v1.0<span class="sr-only"> - Three hundred and thirty plus tests: unit, contract tests on the public surface, and Hypothesis property tests.</span></dd>
                 </div>
                 <div class="impact-stat">
                   <dt class="impact-value">0</dt>
-                  <dd class="impact-label">runtime dependencies<span class="sr-only"> &mdash; The dependencies array in pyproject.toml is empty; standard library only at runtime.</span></dd>
+                  <dd class="impact-label">runtime dependencies<span class="sr-only"> - The dependencies array in pyproject.toml is empty; standard library only at runtime.</span></dd>
                 </div>
                 <div class="impact-stat">
                   <dt class="impact-value">Sigstore</dt>
-                  <dd class="impact-label">signed release path<span class="sr-only"> &mdash; Every release signed through a GitHub Actions OIDC Trusted Publisher flow.</span></dd>
+                  <dd class="impact-label">signed release path<span class="sr-only"> - Every release signed through a GitHub Actions OIDC Trusted Publisher flow.</span></dd>
                 </div>
                 <div class="impact-stat">
                   <dt class="impact-value">CodeQL</dt>
-                  <dd class="impact-label">on every pull request<span class="sr-only"> &mdash; CodeQL static analysis runs on each pull request, with Dependabot tracking the Actions ecosystem.</span></dd>
+                  <dd class="impact-label">on every pull request<span class="sr-only"> - CodeQL static analysis runs on each pull request, with Dependabot watching the GitHub Actions dependencies.</span></dd>
                 </div>
               </dl>
               <dl class="card-lines">
                 <dt>Problem</dt><dd>An LLM agent loses the thread between sessions: what was in flight, what came next, what mattered.</dd>
-                <dt>Method</dt><dd>Pre-commit and post-commit hooks snapshot repo context to disk, standard library only at runtime. The release path is hardened rather than assumed: Sigstore-signed OIDC Trusted Publisher, CodeQL on every pull request, Dependabot on the Actions ecosystem.</dd>
+                <dt>Method</dt><dd>Pre-commit and post-commit hooks snapshot repo context to disk, standard library only at runtime. The release path is hardened rather than assumed: Sigstore-signed OIDC Trusted Publisher, CodeQL on every pull request, Dependabot on the GitHub Actions dependencies.</dd>
                 <dt>Proof <span class="card-gt" title="Ground truth: P-HOOKS">P-HOOKS</span></dt><dd>330+ tests at v1.0 - unit, contract tests on the public surface, and Hypothesis property tests covering sampling boundaries, repo-id shape, and hook dedup idempotency.</dd>
                 <dt>What you can verify</dt><dd>Everything. <code>pip install repo-context-hooks</code>, then read the signature, the CodeQL runs, the empty dependencies array, and the suite. This is the one project here that needs nothing from me to check.</dd>
               </dl>
@@ -860,19 +844,19 @@
               <dl class="impact-strip" aria-labelledby="card-autoapply">
                 <div class="impact-stat">
                   <dt class="impact-value">40+</dt>
-                  <dd class="impact-label">FastAPI endpoints<span class="sr-only"> &mdash; Forty plus endpoints across the backend.</span></dd>
+                  <dd class="impact-label">FastAPI endpoints<span class="sr-only"> - Forty plus endpoints across the backend.</span></dd>
                 </div>
                 <div class="impact-stat">
                   <dt class="impact-value">11</dt>
-                  <dd class="impact-label">ATS adapters<span class="sr-only"> &mdash; Eleven content-script adapters covering the major applicant tracking systems.</span></dd>
+                  <dd class="impact-label">ATS adapters<span class="sr-only"> - Eleven content-script adapters covering the major applicant tracking systems.</span></dd>
                 </div>
                 <div class="impact-stat">
                   <dt class="impact-value">6</dt>
-                  <dd class="impact-label">LLM providers<span class="sr-only"> &mdash; A routing cascade across six providers with a local fallback.</span></dd>
+                  <dd class="impact-label">LLM providers<span class="sr-only"> - A routing cascade across six providers with a local fallback.</span></dd>
                 </div>
                 <div class="impact-stat">
                   <dt class="impact-value">355</dt>
-                  <dd class="impact-label">backend tests<span class="sr-only"> &mdash; Three hundred and fifty-five pytest cases in the backend.</span></dd>
+                  <dd class="impact-label">backend tests<span class="sr-only"> - Three hundred and fifty-five pytest cases in the backend.</span></dd>
                 </div>
               </dl>
               <dl class="card-lines">
@@ -951,19 +935,19 @@
               <dl class="impact-strip" aria-labelledby="card-fintune">
                 <div class="impact-stat">
                   <dt class="impact-value">35+</dt>
-                  <dd class="impact-label">tests across 7 modules<span class="sr-only"> &mdash; Thirty-five plus pytest cases spanning data, model, guardrails, serving, monitoring, self-recovery, and pipeline.</span></dd>
+                  <dd class="impact-label">tests across 7 modules<span class="sr-only"> - Thirty-five plus pytest cases spanning data, model, guardrails, serving, monitoring, self-recovery, and pipeline.</span></dd>
                 </div>
                 <div class="impact-stat">
                   <dt class="impact-value">4-bit</dt>
-                  <dd class="impact-label">NF4 + LoRA adapters<span class="sr-only"> &mdash; Four-bit NF4 quantization with LoRA adapters, trained using paged AdamW 8-bit.</span></dd>
+                  <dd class="impact-label">NF4 + LoRA adapters<span class="sr-only"> - Four-bit NF4 quantization with LoRA adapters, trained using paged AdamW 8-bit.</span></dd>
                 </div>
                 <div class="impact-stat">
                   <dt class="impact-value">3-state</dt>
-                  <dd class="impact-label">circuit breaker<span class="sr-only"> &mdash; A three-state breaker that reloads the model, reduces batch size, or falls back to a quantized model.</span></dd>
+                  <dd class="impact-label">circuit breaker<span class="sr-only"> - A three-state breaker that reloads the model, reduces batch size, or falls back to a quantized model.</span></dd>
                 </div>
                 <div class="impact-stat">
                   <dt class="impact-value">KL</dt>
-                  <dd class="impact-label">divergence drift monitor<span class="sr-only"> &mdash; Kullback-Leibler divergence monitoring on output distributions.</span></dd>
+                  <dd class="impact-label">divergence drift monitor<span class="sr-only"> - Kullback-Leibler divergence monitoring on output distributions.</span></dd>
                 </div>
               </dl>
               <dl class="card-lines">
@@ -986,19 +970,19 @@
               <dl class="impact-strip" aria-labelledby="card-jobscout">
                 <div class="impact-stat">
                   <dt class="impact-value">153</dt>
-                  <dd class="impact-label">companies tracked<span class="sr-only"> &mdash; One hundred and fifty-three companies in the registry, each with a verified ATS slug.</span></dd>
+                  <dd class="impact-label">companies tracked<span class="sr-only"> - One hundred and fifty-three companies in the registry, each with a verified ATS slug.</span></dd>
                 </div>
                 <div class="impact-stat">
                   <dt class="impact-value">6</dt>
-                  <dd class="impact-label">ATS integrations<span class="sr-only"> &mdash; Greenhouse, Lever, Workday, Ashby, SmartRecruiters, and BambooHR, plus a Playwright fallback.</span></dd>
+                  <dd class="impact-label">ATS integrations<span class="sr-only"> - Greenhouse, Lever, Workday, Ashby, SmartRecruiters, and BambooHR, plus a Playwright fallback.</span></dd>
                 </div>
                 <div class="impact-stat">
                   <dt class="impact-value">WAL</dt>
-                  <dd class="impact-label">SQLite journal mode<span class="sr-only"> &mdash; SQLite in write-ahead-logging mode so the scraper and the API do not block each other.</span></dd>
+                  <dd class="impact-label">SQLite journal mode<span class="sr-only"> - SQLite in write-ahead-logging mode so the scraper and the API do not block each other.</span></dd>
                 </div>
                 <div class="impact-stat">
                   <dt class="impact-value">$0</dt>
-                  <dd class="impact-label">scheduled compute<span class="sr-only"> &mdash; Scrape and deploy run on GitHub Actions.</span></dd>
+                  <dd class="impact-label">scheduled compute<span class="sr-only"> - Scrape and deploy run on GitHub Actions.</span></dd>
                 </div>
               </dl>
               <dl class="card-lines">
@@ -1030,7 +1014,7 @@
             <figure class="system-diagram-figure" aria-labelledby="diagram-d2-portfolio-risk-title" aria-describedby="diagram-d2-portfolio-risk-desc">
                               <svg class="system-diagram" viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" role="img">
                                 <title id="diagram-d2-portfolio-risk-title">Portfolio-Risk topology: Kafka producer to Spark Structured Streaming to console sink, FastAPI VaR served to Streamlit</title>
-                                <desc id="diagram-d2-portfolio-risk-desc">Portfolio-Risk real-time topology. A Kafka producer publishes synthetic market ticks at fifty messages per second on one topic with five partitions. Spark Structured Streaming consumes them with five-second tumbling windows and ten-second watermarks, running on a single-node local cluster. The current sink is stdout (a demo console writer) — a CSV file sink to data/processed is the next planned step but is not yet wired. A FastAPI service computes historical-simulation VaR at ninety-five and ninety-nine percent confidence intervals; until the file sink exists it falls back to synthetic data. The dashboard is a local Streamlit app.</desc>
+                                <desc id="diagram-d2-portfolio-risk-desc">Portfolio-Risk real-time topology. A Kafka producer publishes synthetic market ticks at fifty messages per second on one topic with five partitions. Spark Structured Streaming consumes them with five-second tumbling windows and ten-second watermarks, running on a single-node local cluster. The current sink is stdout (a demo console writer) - a CSV file sink to data/processed is the next planned step but is not yet wired. A FastAPI service computes historical-simulation VaR at ninety-five and ninety-nine percent confidence intervals; until the file sink exists it falls back to synthetic data. The dashboard is a local Streamlit app.</desc>
                                 <defs>
                                   <marker id="arrow-d2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
                                     <path d="M0 0 L10 5 L0 10 Z" fill="currentColor"/>
@@ -1242,7 +1226,7 @@
             </figure>
             <span class="writing-label">Supply-chain &middot; 12 min read &middot; Apr 2026</span>
             <h3 class="writing-title">Five Claude agents audited my plugin release in parallel. They caught 41 issues.</h3>
-            <p class="writing-desc">A defender-side playbook for shipping a Claude Code plugin with PyPI-tier supply-chain hygiene &mdash; Sigstore signing, OIDC Trusted Publisher, CodeQL, property-tested telemetry, and the multi-agent review workflow that found everything I missed.</p>
+            <p class="writing-desc">A defender-side playbook for shipping a Claude Code plugin with PyPI-tier supply-chain hygiene - Sigstore signing, OIDC Trusted Publisher, CodeQL, property-tested telemetry, and the multi-agent review workflow that found everything I missed.</p>
             <a href="content/posts/repo-context-hooks-supply-chain.html" class="cs-btn writing-cta">Read the write-up &rarr;</a>
           </article>
 
@@ -1275,7 +1259,7 @@
             </figure>
             <span class="writing-label">AI infra &middot; draft &middot; on Substack</span>
             <h3 class="writing-title">The LLM cascade as a routing system, not a fallback.</h3>
-            <p class="writing-desc">Five providers, circuit breakers per provider, per-category routing, and a reward loop. What worked: Claude-first with cost-aware overflow. What didn't: naive failover by HTTP status code &mdash; LLMs fail in much weirder ways than 500s.</p>
+            <p class="writing-desc">Five providers, circuit breakers per provider, per-category routing, and a reward loop. What worked: Claude-first with cost-aware overflow. What didn't: naive failover by HTTP status code - LLMs fail in much weirder ways than 500s.</p>
             <a href="https://narendranathe.substack.com/p/karpathys-llm-wiki-applied-to-a-multi" class="cs-btn cs-btn--substack writing-cta" target="_blank" rel="noreferrer"
                data-hover-preview="/static/preview-substack.png"
                data-hover-embed="substack-feed"
@@ -1311,7 +1295,7 @@
             </figure>
             <span class="writing-label">Data platform &middot; draft &middot; on Substack</span>
             <h3 class="writing-title">Compressing a deploy cycle from 3 months to 14 days.</h3>
-            <p class="writing-desc">CI/CD ownership at ExponentHR &mdash; Azure DevOps pipelines, idempotent CDC ETL with merge-upserts, AAG copy-down automation. Honest tradeoffs section: which gates I tried to remove and learned to keep.</p>
+            <p class="writing-desc">CI/CD ownership at ExponentHR - Azure DevOps pipelines, idempotent CDC ETL with merge-upserts, AAG copy-down automation. Honest tradeoffs section: which gates I tried to remove and learned to keep.</p>
             <a href="https://narendranathe.substack.com" class="cs-btn cs-btn--substack writing-cta" target="_blank" rel="noreferrer"
                data-hover-preview="/static/preview-substack.png"
                data-hover-embed="substack-feed"
@@ -1490,7 +1474,7 @@
               <li><a href="https://github.com/narendranathe/repo-context-hooks" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> Source</a><span>330+ tests, MIT</span></li>
               <li><a href="https://github.com/narendranathe/repo-context-hooks/actions/workflows/publish.yml" target="_blank" rel="noreferrer"><i class="fas fa-signature"></i> Release provenance</a><span>Sigstore via OIDC Trusted Publisher</span></li>
               <li><a href="https://github.com/narendranathe/repo-context-hooks/actions/workflows/codeql.yml" target="_blank" rel="noreferrer"><i class="fas fa-shield-halved"></i> CodeQL runs</a><span>static analysis on every pull request</span></li>
-              <li><a href="https://github.com/narendranathe/repo-context-hooks/blob/main/pyproject.toml" target="_blank" rel="noreferrer"><i class="fas fa-cube"></i> pyproject.toml</a><span>dependencies = [] &mdash; stdlib only at runtime</span></li>
+              <li><a href="https://github.com/narendranathe/repo-context-hooks/blob/main/pyproject.toml" target="_blank" rel="noreferrer"><i class="fas fa-cube"></i> pyproject.toml</a><span>dependencies = [] - stdlib only at runtime</span></li>
             </ul>
           </article>
 

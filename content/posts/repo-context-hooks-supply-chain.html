@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A defender-side playbook for shipping a Claude Code plugin with PyPI-tier supply-chain hygiene — Sigstore signing, OIDC Trusted Publisher, CodeQL, property-tested telemetry, and a 5-critic parallel-agent code review that found everything I missed.">
+  <meta name="description" content="A defender-side playbook for shipping a Claude Code plugin with PyPI-tier supply-chain hygiene - Sigstore signing, OIDC Trusted Publisher, CodeQL, property-tested telemetry, and a 5-critic parallel-agent code review that found everything I missed.">
   <meta name="author" content="Narendranath Edara">
   <meta name="robots" content="index, follow">
   <meta property="og:title" content="Five Claude agents audited my plugin release in parallel. They caught 41 issues.">
@@ -64,7 +64,7 @@
         <span class="post-meta-item">~12 min read</span>
       </div>
       <h1 class="post-title">Five Claude agents audited my plugin release in parallel. They caught 41 issues.</h1>
-      <p class="post-deck">A defender-side playbook for shipping a Claude Code plugin with PyPI-tier supply-chain hygiene &mdash; Sigstore signing, OIDC Trusted Publisher, CodeQL, property-tested telemetry, and the multi-agent review workflow that found everything I missed.</p>
+      <p class="post-deck">A defender-side playbook for shipping a Claude Code plugin with PyPI-tier supply-chain hygiene - Sigstore signing, OIDC Trusted Publisher, CodeQL, property-tested telemetry, and the multi-agent review workflow that found everything I missed.</p>
     </div>
   </header>
 
@@ -74,11 +74,11 @@
     <section class="post-section" id="problem">
       <h2>Problem</h2>
 
-      <p>I was about to ship the v1.0 of <a href="https://github.com/narendranathe/repo-context-hooks">repo-context-hooks</a> &mdash; a Claude Code plugin that keeps interrupted work, next-step context, and handoff notes alive across sessions &mdash; in the same quarter SentinelOne published its dependency-hijack research and Trail of Bits shipped its harness-side sandbox. Both pieces are excellent. Both are written from the <em>operator</em> side: how a Claude Code user defends against a hostile plugin. Plugin authors face the question from the other end. <strong>How do you ship a Claude Code plugin to PyPI in 2026 without becoming next quarter's dependency-hijack paper?</strong></p>
+      <p>I was about to ship the v1.0 of <a href="https://github.com/narendranathe/repo-context-hooks">repo-context-hooks</a> - a Claude Code plugin that keeps interrupted work, next-step context, and handoff notes alive across sessions - in the same quarter SentinelOne published its dependency-hijack research and Trail of Bits shipped its harness-side sandbox. Both pieces are excellent. Both are written from the <em>operator</em> side: how a Claude Code user defends against a hostile plugin. Plugin authors face the question from the other end. <strong>How do you ship a Claude Code plugin to PyPI in 2026 without becoming next quarter's dependency-hijack paper?</strong></p>
 
       <p>The published threat models are mostly post-xz (CVE-2024-3094): typo-squatting, malicious maintainer takeover, attestation-less wheels installed by humans who never run <code>gh attestation verify</code>. The plugin-author playbook for defending against those was scattered across PyPI documentation, sigstore READMEs, GitHub Actions docs, and a few independent blog posts. Nobody had stitched it into a single, copy-pasteable pipeline for a small Python package whose distribution channel is a coding agent.</p>
 
-      <p>So I shipped one. This is the post-mortem of what worked, what didn't, and what a five-Claude-agent code review caught that I'd missed &mdash; the defender-side Claude Code plugin security playbook I wish had existed when I started.</p>
+      <p>So I shipped one. This is the post-mortem of what worked, what didn't, and what a five-Claude-agent code review caught that I'd missed - the defender-side Claude Code plugin security playbook I wish had existed when I started.</p>
     </section>
 
     <!-- ===== CONSTRAINTS ===== -->
@@ -91,7 +91,7 @@
         <li><strong>Solo maintainer, side-project hours.</strong> No security team to review the publish pipeline. No internal SBOM service. No ability to negotiate a custom GitHub Enterprise feature.</li>
         <li><strong>Zero runtime dependencies.</strong> The package's <code>pyproject.toml</code> declares <code>dependencies = []</code>. Hooks call into the standard library and read checked-in workspace files. This was a constraint <em>before</em> threat modeling, but it doubled as a supply-chain reduction: there is no transitive graph to compromise, only the package itself.</li>
         <li><strong>End users are agents, not humans.</strong> A coding agent (Claude Code, Codex, Cursor) installs the package via <code>pip</code> on behalf of a developer who may never run a verification command. The hardening has to be machine-checkable, ideally automatic, with the human verification path as a fallback rather than the default.</li>
-        <li><strong>The package is small enough that one motivated reviewer should find every defect.</strong> About 6,700 lines of Python (verified with <code>wc -l</code> on the v1.0 tag, excluding tests), four GitHub Actions workflows, one CLI, and a bundle of skill files. If a reviewer can't find every defect, the review process is broken &mdash; not the package size.</li>
+        <li><strong>The package is small enough that one motivated reviewer should find every defect.</strong> About 6,700 lines of Python (verified with <code>wc -l</code> on the v1.0 tag, excluding tests), four GitHub Actions workflows, one CLI, and a bundle of skill files. If a reviewer can't find every defect, the review process is broken - not the package size.</li>
       </ol>
     </section>
 
@@ -99,7 +99,7 @@
     <section class="post-section" id="design">
       <h2>Design</h2>
 
-      <p>Five layers. An attacker has to defeat all of them &mdash; independently &mdash; to ship a poisoned wheel. A single compromised credential or merged bad commit isn't enough.</p>
+      <p>Five layers. An attacker has to defeat all of them - independently - to ship a poisoned wheel. A single compromised credential or merged bad commit isn't enough.</p>
 
       <figure class="system-diagram-figure" role="figure" aria-labelledby="diagram-pipeline-title" aria-describedby="diagram-pipeline-desc">
         <svg class="system-diagram" viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" role="img">
@@ -146,7 +146,7 @@
             <line x1="540" y1="110" x2="580" y2="110" marker-end="url(#arrow)"/>
 
             <!-- Layer counter -->
-            <text x="360" y="205" text-anchor="middle" fill="var(--fg-muted, #9b9490)" font-size="10">5 layers, each independent. Compromise one &mdash; the others still hold.</text>
+            <text x="360" y="205" text-anchor="middle" fill="var(--fg-muted, #9b9490)" font-size="10">5 layers, each independent. Compromise one - the others still hold.</text>
           </g>
         </svg>
         <figcaption class="post-figcaption">Figure 1: hardening pipeline. Inline SVG, dark-mode + print aware, total payload &lt;3 KB.</figcaption>
@@ -174,7 +174,7 @@ jobs:
 
       <h3>Layer 2: Sigstore signing on every release</h3>
 
-      <p>Trusted Publisher prevents <em>token</em> theft. Sigstore prevents <em>wheel</em> tampering anywhere downstream &mdash; a malicious mirror, a man-in-the-middle inside a corporate proxy, a poisoned cache. The publish workflow signs the built distributions with <a href="https://github.com/sigstore/gh-action-sigstore-python">gh-action-sigstore-python</a> and uploads PEP 740 attestations alongside the wheel. End users (or their agents) verify with one command:</p>
+      <p>Trusted Publisher prevents <em>token</em> theft. Sigstore prevents <em>wheel</em> tampering anywhere downstream - a malicious mirror, a man-in-the-middle inside a corporate proxy, a poisoned cache. The publish workflow signs the built distributions with <a href="https://github.com/sigstore/gh-action-sigstore-python">gh-action-sigstore-python</a> and uploads PEP 740 attestations alongside the wheel. End users (or their agents) verify with one command:</p>
 
       <pre><code>gh attestation verify repo_context_hooks-0.6.0-py3-none-any.whl \
     --repo narendranathe/repo-context-hooks</code></pre>
@@ -183,13 +183,13 @@ jobs:
 
       <h3>Layer 3: CodeQL + Dependabot in CI</h3>
 
-      <p>CodeQL runs on every PR and every Sunday at 04:00 UTC. The schedule matters: a vulnerability disclosed Friday afternoon shouldn't wait for the next merge to surface. Dependabot watches both <code>pip</code> and <code>github-actions</code> ecosystems, because pinning <code>actions/checkout@v4</code> is half-protection if you don't upgrade when v4 itself ships a fix.</p>
+      <p>CodeQL runs on every PR and every Sunday at 04:00 UTC. The schedule matters: a vulnerability disclosed Friday afternoon shouldn't wait for the next merge to surface. Dependabot watches both <code>pip</code> and <code>github-actions</code> dependencies, because pinning <code>actions/checkout@v4</code> is half-protection if you don't upgrade when v4 itself ships a fix.</p>
 
       <h3>Layer 4: Property-tested telemetry hot paths</h3>
 
       <p>The package's only network surface is an opt-in telemetry endpoint that emits hook execution events. Two functions there had quietly been the source of bugs: <code>is_sampled()</code>, which gated whether an event was recorded, and <code>deduplicate_hooks()</code>, which collapsed duplicate hook firings. Both were unit-tested. Both still shipped a regression in v0.5: a <code>NaN</code> sample rate would silently disable telemetry instead of falling back to the default.</p>
 
-      <p>Hypothesis-based property tests catch this class of bug because the input space they explore is much wider than the cases I'd have hand-written. The fix was small &mdash; add <code>math.isnan(rate)</code> to the validator &mdash; but the property test is what surfaced it. Coverage went to 80% on the gate (the spec asked for 85%; see &ldquo;Tradeoffs&rdquo; below).</p>
+      <p>Hypothesis-based property tests catch this class of bug because the input space they explore is much wider than the cases I'd have hand-written. The fix was small - add <code>math.isnan(rate)</code> to the validator - but the property test is what surfaced it. Coverage went to 80% on the gate (the spec asked for 85%; see &ldquo;Tradeoffs&rdquo; below).</p>
 
       <h3>Layer 5: Five-critic parallel agent code review</h3>
 
@@ -203,7 +203,7 @@ jobs:
         <li><strong>Critic 5 (spec compliance):</strong> does the implementation match the issue's acceptance criteria, and where it doesn't, is the deviation documented?</li>
       </ul>
 
-      <p>Each agent ran in isolation against the same diff. They returned 51 raw findings; after deduplication, <strong>41 distinct issues</strong> remained. About a third would have surfaced under careful solo review. The other two-thirds wouldn't have, because they required holding two parts of the system in mind at once &mdash; for example, a CI environment variable that the publish workflow reads but no other workflow sets.</p>
+      <p>Each agent ran in isolation against the same diff. They returned 51 raw findings; after deduplication, <strong>41 distinct issues</strong> remained. About a third would have surfaced under careful solo review. The other two-thirds wouldn't have, because they required holding two parts of the system in mind at once - for example, a CI environment variable that the publish workflow reads but no other workflow sets.</p>
     </section>
 
     <!-- ===== TRADEOFFS ===== -->
@@ -218,15 +218,15 @@ jobs:
 
       <h3>The NaN sample rate bug shipped in v0.5</h3>
 
-      <p>The Hypothesis property test caught it on the v1.0 hardening branch &mdash; not before v0.5 was already in users' environments. <code>math.isnan</code> is a one-liner; the bug is small. The lesson is sharper: I had unit tests for <code>is_sampled()</code> that all passed, and they all passed because I'd written them after thinking about which cases mattered. Property-based tests don't share that bias. Every hot-path validator should have one before it ships, not after.</p>
+      <p>The Hypothesis property test caught it on the v1.0 hardening branch - not before v0.5 was already in users' environments. <code>math.isnan</code> is a one-liner; the bug is small. The lesson is sharper: I had unit tests for <code>is_sampled()</code> that all passed, and they all passed because I'd written them after thinking about which cases mattered. Property-based tests don't share that bias. Every hot-path validator should have one before it ships, not after.</p>
 
       <h3>Don&rsquo;t gate on a third-party SaaS upload</h3>
 
-      <p>Critic 2 flagged that the coverage upload step was configured as a hard failure on the publish gate. If the upstream service is down for any reason, the publish pipeline blocks. The fix was to gate on local <code>pytest --cov-fail-under</code> and treat the upload as a soft step &mdash; the gating signal stays inside CI even when an external service is degraded. Lesson: third-party SaaS in the publish path should never be a hard dependency on a job whose only purpose is to ship.</p>
+      <p>Critic 2 flagged that the coverage upload step was configured as a hard failure on the publish gate. If the upstream service is down for any reason, the publish pipeline blocks. The fix was to gate on local <code>pytest --cov-fail-under</code> and treat the upload as a soft step - the gating signal stays inside CI even when an external service is degraded. Lesson: third-party SaaS in the publish path should never be a hard dependency on a job whose only purpose is to ship.</p>
 
       <h3>The five critics overlapped more than expected</h3>
 
-      <p>I'd designed the lenses to be orthogonal. They weren't. About 20% of the raw findings were duplicates &mdash; two critics, sometimes three, surfacing the same issue from different framings. That's not pure waste; convergence on a finding is itself signal. But the dedup pass took ~40 minutes that I hadn't budgeted, and the <em>weakest</em> findings were the ones only one critic raised, which I had to re-evaluate manually. Next time I would either tighten the lens prompts to be more explicitly disjoint, or accept the overlap and pre-budget the dedup time.</p>
+      <p>I'd designed the lenses to be orthogonal. They weren't. About 20% of the raw findings were duplicates - two critics, sometimes three, surfacing the same issue from different framings. That's not pure waste; convergence on a finding is itself signal. But the dedup pass took ~40 minutes that I hadn't budgeted, and the <em>weakest</em> findings were the ones only one critic raised, which I had to re-evaluate manually. Next time I would either tighten the lens prompts to be more explicitly disjoint, or accept the overlap and pre-budget the dedup time.</p>
     </section>
 
     <!-- ===== OUTCOME ===== -->
@@ -245,7 +245,7 @@ jobs:
         <li>Run a multi-critic agent review on the release PR. Budget time for dedup. Treat convergent findings as high-confidence.</li>
       </ol>
 
-      <p>None of these are novel on their own. The contribution is the order, the dependencies, and the cost of getting any one of them wrong. If you're shipping a Claude Code plugin (or any small PyPI package) in 2026, you can clone these patterns directly &mdash; the workflows, configs, and the agent-review prompts are all visible in the <a href="https://github.com/narendranathe/repo-context-hooks/tree/main/.github/workflows">repo-context-hooks repository</a> under MIT.</p>
+      <p>None of these are novel on their own. The contribution is the order, the dependencies, and the cost of getting any one of them wrong. If you're shipping a Claude Code plugin (or any small PyPI package) in 2026, you can clone these patterns directly - the workflows, configs, and the agent-review prompts are all visible in the <a href="https://github.com/narendranathe/repo-context-hooks/tree/main/.github/workflows">repo-context-hooks repository</a> under MIT.</p>
 
       <p>What I'd do differently for v2.0: bring the coverage gate back to 85%, add SLSA build provenance on top of Sigstore (SLSA L3 vs Sigstore alone is the natural next comparison), and tighten the critic prompts so the dedup pass is shorter. The threat model for plugin authors is going to keep evolving. The pipeline above buys a year of runway.</p>
 
