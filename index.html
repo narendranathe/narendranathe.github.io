@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Narendranath Edara - Data Engineer. Three years building production data platforms; currently owns the CI/CD and change-data-capture pipelines behind payroll for 16 client tenants.">
+  <meta name="description" content="Narendranath Edara - Data Engineer. Three years building production data platforms; owns CDC ingestion, releases, and recovery on a payroll platform running 400 databases and 70 TB.">
   <meta name="author" content="Narendranath Edara">
   <meta property="og:title" content="Narendranath Edara | Data Engineer - AI-Enabled Data Platforms">
-  <meta property="og:description" content="Release cycle 3 months to 14 days. CDC ETL 30 min to under 8. Fraud scoring at 100+ TPS, P99 under 1 ms.">
+  <meta property="og:description" content="Release cycle 3 months to 14 days. CDC ETL 30 min to under 8, compute down 67%. Provisioning automation worth 5,000 engineering hours a year.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://narendranathe.github.io">
   <meta property="og:image" content="https://narendranathe.github.io/static/og-image.jpg?v=2026-04-28">
@@ -51,8 +51,9 @@
         <h1 class="hero-name">Narendranath Edara</h1>
         <p class="hero-role">Data Engineer</p>
         <p class="hero-line">
-          Three years building production data platforms, three in analytics before that; today I own the
-          deployment and change-data-capture pipelines behind payroll for 16 client tenants.
+          Three years building production data platforms, three in analytics before that; today I own
+          change-data-capture ingestion, releases, and recovery on a payroll platform running 400
+          databases and 70 TB.
         </p>
         <nav class="hero-links" aria-label="Contact and profiles">
           <a href="/static/resume.pdf?v=7a55b6b6" target="_blank" rel="noreferrer"
@@ -73,25 +74,27 @@
 
           <article class="proof-card">
             <h2 class="proof-card-title" id="card-platform">Enterprise Data Platform</h2>
-            <p class="proof-card-source">ExponentHR &middot; Data Engineer &middot; Jul 2024 to present</p>
+            <p class="proof-card-source">ExponentHR &middot; 400 databases, 70 TB, 15-minute refresh &middot; Jul 2024 to present</p>
             <dl class="impact-strip" aria-labelledby="card-platform">
               <div class="impact-stat">
                 <dt class="impact-value">3 mo &rarr; 14 d</dt>
-                <dd class="impact-label">release cycle<span class="sr-only"> — deployment cadence cut from three months to fourteen days by owning CI/CD end to end through Azure DevOps, removing about eleven weeks of cross-team idle time per release.</span></dd>
+                <dd class="impact-label">release cycle<span class="sr-only"> — deployment cadence cut from three months to fourteen days by owning CI/CD end to end through Azure DevOps and aligning dev, test, IT, and business on Scrum, removing about eleven weeks of cross-team idle handoff time per release.</span></dd>
               </div>
               <div class="impact-stat">
                 <dt class="impact-value">30 min &rarr; &lt;8 min</dt>
-                <dd class="impact-label">CDC ETL, -67% compute<span class="sr-only"> — change-data-capture ETL runtime cut from thirty minutes to under eight after replacing full-table reloads with incremental merge-upserts; compute cost down sixty-seven percent.</span></dd>
+                <dd class="impact-label">CDC ETL, -67% compute<span class="sr-only"> — change-data-capture ETL runtime cut from thirty minutes to under eight after replacing full-table reloads with idempotent incremental merge-upserts; compute cost down sixty-seven percent and roughly ninety-nine point nine percent less data moved per year. Now the platform's standing CDC pattern.</span></dd>
               </div>
               <div class="impact-stat">
-                <dt class="impact-value">~1 hr &rarr; 0</dt>
-                <dd class="impact-label">manual work per DB request, 20+/day<span class="sr-only"> — automated database provisioning removed roughly an hour of manual orchestration from each request, across more than twenty requests a day.</span></dd>
+                <dt class="impact-value">5,000 hrs/yr</dt>
+                <dd class="impact-label">manual provisioning removed, ~$300K<span class="sr-only"> — database copy and restore for Contained Always-On Availability Group databases rewritten fully idempotent, removing about an hour of manual engineering from each of twenty runs a day: roughly five thousand engineering hours a year, about three hundred thousand dollars, or two and a half engineers back on product work.</span></dd>
               </div>
             </dl>
             <p class="proof-mechanism">
               Idempotent Azure DevOps pipelines replaced manual release handoffs and hand-run database
-              copy-downs, incremental merge-upserts replaced full-table reloads, and a control-table
-              validation framework replaced one-off data quality scripts.
+              copy-downs; incremental merge-upserts replaced full-table reloads, so a failed run reruns
+              clean with no manual cleanup. Money-adjacent fixes ship through formal change review: a
+              payroll accrual defect root-caused to a period-boundary calculation, and SECURE 2.0
+              retirement-plan compliance delivered against a legislated deadline.
             </p>
           </article>
 
@@ -100,22 +103,23 @@
             <p class="proof-card-source">Fraud Detection Platform &middot; FinTune</p>
             <dl class="impact-strip" aria-labelledby="card-ml">
               <div class="impact-stat">
-                <dt class="impact-value">100+ TPS</dt>
-                <dd class="impact-label">fraud scoring, P99 under 1 ms<span class="sr-only"> — sustained one hundred plus transactions per second with ninety-ninth percentile scoring latency under one millisecond, against a batch baseline that scored transactions hours after they occurred.</span></dd>
+                <dt class="impact-value">1.12 ms</dt>
+                <dd class="impact-label">fraud scoring P99, 100+ TPS<span class="sr-only"> — ninety-ninth percentile serving latency of one point one two milliseconds, sustained above one hundred transactions per second, with exactly-once Kafka processing and an MLflow-tracked LightGBM classifier.</span></dd>
               </div>
               <div class="impact-stat">
-                <dt class="impact-value">94% at &lt;2% FPR</dt>
-                <dd class="impact-label">detection accuracy<span class="sr-only"> — ninety-four percent or better fraud detection accuracy while holding the false positive rate under two percent; the Airflow retraining DAG only promotes a model that clears both.</span></dd>
+                <dt class="impact-value">100K txns</dt>
+                <dd class="impact-label">synthetic, 2% fraud rate, not live traffic<span class="sr-only"> — trained on one hundred thousand generated transactions at a two percent fraud rate. This is synthetic data by design, not live payment traffic; the engineering around it is production-shaped, the data is not.</span></dd>
               </div>
               <div class="impact-stat">
-                <dt class="impact-value">14 GB &rarr; 3.5 GB</dt>
-                <dd class="impact-label">GPU memory, Mistral-7B<span class="sr-only"> — four-bit NF4 quantization cut GPU memory for the seven-billion-parameter model from about fourteen gigabytes to about three and a half, a seventy-five percent reduction, with negligible accuracy loss.</span></dd>
+                <dt class="impact-value">3-state</dt>
+                <dd class="impact-label">FinTune circuit breaker, 35+ tests<span class="sr-only"> — a three-state circuit breaker that autonomously reloads the model, drops batch size under memory pressure, or falls back to a quantized model under sustained failure; validated by more than thirty-five tests across data, model, guardrails, serving, and recovery.</span></dd>
               </div>
             </dl>
             <p class="proof-mechanism">
-              The fraud model loads into memory once at FastAPI startup instead of per request, which is
-              worth 15 to 40 ms a prediction; FinTune trains LoRA adapters over a 4-bit base, so a 7B model
-              fine-tunes on a single T4 in under 15 minutes.
+              Fraud scoring runs exactly-once through Kafka into a FastAPI service with a LightGBM model
+              tracked in MLflow, observable end to end in Prometheus and Grafana. FinTune fine-tunes
+              Mistral-7B with QLoRA on 4-bit NF4 adapters, behind pre-inference PII redaction and
+              KL-divergence drift monitoring on the output distribution.
             </p>
           </article>
 
@@ -157,28 +161,29 @@
             <span class="prior-meta">Business Analyst &middot; Mar 2018 to Sep 2020</span>
           </div>
           <p class="prior-body">
-            Built a competitor analytics platform tracking pricing, delivery time, and coverage across
-            contested metros; the pricing changes it fed contributed to a 9% market share gain. Indexed
-            100K+ documents into Elasticsearch for self-serve search, which cut support desk volume
-            roughly 80%.
+            Turned a 300-restaurant portfolio's unit economics positive, moving contribution from -&#8377;18
+            to +&#8377;2 per order by rebalancing discount sharing against advertising revenue mix. Indexed
+            100K+ internal documents into Elasticsearch for self-serve search, which cut support desk
+            volume 80%.
           </p>
         </div>
 
         <div class="prior-item">
           <div class="prior-head">
             <h2 class="prior-company">udaan.com</h2>
-            <span class="prior-meta">BI Analyst, Supply &middot; Sep 2020 to Mar 2021</span>
+            <span class="prior-meta">Business Intelligence Analyst &middot; Sep 2020 to Mar 2021</span>
           </div>
           <p class="prior-body">
-            Built demand forecasting models for inventory allocation worth $4 million a year in avoided
-            cost and 7 points of ROI. Statistical capacity planning across first-mile to last-mile
-            operations held fulfillment at 99.3%.
+            Grew city GMV 400 percentage points to &#8377;5 Cr a month, about $8M a year, matching the
+            incumbent three months after the new city launched. Authored the business continuity plan
+            that kept delivery cycles running through application downtime instead of stalling them.
           </p>
         </div>
 
         <p class="prior-close">
-          Three years of watching forecasts break because nobody validated the data upstream is why I
-          now build the checks into the pipeline instead of the dashboard.
+          That continuity plan was reliability thinking three years before I owned an Always-On
+          failover path. Designing for recovery rather than one-off fixes is the thing that carried
+          across the pivot.
         </p>
       </div>
     </section>
@@ -190,24 +195,24 @@
 
         <ul class="repo-list">
           <li>
-            <a class="repo-name" href="https://github.com/narendranathe/autoapply-ai" target="_blank" rel="noreferrer">autoapply-ai</a>
-            <span class="repo-line">Chrome MV3 extension plus FastAPI backend. 11 ATS adapters, 6 LLM providers, 355 backend tests.</span>
-          </li>
-          <li>
-            <a class="repo-name" href="https://github.com/narendranathe/tailor-resume" target="_blank" rel="noreferrer">tailor-resume</a>
-            <span class="repo-line">One tailoring engine, four surfaces: PyPI package, MCP server, CLI, Streamlit. 190 tests.</span>
-          </li>
-          <li>
             <a class="repo-name" href="https://github.com/narendranathe/repo-context-hooks" target="_blank" rel="noreferrer">repo-context-hooks</a>
-            <span class="repo-line">Git hooks that snapshot repo context for LLM agents. Standard library only, Sigstore-signed releases.</span>
+            <span class="repo-line">Zero-dependency commit hooks that snapshot repo context for LLM agents. Sigstore-signed OIDC releases, CodeQL on every PR, 330+ tests. Installable from PyPI.</span>
           </li>
           <li>
             <a class="repo-name" href="https://github.com/narendranathe/fraud-detection-ml-platform" target="_blank" rel="noreferrer">fraud-detection-ml-platform</a>
-            <span class="repo-line">Kafka to PySpark to MLflow to FastAPI. 100+ TPS, sub-millisecond P99, nightly retraining DAG.</span>
+            <span class="repo-line">Kafka to LightGBM to MLflow, served over FastAPI. P99 1.12 ms above 100 TPS, exactly-once processing, Airflow retraining. Synthetic data.</span>
           </li>
           <li>
             <a class="repo-name" href="https://github.com/narendranathe/fintune" target="_blank" rel="noreferrer">fintune</a>
-            <span class="repo-line">QLoRA fine-tune of Mistral-7B, 4-bit inference, PII guardrails, KL-divergence drift detection.</span>
+            <span class="repo-line">Mistral-7B fine-tuned with QLoRA on 4-bit NF4 adapters. PII redaction before inference, KL-divergence drift monitoring, three-state circuit breaker, 35+ tests.</span>
+          </li>
+          <li>
+            <a class="repo-name" href="https://github.com/narendranathe/autoapply-ai" target="_blank" rel="noreferrer">autoapply-ai</a>
+            <span class="repo-line">Chrome MV3 extension plus FastAPI backend. 11 ATS adapters handling shadow-DOM isolation, six-provider LLM cascade, pgvector retrieval, 355 backend tests. Private deployment.</span>
+          </li>
+          <li>
+            <a class="repo-name" href="https://github.com/narendranathe/job-scout" target="_blank" rel="noreferrer">job-scout</a>
+            <span class="repo-line">109 career pages monitored on a zero-cost GitHub Actions architecture. TF-IDF matching, SQLite WAL, circuit breakers that isolate a failing scraper.</span>
           </li>
         </ul>
       </div>

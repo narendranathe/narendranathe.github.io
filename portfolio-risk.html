@@ -156,8 +156,8 @@
             <p>
               FastAPI exposes risk query endpoints: current VaR by portfolio or asset class,
               historical VaR timeseries, position-level attribution, and scenario analysis.
-              Redis caches the most recent risk snapshot per portfolio for sub-millisecond
-              API response times. Streamlit polls the API every 2 seconds and renders
+              Redis caches the most recent risk snapshot per portfolio so a query does not
+              re-read Postgres. Streamlit polls the API every 2 seconds and renders
               live P&amp;L curves, VaR gauges, and exposure heatmaps.
             </p>
           </div>
@@ -224,7 +224,7 @@
           </div>
           <div class="cs-lesson worked">
             <h4>What worked</h4>
-            <p><strong>Redis position cache.</strong> Loading position data once at startup and caching in Redis eliminated repeated PostgreSQL reads on every Spark micro-batch. API response times stayed sub-millisecond even at peak tick rates.</p>
+            <p><strong>Redis position cache.</strong> Loading position data once at startup and caching in Redis eliminated repeated PostgreSQL reads on every Spark micro-batch. This is a single-node demo, so no latency figure here is a production measurement.</p>
           </div>
           <div class="cs-lesson failed">
             <h4>What failed</h4>

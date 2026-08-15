@@ -223,9 +223,81 @@ FORBIDDEN_SCRAPPED_CLAIMS: tuple[str, ...] = (
 )
 
 
+# Claims marked [BLOCKED] or excluded in GROUND_TRUTH.md. These are not
+# scrapped-project leftovers — they are figures that fail arithmetic,
+# contradict a primary document, or claim ownership of a tool that was
+# never owned. Each one reached a live surface at least once by drifting
+# from "suggested phrasing" in one draft into "stated fact" in the next,
+# which is the failure mode this list exists to make impossible.
+#
+# Checked against every public HTML page, not just index.html, because
+# the case-study pages are reachable by URL and are what a recruiter
+# following a resume link actually lands on.
+#
+# Do not delete an entry to make a build pass. Either the claim is
+# wrong (fix the page) or GROUND_TRUTH.md changed (fix it there first).
+BLOCKED_CLAIMS: tuple[tuple[str, str], ...] = (
+    # Udaan: $4M needs a ~$57M base; documented city GMV is ~$8.1M/yr.
+    ("$4 million", "Udaan savings figure does not reconcile with documented GMV; ship the 7% ROI"),
+    ("$4m", "Udaan savings figure does not reconcile with documented GMV"),
+    # JobScout monitors 109 career pages, not 130+.
+    ("130+", "JobScout monitors 109 career pages"),
+    # Fraud platform: measured P99 is 1.12 ms, which is not sub-millisecond.
+    ("sub-ms", "fraud P99 is 1.12 ms, not sub-millisecond"),
+    ("sub-millisecond", "fraud P99 is 1.12 ms, not sub-millisecond"),
+    ("94%+ model accuracy", "no ground-truth backing for a fraud accuracy figure"),
+    ("94%+ detection accuracy", "no ground-truth backing for a fraud accuracy figure"),
+    # Portfolio Risk: Spark-to-FastAPI handoff is console-only.
+    ("47.8 tps", "not supported by the portfolio-risk repo"),
+    ("15k+ records", "not supported by the portfolio-risk repo"),
+    ("live risk views", "the Spark to FastAPI handoff is console-only"),
+    # Always On terminology: Contained AAG, never containerized.
+    ("containerized aag", "the term is Contained AAG - a different thing entirely"),
+    # Degree name on the diploma.
+    ("m.s. data science", "the degree is MS Information Science and Technology"),
+    ("ms data science", "the degree is MS Information Science and Technology"),
+    # Permanent exclusions: tools never owned in production.
+    ("unity catalog", "permanent exclusion - never owned in production"),
+    ("delta live tables", "permanent exclusion - never owned in production"),
+    ("foundry bi engine", "permanent exclusion"),
+    ("networkx join resolver", "permanent exclusion"),
+    ("claude query planner", "permanent exclusion"),
+    # Tenure: 6 years professional, 3 in data engineering.
+    ("seven years", "6 years professional, 3 in data engineering"),
+    ("eight years of t-sql", "the 2018-2021 years ran on Excel, Data Studio, and Tableau"),
+)
+
+# Every page a recruiter can reach from a resume link.
+PUBLIC_HTML: tuple[str, ...] = (
+    "index.html", "autoapply-ai.html", "tailor-resume.html", "jobscout.html",
+    "portfolio-risk.html", "fintune.html", "fraud-detection.html",
+    "content/posts/repo-context-hooks-supply-chain.html",
+)
+
+
 # ------- Test cases -------
 def test_index_html_exists() -> None:
     assert INDEX_HTML.exists(), f"missing {INDEX_HTML}"
+
+
+def test_no_blocked_claims_on_any_public_page() -> None:
+    """Ground-truth gate. Runs over raw HTML AND rendered text on every
+    public page, so a blocked figure cannot hide in a meta description,
+    an alt attribute, an SVG <desc>, or a pair of adjacent spans."""
+    failures: list[str] = []
+    for rel in PUBLIC_HTML:
+        path = REPO_ROOT / rel
+        if not path.exists():
+            continue
+        body = path.read_text(encoding="utf-8")
+        haystacks = (body.lower(), extract_visible_text(body).lower())
+        for phrase, reason in BLOCKED_CLAIMS:
+            if any(phrase in h for h in haystacks):
+                failures.append(f"{rel}: {phrase!r} - {reason}")
+    assert not failures, (
+        "Claims blocked by GROUND_TRUTH.md found on public pages:\n  "
+        + "\n  ".join(failures)
+    )
 
 
 def test_home_css_exists_and_index_links_it() -> None:
@@ -632,6 +704,8 @@ def test_public_identity_surfaces_use_canonical_title() -> None:
 # ------- Test runner -------
 TESTS = [
     test_index_html_exists,
+    # ----- GROUND_TRUTH.md gate, across every public page -----
+    test_no_blocked_claims_on_any_public_page,
     # ----- home.css module (was styles.css before the rewrite) -----
     test_home_css_exists_and_index_links_it,
     test_home_css_has_impact_strip_module,
