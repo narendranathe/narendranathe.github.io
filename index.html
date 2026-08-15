@@ -1086,6 +1086,122 @@
       </div>
     </section>
 
+    <!-- ===== WHERE THIS FITS =====
+         Three blocks mapping the evidence above onto the shapes of role
+         it actually suits. Requisition vocabulary is used only where an
+         evidence id supports it; everywhere else it is named as
+         adjacency. Every block ends with what is missing, because the
+         gap is the part a reviewer would otherwise spend the interview
+         discovering. No claim of employment, interview, or referral at
+         any company named here - these are the targets, not the CV. -->
+    <section class="section" id="fit">
+      <div class="container">
+
+        <div class="section-head" data-reveal>
+          <span class="section-label">Where This Fits</span>
+          <h2 class="section-title">Three shapes of role, and what is missing for each.</h2>
+          <p class="section-subtitle">The same evidence reads differently depending on what a team is hiring for. Each block maps it onto one kind of requisition, then states the gap plainly, because a gap found in the screen costs everyone more than a gap stated here.</p>
+        </div>
+
+        <div class="fit-grid">
+
+          <article class="fit-block" id="fit-finance" data-reveal>
+            <span class="section-label">Financial-data correctness</span>
+            <h3 class="fit-head">Money-adjacent data, under formal change control</h3>
+            <p class="fit-maps">Goldman Sachs and JPMorgan data and platform requisitions, and roles shaped like them: correctness, audit, and delivery discipline over raw scale.</p>
+            <dl class="fit-rows">
+              <div class="fit-row">
+                <dt class="fit-row-key">Change control and audit trail<span class="fit-gt" title="Ground truth: E-PTO, E-SECURE2">E-PTO, E-SECURE2</span></dt>
+                <dd class="fit-row-val">A payroll accrual defect shipped through change-request review rather than patched, and SECURE 2.0 delivered against a legislated date. Reviewed once, applied to every client tenant.</dd>
+              </div>
+              <div class="fit-row">
+                <dt class="fit-row-key">Tenant isolation<span class="fit-gt" title="Ground truth: E-PTO">E-PTO</span></dt>
+                <dd class="fit-row-val">Corrected logic reaching every tenant through one reviewed change, rather than per-tenant fixes drifting apart.</dd>
+              </div>
+              <div class="fit-row">
+                <dt class="fit-row-key">Reconciliation and recovery<span class="fit-gt" title="Ground truth: E5-RECOVERY, E1-CDC">E5-RECOVERY, E1-CDC</span></dt>
+                <dd class="fit-row-val">Idempotent merge-upserts where a failed run reruns clean, and capture restored in under an hour after an availability-group failover, on a runbook.</dd>
+              </div>
+              <div class="fit-row">
+                <dt class="fit-row-key">Safe retry<span class="fit-gt" title="Ground truth: E-IDEM">E-IDEM</span></dt>
+                <dd class="fit-row-val">Provisioning rewritten so a failed attempt does not require a person to clean up before the next one.</dd>
+              </div>
+              <div class="fit-row">
+                <dt class="fit-row-key">Domain adjacency<span class="fit-gt" title="Ground truth: P-FRAUD">P-FRAUD</span></dt>
+                <dd class="fit-row-val">A streaming fraud pipeline at 1.12ms P99, on synthetic data. Financial-shaped engineering, explicitly not live payment traffic.</dd>
+              </div>
+            </dl>
+            <p class="fit-adjacency">Lakehouse, data mesh, and governed-transformation vocabulary maps onto this work by pattern - CDC, MERGE, dimensional modeling, change-controlled release - not by product experience.</p>
+            <p class="fit-gap"><span class="fit-gap-key">The gap</span>I have not run production AWS, Snowflake, or Databricks. What is shown here is SQL Server, Azure, Microsoft Fabric, Kafka, Spark-compatible design, and change-controlled delivery.</p>
+          </article>
+          <article class="fit-block" id="fit-platform" data-reveal>
+            <span class="section-label">Data platform engineering</span>
+            <h3 class="fit-head">Multi-service pipelines, and the release process around them</h3>
+            <p class="fit-maps">Databricks and comparable data-platform teams, where the role spans pipelines, orchestration, serving, and the delivery process rather than one of them.</p>
+            <dl class="fit-rows">
+              <div class="fit-row">
+                <dt class="fit-row-key">Owns complex components<span class="fit-gt" title="Ground truth: P-FRAUD, P-FINTUNE">P-FRAUD, P-FINTUNE</span></dt>
+                <dd class="fit-row-val">Kafka into a LightGBM scoring service with MLflow, Airflow, and Prometheus around it. A 7B model served behind PII redaction, drift monitoring, and a three-state circuit breaker. L4-shaped scope: whole components, end to end.</dd>
+              </div>
+              <div class="fit-row">
+                <dt class="fit-row-key">Sets direction across teams<span class="fit-gt" title="Ground truth: E2-CICD, E1-CDC">E2-CICD, E1-CDC</span></dt>
+                <dd class="fit-row-val">CI/CD owned end to end with Scrum aligning dev, test, IT, and business on shared priorities, and a CDC pattern that became the platform's standing approach rather than one pipeline's fix. L5-shaped scope: the thing other people then build on.</dd>
+              </div>
+              <div class="fit-row">
+                <dt class="fit-row-key">Ships something others consume<span class="fit-gt" title="Ground truth: P-HOOKS">P-HOOKS</span></dt>
+                <dd class="fit-row-val">A signed, statically analyzed package on PyPI with 330+ tests. Direction-setting that leaves an artifact rather than a decision.</dd>
+              </div>
+              <div class="fit-row">
+                <dt class="fit-row-key">Data security<span class="fit-gt" title="Ground truth: E-PTO, P-FINTUNE">E-PTO, P-FINTUNE</span></dt>
+                <dd class="fit-row-val">Change-request review on money-adjacent logic; pre-inference PII redaction on the serving path.</dd>
+              </div>
+              <div class="fit-row">
+                <dt class="fit-row-key">Observability and cost<span class="fit-gt" title="Ground truth: E-OBS, M2, M3">E-OBS, M2, M3</span></dt>
+                <dd class="fit-row-val">Alert thresholds tuned per service, drift made alertable, and autoscaling that moved CPU utilization from 12% to 64%.</dd>
+              </div>
+            </dl>
+            <p class="fit-adjacency">Messaging, ETL frameworks, and orchestration are Kafka, SSIS, Azure DevOps pipelines, and Airflow in project work - the concepts transfer, the specific platform is theirs, not mine.</p>
+            <p class="fit-gap"><span class="fit-gap-key">The gap</span>No Databricks workspace, Unity Catalog, or Delta Live Tables, no production Airflow, and no multi-geo deployment. Airflow here is project-scale, and the reliability work is single-region.</p>
+          </article>
+          <article class="fit-block" id="fit-reliability" data-reveal>
+            <span class="section-label">Reliability and FinOps</span>
+            <h3 class="fit-head">The layer that decides what happens when it breaks</h3>
+            <p class="fit-maps">Platform, SRE-adjacent data, and cost-engineering roles, where the question is MTTR and spend rather than feature throughput.</p>
+            <dl class="fit-rows">
+              <div class="fit-row">
+                <dt class="fit-row-key">MTTR and runbooks<span class="fit-gt" title="Ground truth: E5-RECOVERY">E5-RECOVERY</span></dt>
+                <dd class="fit-row-val">Capture restored in under an hour after failover, turning a specialist-only restore into a documented procedure.</dd>
+              </div>
+              <div class="fit-row">
+                <dt class="fit-row-key">Incident response<span class="fit-gt" title="Ground truth: E-SELFHEAL, E-LIVEREC">E-SELFHEAL, E-LIVEREC</span></dt>
+                <dd class="fit-row-val">Monitoring instrumented against missed runs, stuck runs, and silent failures, and one live incremental-load failure diagnosed and restored in place under production pressure.</dd>
+              </div>
+              <div class="fit-row">
+                <dt class="fit-row-key">Data quality checks<span class="fit-gt" title="Ground truth: E-OBS">E-OBS</span></dt>
+                <dd class="fit-row-val">Control-table-driven validation turning quiet data drift into an alertable failure, with a named owner and a documented response.</dd>
+              </div>
+              <div class="fit-row">
+                <dt class="fit-row-key">Freshness SLA<span class="fit-gt" title="Ground truth: E1-CDC">E1-CDC</span></dt>
+                <dd class="fit-row-val">The SLA named alongside the speedup, because a speedup that hides a reliability regression is the thing worth checking for.</dd>
+              </div>
+              <div class="fit-row">
+                <dt class="fit-row-key">Compute optimization<span class="fit-gt" title="Ground truth: M3, E1-CDC">M3, E1-CDC</span></dt>
+                <dd class="fit-row-val">Autoscaling that cut $3,200 a month while raising utilization 12% to 64%, and a pipeline moving 257 TB a year where it used to move roughly 2.46M.</dd>
+              </div>
+              <div class="fit-row">
+                <dt class="fit-row-key">Toil removed<span class="fit-gt" title="Ground truth: E-IDEM, E-REPORTAUTO">E-IDEM, E-REPORTAUTO</span></dt>
+                <dd class="fit-row-val">5,000 engineering hours a year from provisioning, plus 15+ hours a sprint from delivery reporting.</dd>
+              </div>
+            </dl>
+            <p class="fit-adjacency">Cost work here is Azure compute and engineering hours with baselines attached, which is the same discipline a cost-per-TB or warehouse-spend target asks for.</p>
+            <p class="fit-gap"><span class="fit-gap-key">The gap</span>No formal on-call rotation, no Terraform or infrastructure-as-code state ownership, and no cloud-bill practice on AWS or GCP. The cost figures are compute and time, derived and stated, not pulled from a FinOps platform.</p>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
     <!-- ===== ARCHITECTURE & WRITE-UPS ===== -->
     <section class="section" id="architecture">
       <div class="container">

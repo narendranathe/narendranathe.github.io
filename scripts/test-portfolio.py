@@ -401,6 +401,36 @@ def test_hero_claims_carry_ground_truth_ids(html: str) -> None:
     assert not empty, "hero has an empty data-gt-id attribute"
 
 
+def test_fit_blocks_each_name_a_gap(html: str) -> None:
+    """Loop 5 acceptance: every role-fit block ends with an explicit
+    statement of what is missing.
+
+    The gap line is the whole reason the section is defensible. A block
+    that maps evidence onto a requisition without naming what it lacks
+    is a pitch; with the gap it is an honest map. Losing the gap line in
+    a future edit would quietly turn one into the other, so it is
+    checked rather than trusted."""
+    start = html.find('<section class="section" id="fit">')
+    if start == -1:
+        return  # section is optional; only assert its shape when present
+    end = html.find("</section>", start)
+    fit = html[start:end]
+
+    blocks = re.findall(r'<article class="fit-block"[^>]*>', fit)
+    assert len(blocks) >= 3, f"expected >= 3 fit blocks, found {len(blocks)}"
+
+    gaps = re.findall(r'<p class="fit-gap">.*?</p>', fit, flags=re.S)
+    assert len(gaps) == len(blocks), (
+        f"{len(blocks)} fit blocks but {len(gaps)} gap statements; "
+        "every block must name what it is missing"
+    )
+    for g in gaps:
+        text = re.sub(r"<[^>]+>", " ", g)
+        assert len(text.split()) >= 8, (
+            f"fit-gap statement is too short to be a real gap: {text.strip()!r}"
+        )
+
+
 def test_no_never_publish_claims_on_public_surfaces() -> None:
     """Cross-file guard for claims that may never ship, checked on every
     public surface rather than just index.html.
@@ -1683,6 +1713,7 @@ TESTS = [
     test_no_scrapped_exponenthr_outcomes_in_rendered_text,
     test_no_never_publish_claims_on_public_surfaces,
     test_hero_claims_carry_ground_truth_ids,
+    test_fit_blocks_each_name_a_gap,
     test_hero_uses_local_photo_not_external_cdn,
     test_hero_aside_no_data_reveal,
     test_hero_picture_has_mobile_variant,
