@@ -19,28 +19,27 @@ Use an HTTP server (not `file://`) - RSS fetch requires same-origin or CORS head
 
 | File | Purpose |
 |------|---------|
-| `index.html` | All portfolio content, styles, and interactive JS (~4,300 lines) |
-| `config.js` | Personal config - status badge, terminal lines, RSS feeds, testimonials, Konami metrics. **Gitignored.** |
-| `config.template.js` | Template for forkers - copy to `config.js` and fill in |
+| `index.html` | The home page. Four sections, no JavaScript. |
+| `home.css` | Stylesheet for `index.html` only |
+| `styles.css` | Stylesheet for the case-study pages (`autoapply-ai.html`, `tailor-resume.html`, `jobscout.html`, `portfolio-risk.html`, `fintune.html`, `fraud-detection.html`) and `content/posts/` |
+| `app.js` | Behavior for the case-study pages. The home page does not load it. |
+| `scripts/test-portfolio.py` | Structural invariants for the home page, run in CI |
 | `.github/workflows/deploy.yml` | GitHub Actions - auto-deploys to GitHub Pages on push to `main` |
-
-## Config vs Content Split
-
-- `config.js` drives: availability badge, hero terminal animation lines, RSS sources (Medium/Dev.to/Substack), testimonial carousel, Konami easter egg metrics
-- `index.html` drives: all section content (bio, experience, projects, skills, education, research, achievements, contact)
-
-When `config.js` is missing (e.g., fresh clone), the page still renders - config values gracefully degrade.
 
 ## Section Map (index.html)
 
-Hero -> About (bio + skills grid) -> Education -> Experience (timeline) -> Projects (cards) -> Research -> Articles (RSS) -> Recommendations (carousel) -> Achievements (counters) -> Contact
+Hero -> Proof (3 cards) -> Before engineering (Zomato, udaan.com) -> Projects (5 repos)
 
-## Interactive Features
+That is the whole page. It was cut down from eleven sections; the rewrite brief was that the site "tries to do too much." Anything added back has to earn its place against a six-second recruiter scan.
 
-- `Ctrl+K` / `Cmd+K`: command palette
-- Scroll progress bar (top of page)
-- Achievement counters animate on scroll (IntersectionObserver)
-- Konami code `up up down down left right left right B A`: reveals JSON metrics dump in console/overlay
+## Home page rules (enforced by `scripts/test-portfolio.py`)
+
+- **No JavaScript on `index.html`.** The only permitted `<script>` is the deferred analytics beacon. No splash screen, no `data-reveal` fence, no hover previews, no command palette.
+- **Hero carries exactly four links** (Resume, LinkedIn, GitHub, Email) and no image, list, or SVG.
+- **Three proof cards, three metrics each.** Every metric value needs a baseline (`30 min -> <8 min`), a unit (`100+ TPS`), or a named control (`Sigstore + CodeQL`).
+- **Five repos in Projects**, each linking straight to GitHub.
+
+Run `python scripts/test-portfolio.py --self-test` before pushing.
 
 ## Deploy
 

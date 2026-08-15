@@ -1,0 +1,345 @@
+/* ============================================================
+   home.css - stylesheet for index.html only.
+
+   The home page was rewritten down to four sections (hero, proof
+   points, prior work, projects). It no longer shares styles.css
+   with the case-study pages: styles.css is 66 KB of rules for
+   sections that no longer exist here. Case-study pages
+   (autoapply-ai.html, fintune.html, ...) still load styles.css
+   unchanged.
+
+   No JavaScript is loaded on this page. Everything below renders
+   on first paint with no observer, no reveal fence, no splash.
+   ============================================================ */
+
+:root {
+  --bg:           #fafaf8;
+  --bg-alt:       #f2f0eb;
+  --fg:           #1a1818;
+  --fg-soft:      #5c5a55;
+  --fg-muted:     #9b9490;
+  --accent:       #176b52;
+  --accent-warm:  #b5752a;
+  --border:       #e0dcd5;
+  --border-soft:  #eae7e0;
+  --chip-bg:      #eae7e0;
+  --chip-fg:      #3a3733;
+  --r:            6px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+
+.container {
+  width: 100%;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Section frame ---------- */
+
+.section {
+  padding: 3.5rem 0;
+  border-top: 1px solid var(--border-soft);
+}
+
+.section-label {
+  display: block;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.75rem;
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  padding: 5rem 0 3.5rem;
+}
+
+.hero-name {
+  margin: 0;
+  font-size: clamp(2.25rem, 7vw, 3.25rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+}
+
+.hero-role {
+  margin: 0.5rem 0 0;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+
+.hero-line {
+  margin: 1.25rem 0 0;
+  max-width: 62ch;
+  font-size: 1.0625rem;
+  color: var(--fg-soft);
+}
+
+.hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 2rem;
+}
+
+.hero-links a {
+  display: inline-block;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  background: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.hero-links a:hover,
+.hero-links a:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.hero-links a:first-child {
+  background: var(--fg);
+  border-color: var(--fg);
+  color: var(--bg);
+}
+
+.hero-links a:first-child:hover,
+.hero-links a:first-child:focus-visible {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ---------- Proof-point cards ---------- */
+
+.proof-cards {
+  display: grid;
+  gap: 1rem;
+}
+
+.proof-card {
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  background: #fff;
+}
+
+.proof-card-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.proof-card-source {
+  margin: 0.2rem 0 1.1rem;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+}
+
+.proof-mechanism {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--fg-soft);
+}
+
+/* ---------- Impact strip ----------
+   Ported from styles.css. <dl> of <dt> value + <dd> label pairs;
+   the baseline lives in the value (30 min -> <8 min), the sr-only
+   span inside each <dd> carries the verification note.
+   ------------------------------------------------------------- */
+
+.impact-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.6rem 1.25rem;
+  margin: 0 0 1.1rem;
+  padding: 0;
+}
+
+.impact-strip > .impact-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.05rem;
+  margin: 0;
+  padding: 0.1rem 0 0.1rem 0.6rem;
+  border-left: 2px solid var(--accent-warm, #b5752a);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.impact-strip .impact-value {
+  margin: 0;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-weight: 400;
+  font-size: 1.05rem;
+  line-height: 1.2;
+  color: var(--fg, #1a1818);
+  /* tabular-nums prevents font-swap CLS; the ui-monospace fallback
+     is not always tabular by default. */
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+.impact-strip .impact-label {
+  margin: 0;
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-muted, #9b9490);
+  line-height: 1.3;
+}
+
+/* ---------- Prior work (Zomato / Udaan) ---------- */
+
+.prior-item + .prior-item { margin-top: 1.75rem; }
+
+.prior-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.75rem;
+}
+
+.prior-company {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.prior-meta {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+}
+
+.prior-body {
+  margin: 0.5rem 0 0;
+  max-width: 68ch;
+  color: var(--fg-soft);
+}
+
+.prior-close {
+  margin: 2.25rem 0 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--accent-warm);
+  max-width: 68ch;
+  font-size: 1.0625rem;
+}
+
+/* ---------- Projects ---------- */
+
+.repo-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--border-soft);
+}
+
+.repo-list li {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.repo-name {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.repo-name:hover,
+.repo-name:focus-visible { text-decoration: underline; }
+
+.repo-line {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.875rem;
+  color: var(--fg-soft);
+}
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  padding: 2.5rem 0 3.5rem;
+  border-top: 1px solid var(--border-soft);
+  font-size: 0.8125rem;
+  color: var(--fg-muted);
+}
+
+.site-footer a { color: var(--fg-soft); }
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  justify-content: space-between;
+}
+
+/* ---------- Breakpoints ----------
+   Below 600px an impact value may wrap (WCAG 1.4.10 reflow at
+   320px). At 600px and up there is room to keep each value on one
+   line while labels stay free to wrap.
+   ---------------------------------------------------------- */
+
+@media (min-width: 600px) {
+  .impact-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .impact-strip .impact-value {
+    white-space: nowrap;
+  }
+}
+
+/* ---------- Print ---------- */
+
+@media print {
+  body { background: #fff; }
+  .impact-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    break-inside: avoid;
+  }
+  .impact-strip > .impact-stat { border-left: 2px solid #000; }
+  .proof-card { break-inside: avoid; border-color: #999; }
+  .hero-links { display: none; }
+}

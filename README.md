@@ -49,8 +49,9 @@ The site is intentionally simple and fast: no framework, no build step, and no r
 
 ## Repository Structure
 
-- `index.html`: site structure, portfolio sections, copy, and project cards
-- `config.js`: live status badge, terminal widget, metrics, recommendations, and social links
+- `index.html`: the home page - hero, three proof-point cards, prior work, five repos. No JavaScript.
+- `home.css`: stylesheet for `index.html` only
+- `styles.css` + `app.js`: stylesheet and behavior for the case-study pages (`autoapply-ai.html`, `fintune.html`, ...)
 - `content/posts/`: long-form writing and supporting portfolio content
 
 ## Local Preview
@@ -133,13 +134,13 @@ Every flagship project card on this site uses an "impact strip" — 3-5 quantifi
 
 See **[docs/impact-strip-pattern.md](docs/impact-strip-pattern.md)** for the full spec, HTML/CSS, conventions ("numbers > tech labels", "3-5 stats per card", "every stat has defensible provenance"), and a11y/mobile checklist.
 
-The reference implementation ships in `index.html` + `styles.css`. Tests in `scripts/test-portfolio.py` enforce the contract:
+The reference implementation ships in `index.html` + `home.css`. Tests in `scripts/test-portfolio.py` enforce the contract:
 
 ```bash
 python scripts/test-portfolio.py --self-test
 ```
 
-17 assertions cover: pattern presence on every card, 3-5 stat range, semantic primitive (`<dl>`), `aria-describedby` linkage, no scrapped-project claims, no inline styles, JetBrains Mono loaded, mobile breakpoint at 600px, dark-mode + print blocks. Wired into CI ([`.github/workflows/portfolio-self-test.yml`](.github/workflows/portfolio-self-test.yml)).
+31 assertions cover: pattern presence on every card, 3-5 stat range, semantic primitive (`<dl>`), `aria-labelledby` linkage, no scrapped-project claims, no inline styles, JetBrains Mono loaded, mobile breakpoint at 600px, print block, and the home page's shape (no script bundle, three sections, four hero links, five repos). Wired into CI ([`.github/workflows/resume-self-test.yml`](.github/workflows/resume-self-test.yml)).
 
 ## Deployment
 
