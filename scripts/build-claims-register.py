@@ -70,7 +70,7 @@ EVIDENCE: dict[str, tuple[str, str, str]] = {
     "C-PRD": ("Requirement documents from stakeholder interviews; resource-allocation time -50%", "STATED", "Self-reported; labeled as such on the page"),
     "C-CSPO": ("Certified Scrum Product Owner", "DOC", "Scrum Alliance certification"),
     # --- Udaan ---
-    "U-FORECAST": ("Demand-forecasting and inventory models in Power BI, Excel macros, Google Data Studio: allocation ROI +7%", "STATED", "Employment record; the $4M figure is BLOCKED and absent"),
+    "U-FORECAST": ("Demand-forecasting and inventory models in Power BI, Excel macros, Google Data Studio: allocation ROI +7%", "STATED", "Employment record; the dollar total is BLOCKED and absent"),
     "U-FULFILL": ("Statistical demand analysis for capacity planning: 99.3% order fulfillment sustained", "STATED", "Employment record; no public artifact"),
     "U-RCA": ("Root-cause analysis on recurring value-chain failures with process flows rewritten", "DOC", "2021 resume"),
     "U-BCP": ("Business continuity plan devised and executed to keep delivery cycles running through application downtime", "DOC", "2021 resume"),

@@ -25,7 +25,7 @@ P-HOOKS,"repo-context-hooks: zero runtime dependencies, 330+ tests, Sigstore-sig
 P-JOBSCOUT,"JobScout: 153 companies across 6 ATS integrations plus Playwright fallback, Flask API, SQLite WAL",DOC,github.com/narendranathe/job-scout backend/config/companies.py,Projects
 P-RISK,"Portfolio Risk Analytics: Spark-to-FastAPI handoff not wired, console sink only, API on generated data",DOC,"Published as a limitation, not a claim. The original throughput and latency figures remain BLOCKED and absent.",Projects
 U-BCP,Business continuity plan devised and executed to keep delivery cycles running through application downtime,DOC,2021 resume,Experience
-U-FORECAST,"Demand-forecasting and inventory models in Power BI, Excel macros, Google Data Studio: allocation ROI +7%",STATED,Employment record; the $4M figure is BLOCKED and absent,Experience
+U-FORECAST,"Demand-forecasting and inventory models in Power BI, Excel macros, Google Data Studio: allocation ROI +7%",STATED,Employment record; the dollar total is BLOCKED and absent,Experience
 U-FULFILL,Statistical demand analysis for capacity planning: 99.3% order fulfillment sustained,STATED,Employment record; no public artifact,Experience
 U-RCA,Root-cause analysis on recurring value-chain failures with process flows rewritten,DOC,2021 resume,Experience
 Z-CAMPAIGN,Funnel instrumentation and A/B tests on campaign and discount strategy: campaign revenue +200%,STATED,Employment record; no public artifact,Experience

@@ -143,7 +143,7 @@
 
         <div class="arch-grid">
           <div class="arch-box">
-            <h4>Market data ingestion</h4>
+            <h3>Market data ingestion</h3>
             <p>
               A Kafka producer simulates realistic equity price ticks: mid-price with configurable
               bid-ask spread, volume weighting, and random walk drift. Produces to a
@@ -152,7 +152,7 @@
             </p>
           </div>
           <div class="arch-box">
-            <h4>Streaming VaR computation</h4>
+            <h3>Streaming VaR computation</h3>
             <p>
               Spark Structured Streaming joins live price ticks against a position snapshot loaded
               at startup. For each 5-second micro-batch, it computes mark-to-market P&amp;L, updates
@@ -162,7 +162,7 @@
             </p>
           </div>
           <div class="arch-box">
-            <h4>API and dashboard</h4>
+            <h3>API and dashboard</h3>
             <p>
               FastAPI exposes risk query endpoints: current VaR by portfolio or asset class,
               historical VaR timeseries, and position-level attribution. Because the Spark handoff
@@ -226,27 +226,27 @@
         <h2>Honest Assessment: What Worked and What Didn't</h2>
         <div class="cs-lessons">
           <div class="cs-lesson worked">
-            <h4>What worked</h4>
+            <h3>What worked</h3>
             <p><strong>Kafka partitioning by ticker.</strong> Partitioning the market data topic by symbol guaranteed ordered delivery per instrument. This made the Spark join against position data deterministic - no race conditions between out-of-order price ticks for the same ticker.</p>
           </div>
           <div class="cs-lesson failed">
-            <h4>What failed</h4>
+            <h3>What failed</h3>
             <p><strong>Historical simulation window size.</strong> A 30-day window is too short to capture low-frequency stress events. In calm market periods, the VaR estimate will be systematically too low. Needed a secondary stressed VaR calculation using a 2008 or 2020 scenario window - didn't build this.</p>
           </div>
           <div class="cs-lesson worked">
-            <h4>What worked</h4>
+            <h3>What worked</h3>
             <p><strong>Loading positions once at startup.</strong> Holding the position snapshot in memory rather than re-reading it on every Spark micro-batch kept the join cheap. The caching layer that would back this at scale is part of the unbuilt half.</p>
           </div>
           <div class="cs-lesson failed">
-            <h4>What failed</h4>
+            <h3>What failed</h3>
             <p><strong>Designing the dashboard around polling.</strong> A 2-second poll against FastAPI adds load and refresh lag for no benefit. Server-sent events pushing on each micro-batch completion is the right shape, and choosing polling first meant designing the API around the wrong access pattern.</p>
           </div>
           <div class="cs-lesson worked">
-            <h4>What worked</h4>
+            <h3>What worked</h3>
             <p><strong>Component VaR attribution.</strong> Computing per-asset component VaR made the dashboard useful beyond just a total number. Seeing that a single position accounts for 40% of portfolio VaR is actionable - just seeing total VaR isn't.</p>
           </div>
           <div class="cs-lesson failed">
-            <h4>What failed</h4>
+            <h3>What failed</h3>
             <p><strong>Spark local mode for development.</strong> Running Spark in local mode masked memory and executor issues that appeared in distributed mode. Should have used a Docker Compose Spark cluster from day one - switching modes late in development required reconfiguring checkpoint paths and memory settings.</p>
           </div>
         </div>

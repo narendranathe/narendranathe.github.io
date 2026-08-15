@@ -135,7 +135,7 @@
 
         <div class="arch-grid">
           <div class="arch-box">
-            <h4>Monitoring layer</h4>
+            <h3>Monitoring layer</h3>
             <p>
               A scheduled crawler visits 153 company career pages on a configurable cadence.
               JavaScript-rendered pages (Workday, Greenhouse) are handled with
@@ -144,7 +144,7 @@
             </p>
           </div>
           <div class="arch-box">
-            <h4>Enrichment layer</h4>
+            <h3>Enrichment layer</h3>
             <p>
               Each discovered listing is enriched with: ATS platform tag (Workday, Greenhouse,
               Lever, Ashby, LinkedIn, iCIMS), known H1B sponsorship history for the company,
@@ -153,7 +153,7 @@
             </p>
           </div>
           <div class="arch-box">
-            <h4>API and dashboard</h4>
+            <h3>API and dashboard</h3>
             <p>
               Flask exposes search endpoints: filter by role type, location, ATS platform,
               and sponsorship status. The live dashboard renders job listings with one-click
@@ -224,27 +224,27 @@
         <h2>Honest Assessment: What Worked and What Didn't</h2>
         <div class="cs-lessons">
           <div class="cs-lesson worked">
-            <h4>What worked</h4>
+            <h3>What worked</h3>
             <p><strong>Going direct to source.</strong> Career page data is consistently fresher than job board aggregates. Several listings appeared on the career page 2-3 days before showing on LinkedIn, with fewer duplicate entries and more accurate job details.</p>
           </div>
           <div class="cs-lesson failed">
-            <h4>What failed</h4>
+            <h3>What failed</h3>
             <p><strong>Bot detection on Workday pages.</strong> Workday's client-side rendering triggers bot detection on some domains even with Playwright. Had to add randomized request timing and user-agent rotation, which slowed the crawler on Workday-hosted sites.</p>
           </div>
           <div class="cs-lesson worked">
-            <h4>What worked</h4>
+            <h3>What worked</h3>
             <p><strong>Sponsorship-aware ranking.</strong> Surfacing sponsorship-likely companies at the top of results cut irrelevant application attempts. The H1B lookup table, even when incomplete, improves signal quality for international candidates.</p>
           </div>
           <div class="cs-lesson failed">
-            <h4>What failed</h4>
+            <h3>What failed</h3>
             <p><strong>Closed job detection.</strong> Detecting when a job listing is no longer active requires re-crawling every URL periodically. Without a job state machine (open → closed → archived), stale listings persist in the database longer than they should.</p>
           </div>
           <div class="cs-lesson worked">
-            <h4>What worked</h4>
+            <h3>What worked</h3>
             <p><strong>Modular ATS parsers.</strong> The platform-detect-then-parse pattern made adding new ATS support straightforward. Each parser is isolated - breaking one doesn't break others, and testing is simple because parsers are pure functions over HTML/JSON.</p>
           </div>
           <div class="cs-lesson failed">
-            <h4>What failed</h4>
+            <h3>What failed</h3>
             <p><strong>Rate limiting from smaller companies.</strong> Large tech companies rarely rate-limit their career pages. Smaller companies sometimes return 429s on repeated visits, especially from a single IP. A rotating proxy layer would solve this but adds operational cost.</p>
           </div>
         </div>

@@ -834,7 +834,8 @@ button { font-family: inherit; cursor: pointer; }
   background: var(--bg-alt); border-radius: var(--r);
   padding: 0.9rem; border: 1px solid var(--border-soft);
 }
-.arch-box h4 {
+.arch-box h4,
+.arch-box h3 {
   font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.07em; color: var(--accent); margin-bottom: 0.4rem;
 }
@@ -966,7 +967,11 @@ button { font-family: inherit; cursor: pointer; }
   color: var(--accent-warm);
   border-bottom: 1px dotted var(--border);
   cursor: help;
-  white-space: nowrap;
+  /* Deliberately NOT nowrap. A case can cite five ids, and as one
+     unbreakable string its min-content width sets the timeline grid
+     track, which pushed the whole page 122px wider than a 320px
+     viewport. Single-id labels elsewhere may safely use nowrap. */
+  overflow-wrap: anywhere;
 }
 /* Inline evidence-quality marker. Anything the record cannot document
    says so where it is claimed, not in a footnote nobody reaches. */
@@ -1476,7 +1481,8 @@ button { font-family: inherit; cursor: pointer; }
 }
 .cs-lesson.worked { background: rgba(23,107,82,0.06); border: 1px solid rgba(23,107,82,0.2); }
 .cs-lesson.failed { background: rgba(181,117,42,0.06); border: 1px solid rgba(181,117,42,0.2); }
-.cs-lesson h4 {
+.cs-lesson h4,
+.cs-lesson h3 {
   font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.08em; margin-bottom: 0.5rem;
 }
@@ -1879,6 +1885,7 @@ body.splash-active { overflow: hidden; }
   padding: 0;
 }
 .system-diagram {
+  max-width: 100%;
   width: 100%;
   height: auto;
   color: var(--fg);
@@ -2209,6 +2216,13 @@ body.splash-active { overflow: hidden; }
 }
 
 .skills-list > li { display: contents; }
+/* Tooltips are absolutely positioned and centred on their tile, so the
+   rightmost tile's tooltip sits ~11px past the viewport even while
+   hidden, and an absolutely positioned box still extends the scrollable
+   area. app.js shifts it on hover/focus, but that does nothing for the
+   resting state. overflow-x: clip contains it horizontally while leaving
+   the vertical axis visible, which is the direction tooltips open. */
+.skills-grid { overflow-x: clip; }
 
 .skill-icon {
   position: relative;

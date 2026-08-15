@@ -136,7 +136,7 @@
 
         <div class="arch-grid">
           <div class="arch-box">
-            <h4>QLoRA fine-tuning</h4>
+            <h3>QLoRA fine-tuning</h3>
             <p>
               Mistral-7B loaded in 4-bit NF4 precision via bitsandbytes, with LoRA adapters (rank 16,
               alpha 32) applied to attention projection layers. This reduces trainable parameters from
@@ -145,7 +145,7 @@
             </p>
           </div>
           <div class="arch-box">
-            <h4>PII guardrails</h4>
+            <h3>PII guardrails</h3>
             <p>
               Every request passes through Presidio-based detection before reaching the model.
               SSN patterns, credit card numbers, email addresses, and phone numbers are detected
@@ -154,7 +154,7 @@
             </p>
           </div>
           <div class="arch-box">
-            <h4>Self-recovery engine</h4>
+            <h3>Self-recovery engine</h3>
             <p>
               A circuit breaker (CLOSED / OPEN / HALF_OPEN) tracks consecutive failures. On threshold
               breach, requests are rejected immediately instead of cascading. The RecoveryManager
@@ -204,27 +204,27 @@
         <h2>Honest Assessment: What Worked and What Didn't</h2>
         <div class="cs-lessons">
           <div class="cs-lesson worked">
-            <h4>What worked</h4>
+            <h3>What worked</h3>
             <p><strong>4-bit NF4 quantization.</strong> Reduced GPU memory from ~14GB to ~3.5GB with negligible accuracy loss. Made the model runnable on consumer hardware (T4, RTX 3060) without cloud GPU costs.</p>
           </div>
           <div class="cs-lesson failed">
-            <h4>What failed</h4>
+            <h3>What failed</h3>
             <p><strong>Dataset library versioning.</strong> HuggingFace <code>datasets</code> v4.x dropped support for script-based datasets entirely. The financial_phrasebank repo uses a legacy loading script, requiring a pin to <code>datasets&lt;3.0</code> and <code>trust_remote_code=True</code>. Cost two days of debugging.</p>
           </div>
           <div class="cs-lesson worked">
-            <h4>What worked</h4>
+            <h3>What worked</h3>
             <p><strong>Circuit breaker pattern.</strong> Clean state machine (CLOSED/OPEN/HALF_OPEN) with configurable thresholds. Prevents cascading failures during model reload and makes the system self-healing without operator pages.</p>
           </div>
           <div class="cs-lesson failed">
-            <h4>What failed</h4>
+            <h3>What failed</h3>
             <p><strong>CPU-only fallback path.</strong> DistilBERT CPU config was intended as a no-GPU fallback, but the HF Trainer + TRL integration assumes GPU-aware features. The fallback needs more isolation from the QLoRA codepath.</p>
           </div>
           <div class="cs-lesson worked">
-            <h4>What worked</h4>
+            <h3>What worked</h3>
             <p><strong>Sklearn baselines as a discipline.</strong> Having auditable baselines prevented the "it's deep learning so it must be better" trap. The comparison is saved as JSON artifacts that any reviewer can inspect.</p>
           </div>
           <div class="cs-lesson failed">
-            <h4>What failed</h4>
+            <h3>What failed</h3>
             <p><strong>bitsandbytes on Windows.</strong> Native Windows support for bitsandbytes is fragile. WSL2 or Linux containers are the practical path for QLoRA training. Documentation should have been clearer about this upfront.</p>
           </div>
         </div>

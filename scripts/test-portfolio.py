@@ -503,6 +503,38 @@ def test_no_en_or_em_dashes_in_public_copy() -> None:
     )
 
 
+def test_sitemap_covers_every_public_page() -> None:
+    """Every shipped HTML page must appear in sitemap.xml, and every
+    sitemap entry must point at a file that exists.
+
+    Both directions matter: a page missing from the sitemap does not get
+    crawled, and a sitemap entry pointing at a deleted page is a 404 in
+    the one file search engines read most carefully. Loops 3 and 7
+    removed sections and Loop 5 added one, so this drifts on its own."""
+    sitemap = REPO_ROOT / "sitemap.xml"
+    assert sitemap.exists(), "sitemap.xml missing"
+    body = sitemap.read_text(encoding="utf-8")
+    locs = re.findall(r"<loc>https://narendranathe\.github\.io/([^<]*)</loc>", body)
+
+    listed = {("index.html" if loc == "" else loc) for loc in locs}
+    for rel in listed:
+        assert (REPO_ROOT / rel).exists(), f"sitemap lists a missing file: {rel}"
+
+    shipped = {p.name for p in REPO_ROOT.glob("*.html")}
+    shipped |= {
+        str(p.relative_to(REPO_ROOT))
+        for p in (REPO_ROOT / "content" / "posts").glob("*.html")
+    }
+    missing = shipped - listed
+    assert not missing, f"public pages absent from sitemap.xml: {sorted(missing)}"
+
+    robots = REPO_ROOT / "robots.txt"
+    assert robots.exists(), "robots.txt missing"
+    assert "Sitemap: https://narendranathe.github.io/sitemap.xml" in robots.read_text(encoding="utf-8"), (
+        "robots.txt does not point at the sitemap"
+    )
+
+
 def test_claims_register_in_sync_with_page() -> None:
     """The claims register must be generated from the page, not kept by
     hand, and must not publish anything unresolved.
@@ -1743,9 +1775,14 @@ def test_public_identity_surfaces_use_canonical_title() -> None:
     unchanged in purpose and now covers both stale variants: the second
     one survived in hover-preview captions for months because the
     original guard only knew about the first."""
+    # Matched case-insensitively against a substring, because the third
+    # entry is how the claim actually survived: config.js carried
+    # "Senior AI platform engineering" as a footer string, which the
+    # exact-title check walked straight past.
     stale_titles = (
-        "Senior AI Platform Engineer",
-        "Senior AI/ML Engineer",
+        "senior ai platform engineer",
+        "senior ai/ml engineer",
+        "senior ai platform engineering",
     )
 
     public_paths = (
@@ -1764,7 +1801,7 @@ def test_public_identity_surfaces_use_canonical_title() -> None:
     contents = {p: p.read_text(encoding="utf-8") for p in public_paths if p.exists()}
     for path, body in contents.items():
         for stale in stale_titles:
-            assert stale not in body, (
+            assert stale not in body.lower(), (
                 f"{path.relative_to(REPO_ROOT)} still contains the stale "
                 f"'{stale}' identity claim"
             )
@@ -1809,6 +1846,7 @@ TESTS = [
     test_claims_register_in_sync_with_page,
     test_no_banned_words_in_visible_copy,
     test_no_en_or_em_dashes_in_public_copy,
+    test_sitemap_covers_every_public_page,
     test_hero_uses_local_photo_not_external_cdn,
     test_hero_aside_no_data_reveal,
     test_hero_picture_has_mobile_variant,

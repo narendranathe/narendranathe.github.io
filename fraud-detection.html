@@ -144,7 +144,7 @@
 
         <div class="arch-grid">
           <div class="arch-box">
-            <h4>Ingestion layer</h4>
+            <h3>Ingestion layer</h3>
             <p>
               A Kafka producer simulates a realistic transaction stream: varying amounts, merchant categories,
               geolocation signals, and behavioral anomalies. Transactions flow into a <code>raw_transactions</code>
@@ -152,7 +152,7 @@
             </p>
           </div>
           <div class="arch-box">
-            <h4>Feature engineering</h4>
+            <h3>Feature engineering</h3>
             <p>
               PySpark Structured Streaming consumes the raw topic and computes derived features:
               rolling velocity (transactions in last 5 min / 1 hr), merchant category risk score,
@@ -161,7 +161,7 @@
             </p>
           </div>
           <div class="arch-box">
-            <h4>Scoring service</h4>
+            <h3>Scoring service</h3>
             <p>
               FastAPI loads the production model from MLflow at startup and keeps it in memory.
               No network hop per prediction - 1.12ms P99 latency achieved by eliminating the
@@ -223,27 +223,27 @@
         <h2>Honest Assessment: What Worked and What Didn't</h2>
         <div class="cs-lessons">
           <div class="cs-lesson worked">
-            <h4>What worked</h4>
+            <h3>What worked</h3>
             <p><strong>In-memory model serving.</strong> Loading the MLflow model at FastAPI startup and keeping it in RAM was the single biggest latency win. Eliminated 15-40ms per prediction compared to loading per-request.</p>
           </div>
           <div class="cs-lesson failed">
-            <h4>What failed</h4>
+            <h3>What failed</h3>
             <p><strong>Schema evolution.</strong> Changing the feature schema mid-stream broke the PySpark consumer. Needed a schema registry (Confluent or AWS Glue) to version feature contracts properly.</p>
           </div>
           <div class="cs-lesson worked">
-            <h4>What worked</h4>
+            <h3>What worked</h3>
             <p><strong>MLflow model staging.</strong> The Staging - Production - Archived lifecycle prevented accidental promotion of underperforming models and gave clean rollback at any point.</p>
           </div>
           <div class="cs-lesson failed">
-            <h4>What failed</h4>
+            <h3>What failed</h3>
             <p><strong>Spark executor memory.</strong> Under sustained 100+ TPS, PySpark GC pressure caused processing spikes. Fixed by tuning <code>spark.executor.memory</code>, <code>spark.sql.shuffle.partitions</code>, and switching from default GC to G1GC.</p>
           </div>
           <div class="cs-lesson worked">
-            <h4>What worked</h4>
+            <h3>What worked</h3>
             <p><strong>Airflow LocalExecutor.</strong> Dropped the CeleryExecutor for local dev. Eliminated Redis + Celery dependencies and cut environment setup time from 20 minutes to under 5.</p>
           </div>
           <div class="cs-lesson failed">
-            <h4>What failed</h4>
+            <h3>What failed</h3>
             <p><strong>Kafka consumer group rebalancing.</strong> Under rapid producer scale-up, consumer group rebalancing caused processing gaps up to 8 seconds. Mitigated with <code>session.timeout.ms</code> and <code>heartbeat.interval.ms</code> tuning, but not fully resolved.</p>
           </div>
         </div>

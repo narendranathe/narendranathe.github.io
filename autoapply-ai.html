@@ -84,7 +84,7 @@
 
         <div class="arch-grid" style="margin-top: 1.5rem;">
           <div class="arch-box">
-            <h4>Product boundary</h4>
+            <h3>Product boundary</h3>
             <p>
               One workflow product instead of three overlapping apps. The Chrome extension, FastAPI backend,
               and React dashboard all serve the same user journey: find a job, tailor the resume, apply,
@@ -92,7 +92,7 @@
             </p>
           </div>
           <div class="arch-box">
-            <h4>Extension architecture</h4>
+            <h3>Extension architecture</h3>
             <p>
               Chrome MV3 content script with Shadow DOM isolation - no CSS collisions with host job pages.
               MutationObserver fires only on form element additions/removals (not cosmetic DOM changes).
@@ -101,7 +101,7 @@
             </p>
           </div>
           <div class="arch-box">
-            <h4>Intelligence layer</h4>
+            <h3>Intelligence layer</h3>
             <p>
               Multi-provider LLM cascade: Anthropic - OpenAI - Gemini - Groq - Kimi - Ollama - keyword fallback.
               Per-category model routing dispatches different question types (why_company, cover_letter, strength)
