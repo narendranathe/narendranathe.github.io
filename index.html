@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Narendranath Edara - Data Engineer. Three years building production data platforms; owns CDC ingestion, releases, and recovery on a payroll platform running 400 databases and 70 TB.">
+  <meta name="description" content="Narendranath Edara - Data Engineer. Three years building production data platforms; owns change data capture, releases, and recovery on a payroll platform running 400 databases and 70 TB.">
   <meta name="author" content="Narendranath Edara">
   <meta property="og:title" content="Narendranath Edara | Data Engineer - AI-Enabled Data Platforms">
-  <meta property="og:description" content="Release cycle 3 months to 14 days. CDC ETL 30 min to under 8, compute down 67%. Provisioning automation worth 5,000 engineering hours a year.">
+  <meta property="og:description" content="ETL runtime 30 min to 8 min. Release cycle 3 months to 14 days. Failover recovery under an hour.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://narendranathe.github.io">
   <meta property="og:image" content="https://narendranathe.github.io/static/og-image.jpg?v=2026-04-28">
@@ -38,7 +38,8 @@
   <title>Narendranath Edara | Data Engineer - AI-Enabled Data Platforms</title>
 
   <!-- home.css, not styles.css: this page no longer shares a stylesheet
-       with the case-study pages. No app.js either - zero JS on this page. -->
+       with the case-study pages. No app.js either - zero JS on this page.
+       The Projects section collapses with <details>, which is native. -->
   <link rel="stylesheet" href="home.css">
 </head>
 <body>
@@ -61,6 +62,17 @@
       </div>
     </section>
 
+    <!-- Section jump menu. Sits outside the hero so the hero stays four
+         elements, and stays unsticky so it never eats phone viewport. -->
+    <nav class="toc" aria-label="Sections">
+      <div class="container toc-inner">
+        <a href="#proof">Proof</a>
+        <a href="#before">Before engineering</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+
     <!-- ===== 2. PROOF POINTS ===== -->
     <section class="section" id="proof" aria-labelledby="proof-label">
       <div class="container">
@@ -70,11 +82,11 @@
 
           <article class="proof-card">
             <h2 class="proof-card-title" id="card-platform">ExponentHR</h2>
-            <p class="proof-card-source">Payroll data platform &middot; 400 databases, 70 TB &middot; refreshed every 15 minutes<br>Owns ingest, releases, and recovery</p>
+            <p class="proof-card-source">Payroll data platform &middot; 400 databases, 70 TB<br>Owns change data capture, releases, recovery</p>
             <dl class="impact-strip" aria-labelledby="card-platform">
               <div class="impact-stat">
                 <dt class="impact-value">30&nbsp;min &rarr; 8&nbsp;min</dt>
-                <dd class="impact-label">ETL runtime<span class="sr-only"> — the nightly load that moves changed rows into the warehouse. Cut from thirty minutes to under eight, with compute cost down sixty-seven percent, by replacing full-table reloads with incremental merge-upserts. Now the platform's standing pattern.</span></dd>
+                <dd class="impact-label">ETL runtime<span class="sr-only"> — the load that moves changed rows into the warehouse. Cut from thirty minutes to under eight, with compute cost down sixty-seven percent, by replacing full-table reloads with incremental merge-upserts. Now the platform's standing pattern.</span></dd>
               </div>
               <div class="impact-stat">
                 <dt class="impact-value">3&nbsp;mo &rarr; 14&nbsp;d</dt>
@@ -85,15 +97,12 @@
                 <dd class="impact-label">failover recovery<span class="sr-only"> — mean time to restore service after a database failover. Under one hour, with documented runbooks that turned a specialist-only restore into an on-call procedure anyone on the rota can follow.</span></dd>
               </div>
             </dl>
-            <p class="proof-mechanism">
-              Azure DevOps pipelines run releases and failover, each step safe to re-run. CDC
-              (change data capture) tables feed MERGE upserts, so a failed load retries clean.
-            </p>
+            <p class="proof-mechanism">CDC tables feed MERGE upserts, safe on retry.</p>
           </article>
 
           <article class="proof-card">
             <h2 class="proof-card-title" id="card-ml">Fraud Detection &amp; FinTune</h2>
-            <p class="proof-card-source">Real-time scoring and financial text models &middot; built end to end<br>Synthetic data, production-shaped engineering</p>
+            <p class="proof-card-source">Real-time scoring and financial text models<br>Synthetic data, production-shaped engineering</p>
             <dl class="impact-strip" aria-labelledby="card-ml">
               <div class="impact-stat">
                 <dt class="impact-value">1.12&nbsp;ms</dt>
@@ -108,15 +117,12 @@
                 <dd class="impact-label">synthetic, not live traffic<span class="sr-only"> — one hundred thousand generated transactions at a two percent fraud rate. This is synthetic data by design, not real payment traffic. The engineering around it is production-shaped; the data is not.</span></dd>
               </div>
             </dl>
-            <p class="proof-mechanism">
-              Kafka streams exactly-once into FastAPI, with the LightGBM model held in memory.
-              FinTune adds PII redaction before inference and watches output drift.
-            </p>
+            <p class="proof-mechanism">Kafka exactly-once into FastAPI, model held in memory.</p>
           </article>
 
           <article class="proof-card">
             <h2 class="proof-card-title" id="card-oss">repo-context-hooks</h2>
-            <p class="proof-card-source">Python package on PyPI &middot; anyone can install and check it<br>Git hooks that snapshot repo context for AI agents</p>
+            <p class="proof-card-source">Python package on PyPI, anyone can check it<br>Git hooks that snapshot repo context for AI agents</p>
             <dl class="impact-strip" aria-labelledby="card-oss">
               <div class="impact-stat">
                 <dt class="impact-value">330+</dt>
@@ -128,13 +134,10 @@
               </div>
               <div class="impact-stat">
                 <dt class="impact-value">Signed</dt>
-                <dd class="impact-label">every release, scanned every change<span class="sr-only"> — every release is cryptographically signed through Sigstore, and CodeQL static analysis runs on every pull request; both are verifiable in the workflow files.</span></dd>
+                <dd class="impact-label">every release<span class="sr-only"> — every release is cryptographically signed through Sigstore, and CodeQL static analysis runs on every pull request; both are verifiable in the workflow files.</span></dd>
               </div>
             </dl>
-            <p class="proof-mechanism">
-              GitHub Actions signs each release with Sigstore, using short-lived OIDC tokens.
-              No long-lived publishing key exists to steal.
-            </p>
+            <p class="proof-mechanism">Sigstore signs every release. No stored publishing key.</p>
           </article>
 
         </div>
@@ -150,7 +153,7 @@
 
           <article class="proof-card">
             <h2 class="proof-card-title" id="card-zomato">Zomato</h2>
-            <p class="proof-card-source">Business Analyst &middot; Mar 2018 to Sep 2020 &middot; Hyderabad<br>Marketplace analytics &middot; 300-restaurant portfolio</p>
+            <p class="proof-card-source">Business Analyst &middot; Mar 2018 to Sep 2020<br>Marketplace analytics &middot; 300 restaurants</p>
             <dl class="impact-strip" aria-labelledby="card-zomato">
               <div class="impact-stat">
                 <dt class="impact-value">-&#8377;18 &rarr; +&#8377;2</dt>
@@ -165,15 +168,12 @@
                 <dd class="impact-label">support desk volume<span class="sr-only"> — support desk volume fell eighty percent after an Elasticsearch index over more than one hundred thousand internal documents let staff answer their own questions.</span></dd>
               </div>
             </dl>
-            <p class="proof-mechanism">
-              Rebalanced discount sharing against ad revenue, restaurant by restaurant.
-              Elasticsearch indexed 100K internal docs for self-serve search.
-            </p>
+            <p class="proof-mechanism">Rebalanced discount sharing against ad revenue per restaurant.</p>
           </article>
 
           <article class="proof-card">
             <h2 class="proof-card-title" id="card-udaan">udaan.com</h2>
-            <p class="proof-card-source">Business Intelligence Analyst &middot; Sep 2020 to Mar 2021 &middot; Nashik<br>New-city B2B marketplace launch &middot; staples category</p>
+            <p class="proof-card-source">Business Intelligence Analyst &middot; Sep 2020 to Mar 2021<br>New-city B2B marketplace launch</p>
             <dl class="impact-strip" aria-labelledby="card-udaan">
               <div class="impact-stat">
                 <dt class="impact-value">&rarr; &#8377;5&nbsp;Cr/mo</dt>
@@ -188,10 +188,7 @@
                 <dd class="impact-label">return on inventory<span class="sr-only"> — return on inventory investment lifted seven percent through demand forecasting and inventory models.</span></dd>
               </div>
             </dl>
-            <p class="proof-mechanism">
-              Demand and inventory forecasting built in Power BI. Wrote the continuity plan
-              that kept deliveries moving through app downtime.
-            </p>
+            <p class="proof-mechanism">Power BI forecasting. Continuity plan for app downtime.</p>
           </article>
 
         </div>
@@ -203,43 +200,68 @@
       </div>
     </section>
 
-    <!-- ===== 4. PROJECTS ===== -->
+    <!-- ===== 4. PROJECTS (collapsed) ===== -->
     <section class="section" id="projects" aria-labelledby="projects-label">
       <div class="container">
         <span class="section-label" id="projects-label">Projects</span>
 
-        <ul class="repo-list">
-          <li>
-            <a class="repo-name" href="https://github.com/narendranathe/repo-context-hooks" target="_blank" rel="noreferrer">repo-context-hooks</a>
-            <span class="repo-line">Zero-dependency commit hooks that snapshot repo context for LLM agents. Sigstore-signed OIDC releases, CodeQL on every PR, 330+ tests. Installable from PyPI.</span>
-          </li>
-          <li>
-            <a class="repo-name" href="https://github.com/narendranathe/fraud-detection-ml-platform" target="_blank" rel="noreferrer">fraud-detection-ml-platform</a>
-            <span class="repo-line">Kafka to LightGBM to MLflow, served over FastAPI. P99 1.12 ms above 100 TPS, exactly-once processing, Airflow retraining. Synthetic data.</span>
-          </li>
-          <li>
-            <a class="repo-name" href="https://github.com/narendranathe/fintune" target="_blank" rel="noreferrer">fintune</a>
-            <span class="repo-line">Mistral-7B fine-tuned with QLoRA on 4-bit NF4 adapters. PII redaction before inference, KL-divergence drift monitoring, three-state circuit breaker, 35+ tests.</span>
-          </li>
-          <li>
-            <a class="repo-name" href="https://github.com/narendranathe/autoapply-ai" target="_blank" rel="noreferrer">autoapply-ai</a>
-            <span class="repo-line">Chrome MV3 extension plus FastAPI backend. 11 ATS adapters handling shadow-DOM isolation, six-provider LLM cascade, pgvector retrieval, 355 backend tests. Private deployment.</span>
-          </li>
-          <li>
-            <a class="repo-name" href="https://github.com/narendranathe/job-scout" target="_blank" rel="noreferrer">job-scout</a>
-            <span class="repo-line">109 career pages monitored on a zero-cost GitHub Actions architecture. TF-IDF matching, SQLite WAL, circuit breakers that isolate a failing scraper.</span>
-          </li>
-        </ul>
+        <!-- <details> is native HTML. Collapsed by default keeps roughly
+             900px of repo detail off the phone scroll for the reader who
+             only wants the numbers, and costs one tap for the one who
+             wants the code. No JavaScript. -->
+        <details class="repo-details">
+          <summary>
+            <span class="repo-summary-main">5 repositories</span>
+            <span class="repo-summary-hint">tap to open</span>
+          </summary>
+          <ul class="repo-list">
+            <li>
+              <a class="repo-name" href="https://github.com/narendranathe/repo-context-hooks" target="_blank" rel="noreferrer">repo-context-hooks</a>
+              <span class="repo-line">Commit hooks that snapshot repo context for AI agents. No outside libraries, signed releases, 330+ tests.</span>
+            </li>
+            <li>
+              <a class="repo-name" href="https://github.com/narendranathe/fraud-detection-ml-platform" target="_blank" rel="noreferrer">fraud-detection-ml-platform</a>
+              <span class="repo-line">Kafka to LightGBM to MLflow, served over FastAPI. P99 1.12 ms above 100 TPS. Synthetic data.</span>
+            </li>
+            <li>
+              <a class="repo-name" href="https://github.com/narendranathe/fintune" target="_blank" rel="noreferrer">fintune</a>
+              <span class="repo-line">Mistral-7B tuned with QLoRA on 4-bit adapters. PII redaction, drift monitoring, 35+ tests.</span>
+            </li>
+            <li>
+              <a class="repo-name" href="https://github.com/narendranathe/autoapply-ai" target="_blank" rel="noreferrer">autoapply-ai</a>
+              <span class="repo-line">Chrome extension plus FastAPI backend. 11 ATS adapters, six-provider LLM cascade, 355 tests. Private deployment.</span>
+            </li>
+            <li>
+              <a class="repo-name" href="https://github.com/narendranathe/job-scout" target="_blank" rel="noreferrer">job-scout</a>
+              <span class="repo-line">109 career pages watched on free GitHub Actions. SQLite WAL, circuit breakers that isolate a dead scraper.</span>
+            </li>
+          </ul>
+        </details>
+      </div>
+    </section>
+
+    <!-- ===== 5. CONTACT - the only ask on the page ===== -->
+    <section class="section" id="contact" aria-labelledby="contact-label">
+      <div class="container">
+        <span class="section-label" id="contact-label">Contact</span>
+        <p class="cta-line">
+          I am currently exploring senior data engineering roles at companies where data is
+          money-adjacent.
+        </p>
+        <a class="cta-btn"
+           href="mailto:edara.narendranath@gmail.com?subject=Re%3A%20Data%20Engineering%20-%20%5BCompany%20Name%5D">
+          edara.narendranath@gmail.com
+        </a>
+        <p class="cta-meta">Dallas, TX</p>
       </div>
     </section>
 
   </main>
 
-  <!-- id="connect" is the target the case-study pages link to for contact. -->
-  <footer class="site-footer" id="connect">
+  <footer class="site-footer">
     <div class="container footer-inner">
-      <span>Narendranath Edara &middot; Data Engineer &middot; Dallas TX</span>
-      <span><a href="mailto:edara.narendranath@gmail.com">edara.narendranath@gmail.com</a></span>
+      <span>Narendranath Edara &middot; Data Engineer &middot; Dallas, TX</span>
+      <span><a href="#proof">Back to top</a></span>
     </div>
   </footer>
 

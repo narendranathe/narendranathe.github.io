@@ -45,9 +45,9 @@ POST_MAX_WORDS = 2500
 # four-row structure so the eye reads every card the same way.
 EXPECTED_STRIP_COUNT = 5
 
-# The home page shape. Three <section class="section"> blocks plus the
-# hero, four hero links, five repos.
-EXPECTED_SECTION_COUNT = 3
+# The home page shape. Four <section class="section"> blocks plus the
+# hero, four hero links, five repos, one call to action.
+EXPECTED_SECTION_COUNT = 4
 EXPECTED_HERO_LINKS = 4
 EXPECTED_REPO_COUNT = 5
 
@@ -247,6 +247,10 @@ BLOCKED_CLAIMS: tuple[tuple[str, str], ...] = (
     ("sub-millisecond", "fraud P99 is 1.12 ms, not sub-millisecond"),
     ("94%+ model accuracy", "no ground-truth backing for a fraud accuracy figure"),
     ("94%+ detection accuracy", "no ground-truth backing for a fraud accuracy figure"),
+    ("&lt;1ms", "fraud P99 is 1.12 ms, not under 1 ms"),
+    ("<1ms", "fraud P99 is 1.12 ms, not under 1 ms"),
+    ("sub-second var", "portfolio-risk pipeline is console-only; frame as in progress"),
+    ("live p&amp;l tracking", "portfolio-risk pipeline is console-only; frame as in progress"),
     # Portfolio Risk: Spark-to-FastAPI handoff is console-only.
     ("47.8 tps", "not supported by the portfolio-risk repo"),
     ("15k+ records", "not supported by the portfolio-risk repo"),
@@ -384,8 +388,8 @@ def test_index_loads_no_javascript_bundle(html: str) -> None:
 def test_index_has_expected_section_count(html: str) -> None:
     """Hero plus exactly three sections: proof, prior work, projects."""
     sections = re.findall(r'<section class="section"[^>]*id="([^"]+)"', html)
-    assert sections == ["proof", "before", "projects"], (
-        f"expected sections ['proof', 'before', 'projects'], found {sections}"
+    assert sections == ["proof", "before", "projects", "contact"], (
+        f"expected sections ['proof', 'before', 'projects', 'contact'], found {sections}"
     )
     assert len(sections) == EXPECTED_SECTION_COUNT
     assert '<section class="hero">' in html, "hero section missing"
@@ -702,6 +706,93 @@ def test_public_identity_surfaces_use_canonical_title() -> None:
     )
 
 
+
+MAX_MECHANISM_WORDS = 8
+MAX_SENTENCE_WORDS = 15
+MAX_SENTENCES_PER_PARA = 2
+# Visible prose classes. sr-only spans are stripped first: they are
+# screen-reader provenance notes, deliberately long, and never scanned.
+PROSE_CLASSES = ("proof-mechanism", "prior-close", "hero-line", "cta-line")
+
+
+def _visible_paragraphs(html: str) -> list[tuple[str, str]]:
+    body = re.sub(r'<span class="sr-only">.*?</span>', "", html, flags=re.S)
+    out = []
+    for cls in PROSE_CLASSES:
+        for m in re.finditer(r'<p class="%s">(.*?)</p>' % cls, body, re.S):
+            txt = re.sub(r"<[^>]+>", " ", m.group(1))
+            txt = txt.replace("&middot;", " ").replace("&nbsp;", " ")
+            out.append((cls, re.sub(r"\s+", " ", txt).strip()))
+    return out
+
+
+def _sentences(text: str) -> list[str]:
+    return [x.strip() for x in re.split(r"(?<=[.!?]) ", text) if x.strip()]
+
+
+def test_mechanism_lines_stay_scannable(html: str) -> None:
+    """A phone reader gives each card about two seconds. The mechanism
+    line is the last thing they read and the first thing they skip, so
+    it has to land in one glance."""
+    for cls, txt in _visible_paragraphs(html):
+        if cls != "proof-mechanism":
+            continue
+        n = len(txt.split())
+        assert n <= MAX_MECHANISM_WORDS, (
+            f"mechanism line is {n} words (max {MAX_MECHANISM_WORDS}): {txt!r}"
+        )
+
+
+def test_visible_prose_is_short(html: str) -> None:
+    """Read-aloud limits, enforced rather than trusted."""
+    for cls, txt in _visible_paragraphs(html):
+        sents = _sentences(txt)
+        assert len(sents) <= MAX_SENTENCES_PER_PARA, (
+            f".{cls} has {len(sents)} sentences (max {MAX_SENTENCES_PER_PARA}): {txt!r}"
+        )
+        for sent in sents:
+            n = len(sent.split())
+            assert n <= MAX_SENTENCE_WORDS, (
+                f".{cls} sentence is {n} words (max {MAX_SENTENCE_WORDS}): {sent!r}"
+            )
+
+
+def test_projects_section_is_collapsed_by_default(html: str) -> None:
+    """<details> with no `open` attribute keeps roughly 900px of repo
+    detail off the phone scroll until someone asks for it. It must stay
+    native: adding `open` or swapping in a JS toggle both regress."""
+    m = re.search(r"<details[^>]*class=\"repo-details\"[^>]*>", html)
+    assert m, "projects section must use <details class=\"repo-details\">"
+    assert " open" not in m.group(0), (
+        "projects <details> carries `open`; it must be collapsed by default"
+    )
+    assert "<summary>" in html, "projects <details> missing <summary>"
+
+
+def test_toc_links_resolve_to_real_sections(html: str) -> None:
+    nav = re.search(r'<nav class="toc"[^>]*>([\s\S]*?)</nav>', html)
+    assert nav, "section jump menu (nav.toc) not found"
+    targets = re.findall(r'href="#([^"]+)"', nav.group(1))
+    assert targets == ["proof", "before", "projects", "contact"], (
+        f"jump menu should link the four sections in order, found {targets}"
+    )
+    for t in targets:
+        assert f'id="{t}"' in html, f"jump menu points at #{t} but no element has that id"
+
+
+def test_exactly_one_call_to_action(html: str) -> None:
+    """Everything else on the page is proof. One ask, one address, and
+    the subject line is pre-filled so replying costs nothing."""
+    ctas = re.findall(r'<a class="cta-btn"[^>]*href="([^"]+)"', html)
+    assert len(ctas) == 1, f"expected exactly one call to action, found {len(ctas)}"
+    href = ctas[0]
+    assert href.startswith("mailto:"), "the call to action must be a mailto link"
+    assert "subject=" in href, "the mailto link must pre-fill a subject"
+    assert "%5BCompany%20Name%5D" in href, (
+        "the subject should carry a [Company Name] placeholder for the sender to fill"
+    )
+
+
 # ------- Test runner -------
 TESTS = [
     test_index_html_exists,
@@ -720,6 +811,12 @@ TESTS = [
     test_hero_has_exactly_four_links,
     test_hero_carries_no_extra_content,
     test_projects_section_lists_expected_repo_count,
+    test_projects_section_is_collapsed_by_default,
+    test_toc_links_resolve_to_real_sections,
+    test_exactly_one_call_to_action,
+    # ----- Phone scan budget: short copy, one ask -----
+    test_mechanism_lines_stay_scannable,
+    test_visible_prose_is_short,
     test_every_claim_number_has_a_baseline_or_unit,
     # ----- Impact-strip semantics -----
     test_strip_count_matches_expected,
