@@ -49,12 +49,8 @@
     <section class="hero">
       <div class="container">
         <h1 class="hero-name">Narendranath Edara</h1>
-        <p class="hero-role">Data Engineer</p>
-        <p class="hero-line">
-          Three years building production data platforms, three in analytics before that; today I own
-          change-data-capture ingestion, releases, and recovery on a payroll platform running 400
-          databases and 70 TB.
-        </p>
+        <h2 class="hero-role">Data Engineer &middot; 3 years in data, 6&nbsp;total</h2>
+        <p class="hero-line">I build data pipelines that are fast, correct, and safe to re-run.</p>
         <nav class="hero-links" aria-label="Contact and profiles">
           <a href="/static/resume.pdf?v=7a55b6b6" target="_blank" rel="noreferrer"
              onclick="typeof plausible!=='undefined'&&plausible('Resume Download')">Resume</a>
@@ -73,76 +69,71 @@
         <div class="proof-cards">
 
           <article class="proof-card">
-            <h2 class="proof-card-title" id="card-platform">Enterprise Data Platform</h2>
-            <p class="proof-card-source">ExponentHR &middot; 400 databases, 70 TB, 15-minute refresh &middot; Jul 2024 to present</p>
+            <h2 class="proof-card-title" id="card-platform">ExponentHR</h2>
+            <p class="proof-card-source">Payroll data platform &middot; 400 databases, 70 TB &middot; refreshed every 15 minutes<br>Owns ingest, releases, and recovery</p>
             <dl class="impact-strip" aria-labelledby="card-platform">
               <div class="impact-stat">
-                <dt class="impact-value">3 mo &rarr; 14 d</dt>
-                <dd class="impact-label">release cycle<span class="sr-only"> — deployment cadence cut from three months to fourteen days by owning CI/CD end to end through Azure DevOps and aligning dev, test, IT, and business on Scrum, removing about eleven weeks of cross-team idle handoff time per release.</span></dd>
+                <dt class="impact-value">30&nbsp;min &rarr; 8&nbsp;min</dt>
+                <dd class="impact-label">ETL runtime<span class="sr-only"> — the nightly load that moves changed rows into the warehouse. Cut from thirty minutes to under eight, with compute cost down sixty-seven percent, by replacing full-table reloads with incremental merge-upserts. Now the platform's standing pattern.</span></dd>
               </div>
               <div class="impact-stat">
-                <dt class="impact-value">30 min &rarr; &lt;8 min</dt>
-                <dd class="impact-label">CDC ETL, -67% compute<span class="sr-only"> — change-data-capture ETL runtime cut from thirty minutes to under eight after replacing full-table reloads with idempotent incremental merge-upserts; compute cost down sixty-seven percent and roughly ninety-nine point nine percent less data moved per year. Now the platform's standing CDC pattern.</span></dd>
+                <dt class="impact-value">3&nbsp;mo &rarr; 14&nbsp;d</dt>
+                <dd class="impact-label">release cycle<span class="sr-only"> — how long a change takes to reach clients. Cut from three months to fourteen days by owning the build and deploy pipeline end to end and aligning dev, test, IT, and business on one cadence, removing about eleven weeks of idle handoff time per release.</span></dd>
               </div>
               <div class="impact-stat">
-                <dt class="impact-value">5,000 hrs/yr</dt>
-                <dd class="impact-label">manual provisioning removed, ~$300K<span class="sr-only"> — database copy and restore for Contained Always-On Availability Group databases rewritten fully idempotent, removing about an hour of manual engineering from each of twenty runs a day: roughly five thousand engineering hours a year, about three hundred thousand dollars, or two and a half engineers back on product work.</span></dd>
+                <dt class="impact-value">MTTR &lt;&nbsp;1&nbsp;hr</dt>
+                <dd class="impact-label">failover recovery<span class="sr-only"> — mean time to restore service after a database failover. Under one hour, with documented runbooks that turned a specialist-only restore into an on-call procedure anyone on the rota can follow.</span></dd>
               </div>
             </dl>
             <p class="proof-mechanism">
-              Idempotent Azure DevOps pipelines replaced manual release handoffs and hand-run database
-              copy-downs; incremental merge-upserts replaced full-table reloads, so a failed run reruns
-              clean with no manual cleanup. Money-adjacent fixes ship through formal change review: a
-              payroll accrual defect root-caused to a period-boundary calculation, and SECURE 2.0
-              retirement-plan compliance delivered against a legislated deadline.
+              Azure DevOps pipelines run releases and failover, each step safe to re-run. CDC
+              (change data capture) tables feed MERGE upserts, so a failed load retries clean.
             </p>
           </article>
 
           <article class="proof-card">
-            <h2 class="proof-card-title" id="card-ml">ML Systems in Production</h2>
-            <p class="proof-card-source">Fraud Detection Platform &middot; FinTune</p>
+            <h2 class="proof-card-title" id="card-ml">Fraud Detection &amp; FinTune</h2>
+            <p class="proof-card-source">Real-time scoring and financial text models &middot; built end to end<br>Synthetic data, production-shaped engineering</p>
             <dl class="impact-strip" aria-labelledby="card-ml">
               <div class="impact-stat">
-                <dt class="impact-value">1.12 ms</dt>
-                <dd class="impact-label">fraud scoring P99, 100+ TPS<span class="sr-only"> — ninety-ninth percentile serving latency of one point one two milliseconds, sustained above one hundred transactions per second, with exactly-once Kafka processing and an MLflow-tracked LightGBM classifier.</span></dd>
+                <dt class="impact-value">1.12&nbsp;ms</dt>
+                <dd class="impact-label">P99 scoring latency<span class="sr-only"> — ninety-ninth percentile serving latency, meaning ninety-nine of every hundred requests return faster than one point one two milliseconds.</span></dd>
               </div>
               <div class="impact-stat">
-                <dt class="impact-value">100K txns</dt>
-                <dd class="impact-label">synthetic, 2% fraud rate, not live traffic<span class="sr-only"> — trained on one hundred thousand generated transactions at a two percent fraud rate. This is synthetic data by design, not live payment traffic; the engineering around it is production-shaped, the data is not.</span></dd>
+                <dt class="impact-value">100+&nbsp;TPS</dt>
+                <dd class="impact-label">sustained throughput<span class="sr-only"> — transactions scored per second, held steady rather than peak, with exactly-once Kafka processing so no transaction is scored twice.</span></dd>
               </div>
               <div class="impact-stat">
-                <dt class="impact-value">3-state</dt>
-                <dd class="impact-label">FinTune circuit breaker, 35+ tests<span class="sr-only"> — a three-state circuit breaker that autonomously reloads the model, drops batch size under memory pressure, or falls back to a quantized model under sustained failure; validated by more than thirty-five tests across data, model, guardrails, serving, and recovery.</span></dd>
+                <dt class="impact-value">100K&nbsp;txns</dt>
+                <dd class="impact-label">synthetic, not live traffic<span class="sr-only"> — one hundred thousand generated transactions at a two percent fraud rate. This is synthetic data by design, not real payment traffic. The engineering around it is production-shaped; the data is not.</span></dd>
               </div>
             </dl>
             <p class="proof-mechanism">
-              Fraud scoring runs exactly-once through Kafka into a FastAPI service with a LightGBM model
-              tracked in MLflow, observable end to end in Prometheus and Grafana. FinTune fine-tunes
-              Mistral-7B with QLoRA on 4-bit NF4 adapters, behind pre-inference PII redaction and
-              KL-divergence drift monitoring on the output distribution.
+              Kafka streams exactly-once into FastAPI, with the LightGBM model held in memory.
+              FinTune adds PII redaction before inference and watches output drift.
             </p>
           </article>
 
           <article class="proof-card">
-            <h2 class="proof-card-title" id="card-oss">Open Source and Tooling</h2>
-            <p class="proof-card-source">repo-context-hooks &middot; published on PyPI</p>
+            <h2 class="proof-card-title" id="card-oss">repo-context-hooks</h2>
+            <p class="proof-card-source">Python package on PyPI &middot; anyone can install and check it<br>Git hooks that snapshot repo context for AI agents</p>
             <dl class="impact-strip" aria-labelledby="card-oss">
               <div class="impact-stat">
                 <dt class="impact-value">330+</dt>
-                <dd class="impact-label">tests passing at v1.0<span class="sr-only"> — more than three hundred thirty pytest cases passing as of the v1.0 supply-chain hardening release; verifiable with pytest collect-only.</span></dd>
+                <dd class="impact-label">tests at v1.0<span class="sr-only"> — more than three hundred thirty automated tests passing as of the version one point zero release; verifiable by anyone who clones the repository.</span></dd>
               </div>
               <div class="impact-stat">
                 <dt class="impact-value">0</dt>
-                <dd class="impact-label">runtime dependencies<span class="sr-only"> — the project dependencies array in pyproject.toml is empty; the package uses the Python standard library only at runtime, so there is no transitive dependency tree to audit or patch.</span></dd>
+                <dd class="impact-label">outside libraries used<span class="sr-only"> — zero runtime dependencies. The package uses only what ships with Python, so installing it pulls in no other code to audit or patch.</span></dd>
               </div>
               <div class="impact-stat">
-                <dt class="impact-value">Sigstore + CodeQL</dt>
-                <dd class="impact-label">every release, every PR<span class="sr-only"> — every release is signed through Sigstore via GitHub Actions OIDC Trusted Publisher, and CodeQL static analysis runs on every pull request; both are verifiable in the publish and codeql workflow files.</span></dd>
+                <dt class="impact-value">Signed</dt>
+                <dd class="impact-label">every release, scanned every change<span class="sr-only"> — every release is cryptographically signed through Sigstore, and CodeQL static analysis runs on every pull request; both are verifiable in the workflow files.</span></dd>
               </div>
             </dl>
             <p class="proof-mechanism">
-              Git hooks that snapshot repository context for LLM agents, published through GitHub Actions
-              OIDC Trusted Publisher, so there is no long-lived PyPI token in existence to steal.
+              GitHub Actions signs each release with Sigstore, using short-lived OIDC tokens.
+              No long-lived publishing key exists to steal.
             </p>
           </article>
 
@@ -155,35 +146,59 @@
       <div class="container">
         <span class="section-label" id="before-label">Before engineering</span>
 
-        <div class="prior-item">
-          <div class="prior-head">
-            <h2 class="prior-company">Zomato</h2>
-            <span class="prior-meta">Business Analyst &middot; Mar 2018 to Sep 2020</span>
-          </div>
-          <p class="prior-body">
-            Turned a 300-restaurant portfolio's unit economics positive, moving contribution from -&#8377;18
-            to +&#8377;2 per order by rebalancing discount sharing against advertising revenue mix. Indexed
-            100K+ internal documents into Elasticsearch for self-serve search, which cut support desk
-            volume 80%.
-          </p>
-        </div>
+        <div class="proof-cards">
 
-        <div class="prior-item">
-          <div class="prior-head">
-            <h2 class="prior-company">udaan.com</h2>
-            <span class="prior-meta">Business Intelligence Analyst &middot; Sep 2020 to Mar 2021</span>
-          </div>
-          <p class="prior-body">
-            Grew city GMV 400 percentage points to &#8377;5 Cr a month, about $8M a year, matching the
-            incumbent three months after the new city launched. Authored the business continuity plan
-            that kept delivery cycles running through application downtime instead of stalling them.
-          </p>
+          <article class="proof-card">
+            <h2 class="proof-card-title" id="card-zomato">Zomato</h2>
+            <p class="proof-card-source">Business Analyst &middot; Mar 2018 to Sep 2020 &middot; Hyderabad<br>Marketplace analytics &middot; 300-restaurant portfolio</p>
+            <dl class="impact-strip" aria-labelledby="card-zomato">
+              <div class="impact-stat">
+                <dt class="impact-value">-&#8377;18 &rarr; +&#8377;2</dt>
+                <dd class="impact-label">profit per order<span class="sr-only"> — contribution margin per order across a three-hundred-restaurant portfolio, moved from a loss of eighteen rupees to a gain of two, by rebalancing how discounts were shared against advertising revenue.</span></dd>
+              </div>
+              <div class="impact-stat">
+                <dt class="impact-value">+14%</dt>
+                <dd class="impact-label">growth in one quarter<span class="sr-only"> — compounded growth in a single quarter across the same three hundred restaurants, with campaign coverage lifted to seventy percent of the portfolio.</span></dd>
+              </div>
+              <div class="impact-stat">
+                <dt class="impact-value">-80%</dt>
+                <dd class="impact-label">support desk volume<span class="sr-only"> — support desk volume fell eighty percent after an Elasticsearch index over more than one hundred thousand internal documents let staff answer their own questions.</span></dd>
+              </div>
+            </dl>
+            <p class="proof-mechanism">
+              Rebalanced discount sharing against ad revenue, restaurant by restaurant.
+              Elasticsearch indexed 100K internal docs for self-serve search.
+            </p>
+          </article>
+
+          <article class="proof-card">
+            <h2 class="proof-card-title" id="card-udaan">udaan.com</h2>
+            <p class="proof-card-source">Business Intelligence Analyst &middot; Sep 2020 to Mar 2021 &middot; Nashik<br>New-city B2B marketplace launch &middot; staples category</p>
+            <dl class="impact-strip" aria-labelledby="card-udaan">
+              <div class="impact-stat">
+                <dt class="impact-value">&rarr; &#8377;5&nbsp;Cr/mo</dt>
+                <dd class="impact-label">city sales, up 400 points<span class="sr-only"> — city gross merchandise value grown four hundred percentage points to five crore rupees a month, roughly eight million dollars a year, matching the incumbent competitor three months after the new city launched.</span></dd>
+              </div>
+              <div class="impact-stat">
+                <dt class="impact-value">99.3%</dt>
+                <dd class="impact-label">orders fulfilled<span class="sr-only"> — order fulfillment rate held at ninety-nine point three percent through statistical demand analysis for capacity planning under just-in-time and warehouse models.</span></dd>
+              </div>
+              <div class="impact-stat">
+                <dt class="impact-value">+7%</dt>
+                <dd class="impact-label">return on inventory<span class="sr-only"> — return on inventory investment lifted seven percent through demand forecasting and inventory models.</span></dd>
+              </div>
+            </dl>
+            <p class="proof-mechanism">
+              Demand and inventory forecasting built in Power BI. Wrote the continuity plan
+              that kept deliveries moving through app downtime.
+            </p>
+          </article>
+
         </div>
 
         <p class="prior-close">
-          That continuity plan was reliability thinking three years before I owned an Always-On
-          failover path. Designing for recovery rather than one-off fixes is the thing that carried
-          across the pivot.
+          I wrote that continuity plan three years before I owned a failover path.
+          Same instinct: plan for the failure, not just the fix.
         </p>
       </div>
     </section>

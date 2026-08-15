@@ -39,11 +39,11 @@ REQUIRED_POST_SECTIONS = ("problem", "constraints", "design", "tradeoffs", "outc
 POST_MIN_WORDS = 1500
 POST_MAX_WORDS = 2500
 
-# Number of impact strips expected on the home page: one per proof-point
-# card (Enterprise Data Platform, ML Systems in Production, Open Source
-# and Tooling). Three cards, not six — a longer list dilutes each entry,
-# which is the whole reason the page was cut down.
-EXPECTED_STRIP_COUNT = 3
+# Number of impact strips expected on the home page: one per card. Three
+# proof cards (ExponentHR, Fraud Detection & FinTune, repo-context-hooks)
+# plus the two prior-work cards (Zomato, udaan.com), which carry the same
+# four-row structure so the eye reads every card the same way.
+EXPECTED_STRIP_COUNT = 5
 
 # The home page shape. Three <section class="section"> blocks plus the
 # hero, four hero links, five repos.
@@ -415,9 +415,10 @@ def test_hero_carries_no_extra_content(html: str) -> None:
     body = hero.group(1)
     for tag in ("<img", "<picture", "<svg", "<ul", "<video", "<canvas"):
         assert tag not in body, f"hero contains {tag}; hero is text and links only"
+    assert '<h2 class="hero-role">' in body, "hero missing the role + years <h2>"
     paragraphs = re.findall(r'<p class="([^"]+)"', body)
-    assert paragraphs == ["hero-role", "hero-line"], (
-        f"hero should carry exactly the role and the one-line summary, found {paragraphs}"
+    assert paragraphs == ["hero-line"], (
+        f"hero should carry exactly one paragraph, the value proposition; found {paragraphs}"
     )
 
 
@@ -683,8 +684,8 @@ def test_public_identity_surfaces_use_canonical_title() -> None:
         "<title>Narendranath Edara | Data Engineer - "
         "AI-Enabled Data Platforms</title>",
         # The header logo carried this anchor before the rewrite; the
-        # hero role line carries it now.
-        '<p class="hero-role">Data Engineer</p>',
+        # hero role heading carries it now.
+        '<h2 class="hero-role">Data Engineer',
     ):
         assert required in index_html, f"index.html missing identity anchor: {required!r}"
 
