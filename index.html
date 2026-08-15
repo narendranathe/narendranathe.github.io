@@ -549,52 +549,121 @@
       </div>
     </section>
 
-    <!-- ===== WHAT SHIPPED ===== -->
+    <!-- ===== MEASURED OUTCOMES =====
+         One ledger, six changes. Every row is baseline -> result ->
+         method -> scope, because a delta with no starting point is the
+         first thing a senior reviewer says is missing. data-gt-id and
+         the title= on each verify chip cite the GROUND_TRUTH.md entry
+         behind the numbers. Deliberately NOT class="impact-strip":
+         that class is CI-counted at exactly five instances on the
+         project cards below. -->
     <section class="section" id="proof">
       <div class="container">
-        <div class="proof-split">
 
-          <article class="proof-col" data-reveal>
-            <h2 class="proof-title">Key Accomplishments</h2>
-            <ol class="kicker-list">
-              <li class="kicker-item">
-                <span class="kicker">Deployment velocity</span>
-                <p>Cycles cut from 3 months to 14 days by owning CI/CD end-to-end through Azure DevOps. Eliminated 11 weeks of cross-team idle time per release.</p>
-              </li>
-              <li class="kicker-item">
-                <span class="kicker">CDC ETL optimization</span>
-                <p>Reengineered CDC ETL from full-table reloads to incremental merge upserts: runtime 30 min to under 8 min, compute cost -67%.</p>
-              </li>
-              <li class="kicker-item">
-                <span class="kicker">Always-on platform</span>
-                <p>AutoApply AI runs as a private deployment on Fly.io - zero cold start, 9-page React dashboard, 40+ FastAPI endpoints. Public launch is gated by tracked security fixes.</p>
-              </li>
-              <li class="kicker-item">
-                <span class="kicker">Four distribution surfaces</span>
-                <p>tailor-resume ships as CLI, Streamlit app, MCP server, and PyPI package - from one shared engine.</p>
-              </li>
-            </ol>
-          </article>
-
-          <article class="proof-col" data-reveal>
-            <h2 class="proof-title">Technical Skills</h2>
-            <ol class="kicker-list">
-              <li class="kicker-item">
-                <span class="kicker">Workflow stack</span>
-                <p>Chrome MV3, FastAPI, PostgreSQL, and Redis orchestrate the full discover &rarr; tailor &rarr; apply &rarr; track lifecycle.</p>
-              </li>
-              <li class="kicker-item">
-                <span class="kicker">ML infrastructure</span>
-                <p>Azure AI anomaly detection - 95%+ accuracy, AKS/HPA migration cutting Azure spend $3,200/month. Signal-to-noise from 1:5 to 1:1.2.</p>
-              </li>
-              <li class="kicker-item">
-                <span class="kicker">MCP protocol</span>
-                <p>tailor-resume is an MCP server - any Claude Code session or MCP-aware agent calls it directly, zero integration work.</p>
-              </li>
-            </ol>
-          </article>
-
+        <div class="section-head" data-reveal>
+          <span class="section-label">Measured Outcomes</span>
+          <h2 class="section-title">Six changes, each with the baseline it started from.</h2>
+          <p class="section-subtitle">A percentage with no starting point is unverifiable, so every row carries where it began, how it was done, and what it covered. Hover any evidence tag to see which record backs it.</p>
         </div>
+
+        <ol class="ledger" data-reveal>
+          <li class="ledger-row" data-gt-id="E2-CICD">
+            <div class="ledger-top">
+              <span class="ledger-domain">Delivery</span>
+              <span class="ledger-verify" title="Ground truth: E2-CICD">E2-CICD</span>
+            </div>
+            <p class="ledger-delta">
+              <span class="ledger-from">3 months</span>
+              <span class="ledger-arrow" aria-hidden="true">&rarr;</span>
+              <span class="sr-only">to</span>
+              <span class="ledger-to">14 days</span>
+            </p>
+            <p class="ledger-what">release cycle</p>
+            <p class="ledger-line"><span class="ledger-key">Method</span>CI/CD owned end to end through Azure DevOps, with SSRS and Power BI release steps automated and Scrum aligning dev, test, IT, and business on shared priorities.</p>
+            <p class="ledger-line"><span class="ledger-key">Scope</span>Roughly 11 weeks of cross-team idle time removed per release. Client changes ship in weeks rather than seasons.</p>
+          </li>
+          <li class="ledger-row" data-gt-id="E1-CDC">
+            <div class="ledger-top">
+              <span class="ledger-domain">Pipeline</span>
+              <span class="ledger-verify" title="Ground truth: E1-CDC">E1-CDC</span>
+            </div>
+            <p class="ledger-delta">
+              <span class="ledger-from">30 min</span>
+              <span class="ledger-arrow" aria-hidden="true">&rarr;</span>
+              <span class="sr-only">to</span>
+              <span class="ledger-to">under 8 min</span>
+            </p>
+            <p class="ledger-what">CDC ETL runtime</p>
+            <p class="ledger-line"><span class="ledger-key">Method</span>Full-table reloads replaced with idempotent incremental merge-upserts. A failed run reruns clean, with no manual cleanup first.</p>
+            <p class="ledger-line"><span class="ledger-key">Scope</span>Compute down 67%. Data moved falls from roughly 2.46M TB/yr to 257 TB/yr, with the data-freshness SLA held. Now the platform's standing CDC pattern.</p>
+          </li>
+          <li class="ledger-row" data-gt-id="E-IDEM">
+            <div class="ledger-top">
+              <span class="ledger-domain">Provisioning</span>
+              <span class="ledger-verify" title="Ground truth: E-IDEM">E-IDEM</span>
+            </div>
+            <p class="ledger-delta">
+              <span class="ledger-from">1 hr, 20+ times a day</span>
+              <span class="ledger-arrow" aria-hidden="true">&rarr;</span>
+              <span class="sr-only">to</span>
+              <span class="ledger-to">one idempotent run</span>
+            </p>
+            <p class="ledger-what">database copy and restore</p>
+            <p class="ledger-line"><span class="ledger-key">Method</span>Four latent failure modes closed: orphaned CDC cleanup jobs terminated rather than dropped from metadata, a guard that kills active replication sessions before disabling CDC, silently-defaulting restore parameters fixed, and stuck-restore detection with pre-flight race checks.</p>
+            <p class="ledger-line"><span class="ledger-key">Scope</span>An hour of manual orchestration per request, 20+ requests a day: 5,000 engineering hours a year, about $300K, or 2.5 engineers back on product. Safe retry replaces manual cleanup.</p>
+          </li>
+          <li class="ledger-row" data-gt-id="E3-FABRIC">
+            <div class="ledger-top">
+              <span class="ledger-domain">Reporting</span>
+              <span class="ledger-verify" title="Ground truth: E3-FABRIC">E3-FABRIC</span>
+            </div>
+            <p class="ledger-delta">
+              <span class="ledger-from">12s</span>
+              <span class="ledger-arrow" aria-hidden="true">&rarr;</span>
+              <span class="sr-only">to</span>
+              <span class="ledger-to">under 4s</span>
+            </p>
+            <p class="ledger-what">query response</p>
+            <p class="ledger-line"><span class="ledger-key">Method</span>Legacy SQL Server reporting migrated onto Microsoft Fabric semantic models, with index and stored-procedure tuning on the OLAP paths. The gain came from the semantic layer and the tuning, not from the release tooling.</p>
+            <p class="ledger-line"><span class="ledger-key">Scope</span>Client support tickets down 40%, returning roughly $243K a year of analyst capacity. Support scales without adding headcount.</p>
+          </li>
+          <li class="ledger-row" data-gt-id="M2">
+            <div class="ledger-top">
+              <span class="ledger-domain">Observability</span>
+              <span class="ledger-verify" title="Ground truth: M2">M2</span>
+            </div>
+            <p class="ledger-delta">
+              <span class="ledger-from">1:5</span>
+              <span class="ledger-arrow" aria-hidden="true">&rarr;</span>
+              <span class="sr-only">to</span>
+              <span class="ledger-to">1:1.2</span>
+            </p>
+            <p class="ledger-what">signal-to-noise on alerts</p>
+            <p class="ledger-line"><span class="ledger-key">Method</span>Data observability with tunable per-service thresholds, so a threshold could be tightened for one service without going deaf on another.</p>
+            <p class="ledger-line"><span class="ledger-key">Scope</span>About 250 non-actionable P3 alerts filtered every week. Ended the alert blindness that was masking real incidents.</p>
+          </li>
+          <li class="ledger-row" data-gt-id="M3">
+            <div class="ledger-top">
+              <span class="ledger-domain">Cost</span>
+              <span class="ledger-verify" title="Ground truth: M3">M3</span>
+            </div>
+            <p class="ledger-delta">
+              <span class="ledger-from">20 static nodes</span>
+              <span class="ledger-arrow" aria-hidden="true">&rarr;</span>
+              <span class="sr-only">to</span>
+              <span class="ledger-to">4 to 8 dynamic</span>
+            </p>
+            <p class="ledger-what">anomaly-detection compute</p>
+            <p class="ledger-line"><span class="ledger-key">Method</span>Workloads migrated off static D-series VMs onto AKS with horizontal pod autoscaling, sized to actual load rather than peak.</p>
+            <p class="ledger-line"><span class="ledger-key">Scope</span>$3,200 a month, $38.4K a year. CPU utilization moved from 12% to 64%, so the cut came from reclaiming waste rather than from cutting capacity.</p>
+          </li>
+        </ol>
+
+        <p class="ledger-total" data-reveal>
+          <span class="ledger-total-num">~$566K/year</span>
+          <span class="ledger-total-txt">in recovered cost and capacity, about 5.4 FTEs. Three derivations only: provisioning ($300K) and reporting ($243K) above, plus Git and Azure DevOps reporting automation not shown here ($23K). The speed and reliability rows are deliberately left out rather than assigned a number they cannot support.</span>
+        </p>
+
       </div>
     </section>
 

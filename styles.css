@@ -318,26 +318,115 @@ button { font-family: inherit; cursor: pointer; }
   .profile-photo { object-position: 50% 50%; }
 }
 
+/* Visually-hidden utility. There was only a .impact-strip-scoped copy
+   of this, so an .sr-only used anywhere else rendered as visible text.
+   The scoped rule stays where it is; this is the general one. */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ============================================================
-   PROOF SPLIT
+   MEASURED-OUTCOMES LEDGER
+   Six rows, each baseline -> result -> method -> scope. Sized so the
+   delta is scannable at a glance and the method is there for whoever
+   stops to read it. Distinct from .impact-strip on purpose: that
+   module is CI-counted at exactly five instances.
    ============================================================ */
-.proof-split {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+.ledger {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
 }
-.proof-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.5rem; font-weight: 500; color: var(--fg);
-  margin-bottom: 1.75rem;
+.ledger-row {
+  background: var(--bg);
+  padding: 1.4rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
 }
-.kicker-list { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; }
-.kicker-item { display: flex; flex-direction: column; gap: 0.3rem; }
-.kicker {
-  font-size: 0.8rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.07em;
+.ledger-top {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.75rem;
+}
+.ledger-domain {
+  font-size: 0.72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
   color: var(--accent-warm);
 }
-.kicker-item p { font-size: 0.92rem; line-height: 1.65; color: var(--fg-soft); }
-@media (max-width: 720px) { .proof-split { grid-template-columns: 1fr; gap: 2.5rem; } }
+/* Evidence tag. Cursor + dotted underline signal that the title=
+   tooltip carries the GROUND_TRUTH record id. */
+.ledger-verify {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.63rem; letter-spacing: 0.04em;
+  color: var(--fg-muted);
+  border-bottom: 1px dotted var(--border);
+  cursor: help;
+  white-space: nowrap;
+}
+.ledger-delta {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem;
+  font-family: 'Playfair Display', serif;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+  margin: 0.1rem 0 0;
+}
+.ledger-from {
+  font-size: 1.02rem; color: var(--fg-muted);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--border);
+}
+.ledger-arrow { font-size: 0.95rem; color: var(--accent-warm); }
+.ledger-to { font-size: 1.5rem; font-weight: 600; color: var(--accent); }
+.ledger-what {
+  font-size: 0.76rem; color: var(--fg-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  margin: -0.15rem 0 0.3rem;
+}
+.ledger-line {
+  font-size: 0.855rem; line-height: 1.6; color: var(--fg-soft);
+  margin: 0;
+}
+.ledger-key {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--fg-muted);
+  margin-bottom: 0.15rem;
+}
+.ledger-total {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.75rem;
+  margin-top: 1.75rem;
+  padding-left: 1.1rem;
+  border-left: 3px solid var(--accent-warm);
+  max-width: 80ch;
+}
+.ledger-total-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem; font-weight: 600; color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+.ledger-total-txt {
+  flex: 1 1 22rem;
+  font-size: 0.88rem; line-height: 1.65; color: var(--fg-soft);
+}
+@media (max-width: 1000px) { .ledger { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .ledger { grid-template-columns: 1fr; } }
+@media print {
+  .ledger { grid-template-columns: 1fr 1fr; }
+  .ledger-verify { border-bottom: 0; }
+}
 
 /* ============================================================
    GRAPH
