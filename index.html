@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Narendranath Edara - Data Engineer building AI-enabled data platforms, workflow automation, and retrieval systems that survive real production constraints.">
+  <meta name="description" content="Narendranath Edara - Data Engineer. Three years building production data platforms; owns change data capture, releases, and recovery on a payroll platform running 400 databases and 70 TB.">
   <meta name="author" content="Narendranath Edara">
   <meta property="og:title" content="Narendranath Edara | Data Engineer - AI-Enabled Data Platforms">
-  <meta property="og:description" content="Production AI systems that teams can run, govern, and trust.">
+  <meta property="og:description" content="ETL runtime 30 min to 8 min. Release cycle 3 months to 14 days. Failover recovery under an hour.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://narendranathe.github.io">
   <meta property="og:image" content="https://narendranathe.github.io/static/og-image.jpg?v=2026-04-28">
@@ -16,7 +16,6 @@
   <link rel="canonical" href="https://narendranathe.github.io">
 
   <!-- Favicons: monogram "N" white-on-orange for tab (16/32/48); photo on iOS home screen + Android adaptive -->
-  <!-- Cache-bust query string forces refresh of cached favicons after deploy -->
   <link rel="icon" type="image/png" sizes="48x48" href="/static/favicon-48.png?v=2026-04-28">
   <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png?v=2026-04-28">
   <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png?v=2026-04-28">
@@ -26,1399 +25,245 @@
   <meta name="theme-color" content="#E8743C">
   <meta name="msapplication-TileColor" content="#E8743C">
 
-  <!-- Telemetry: privacy-respecting, no cookies, your view only -->
+  <!-- Telemetry: privacy-respecting, no cookies -->
   <script defer data-domain="narendranathe.github.io" src="https://plausible.io/js/script.js"></script>
 
-  <!-- Fonts: Inter (UI) + Playfair Display (headlines) + JetBrains Mono (code) -->
+  <!-- Two families only: Inter for text, JetBrains Mono for figures.
+       Playfair Display and the Font Awesome CDN sheet were dropped with
+       the sections that used them. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <title>Narendranath Edara | Data Engineer - AI-Enabled Data Platforms</title>
-  <link rel="stylesheet" href="styles.css">
 
-  <!-- LCP candidate: hero portrait, preload to start fetch before body parses.
-       Three type-aware preloads in priority order so the browser only
-       fetches the format it will render via <picture>. The `type=` filter
-       is honored by Chrome 91+, Safari 17+, Firefox; older browsers ignore
-       the type attribute and would fetch all three preloads — that tail
-       is microscopic in 2026 evergreen, and they fall through to the JPEG
-       <picture> source anyway. imagesrcset + imagesizes mirror the
-       <picture>'s mobile (max-width: 860px) breakpoint. -->
-  <link rel="preload" as="image" type="image/avif"
-        imagesrcset="static/originals/headshot-fullbody-800.avif 800w, static/originals/headshot-fullbody.avif 1200w"
-        imagesizes="(max-width: 860px) 100vw, 1200px"
-        fetchpriority="high">
-  <link rel="preload" as="image" type="image/webp"
-        imagesrcset="static/originals/headshot-fullbody-800.webp 800w, static/originals/headshot-fullbody.webp 1200w"
-        imagesizes="(max-width: 860px) 100vw, 1200px"
-        fetchpriority="high">
-  <link rel="preload" as="image" type="image/jpeg"
-        href="static/originals/headshot-fullbody.jpg"
-        imagesrcset="static/originals/headshot-fullbody-800.jpg 800w, static/originals/headshot-fullbody.jpg 1200w"
-        imagesizes="(max-width: 860px) 100vw, 1200px"
-        fetchpriority="high">
+  <!-- home.css, not styles.css: this page no longer shares a stylesheet
+       with the case-study pages. No app.js either - zero JS on this page.
+       The Projects section collapses with <details>, which is native. -->
+  <link rel="stylesheet" href="home.css">
 </head>
 <body>
 
-  <!-- SPLASH SCREEN -->
-  <div id="splash-screen" aria-hidden="true" role="presentation">
-    <div class="splash-inner">
-      <svg class="splash-svg" viewBox="0 0 160 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path class="sp-bracket-l" d="M45 14 L12 40 L45 66" stroke="#176b52" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-        <path class="sp-slash"     d="M83 8 L71 72"          stroke="#b5752a" stroke-width="3" stroke-linecap="round"/>
-        <path class="sp-bracket-r" d="M105 14 L138 40 L105 66" stroke="#176b52" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+  <main>
 
-    </div>
-  </div>
+    <!-- ===== 1. HERO ===== -->
+    <section class="hero">
+      <div class="container">
+        <h1 class="hero-name">Narendranath Edara</h1>
+        <h2 class="hero-role">Data Engineer &middot; 3 years in data, 6&nbsp;total</h2>
+        <p class="hero-line">I build data pipelines that are fast, correct, and safe to re-run.</p>
+        <nav class="hero-links" aria-label="Contact and profiles">
+          <a href="/static/resume.pdf?v=7a55b6b6" target="_blank" rel="noreferrer"
+             onclick="typeof plausible!=='undefined'&&plausible('Resume Download')">Resume</a>
+          <a href="https://www.linkedin.com/in/narendranathe/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://github.com/narendranathe" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="mailto:edara.narendranath@gmail.com">Email</a>
+        </nav>
+      </div>
+    </section>
 
-  <!-- Reading progress bar -->
-  <div id="scroll-progress" aria-hidden="true"></div>
-
-  <!-- HEADER -->
-  <header class="site-header" id="site-header">
-    <div class="container header-inner">
-      <a href="#home" class="logo">
-        <span class="logo-name">Narendranath Edara</span>
-        <span class="logo-role">Data Engineer &middot; AI Platforms</span>
-      </a>
-      <nav class="main-nav" aria-label="Main navigation">
-        <a href="#experience" class="nav-link">Experience</a>
-        <a href="#skills"     class="nav-link">Stack</a>
-        <a href="#systems"    class="nav-link">Projects</a>
-        <a href="#notes"      class="nav-link">Publications</a>
-        <a href="#signal"     class="nav-link">References</a>
-        <a href="#connect"    class="nav-link">Contact</a>
-      </nav>
-      <a href="/static/resume.pdf?v=7a55b6b6"
-         class="btn btn-resume" target="_blank" rel="noreferrer"
-         data-hover-preview="/static/resume-page1-preview.png?v=fc9a5e8c"
-         data-hover-title="Resume - last updated Apr 30, 2026"
-         data-hover-caption="1 page - click to download PDF"
-         onclick="typeof plausible!=='undefined'&&plausible('Resume Download')">
-        <i class="fas fa-file-pdf"></i> Resume
-      </a>
-      <button class="mobile-toggle" aria-label="Open navigation" aria-expanded="false">
-        <i class="fas fa-bars"></i>
-      </button>
-    </div>
-    <nav class="mobile-nav" aria-hidden="true">
-      <a href="#experience" class="mobile-link">Experience</a>
-      <a href="#skills"     class="mobile-link">Stack</a>
-      <a href="#systems"    class="mobile-link">Projects</a>
-      <a href="#notes"      class="mobile-link">Publications</a>
-      <a href="#signal"     class="mobile-link">References</a>
-      <a href="#connect"    class="mobile-link">Contact</a>
-      <a href="/static/resume.pdf?v=7a55b6b6"
-         class="mobile-link" target="_blank" rel="noreferrer"
-         data-hover-preview="/static/resume-page1-preview.png?v=fc9a5e8c"
-         data-hover-title="Resume - last updated Apr 30, 2026"
-         data-hover-caption="1 page - click to download PDF">Download resume</a>
+    <!-- Section jump menu. Sits outside the hero so the hero stays four
+         elements, and stays unsticky so it never eats phone viewport. -->
+    <nav class="toc" aria-label="Sections">
+      <div class="container toc-inner">
+        <a href="#proof">Proof</a>
+        <a href="#before">Before engineering</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </div>
     </nav>
-  </header>
 
-  <main id="home">
-
-    <!-- ===== HERO ===== -->
-    <section class="hero" id="hero">
-      <div class="container hero-grid">
-
-        <div class="hero-copy" data-reveal>
-          <h1 class="hero-name">Narendranath<br>Edara</h1>
-          <p class="hero-tagline">I turn messy data and repeated workflows into reliable platforms - then add AI where it creates leverage.</p>
-          <p class="hero-brief">
-            Data Engineer building AI-enabled data platforms, workflow automation, and retrieval systems that survive real production constraints. The foundation comes first - reliable ETL, governed SQL, CI/CD, observability, cost-aware operations - then applied AI on top: RAG pipelines, multi-provider LLM routing, document intelligence, and reusable developer tools.
-          </p>
-          <ul class="hero-proof">
-            <li>
-              <span class="proof-dot"></span>
-              <span><strong>ExponentHR (production):</strong> deployment cycles compressed <strong>3 months to 14 days</strong>, CDC ETL reengineered from full reloads to incremental merge-upserts (30min&rarr;8min, <strong>-67% compute</strong>), payroll-critical AAG automation on Azure.</span>
-            </li>
-            <li>
-              <span class="proof-dot"></span>
-              <span><strong>AutoApply AI (workflow automation):</strong> Chrome MV3 + FastAPI pipeline connecting job discovery, document tailoring, form-state management, LLM routing, and application tracking - <strong>11 ATS adapters</strong>, private deployment on Fly.io.</span>
-            </li>
-            <li>
-              <span class="proof-dot"></span>
-              <span><strong>Reusable engines:</strong> repeated workflows become products - <strong>tailor-resume</strong> for document intelligence (MCP, PyPI, CLI, Streamlit) and <strong>JobScout</strong> for direct-source job discovery.</span>
-            </li>
-          </ul>
-          <div class="hero-actions">
-            <a href="#systems" class="btn btn-primary">View projects</a>
-            <a href="/static/resume.pdf?v=7a55b6b6"
-               class="btn btn-ghost" target="_blank" rel="noreferrer"
-               data-hover-preview="/static/resume-page1-preview.png?v=fc9a5e8c"
-               data-hover-title="Resume - last updated Apr 30, 2026"
-               data-hover-caption="1 page - click to download PDF"
-               onclick="typeof plausible!=='undefined'&&plausible('Resume Download')">
-              Download resume
-            </a>
-          </div>
-        </div>
-
-        <aside class="hero-visual">
-
-          <div class="profile-frame hero-photo-stack">
-            <picture>
-              <!-- AVIF first (smallest bytes; Chrome 85+ / Safari 16.4+ / Firefox 113+) -->
-              <source type="image/avif" media="(max-width: 860px)" srcset="static/originals/headshot-fullbody-800.avif">
-              <source type="image/avif" srcset="static/originals/headshot-fullbody.avif">
-              <!-- WebP second (universal modern; covers every evergreen browser) -->
-              <source type="image/webp" media="(max-width: 860px)" srcset="static/originals/headshot-fullbody-800.webp">
-              <source type="image/webp" srcset="static/originals/headshot-fullbody.webp">
-              <!-- JPEG fallback for the long tail; also matches the preload `href` -->
-              <source media="(max-width: 860px)" srcset="static/originals/headshot-fullbody-800.jpg">
-              <img src="static/originals/headshot-fullbody.jpg"
-                   alt="Naren Edara, Data Engineer"
-                   class="profile-photo"
-                   width="1200" height="1500"
-                   loading="eager" decoding="async" fetchpriority="high">
-            </picture>
-          </div>
-          <div class="metric-grid">
-            <div class="metric-item">
-              <span class="metric-num">3mo&rarr;14d</span>
-              <span class="metric-lbl">deploy cycle &middot; ExponentHR</span>
-            </div>
-            <div class="metric-item">
-              <span class="metric-num" data-count="355">355</span>
-              <span class="metric-lbl">backend tests &middot; AutoApply</span>
-            </div>
-            <div class="metric-item">
-              <span class="metric-num">-67%</span>
-              <span class="metric-lbl">ETL compute &middot; ExponentHR</span>
-            </div>
-            <div class="metric-item">
-              <span class="metric-num" data-count="11">11</span>
-              <span class="metric-lbl">ATS adapters &middot; AutoApply</span>
-            </div>
-          </div>
-        </aside>
-
-      </div>
-    </section>
-
-    <!-- ===== WHERE I CREATE VALUE ===== -->
-    <section class="section" id="value" aria-label="Where I create value">
+    <!-- ===== 2. PROOF POINTS ===== -->
+    <section class="section" id="proof" aria-labelledby="proof-label">
       <div class="container">
-        <div class="section-head" data-reveal>
-          <span class="section-label">Where I Create Value</span>
-          <h2 class="section-title">The operating model behind every project below.</h2>
-        </div>
-        <ul class="hero-proof" data-reveal style="max-width:78ch;">
-          <li><span class="proof-dot"></span><span><strong>I modernize data platforms:</strong> ETL, CDC, SQL, deployment automation, and cost reduction - the ExponentHR production work.</span></li>
-          <li><span class="proof-dot"></span><span><strong>I build backend workflow systems:</strong> FastAPI, Redis, PostgreSQL, Chrome MV3, and production dashboards.</span></li>
-          <li><span class="proof-dot"></span><span><strong>I apply AI where the workflow has real context:</strong> RAG, LLM routing, document intelligence, and answer generation.</span></li>
-          <li><span class="proof-dot"></span><span><strong>I ship with engineering discipline:</strong> tests, observability, CI/CD, auth, security tradeoffs, and explicit deployment boundaries.</span></li>
-        </ul>
-      </div>
-    </section>
+        <span class="section-label" id="proof-label">Proof</span>
 
-    <!-- ===== TRACK RECORD ===== -->
-    <section class="section section-alt" id="experience">
-      <div class="container">
+        <div class="proof-cards">
 
-        <div class="section-head" data-reveal>
-          <span class="section-label">Production Data Platform Work</span>
-          <h2 class="section-title">The work that proves I can operate inside enterprise constraints.</h2>
-          <p class="section-subtitle">Six years across enterprise HR, food-tech, and fintech - current production ownership at ExponentHR: CI/CD, CDC ETL, and payroll-critical database automation.</p>
-        </div>
-
-        <div class="track">
-
-          <!-- ExponentHR -->
-          <div class="track-item" data-reveal>
-            <div class="track-date">Jul 2024 - Present</div>
-            <div class="track-content">
-              <div class="track-card">
-                <div class="track-header">
-                  <div class="track-logo">
-                    <img src="https://github.com/user-attachments/assets/8f588639-0463-4d1c-95e6-aba025804099"
-                         alt="ExponentHR" onerror="this.style.display='none';">
-                  </div>
-                  <div class="track-meta">
-                    <h3 class="track-title">Data Engineer</h3>
-                    <p class="track-company">ExponentHR &middot; Addison, TX</p>
-                    <p class="track-scope">Data platform engineering / CI/CD ownership</p>
-                  </div>
-                </div>
-                <ul class="track-bullets">
-                  <li>Compressed deployment cycles from 3 months to 14 days by owning CI/CD end-to-end through Azure DevOps, eliminating 11 weeks of cross-team idle time per release.</li>
-                  <li>Reengineered CDC ETL from full-table reloads to incremental merge upserts: runtime 30min&rarr;8min, compute cost -67%.</li>
-                  <li>Engineered one-click idempotent Azure DevOps pipeline for Contained AAG databases (restore, security, CDC, listener validation), eliminating ~1 hour per request across 20+ daily copy-downs.</li>
-                </ul>
-                <div class="track-chips">
-                  <span class="chip">Azure</span><span class="chip">Azure DevOps</span>
-                  <span class="chip">Data Platform</span><span class="chip">CDC</span>
-                  <span class="chip">Python</span><span class="chip">SQL</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Missouri S&T -->
-          <div class="track-item" data-reveal>
-            <div class="track-date">Aug 2023 - Jul 2024</div>
-            <div class="track-content">
-              <div class="track-card">
-                <div class="track-header">
-                  <div class="track-logo">
-                    <img src="https://github.com/user-attachments/assets/5dc864b8-501a-485a-b780-d0fcde01a3de"
-                         alt="Missouri S&T" onerror="this.style.display='none';">
-                  </div>
-                  <div class="track-meta">
-                    <h3 class="track-title">Data Engineer</h3>
-                    <p class="track-company">Missouri University of Science and Technology &middot; Rolla, MO</p>
-                    <p class="track-scope">ML infrastructure / anomaly detection &nbsp;&middot;&nbsp; M.S. Data Science - GPA 4.0 - Dec 2023</p>
-                  </div>
-                </div>
-                <ul class="track-bullets">
-                  <li>Engineered Azure AI Anomaly Detector pipelines selecting optimal algorithms per time-series profile, achieving 95%+ detection accuracy  - caught a production memory leak 4 hours before outage.</li>
-                  <li>Implemented tunable alert thresholds, filtering ~250 weekly non-actionable P3 alerts; signal-to-noise improved from 1:5 to 1:1.2.</li>
-                  <li>Migrated from static D-Series VMs to AKS with HPA: CPU utilization 12%&rarr;64%, nodes consolidated 20&rarr;4-8 dynamic, Azure spend cut $3,200/month.</li>
-                </ul>
-                <div class="track-chips">
-                  <span class="chip">Azure AI</span><span class="chip">AKS/HPA</span>
-                  <span class="chip">Kubernetes</span><span class="chip">Anomaly Detection</span><span class="chip">Python</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- C2FO -->
-          <div class="track-item" data-reveal>
-            <div class="track-date">Jun 2023 - Aug 2023</div>
-            <div class="track-content">
-              <div class="track-card">
-                <div class="track-header">
-                  <div class="track-logo">
-                    <img src="https://github.com/user-attachments/assets/3568348e-20d6-4210-83de-bdec9950333d"
-                         alt="C2FO" onerror="this.style.display='none';">
-                  </div>
-                  <div class="track-meta">
-                    <h3 class="track-title">Engineering Intern</h3>
-                    <p class="track-company">C2FO &middot; Leawood, KS</p>
-                  </div>
-                </div>
-                <ul class="track-bullets">
-                  <li>Analyzed B2B financial transaction patterns via SQL to identify user behavior trends and inform product prioritization across the preferred offers tool.</li>
-                  <li>Authored data-driven PRDs that reduced development resource allocation time by 50% by eliminating spec ambiguity across engineering, design, and business stakeholders.</li>
-                </ul>
-                <div class="track-chips">
-                  <span class="chip">SQL</span><span class="chip">Data Analysis</span><span class="chip">PRD</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- udaan.com -->
-          <div class="track-item" data-reveal>
-            <div class="track-date">Sep 2020 - Mar 2021</div>
-            <div class="track-content">
-              <div class="track-card">
-                <div class="track-header">
-                  <div class="track-logo">
-                    <img src="https://github.com/user-attachments/assets/f07f767c-50e5-4bd4-b358-3c7dbf10427f"
-                         alt="udaan.com" onerror="this.style.display='none';">
-                  </div>
-                  <div class="track-meta">
-                    <h3 class="track-title">Business Intelligence Analyst | Supply</h3>
-                    <p class="track-company">udaan.com &middot; India</p>
-                  </div>
-                </div>
-                <ul class="track-bullets">
-                  <li>Built predictive demand forecasting models driving $4 million annual savings and 7% ROI improvement through optimized inventory allocation.</li>
-                  <li>Achieved 99.3% fulfillment rate through statistical capacity planning managing end-to-end first-mile to last-mile operations.</li>
-                  <li>Developed automated ETL pipelines for financial modeling dashboards in Power BI.</li>
-                </ul>
-                <div class="track-chips">
-                  <span class="chip">Forecasting</span><span class="chip">Power BI</span>
-                  <span class="chip">SQL</span><span class="chip">ETL</span><span class="chip">Supply Chain</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Zomato -->
-          <div class="track-item" data-reveal>
-            <div class="track-date">Mar 2018 - Sep 2020</div>
-            <div class="track-content">
-              <div class="track-card">
-                <div class="track-header">
-                  <div class="track-logo">
-                    <img src="https://github.com/user-attachments/assets/f74157d0-b609-496e-9cad-1986f3e22ab4"
-                         alt="Zomato" onerror="this.style.display='none';">
-                  </div>
-                  <div class="track-meta">
-                    <h3 class="track-title">Business Analyst</h3>
-                    <p class="track-company">Zomato &middot; Hyderabad, India</p>
-                  </div>
-                </div>
-                <ul class="track-bullets">
-                  <li>Built real-time competitor analytics platform tracking pricing, delivery times, and coverage  - fed pricing changes that contributed to 9% market share gain in contested metros.</li>
-                  <li>Optimized search relevance with ranking models using contextual signals (time, location, cuisine affinity), improving search-to-conversion across millions of daily queries.</li>
-                  <li>Built Elasticsearch enterprise search indexing 100K+ documents, reducing Support Desk volume ~80% through self-serve query resolution.</li>
-                </ul>
-                <div class="track-chips">
-                  <span class="chip">Elasticsearch</span><span class="chip">SQL</span>
-                  <span class="chip">Ranking Models</span><span class="chip">Competitor Analytics</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Education -->
-        <div class="section-head" data-reveal style="margin-top:3.5rem;">
-          <span class="section-label">Education</span>
-        </div>
-        <div class="edu-card-row" data-reveal>
-          <div class="edu-card">
-            <div class="edu-logo-wrap">
-              <img src="https://github.com/user-attachments/assets/5dc864b8-501a-485a-b780-d0fcde01a3de"
-                   alt="Missouri S&T" class="edu-logo" onerror="this.style.display='none';">
-            </div>
-            <div class="edu-info">
-              <h3 class="edu-degree">M.S. Data Science</h3>
-              <p class="edu-school">Missouri University of Science and Technology &middot; Rolla, MO</p>
-              <div class="edu-meta">
-                <span class="chip">GPA 4.0 / 4.0</span>
-                <span class="chip">Jan 2022 - Dec 2023</span>
-                <span class="chip">Taylor &amp; Francis Publication</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Certifications -->
-        <div class="section-head" data-reveal style="margin-top:2.5rem;">
-          <span class="section-label">Certifications</span>
-        </div>
-        <div class="certs-grid" data-reveal>
-          <div class="cert-item">
-            <img src="https://github.com/user-attachments/assets/e93f602f-04c4-45a2-8bba-3459cb551943"
-                 alt="DP-700 Fabric" class="cert-badge" onerror="this.style.display='none';">
-            <div class="cert-info">
-              <span class="cert-name">DP-700 Fabric Data Engineer Associate</span>
-              <span class="cert-issuer">Microsoft</span>
-            </div>
-          </div>
-          <div class="cert-item">
-            <img src="https://github.com/user-attachments/assets/162dd9ad-89b8-406a-8fe6-5102ec52b37b"
-                 alt="AI-900" class="cert-badge" onerror="this.style.display='none';">
-            <div class="cert-info">
-              <span class="cert-name">Azure AI Fundamentals AI-900</span>
-              <span class="cert-issuer">Microsoft</span>
-            </div>
-          </div>
-          <div class="cert-item">
-            <img src="https://github.com/user-attachments/assets/d5b15f36-33a2-406b-974d-ea4dad8ec2c9"
-                 alt="Databricks" class="cert-badge" onerror="this.style.display='none';">
-            <div class="cert-info">
-              <span class="cert-name">Generative AI Fundamentals</span>
-              <span class="cert-issuer">Databricks</span>
-            </div>
-          </div>
-          <div class="cert-item">
-            <div class="cert-icon"><i class="fas fa-database"></i></div>
-            <div class="cert-info">
-              <span class="cert-name">Data Warehouse in Microsoft Fabric</span>
-              <span class="cert-issuer">Applied Skills &middot; Microsoft</span>
-            </div>
-          </div>
-          <div class="cert-item">
-            <div class="cert-icon"><i class="fab fa-hackerrank"></i></div>
-            <div class="cert-info">
-              <span class="cert-name">SQL Advanced</span>
-              <span class="cert-issuer">HackerRank</span>
-            </div>
-          </div>
-          <div class="cert-item">
-            <div class="cert-icon"><i class="fas fa-certificate"></i></div>
-            <div class="cert-info">
-              <span class="cert-name">Certified Scrum Product Owner</span>
-              <span class="cert-issuer">Scrum Alliance</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ===== SKILLS GRID (issue #71) ===== -->
-    <section class="section section-alt" id="skills">
-      <div class="container">
-
-        <div class="section-head" data-reveal>
-          <span class="section-label">Stack</span>
-          <h2 class="section-title">Stack I work in daily.</h2>
-          <p class="section-subtitle">Senior+ AI/ML platform tools, organized by domain. Hover or focus a tile for one-line context. Every tile is a tool I've shipped with — no aspirational filler.</p>
-        </div>
-
-        <div class="skills-grid" data-reveal>
-
-          <div class="skills-category">
-            <h3 class="skills-category-title">AI, LLM &amp; RAG</h3>
-            <ul class="skills-list">
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-anthropic"><img src="static/skills/anthropic.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Anthropic SDK</span><span id="skill-tip-anthropic" role="tooltip" class="skill-tooltip">Python SDK for Claude API + tool use + prompt caching</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-claude"><img src="static/skills/claude.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Claude</span><span id="skill-tip-claude" role="tooltip" class="skill-tooltip">Primary LLM in production cascade (Sonnet 4.6 default)</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-gpt-4o"><img src="static/skills/gpt-4o.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">GPT-4o</span><span id="skill-tip-gpt-4o" role="tooltip" class="skill-tooltip">OpenAI fallback in the multi-LLM cascade</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-huggingface"><img src="static/skills/huggingface.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Hugging Face</span><span id="skill-tip-huggingface" role="tooltip" class="skill-tooltip">Transformers + sentence-embedding models for RAG</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-langchain"><img src="static/skills/langchain.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">LangChain</span><span id="skill-tip-langchain" role="tooltip" class="skill-tooltip">RAG orchestration where prompt-chain depth justifies it</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-mcp"><img src="static/skills/mcp.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">MCP</span><span id="skill-tip-mcp" role="tooltip" class="skill-tooltip">Model Context Protocol — shipped tailor-resume MCP server</span></span></li>
-            </ul>
-          </div>
-
-          <div class="skills-category">
-            <h3 class="skills-category-title">Languages &amp; Frameworks</h3>
-            <ul class="skills-list">
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-python"><img src="static/skills/python.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Python</span><span id="skill-tip-python" role="tooltip" class="skill-tooltip">Primary backend + ML language across every system</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-typescript"><img src="static/skills/typescript.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">TypeScript</span><span id="skill-tip-typescript" role="tooltip" class="skill-tooltip">Chrome MV3 extension + type-safe API contracts</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-sql"><img src="static/skills/sql.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">SQL</span><span id="skill-tip-sql" role="tooltip" class="skill-tooltip">Postgres-flavored — query-tuning, partitions, EXPLAIN</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-fastapi"><img src="static/skills/fastapi.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">FastAPI</span><span id="skill-tip-fastapi" role="tooltip" class="skill-tooltip">Async Python backend on every shipped service</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-pydantic"><img src="static/skills/pydantic.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Pydantic</span><span id="skill-tip-pydantic" role="tooltip" class="skill-tooltip">Schema validation at every API boundary</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-streamlit"><img src="static/skills/streamlit.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Streamlit</span><span id="skill-tip-streamlit" role="tooltip" class="skill-tooltip">Internal dashboards + Tailor-Resume UI</span></span></li>
-            </ul>
-          </div>
-
-          <div class="skills-category">
-            <h3 class="skills-category-title">Data &amp; Storage</h3>
-            <ul class="skills-list">
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-postgresql"><img src="static/skills/postgresql.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">PostgreSQL</span><span id="skill-tip-postgresql" role="tooltip" class="skill-tooltip">Primary OLTP store — managed Postgres in prod</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-sql-server"><img src="static/skills/sql-server.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">SQL Server</span><span id="skill-tip-sql-server" role="tooltip" class="skill-tooltip">Microsoft SQL Server — enterprise OLTP + T-SQL</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-pgvector"><img src="static/skills/pgvector.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">pgvector</span><span id="skill-tip-pgvector" role="tooltip" class="skill-tooltip">Postgres extension powering RAG embeddings</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-redis"><img src="static/skills/redis.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Redis</span><span id="skill-tip-redis" role="tooltip" class="skill-tooltip">Session cache + queue, Upstash serverless in prod</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-kafka"><img src="static/skills/kafka.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Kafka</span><span id="skill-tip-kafka" role="tooltip" class="skill-tooltip">Streaming ingest in Portfolio Risk Analytics</span></span></li>
-            </ul>
-          </div>
-
-          <div class="skills-category">
-            <h3 class="skills-category-title">Lakehouse &amp; Compute</h3>
-            <ul class="skills-list">
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-spark"><img src="static/skills/spark.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Spark</span><span id="skill-tip-spark" role="tooltip" class="skill-tooltip">Structured Streaming consumer for Kafka topics</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-databricks"><img src="static/skills/databricks.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Databricks</span><span id="skill-tip-databricks" role="tooltip" class="skill-tooltip">Lakehouse platform — production ML + analytics workloads</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-ssis"><img src="static/skills/ssis.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">SSIS</span><span id="skill-tip-ssis" role="tooltip" class="skill-tooltip">SQL Server Integration Services — ETL pipelines</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-delta-lake"><img src="static/skills/delta-lake.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Delta Lake</span><span id="skill-tip-delta-lake" role="tooltip" class="skill-tooltip">Versioned, ACID-safe lakehouse tables on Spark</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-iceberg"><img src="static/skills/iceberg.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Iceberg</span><span id="skill-tip-iceberg" role="tooltip" class="skill-tooltip">Open table format — petabyte-scale data lakes, time travel</span></span></li>
-            </ul>
-          </div>
-
-          <div class="skills-category">
-            <h3 class="skills-category-title">Cloud &amp; Deployment</h3>
-            <ul class="skills-list">
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-aws"><img src="static/skills/aws.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">AWS</span><span id="skill-tip-aws" role="tooltip" class="skill-tooltip">S3 + IAM + CloudWatch on production deployments</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-azure"><img src="static/skills/azure.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Azure</span><span id="skill-tip-azure" role="tooltip" class="skill-tooltip">Azure Functions + Storage in prior enterprise work</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-docker"><img src="static/skills/docker.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Docker</span><span id="skill-tip-docker" role="tooltip" class="skill-tooltip">Multi-stage builds for every shipped service</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-kubernetes"><img src="static/skills/kubernetes.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Kubernetes</span><span id="skill-tip-kubernetes" role="tooltip" class="skill-tooltip">Have used — staging clusters for AutoApply experiments</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-fly"><img src="static/skills/fly.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Fly.io</span><span id="skill-tip-fly" role="tooltip" class="skill-tooltip">AutoApply AI production region — IAD + DFW</span></span></li>
-            </ul>
-          </div>
-
-          <div class="skills-category">
-            <h3 class="skills-category-title">Observability &amp; Ops</h3>
-            <ul class="skills-list">
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-prometheus"><img src="static/skills/prometheus.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Prometheus</span><span id="skill-tip-prometheus" role="tooltip" class="skill-tooltip">Metrics scraping in containerized services</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-grafana"><img src="static/skills/grafana.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Grafana</span><span id="skill-tip-grafana" role="tooltip" class="skill-tooltip">Dashboards for ingest lag + provider latency</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-sentry"><img src="static/skills/sentry.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Sentry</span><span id="skill-tip-sentry" role="tooltip" class="skill-tooltip">Backend + extension error tracking on AutoApply</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-mlflow"><img src="static/skills/mlflow.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">MLflow</span><span id="skill-tip-mlflow" role="tooltip" class="skill-tooltip">Experiment tracking for fraud-detection pipelines</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-airflow"><img src="static/skills/airflow.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">Airflow</span><span id="skill-tip-airflow" role="tooltip" class="skill-tooltip">DAG orchestration in fraud-detection ML pipeline</span></span></li>
-              <li><span class="skill-icon" tabindex="0" aria-describedby="skill-tip-github-actions"><img src="static/skills/github-actions.svg" alt="" width="48" height="48" loading="lazy" decoding="async" fetchpriority="low" class="skill-glyph"><span class="skill-name">GitHub Actions</span><span id="skill-tip-github-actions" role="tooltip" class="skill-tooltip">CI on every repo — lint, types, tests, deploy</span></span></li>
-            </ul>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== WHAT SHIPPED ===== -->
-    <section class="section" id="proof">
-      <div class="container">
-        <div class="proof-split">
-
-          <article class="proof-col" data-reveal>
-            <h2 class="proof-title">Key Accomplishments</h2>
-            <ol class="kicker-list">
-              <li class="kicker-item">
-                <span class="kicker">Deployment velocity</span>
-                <p>Cycles cut from 3 months to 14 days by owning CI/CD end-to-end through Azure DevOps. Eliminated 11 weeks of cross-team idle time per release.</p>
-              </li>
-              <li class="kicker-item">
-                <span class="kicker">CDC ETL optimization</span>
-                <p>Reengineered CDC ETL from full-table reloads to incremental merge upserts: runtime 30 min to under 8 min, compute cost -67%.</p>
-              </li>
-              <li class="kicker-item">
-                <span class="kicker">Always-on platform</span>
-                <p>AutoApply AI runs as a private deployment on Fly.io - zero cold start, 9-page React dashboard, 40+ FastAPI endpoints. Public launch is gated by tracked security fixes.</p>
-              </li>
-              <li class="kicker-item">
-                <span class="kicker">Four distribution surfaces</span>
-                <p>tailor-resume ships as CLI, Streamlit app, MCP server, and PyPI package - from one shared engine.</p>
-              </li>
-            </ol>
-          </article>
-
-          <article class="proof-col" data-reveal>
-            <h2 class="proof-title">Technical Skills</h2>
-            <ol class="kicker-list">
-              <li class="kicker-item">
-                <span class="kicker">Data platform</span>
-                <p>LLM-integrated data platform on Azure with governance enforced at the generation layer. RLS/CLS access control baked into the data product, not bolted on after.</p>
-              </li>
-              <li class="kicker-item">
-                <span class="kicker">Workflow stack</span>
-                <p>Chrome MV3, FastAPI, PostgreSQL, and Redis orchestrate the full discover &rarr; tailor &rarr; apply &rarr; track lifecycle.</p>
-              </li>
-              <li class="kicker-item">
-                <span class="kicker">ML infrastructure</span>
-                <p>Azure AI anomaly detection - 95%+ accuracy, AKS/HPA migration cutting Azure spend $3,200/month. Signal-to-noise from 1:5 to 1:1.2.</p>
-              </li>
-              <li class="kicker-item">
-                <span class="kicker">MCP protocol</span>
-                <p>tailor-resume is an MCP server - any Claude Code session or MCP-aware agent calls it directly, zero integration work. 97M monthly SDK downloads.</p>
-              </li>
-            </ol>
-          </article>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== SYSTEMS ===== -->
-    <section class="section section-alt" id="systems">
-      <div class="container">
-
-        <div class="section-head" data-reveal>
-          <span class="section-label">Projects &amp; Open Source</span>
-          <h2 class="section-title">Four production systems, each independently deployable.</h2>
-          <p class="section-subtitle">Built end-to-end, tested in production, and modular enough that other teams can use the engines without adopting the whole stack.</p>
-        </div>
-
-        <!-- Platform architecture diagram -->
-        <div class="platform-diagram" data-reveal>
-          <div class="pd-top">
-            <div class="pd-flagship">
-              <div class="pd-flagship-header">
-                <span class="pd-type">Workflow Platform</span>
-                <h3 class="pd-name"><a href="autoapply-ai.html" class="pd-link">AutoApply AI</a></h3>
-              </div>
-              <p class="pd-flow">discover &rarr; tailor &rarr; apply &rarr; track</p>
-              <div class="pd-stats">
-                <span class="pd-stat"><strong>40+</strong> API endpoints</span>
-                <span class="pd-stat"><strong>11</strong> ATS adapters</span>
-                <span class="pd-stat"><strong>6</strong> LLM providers</span>
-                <span class="pd-stat"><strong>9-page</strong> dashboard</span>
-              </div>
-              <div class="pd-tech">
-                <span class="chip">FastAPI</span><span class="chip">Chrome MV3</span>
-                <span class="chip">PostgreSQL</span><span class="chip">Redis</span>
-                <span class="chip">Fly.io</span><span class="chip">React</span>
-              </div>
-            </div>
-          </div>
-          <div class="pd-arrow-row" aria-hidden="true">
-            <div class="pd-arrow-col">
-              <div class="pd-arrow-line"></div>
-              <span class="pd-arrow-label">tailoring engine</span>
-            </div>
-            <div class="pd-arrow-col">
-              <div class="pd-arrow-line"></div>
-              <span class="pd-arrow-label">discovery layer</span>
-            </div>
-          </div>
-          <div class="pd-engines">
-            <div class="pd-engine">
-              <div class="pd-engine-header">
-                <span class="pd-type">Reusable Engine</span>
-                <h3 class="pd-name"><a href="tailor-resume.html" class="pd-link">tailor-resume</a></h3>
-              </div>
-              <p class="pd-engine-desc">Extracted core, ships independently. <strong>190 tests</strong>. Any team can consume it without touching AutoApply AI.</p>
-              <div class="pd-surfaces">
-                <div class="surface-item"><span class="surface-mono">pip install tailor-resume</span></div>
-                <div class="surface-item"><span class="surface-label">MCP server</span>  - any agent calls it, zero integration</div>
-                <div class="surface-item"><span class="surface-label">CLI</span>  - zero config, cloud features opt-in</div>
-                <div class="surface-item"><span class="surface-label">Streamlit</span>  - browser UI for non-technical users</div>
-              </div>
-            </div>
-            <div class="pd-engine">
-              <div class="pd-engine-header">
-                <span class="pd-type">Discovery Layer</span>
-                <h3 class="pd-name"><a href="https://github.com/narendranathe/job-scout" class="pd-link" target="_blank" rel="noreferrer">JobScout</a></h3>
-              </div>
-              <p class="pd-engine-desc">Keeps discovery signal clean. Runs independently so the apply workflow never inherits stale or low-quality data.</p>
-              <div class="pd-surfaces">
-                <div class="surface-item"><span class="surface-label">130+</span> company career pages monitored</div>
-                <div class="surface-item"><span class="surface-label">6</span> ATS platforms covered</div>
-                <div class="surface-item"><span class="surface-label">Sponsorship-aware</span> ranking built in</div>
-                <div class="surface-item"><span class="surface-label">Continuous</span> alerting, no manual polling</div>
-              </div>
-            </div>
-          </div>
-          <div class="pd-infra">
-            <span class="pd-infra-label">Shared infrastructure</span>
-            <span class="pd-infra-stack">Claude · OpenAI · Gemini · Groq &nbsp;·&nbsp; pgvector / RAG &nbsp;·&nbsp; Multi-provider cascade &nbsp;·&nbsp; MCP Protocol</span>
-          </div>
-        </div>
-
-        <!-- System cards -->
-        <div class="systems-grid">
-
-          <!-- AutoApply AI -->
-          <article class="system-card" data-reveal>
-            <div class="system-body">
-              <span class="section-label">Workflow Platform</span>
-              <h3 class="system-name" id="card-autoapply">AutoApply AI</h3>
-              <dl class="impact-strip" aria-labelledby="card-autoapply">
-                <div class="impact-stat">
-                  <dt class="impact-value">40+</dt>
-                  <dd class="impact-label">FastAPI endpoints<span class="sr-only"> — verified by counting @router decorators in the AutoApply backend.</span></dd>
-                </div>
-                <div class="impact-stat">
-                  <dt class="impact-value">11</dt>
-                  <dd class="impact-label">ATS adapters<span class="sr-only"> — eleven content-script adapters (Greenhouse, Lever, Workday, Ashby, SmartRecruiters, iCIMS, BambooHR, Jobvite, Taleo, Recruitee, Workable) live in the extension's ats/ directory.</span></dd>
-                </div>
-                <div class="impact-stat">
-                  <dt class="impact-value">6</dt>
-                  <dd class="impact-label">LLM providers<span class="sr-only"> — a cascading provider chain across Claude, GPT-4o, Kimi, Ollama, Gemini, and Groq, all defined in the backend's providers service.</span></dd>
-                </div>
-                <div class="impact-stat">
-                  <dt class="impact-value">355</dt>
-                  <dd class="impact-label">backend tests<span class="sr-only"> — three hundred fifty-five pytest cases in the AutoApply backend, verifiable with pytest collect-only.</span></dd>
-                </div>
-              </dl>
-              <p class="system-desc">Applying for jobs is a ritual that eats weeks without improving outcomes. I rebuilt the process from scratch - Chrome MV3 extension detects the job form, tailors the resume using an LLM cascade across 6 providers, submits through 11 different ATS systems, and logs everything to a React dashboard - one auditable pipeline, no manual copy-paste, no lost applications. Private deployment on Fly.io; public launch gated by tracked security fixes.</p>
-              <div class="tech-chips">
-                <span class="chip">FastAPI</span><span class="chip">Chrome MV3</span>
-                <span class="chip">PostgreSQL</span><span class="chip">Redis</span>
-                <span class="chip">pgvector · RAG</span><span class="chip">React</span>
-              </div>
-              <div class="card-actions">
-                <a href="autoapply-ai.html" class="cs-btn">Read case study</a>
-                <a href="https://github.com/narendranathe/autoapply-ai" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub</a>
-                <button class="expand-btn" aria-expanded="false" data-label="See architecture">See architecture</button>
-              </div>
-              <div class="arch-expand" hidden>
-                <figure class="system-diagram-figure" aria-labelledby="diagram-d1-autoapply-title" aria-describedby="diagram-d1-autoapply-desc">
-                  <svg class="system-diagram" viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" role="img">
-                    <title id="diagram-d1-autoapply-title">AutoApply AI architecture: Chrome MV3 client to FastAPI backend to BYOK LLM router, with Postgres pgvector RAG and a user-owned GitHub Resume-Vault sink</title>
-                    <desc id="diagram-d1-autoapply-desc">AutoApply AI architecture. The Chrome MV3 service worker orchestrates a Shadow-DOM content script (ATS adapters) and a React side panel. Both authenticate with a FastAPI backend through Clerk RS256 tokens, with Redis enforcing per-user rate limits. The backend dispatches to a BYOK provider router across seven LLMs: Claude, OpenAI, Gemini, Groq, Perplexity, Kimi, and Ollama as local fallback. Routing is two-step: a user-selected primary provider, with Ollama as the in-request fallback. RAG retrieval flows through Postgres with pgvector hosted on Supabase. Tailored resumes write back to a user-owned GitHub Resume-Vault as versioned LaTeX files. Solid edges are dispatch; the dashed edge is the RAG return path from Postgres to the backend.</desc>
-                    <defs>
-                      <marker id="arrow-d1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                        <path d="M0 0 L10 5 L0 10 Z" fill="currentColor"/>
-                      </marker>
-                    </defs>
-                    <g fill="none" stroke="currentColor" stroke-width="1.4" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="11">
-                      <rect x="20" y="50" width="140" height="100" rx="6"/>
-                      <text x="90" y="70" text-anchor="middle" fill="currentColor" font-weight="600">Chrome MV3</text>
-                      <text x="90" y="90" text-anchor="middle" fill="currentColor" font-size="10">Service Worker</text>
-                      <text x="90" y="106" text-anchor="middle" fill="currentColor" font-size="10">Content Script</text>
-                      <text x="90" y="122" text-anchor="middle" fill="currentColor" font-size="10">Side Panel (React)</text>
-                      <text x="90" y="140" text-anchor="middle" fill="currentColor" font-size="9">11 ATS adapters</text>
-
-                      <rect x="200" y="50" width="140" height="100" rx="6"/>
-                      <text x="270" y="70" text-anchor="middle" fill="currentColor" font-weight="600">FastAPI backend</text>
-                      <text x="270" y="90" text-anchor="middle" fill="currentColor" font-size="10">async, 40+ endpoints</text>
-                      <text x="270" y="106" text-anchor="middle" fill="currentColor" font-size="10">Clerk RS256 JWT</text>
-                      <text x="270" y="122" text-anchor="middle" fill="currentColor" font-size="10">Redis rate-limit</text>
-                      <text x="270" y="140" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">in-request dispatch</text>
-
-                      <rect x="380" y="20" width="160" height="160" rx="6" stroke="var(--accent-warm, #b5752a)" stroke-width="2"/>
-                      <text x="460" y="42" text-anchor="middle" fill="var(--accent-warm, #b5752a)" font-weight="600">BYOK Router</text>
-                      <text x="460" y="60" text-anchor="middle" fill="currentColor" font-size="9">primary + Ollama fallback</text>
-                      <text x="460" y="80" text-anchor="middle" fill="currentColor" font-size="10">Claude</text>
-                      <text x="460" y="96" text-anchor="middle" fill="currentColor" font-size="10">OpenAI &middot; GPT-4o</text>
-                      <text x="460" y="112" text-anchor="middle" fill="currentColor" font-size="10">Gemini &middot; Groq</text>
-                      <text x="460" y="128" text-anchor="middle" fill="currentColor" font-size="10">Perplexity &middot; Kimi</text>
-                      <text x="460" y="146" text-anchor="middle" fill="currentColor" font-size="10" font-style="italic">Ollama (local)</text>
-
-                      <rect x="580" y="50" width="120" height="100" rx="6"/>
-                      <text x="640" y="72" text-anchor="middle" fill="currentColor" font-weight="600">Postgres</text>
-                      <text x="640" y="90" text-anchor="middle" fill="currentColor" font-weight="600">+ pgvector</text>
-                      <text x="640" y="108" text-anchor="middle" fill="currentColor" font-size="10">Supabase</text>
-                      <text x="640" y="124" text-anchor="middle" fill="currentColor" font-size="9">TF-IDF + dense</text>
-                      <text x="640" y="138" text-anchor="middle" fill="currentColor" font-size="9">top-k 6</text>
-
-                      <rect x="200" y="200" width="220" height="46" rx="6"/>
-                      <text x="310" y="219" text-anchor="middle" fill="currentColor" font-weight="600">GitHub Resume-Vault</text>
-                      <text x="310" y="234" text-anchor="middle" fill="currentColor" font-size="9">user-owned repo, .tex versions</text>
-
-                      <line x1="160" y1="95" x2="200" y2="95" marker-end="url(#arrow-d1)"/>
-                      <line x1="340" y1="95" x2="380" y2="95" marker-end="url(#arrow-d1)"/>
-                      <line x1="540" y1="100" x2="580" y2="100" marker-end="url(#arrow-d1)"/>
-                      <line x1="580" y1="115" x2="540" y2="115" marker-end="url(#arrow-d1)" stroke-dasharray="3 3"/>
-                      <line x1="270" y1="150" x2="270" y2="200" marker-end="url(#arrow-d1)"/>
-                    </g>
-                  </svg>
-                  <figcaption class="post-figcaption">Figure: AutoApply AI topology. Solid arrows are dispatch; dashed is RAG return.</figcaption>
-                </figure>
-                <div class="arch-grid">
-                  <div class="arch-box">
-                    <h4>Product boundary</h4>
-                    <p>One workflow product instead of three overlapping apps. Extension, backend, and dashboard all serve the same user journey: find &rarr; tailor &rarr; apply &rarr; track.</p>
-                  </div>
-                  <div class="arch-box">
-                    <h4>System design</h4>
-                    <p>Multi-provider model routing dispatches by question category. pgvector retrieval grounds answers in prior work history. ATS adapters handle Shadow DOM isolation and offline queuing.</p>
-                  </div>
-                  <div class="arch-box">
-                    <h4>Operational proof</h4>
-                    <p>40+ backend endpoints, 9-page dashboard, private deployment on Fly.io, 355 backend tests, and 11 ATS adapters covering the major job platforms.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <!-- tailor-resume -->
-          <article class="system-card" data-reveal>
-            <div class="system-body">
-              <span class="section-label">Document Intelligence Engine</span>
-              <h3 class="system-name" id="card-tailor-resume">tailor-resume</h3>
-              <dl class="impact-strip" aria-labelledby="card-tailor-resume">
-                <div class="impact-stat">
-                  <dt class="impact-value">190</dt>
-                  <dd class="impact-label">automated tests<span class="sr-only"> — one hundred ninety pytest cases covering the tailoring engine, verifiable with pytest collect-only.</span></dd>
-                </div>
-                <div class="impact-stat">
-                  <dt class="impact-value">4</dt>
-                  <dd class="impact-label">distribution surfaces<span class="sr-only"> — four delivery surfaces from one shared core: PyPI package, MCP server hosted on Fly.io, Streamlit web app, and a command-line interface.</span></dd>
-                </div>
-                <div class="impact-stat">
-                  <dt class="impact-value">MCP</dt>
-                  <dd class="impact-label">server live on Fly.io<span class="sr-only"> — model-context-protocol compatible endpoint discoverable by any MCP-aware agent at tailor-resume-mcp.fly.dev.</span></dd>
-                </div>
-              </dl>
-              <p class="system-desc">The tailoring engine inside AutoApply AI was too useful to keep locked inside one product. Friends wanted it. Agents could call it. So I extracted it properly - 190 tests, four distribution surfaces - and shipped it so any developer can <code>pip install tailor-resume</code> and any MCP-aware agent can call it directly, zero integration work required.</p>
-              <div class="tech-chips">
-                <span class="chip">Python</span><span class="chip">MCP server</span>
-                <span class="chip">Streamlit</span><span class="chip">PyPI package</span>
-                <span class="chip">LaTeX</span><span class="chip">Fly.io</span>
-              </div>
-              <div class="card-actions">
-                <a href="tailor-resume.html" class="cs-btn">Read case study</a>
-                <a href="https://github.com/narendranathe/tailor-resume" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub</a>
-                <button class="expand-btn" aria-expanded="false" data-label="See architecture">See architecture</button>
-              </div>
-              <div class="arch-expand" hidden>
-                <div class="arch-grid">
-                  <div class="arch-box">
-                    <h4>Why it matters</h4>
-                    <p>Extracted tailoring core now powers AutoApply AI, an MCP plugin, a browser app, and a CLI - from one honest pipeline. The modularization decision is what created the platform.</p>
-                  </div>
-                  <div class="arch-box">
-                    <h4>Delivery surfaces</h4>
-                    <p>Claude Code skill, MCP plugin (Fly.io hosted), Streamlit browser app, CLI, and Python package on PyPI - four surfaces from one shared core.</p>
-                  </div>
-                  <div class="arch-box">
-                    <h4>Quality signal</h4>
-                    <p>190 tests and ATS-aware claim discipline signal engineering maturity beyond flashy demos. Parseable by machines, readable by humans.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <!-- JobScout -->
-          <article class="system-card" data-reveal>
-            <div class="system-body">
-              <span class="section-label">Direct-Source Discovery</span>
-              <h3 class="system-name" id="card-jobscout">JobScout</h3>
-              <dl class="impact-strip" aria-labelledby="card-jobscout">
-                <div class="impact-stat">
-                  <dt class="impact-value">130+</dt>
-                  <dd class="impact-label">career pages monitored<span class="sr-only"> — one hundred thirty-plus company-specific scrapers configured in the JobScout target list.</span></dd>
-                </div>
-                <div class="impact-stat">
-                  <dt class="impact-value">6</dt>
-                  <dd class="impact-label">ATS platforms<span class="sr-only"> — six applicant-tracking-system adapters: Greenhouse, Lever, Workday, Ashby, SmartRecruiters, and iCIMS.</span></dd>
-                </div>
-                <div class="impact-stat">
-                  <dt class="impact-value">95+</dt>
-                  <dd class="impact-label">resumes tailored<span class="sr-only"> — ninety-five-plus per-role tailored resume PDFs generated from the master profile, each tracked back to the job opening it applied to.</span></dd>
-                </div>
-              </dl>
-              <p class="system-desc">Job boards are noisy by design - most listings are duplicated, aggregated, or irrelevant before you open them. I built JobScout to monitor 130+ company career pages directly, bypassing the middleman, with sponsorship-aware ranking built in. Clean input upstream means better applications downstream.</p>
-              <div class="tech-chips">
-                <span class="chip">130+ companies</span><span class="chip">6 ATS platforms</span>
-                <span class="chip">ranking engine</span><span class="chip">sponsorship-aware</span>
-              </div>
-              <div class="card-actions">
-                <a href="jobscout.html" class="cs-btn">Read case study</a>
-                <a href="https://narendranathe.github.io/job-scout/" class="text-link" target="_blank" rel="noreferrer"><i class="fas fa-external-link-alt"></i> Live demo</a>
-                <a href="https://github.com/narendranathe/job-scout" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub</a>
-              </div>
-            </div>
-          </article>
-
-        </div>
-
-        <!-- Supporting work -->
-        <div class="supporting-row" data-reveal>
-          <article class="system-card">
-            <div class="system-body">
-              <span class="section-label">Enterprise Data Platform</span>
-              <h3 class="system-name" id="card-azure">Azure Platform Engineering</h3>
-              <dl class="impact-strip" aria-labelledby="card-azure">
-                <div class="impact-stat">
-                  <dt class="impact-value">3mo&rarr;14d</dt>
-                  <dd class="impact-label">deployment cycle<span class="sr-only"> — release cadence cut from three months to fourteen days by owning CI/CD end-to-end through Azure DevOps; eliminated about eleven weeks of cross-team idle per release.</span></dd>
-                </div>
-                <div class="impact-stat">
-                  <dt class="impact-value">-67%</dt>
-                  <dd class="impact-label">CDC ETL compute<span class="sr-only"> — CDC ETL runtime cut from thirty minutes to under eight minutes after reengineering full-table reloads into incremental merge-upserts.</span></dd>
-                </div>
-                <div class="impact-stat">
-                  <dt class="impact-value">~1hr</dt>
-                  <dd class="impact-label">saved per AAG copy-down<span class="sr-only"> — idempotent pipeline for Contained Always-On Availability Groups eliminated about an hour of manual orchestration on each of twenty-plus daily copy-down requests.</span></dd>
-                </div>
-              </dl>
-              <p class="system-desc">ExponentHR runs payroll for thousands of employers — when the data platform lags, paychecks are at risk. I inherited a 3-month release cycle, 30-minute ETL jobs, and fully manual database failover. Rebuilt each layer: Azure DevOps CI/CD cut the release window to 14 days; incremental CDC merge-upserts dropped ETL from 30 minutes to under 8; idempotent AAG copy-down pipelines removed an hour of manual steps from 20+ daily requests.</p>
-              <figure class="system-diagram-figure" aria-labelledby="diagram-az-title" aria-describedby="diagram-az-desc">
-                <svg class="system-diagram" viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" role="img">
-                  <title id="diagram-az-title">Azure Platform Engineering topology: Azure Repos triggers Azure Pipelines CI/CD, output flows to SQL Server CDC, then to AAG replica and Microsoft Fabric</title>
-                  <desc id="diagram-az-desc">Enterprise data platform at ExponentHR. Azure Repos triggers Azure Pipelines on every push — build, test, and deploy stages run end-to-end, compressing the release cycle from three months to fourteen days. SQL Server uses CDC incremental merge-upserts, cutting ETL compute by sixty-seven percent. An idempotent pipeline automates Contained Always-On Availability Group copy-downs, saving about an hour per request. Microsoft Fabric consumes the CDC stream for analytics.</desc>
-                  <defs>
-                    <marker id="arrow-az" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                      <path d="M0 0 L10 5 L0 10 Z" fill="currentColor"/>
-                    </marker>
-                  </defs>
-                  <g fill="none" stroke="currentColor" stroke-width="1.4" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="11">
-                    <rect x="10" y="58" width="118" height="80" rx="6"/>
-                    <text x="69" y="78" text-anchor="middle" fill="currentColor" font-weight="600">Azure Repos</text>
-                    <text x="69" y="96" text-anchor="middle" fill="currentColor" font-size="10">PR / push trigger</text>
-                    <text x="69" y="128" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">protected main</text>
-                    <rect x="148" y="40" width="158" height="116" rx="6" stroke="var(--accent-warm, #b5752a)" stroke-width="2"/>
-                    <text x="227" y="62" text-anchor="middle" fill="var(--accent-warm, #b5752a)" font-weight="600">Azure Pipelines</text>
-                    <text x="227" y="80" text-anchor="middle" fill="currentColor" font-size="10">CI/CD end-to-end</text>
-                    <text x="227" y="96" text-anchor="middle" fill="currentColor" font-size="10">build → test → deploy</text>
-                    <text x="227" y="112" text-anchor="middle" fill="currentColor" font-size="10">3mo → 14-day cycle</text>
-                    <text x="227" y="144" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">idempotent stages</text>
-                    <rect x="326" y="58" width="148" height="80" rx="6"/>
-                    <text x="400" y="78" text-anchor="middle" fill="currentColor" font-weight="600">SQL Server</text>
-                    <text x="400" y="96" text-anchor="middle" fill="currentColor" font-size="10">CDC incremental ETL</text>
-                    <text x="400" y="112" text-anchor="middle" fill="currentColor" font-size="10">30min → &lt;8min</text>
-                    <text x="400" y="130" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">merge-upsert</text>
-                    <rect x="494" y="44" width="118" height="58" rx="6" stroke="var(--accent, #176b52)" stroke-width="1.5"/>
-                    <text x="553" y="66" text-anchor="middle" fill="currentColor" font-weight="600">AAG Replica</text>
-                    <text x="553" y="84" text-anchor="middle" fill="currentColor" font-size="10">~1hr saved / copy-down</text>
-                    <rect x="494" y="114" width="118" height="58" rx="6"/>
-                    <text x="553" y="136" text-anchor="middle" fill="currentColor" font-weight="600">Microsoft Fabric</text>
-                    <text x="553" y="154" text-anchor="middle" fill="currentColor" font-size="10">analytics lakehouse</text>
-                    <line x1="128" y1="98" x2="148" y2="98" marker-end="url(#arrow-az)"/>
-                    <line x1="306" y1="98" x2="326" y2="98" marker-end="url(#arrow-az)"/>
-                    <line x1="474" y1="82" x2="494" y2="73" marker-end="url(#arrow-az)"/>
-                    <line x1="474" y1="114" x2="494" y2="133" marker-end="url(#arrow-az)"/>
-                    <text x="360" y="178" text-anchor="middle" fill="var(--fg-muted, #9b9490)" font-size="10">ExponentHR production platform · payroll-critical availability</text>
-                  </g>
-                </svg>
-                <figcaption class="post-figcaption">Figure: Azure platform topology — CI/CD pipeline, CDC incremental ETL, and AAG failover automation as deployed at ExponentHR.</figcaption>
-              </figure>
-              <div class="tech-chips">
-                <span class="chip">Azure DevOps</span><span class="chip">SQL Server</span>
-                <span class="chip">CDC ETL</span><span class="chip">AAG failover</span>
-                <span class="chip">Microsoft Fabric</span><span class="chip">SSIS</span>
-              </div>
-              <div class="card-actions">
-                <button class="expand-btn" aria-expanded="false" data-label="Architecture walkthrough">Architecture walkthrough</button>
-              </div>
-              <div class="arch-expand" hidden>
-                <div class="arch-grid">
-                  <div class="arch-box">
-                    <h4>CI/CD Pipeline</h4>
-                    <p>Azure DevOps pipelines with full build-test-deploy stages. Idempotent stage design means any re-run produces the same result. Release cadence moved from 3-month manual handoffs to 14-day automated cycles — about 11 weeks of cross-team idle eliminated per release.</p>
-                  </div>
-                  <div class="arch-box">
-                    <h4>CDC Incremental ETL</h4>
-                    <p>Replaced full-table SQL Server reloads with Change Data Capture merge-upserts. Only rows modified since the last run flow through the pipeline — runtime dropped from 30 minutes to under 8, compute cost down 67%. Downstream Microsoft Fabric workloads consume the CDC stream without full-refresh dependency.</p>
-                  </div>
-                  <div class="arch-box">
-                    <h4>AAG Copy-Down Automation</h4>
-                    <p>Contained Always-On Availability Group copy-downs previously required manual steps: restore, security grant, CDC reconfiguration, listener validation — roughly an hour per request across 20+ daily requests. An idempotent Azure DevOps pipeline now handles all four steps with full audit trail and rollback safety.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
-          <article class="support-card">
-            <span class="section-label">ML infrastructure</span>
-            <h3>ML Pipeline Projects</h3>
-            <div class="ml-projects">
-              <div class="ml-project-entry">
-                <h4>Fraud Detection ML Platform</h4>
-                <p>Streaming fraud scoring with Kafka ingest, FastAPI + LightGBM model serving, MLflow experiment tracking, and Prometheus + Grafana observability. Full model lifecycle in containers.</p>
-                <div class="card-actions">
-                  <a href="fraud-detection.html" class="cs-btn">Read case study</a>
-                  <a href="https://github.com/narendranathe/fraud-detection-ml-platform" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub</a>
-                </div>
-              </div>
-              <div class="ml-project-entry">
-                <h4>Portfolio Risk Analytics</h4>
-                <p>Real-time risk analytics: Kafka streaming ingest, Spark historical-simulation VaR, FastAPI + Streamlit dashboard for live P&amp;L visibility.</p>
-                <figure class="system-diagram-figure" aria-labelledby="diagram-d2-portfolio-risk-title" aria-describedby="diagram-d2-portfolio-risk-desc">
-                  <svg class="system-diagram" viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" role="img">
-                    <title id="diagram-d2-portfolio-risk-title">Portfolio-Risk topology: Kafka producer to Spark Structured Streaming to console sink, FastAPI VaR served to Streamlit</title>
-                    <desc id="diagram-d2-portfolio-risk-desc">Portfolio-Risk real-time topology. A Kafka producer publishes synthetic market ticks at fifty messages per second on one topic with five partitions. Spark Structured Streaming consumes them with five-second tumbling windows and ten-second watermarks, running on a single-node local cluster. The current sink is stdout (a demo console writer) — a CSV file sink to data/processed is the next planned step but is not yet wired. A FastAPI service computes historical-simulation VaR at ninety-five and ninety-nine percent confidence intervals; until the file sink exists it falls back to synthetic data. The dashboard is a local Streamlit app.</desc>
-                    <defs>
-                      <marker id="arrow-d2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                        <path d="M0 0 L10 5 L0 10 Z" fill="currentColor"/>
-                      </marker>
-                    </defs>
-                    <g fill="none" stroke="currentColor" stroke-width="1.4" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="11">
-                      <rect x="20" y="50" width="120" height="86" rx="6"/>
-                      <text x="80" y="70" text-anchor="middle" fill="currentColor" font-weight="600">Kafka producer</text>
-                      <text x="80" y="88" text-anchor="middle" fill="currentColor" font-size="10">50 TPS</text>
-                      <text x="80" y="104" text-anchor="middle" fill="currentColor" font-size="10">1 topic / 5 parts</text>
-                      <text x="80" y="122" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">acks=all, gzip</text>
-
-                      <rect x="170" y="40" width="150" height="106" rx="6" stroke="var(--accent-warm, #b5752a)" stroke-width="2"/>
-                      <text x="245" y="60" text-anchor="middle" fill="var(--accent-warm, #b5752a)" font-weight="600">Spark Streaming</text>
-                      <text x="245" y="78" text-anchor="middle" fill="currentColor" font-size="10">structured streaming</text>
-                      <text x="245" y="94" text-anchor="middle" fill="currentColor" font-size="10">5s tumbling window</text>
-                      <text x="245" y="110" text-anchor="middle" fill="currentColor" font-size="10">10s watermark</text>
-                      <text x="245" y="130" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">local[2] demo</text>
-
-                      <rect x="350" y="60" width="100" height="66" rx="6"/>
-                      <text x="400" y="82" text-anchor="middle" fill="currentColor" font-weight="600">Console sink</text>
-                      <text x="400" y="100" text-anchor="middle" fill="currentColor" font-size="10">stdout (demo)</text>
-                      <text x="400" y="116" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">CSV sink TODO</text>
-
-                      <rect x="480" y="50" width="130" height="86" rx="6"/>
-                      <text x="545" y="70" text-anchor="middle" fill="currentColor" font-weight="600">FastAPI</text>
-                      <text x="545" y="88" text-anchor="middle" fill="currentColor" font-size="10">numpy VaR</text>
-                      <text x="545" y="104" text-anchor="middle" fill="currentColor" font-size="10">95% / 99% CI</text>
-                      <text x="545" y="122" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">historical simulation</text>
-
-                      <rect x="640" y="60" width="60" height="66" rx="6"/>
-                      <text x="670" y="82" text-anchor="middle" fill="currentColor" font-weight="600">Streamlit</text>
-                      <text x="670" y="100" text-anchor="middle" fill="currentColor" font-size="9">local</text>
-                      <text x="670" y="114" text-anchor="middle" fill="currentColor" font-size="9">dev</text>
-
-                      <line x1="140" y1="93" x2="170" y2="93" marker-end="url(#arrow-d2)"/>
-                      <line x1="320" y1="93" x2="350" y2="93" marker-end="url(#arrow-d2)"/>
-                      <line x1="450" y1="93" x2="480" y2="93" marker-end="url(#arrow-d2)"/>
-                      <line x1="610" y1="93" x2="640" y2="93" marker-end="url(#arrow-d2)"/>
-
-                      <text x="360" y="170" text-anchor="middle" fill="var(--fg-muted, #9b9490)" font-size="10">Single-node demo. Spark prints aggregates to stdout; CSV file handoff to FastAPI is planned, not shipped.</text>
-                    </g>
-                  </svg>
-                  <figcaption class="post-figcaption">Figure: Portfolio-Risk topology, as it actually runs today. The Spark-to-FastAPI link is currently console-only; FastAPI falls back to synthetic data until the CSV sink lands.</figcaption>
-                </figure>
-                <div class="card-actions">
-                  <a href="portfolio-risk.html" class="cs-btn">Read case study</a>
-                  <a href="https://github.com/narendranathe/portfolio-risk-analytics" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub</a>
-                </div>
-              </div>
-              <div class="ml-project-entry">
-                <h4>FinTune — Financial NLP</h4>
-                <p>QLoRA fine-tuning on Mistral-7B, 4-bit quantized inference, PII guardrails, circuit breaker self-recovery, KL-divergence drift detection.</p>
-                <div class="card-actions">
-                  <a href="fintune.html" class="cs-btn">Read case study</a>
-                  <a href="https://github.com/narendranathe/fintune" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub</a>
-                </div>
-              </div>
-            </div>
-          </article>
-          <article class="support-card">
-            <span class="section-label">Open-source tooling</span>
-            <h3 id="card-repo-context-hooks">repo-context-hooks</h3>
-            <dl class="impact-strip" aria-labelledby="card-repo-context-hooks">
+          <article class="proof-card">
+            <h2 class="proof-card-title" id="card-platform">ExponentHR</h2>
+            <p class="proof-card-source">Payroll data platform &middot; 400 databases, 70 TB<br>Owns change data capture, releases, recovery</p>
+            <dl class="impact-strip" aria-labelledby="card-platform">
               <div class="impact-stat">
-                <dt class="impact-value">330+</dt>
-                <dd class="impact-label">automated tests<span class="sr-only"> — three hundred thirty-plus pytest cases passing as of the v1.0 supply-chain hardening release; verifiable with pytest collect-only.</span></dd>
+                <dt class="impact-value">30&nbsp;min &rarr; 8&nbsp;min</dt>
+                <dd class="impact-label">ETL runtime<span class="sr-only"> — the load that moves changed rows into the warehouse. Cut from thirty minutes to under eight, with compute cost down sixty-seven percent, by replacing full-table reloads with incremental merge-upserts. Now the platform's standing pattern.</span></dd>
               </div>
               <div class="impact-stat">
-                <dt class="impact-value">Sigstore + CodeQL</dt>
-                <dd class="impact-label">supply-chain hardening<span class="sr-only"> — every release signed via Sigstore through GitHub Actions Trusted Publisher OIDC, plus CodeQL static analysis on every pull request; verifiable in the publish and codeql workflow files.</span></dd>
+                <dt class="impact-value">3&nbsp;mo &rarr; 14&nbsp;d</dt>
+                <dd class="impact-label">release cycle<span class="sr-only"> — how long a change takes to reach clients. Cut from three months to fourteen days by owning the build and deploy pipeline end to end and aligning dev, test, IT, and business on one cadence, removing about eleven weeks of idle handoff time per release.</span></dd>
               </div>
               <div class="impact-stat">
-                <dt class="impact-value">stdlib</dt>
-                <dd class="impact-label">only — zero runtime deps<span class="sr-only"> — the project dependencies array in pyproject.toml is empty; the package uses Python standard library only at runtime.</span></dd>
+                <dt class="impact-value">MTTR &lt;&nbsp;1&nbsp;hr</dt>
+                <dd class="impact-label">failover recovery<span class="sr-only"> — mean time to restore service after a database failover. Under one hour, with documented runbooks that turned a specialist-only restore into an on-call procedure anyone on the rota can follow.</span></dd>
               </div>
             </dl>
-            <p>Pre/post-commit hooks that snapshot repo context for LLM agents. Sigstore-signed PyPI releases via OIDC Trusted Publisher; CodeQL static analysis on every PR; Dependabot tracks the GitHub Actions ecosystem.</p>
-            <div class="card-actions">
-              <a href="https://github.com/narendranathe/repo-context-hooks" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub</a>
-              <a href="https://pypi.org/project/repo-context-hooks/" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-python"></i> PyPI</a>
-            </div>
-          </article>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ===== ARCHITECTURE & WRITE-UPS ===== -->
-    <section class="section" id="architecture">
-      <div class="container">
-
-        <div class="section-head" data-reveal>
-          <span class="section-label">Articles</span>
-          <h2 class="section-title">Technical write-ups.</h2>
-          <p class="section-subtitle">Problem, constraints, design, tradeoffs, outcome. Each post focuses on what didn't work and why.</p>
-        </div>
-
-        <div class="writing-grid">
-          <article class="writing-card" data-reveal>
-            <figure class="writing-thumb" aria-labelledby="thumb-supply-chain-title" aria-describedby="thumb-supply-chain-desc">
-              <svg class="writing-diagram" viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg" role="img">
-                <title id="thumb-supply-chain-title">Supply-chain audit pipeline: PR triggers five Claude agents in parallel feeding one consensus report.</title>
-                <desc id="thumb-supply-chain-desc">A pull request enters from the left, fans out to five parallel agent reviewers (security, telemetry, contract, docs, packaging), and converges into a single consensus report on the right.</desc>
-                <g fill="none" stroke="currentColor" stroke-width="1.3" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="9">
-                  <rect x="6" y="46" width="46" height="28" rx="4"/>
-                  <text x="29" y="63" text-anchor="middle" fill="currentColor">PR</text>
-                  <rect x="100" y="6"  width="74" height="20" rx="4"/><text x="137" y="20" text-anchor="middle" fill="currentColor">security</text>
-                  <rect x="100" y="32" width="74" height="20" rx="4"/><text x="137" y="46" text-anchor="middle" fill="currentColor">telemetry</text>
-                  <rect x="100" y="58" width="74" height="20" rx="4" stroke="var(--accent-warm, #b5752a)"/><text x="137" y="72" text-anchor="middle" fill="var(--accent-warm, #b5752a)">contract</text>
-                  <rect x="100" y="84" width="74" height="20" rx="4"/><text x="137" y="98" text-anchor="middle" fill="currentColor">docs</text>
-                  <rect x="100" y="110" width="74" height="0"/>
-                  <line x1="52" y1="60" x2="100" y2="16"/>
-                  <line x1="52" y1="60" x2="100" y2="42"/>
-                  <line x1="52" y1="60" x2="100" y2="68"/>
-                  <line x1="52" y1="60" x2="100" y2="94"/>
-                  <rect x="220" y="40" width="92" height="40" rx="4" stroke="var(--accent-warm, #b5752a)" stroke-width="1.6"/>
-                  <text x="266" y="58" text-anchor="middle" fill="var(--accent-warm, #b5752a)" font-weight="600">consensus</text>
-                  <text x="266" y="72" text-anchor="middle" fill="currentColor" font-size="8">41 issues caught</text>
-                  <line x1="174" y1="16" x2="220" y2="56"/>
-                  <line x1="174" y1="42" x2="220" y2="58"/>
-                  <line x1="174" y1="68" x2="220" y2="60"/>
-                  <line x1="174" y1="94" x2="220" y2="62"/>
-                </g>
-              </svg>
-            </figure>
-            <span class="writing-label">Supply-chain &middot; 12 min read &middot; Apr 2026</span>
-            <h3 class="writing-title">Five Claude agents audited my plugin release in parallel. They caught 41 issues.</h3>
-            <p class="writing-desc">A defender-side playbook for shipping a Claude Code plugin with PyPI-tier supply-chain hygiene &mdash; Sigstore signing, OIDC Trusted Publisher, CodeQL, property-tested telemetry, and the multi-agent review workflow that found everything I missed.</p>
-            <a href="content/posts/repo-context-hooks-supply-chain.html" class="cs-btn writing-cta">Read the write-up &rarr;</a>
+            <p class="proof-mechanism">CDC tables feed MERGE upserts, safe on retry.</p>
           </article>
 
-          <article class="writing-card" data-reveal>
-            <figure class="writing-thumb" aria-labelledby="thumb-llm-cascade-title" aria-describedby="thumb-llm-cascade-desc">
-              <svg class="writing-diagram" viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg" role="img">
-                <title id="thumb-llm-cascade-title">LLM cascade: Claude as primary, fall through to GPT-4o, Kimi, Ollama, then keyword on each provider failure.</title>
-                <desc id="thumb-llm-cascade-desc">A request flows left-to-right through five providers. Each box is a fallback step; the active path stops at the first provider returning a usable answer. Claude is highlighted as the primary; keyword-extract on the right is the no-LLM degraded mode.</desc>
-                <g fill="none" stroke="currentColor" stroke-width="1.3" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="9">
-                  <rect x="6" y="46" width="50" height="28" rx="4" stroke="var(--accent-warm, #b5752a)" stroke-width="1.6"/>
-                  <text x="31" y="58" text-anchor="middle" fill="var(--accent-warm, #b5752a)" font-weight="600">Claude</text>
-                  <text x="31" y="69" text-anchor="middle" fill="currentColor" font-size="8">primary</text>
-                  <rect x="68" y="46" width="50" height="28" rx="4"/><text x="93" y="58" text-anchor="middle" fill="currentColor">GPT-4o</text><text x="93" y="69" text-anchor="middle" fill="currentColor" font-size="8">fallback</text>
-                  <rect x="130" y="46" width="50" height="28" rx="4"/><text x="155" y="58" text-anchor="middle" fill="currentColor">Kimi</text><text x="155" y="69" text-anchor="middle" fill="currentColor" font-size="8">cheap</text>
-                  <rect x="192" y="46" width="50" height="28" rx="4"/><text x="217" y="58" text-anchor="middle" fill="currentColor">Ollama</text><text x="217" y="69" text-anchor="middle" fill="currentColor" font-size="8">local</text>
-                  <rect x="254" y="46" width="60" height="28" rx="4"/><text x="284" y="58" text-anchor="middle" fill="currentColor">keyword</text><text x="284" y="69" text-anchor="middle" fill="currentColor" font-size="8">no-LLM</text>
-                  <line x1="56" y1="60" x2="68" y2="60" marker-end="url(#wd-arrow)"/>
-                  <line x1="118" y1="60" x2="130" y2="60" marker-end="url(#wd-arrow)"/>
-                  <line x1="180" y1="60" x2="192" y2="60" marker-end="url(#wd-arrow)"/>
-                  <line x1="242" y1="60" x2="254" y2="60" marker-end="url(#wd-arrow)"/>
-                  <text x="160" y="22" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">circuit breaker on each provider</text>
-                  <text x="160" y="100" text-anchor="middle" fill="var(--fg-muted, #9b9490)" font-size="8">first usable answer wins; rest skip</text>
-                </g>
-                <defs>
-                  <marker id="wd-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                    <path d="M0 0 L10 5 L0 10 Z" fill="currentColor"/>
-                  </marker>
-                </defs>
-              </svg>
-            </figure>
-            <span class="writing-label">AI infra &middot; draft &middot; on Substack</span>
-            <h3 class="writing-title">The LLM cascade as a routing system, not a fallback.</h3>
-            <p class="writing-desc">Five providers, circuit breakers per provider, per-category routing, and a reward loop. What worked: Claude-first with cost-aware overflow. What didn't: naive failover by HTTP status code &mdash; LLMs fail in much weirder ways than 500s.</p>
-            <a href="https://narendranathe.substack.com/p/karpathys-llm-wiki-applied-to-a-multi" class="cs-btn cs-btn--substack writing-cta" target="_blank" rel="noreferrer"
-               data-hover-preview="/static/preview-substack.png"
-               data-hover-embed="substack-feed"
-               data-hover-feed="/static/substack-latest.json"
-               data-hover-title="Substack - narendranathe"
-               data-hover-caption="AI infra notes, weekly cadence">Read on Substack &rarr;</a>
-          </article>
-
-          <article class="writing-card" data-reveal>
-            <figure class="writing-thumb" aria-labelledby="thumb-deploy-title" aria-describedby="thumb-deploy-desc">
-              <svg class="writing-diagram" viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg" role="img">
-                <title id="thumb-deploy-title">Azure DevOps pipeline compressing deploy cycle from three months to fourteen days.</title>
-                <desc id="thumb-deploy-desc">A git push enters from the left, runs through build, test, and security gates, and lands on a database-target environment in about fourteen days end-to-end. The earlier three-month process is shown faintly above as a comparison anchor.</desc>
-                <g fill="none" stroke="currentColor" stroke-width="1.3" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="9">
-                  <text x="160" y="14" text-anchor="middle" fill="var(--fg-muted, #9b9490)" font-size="8" font-style="italic">before: 3 months / cross-team relay / manual gates</text>
-                  <rect x="6" y="46" width="46" height="28" rx="4"/><text x="29" y="63" text-anchor="middle" fill="currentColor">git</text>
-                  <rect x="64" y="46" width="58" height="28" rx="4"/><text x="93" y="58" text-anchor="middle" fill="currentColor">build</text><text x="93" y="69" text-anchor="middle" fill="currentColor" font-size="8">cached</text>
-                  <rect x="134" y="46" width="58" height="28" rx="4"/><text x="163" y="58" text-anchor="middle" fill="currentColor">test</text><text x="163" y="69" text-anchor="middle" fill="currentColor" font-size="8">parallel</text>
-                  <rect x="204" y="46" width="58" height="28" rx="4" stroke="var(--accent-warm, #b5752a)"/><text x="233" y="58" text-anchor="middle" fill="var(--accent-warm, #b5752a)" font-weight="600">CDC ETL</text><text x="233" y="69" text-anchor="middle" fill="currentColor" font-size="8">incremental</text>
-                  <rect x="274" y="46" width="40" height="28" rx="4"/><text x="294" y="63" text-anchor="middle" fill="currentColor">DB</text>
-                  <line x1="52" y1="60" x2="64" y2="60" marker-end="url(#wd-arrow2)"/>
-                  <line x1="122" y1="60" x2="134" y2="60" marker-end="url(#wd-arrow2)"/>
-                  <line x1="192" y1="60" x2="204" y2="60" marker-end="url(#wd-arrow2)"/>
-                  <line x1="262" y1="60" x2="274" y2="60" marker-end="url(#wd-arrow2)"/>
-                  <text x="160" y="100" text-anchor="middle" fill="var(--accent-warm, #b5752a)" font-size="9" font-weight="600">after: 14 days &middot; idempotent &middot; -67% compute</text>
-                </g>
-                <defs>
-                  <marker id="wd-arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                    <path d="M0 0 L10 5 L0 10 Z" fill="currentColor"/>
-                  </marker>
-                </defs>
-              </svg>
-            </figure>
-            <span class="writing-label">Data platform &middot; draft &middot; on Substack</span>
-            <h3 class="writing-title">Compressing a deploy cycle from 3 months to 14 days.</h3>
-            <p class="writing-desc">CI/CD ownership at ExponentHR &mdash; Azure DevOps pipelines, idempotent CDC ETL with merge-upserts, AAG copy-down automation. Honest tradeoffs section: which gates I tried to remove and learned to keep.</p>
-            <a href="https://narendranathe.substack.com" class="cs-btn cs-btn--substack writing-cta" target="_blank" rel="noreferrer"
-               data-hover-preview="/static/preview-substack.png"
-               data-hover-embed="substack-feed"
-               data-hover-feed="/static/substack-latest.json"
-               data-hover-title="Substack - narendranathe"
-               data-hover-caption="AI infra notes, weekly cadence">Read on Substack &rarr;</a>
-          </article>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ===== WRITING ===== -->
-    <section class="section section-alt" id="notes">
-      <div class="container">
-
-        <div class="section-head" data-reveal>
-          <span class="section-label">Publications</span>
-          <h2 class="section-title">External articles and peer-reviewed work.</h2>
-          <p class="section-subtitle">Posts on Substack covering production decisions; peer-reviewed publication in Taylor &amp; Francis.</p>
-        </div>
-
-        <div class="writing-grid">
-          <article class="writing-card" data-reveal>
-            <span class="writing-label">Architecture</span>
-            <h3 class="writing-title">Chrome Extension ATS Adapters: Per-Platform Engineering</h3>
-            <p class="writing-desc">Why one generic form handler is the wrong abstraction when ATS platforms vary by DOM isolation, field detection logic, and submission behavior.</p>
-            <a href="https://narendranathe.substack.com" class="cs-btn cs-btn--substack writing-cta" target="_blank" rel="noreferrer"
-               data-hover-preview="/static/preview-substack.png"
-               data-hover-embed="substack-feed"
-               data-hover-feed="/static/substack-latest.json"
-               data-hover-title="Substack - narendranathe"
-               data-hover-caption="AI infra notes, weekly cadence">Read on Substack</a>
-          </article>
-          <article class="writing-card" data-reveal>
-            <span class="writing-label">System design</span>
-            <h3 class="writing-title">Two Booleans and a Production Bug: State Design in AutoApply AI</h3>
-            <p class="writing-desc">A seemingly simple boolean flag caused a state bug that took three false fixes before the real model emerged. What it taught about representing apply state.</p>
-            <a href="https://narendranathe.substack.com" class="cs-btn cs-btn--substack writing-cta" target="_blank" rel="noreferrer"
-               data-hover-preview="/static/preview-substack.png"
-               data-hover-embed="substack-feed"
-               data-hover-feed="/static/substack-latest.json"
-               data-hover-title="Substack - narendranathe"
-               data-hover-caption="AI infra notes, weekly cadence">Read on Substack</a>
-          </article>
-          <article class="writing-card" data-reveal>
-            <span class="writing-label">AI systems</span>
-            <h3 class="writing-title">The LLM Cascade as a Routing System, Not a Fallback</h3>
-            <p class="writing-desc">Five providers, circuit breakers, per-category routing, and a reward loop. Why the model routing layer is the most interesting engineering surface in AutoApply AI.</p>
-            <a href="https://narendranathe.substack.com/p/karpathys-llm-wiki-applied-to-a-multi" class="cs-btn cs-btn--substack writing-cta" target="_blank" rel="noreferrer"
-               data-hover-preview="/static/preview-substack.png"
-               data-hover-embed="substack-feed"
-               data-hover-feed="/static/substack-latest.json"
-               data-hover-title="Substack - narendranathe"
-               data-hover-caption="AI infra notes, weekly cadence">Read on Substack</a>
-          </article>
-        </div>
-
-        <div class="research-card" data-reveal>
-          <span class="section-label">Peer-reviewed publication</span>
-          <h3 class="research-title">An Examination of Sentiment Analysis as a Tool for Gathering Visitor Feedback</h3>
-          <p class="research-authors">Dr. David Bojanic, Narendranath Edara, Jane Zhang</p>
-          <p class="research-pub">Journal of Nonprofit &amp; Public Sector Marketing &middot; Taylor &amp; Francis &middot; 2025</p>
-          <a href="https://doi.org/10.1080/10495142.2025.2525123" class="text-link" target="_blank" rel="noreferrer">View publication &rarr;</a>
-        </div>
-
-        <div class="section-cta" data-reveal>
-          <a href="https://narendranathe.substack.com" class="btn btn-substack" target="_blank" rel="noreferrer"
-             data-hover-preview="/static/preview-substack.png"
-             data-hover-embed="substack-feed"
-             data-hover-feed="/static/substack-latest.json"
-             data-hover-title="Substack - narendranathe"
-             data-hover-caption="AI infra notes, weekly cadence"><svg class="substack-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>Follow on Substack</a>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ===== SIGNAL FROM THE FIELD ===== -->
-    <section class="section section-alt" id="signal">
-      <div class="container">
-
-        <div class="section-head" data-reveal>
-          <span class="section-label">References</span>
-          <h2 class="section-title">What colleagues and managers wrote on LinkedIn.</h2>
-        </div>
-
-        <div class="peer-grid">
-          <div class="peer-card" data-reveal>
-            <div class="peer-linkedin-badge"><i class="fab fa-linkedin"></i> LinkedIn recommendation</div>
-            <blockquote class="peer-quote">"Naren is a great talent in the product ownership space. He is a critical thinker and understands how to analyze a problem, and convert that problem into a tangible requirements doc. Most importantly, he is a quick and humble learner that loves researching the areas of the business that are new to him."</blockquote>
-            <div class="peer-author">
-              <div class="peer-avatar">RE</div>
-              <div>
-                <a href="https://www.linkedin.com/in/richard-enright-mba/" class="peer-name" target="_blank" rel="noreferrer"
-                   data-hover-preview="/static/preview-linkedin.png"
-                   data-hover-title="LinkedIn - Richard Enright"
-                   data-hover-caption="Lead Product Manager, Harness">Richard Enright</a>
-                <span class="peer-role">Lead Product Manager, Harness</span>
+          <article class="proof-card">
+            <h2 class="proof-card-title" id="card-ml">Fraud Detection &amp; FinTune</h2>
+            <p class="proof-card-source">Real-time scoring and financial text models<br>Synthetic data, production-shaped engineering</p>
+            <dl class="impact-strip" aria-labelledby="card-ml">
+              <div class="impact-stat">
+                <dt class="impact-value">1.12&nbsp;ms</dt>
+                <dd class="impact-label">P99 scoring latency<span class="sr-only"> — ninety-ninth percentile serving latency, meaning ninety-nine of every hundred requests return faster than one point one two milliseconds.</span></dd>
               </div>
-            </div>
-          </div>
-          <div class="peer-card" data-reveal>
-            <div class="peer-linkedin-badge"><i class="fab fa-linkedin"></i> LinkedIn recommendation</div>
-            <blockquote class="peer-quote">"I had the pleasure of working closely with Narendranath for 3+ years and can confidently attest to his outstanding performance and exceptional work ethic. He had a keen eye for solving business problems by identifying trends to improve the overall business."</blockquote>
-            <div class="peer-author">
-              <div class="peer-avatar">SM</div>
-              <div>
-                <a href="https://www.linkedin.com/in/snehal-moni/" class="peer-name" target="_blank" rel="noreferrer"
-                   data-hover-preview="/static/preview-linkedin.png"
-                   data-hover-title="LinkedIn - Snehal Moni"
-                   data-hover-caption="Operations and Policy Analyst, Oregon Health Authority">Snehal Moni</a>
-                <span class="peer-role">Operations &amp; Policy Analyst, Oregon Health Authority</span>
+              <div class="impact-stat">
+                <dt class="impact-value">100+&nbsp;TPS</dt>
+                <dd class="impact-label">sustained throughput<span class="sr-only"> — transactions scored per second, held steady rather than peak, with exactly-once Kafka processing so no transaction is scored twice.</span></dd>
               </div>
-            </div>
-          </div>
-          <div class="peer-card" data-reveal>
-            <div class="peer-linkedin-badge"><i class="fab fa-linkedin"></i> LinkedIn recommendation</div>
-            <blockquote class="peer-quote">"Narendranath has been an efficient source to the team at all times. He expertly trained himself to adapt to the various sectors of the business and was one of the few people who took up every challenge offered to him."</blockquote>
-            <div class="peer-author">
-              <div class="peer-avatar">PS</div>
-              <div>
-                <a href="https://www.linkedin.com/in/pranav-s-47356a58/" class="peer-name" target="_blank" rel="noreferrer"
-                   data-hover-preview="/static/preview-linkedin.png"
-                   data-hover-title="LinkedIn - Pranav Suresh"
-                   data-hover-caption="Business Effectiveness, CIBC">Pranav Suresh</a>
-                <span class="peer-role">Business Effectiveness, CIBC</span>
+              <div class="impact-stat">
+                <dt class="impact-value">100K&nbsp;txns</dt>
+                <dd class="impact-label">synthetic, not live traffic<span class="sr-only"> — one hundred thousand generated transactions at a two percent fraud rate. This is synthetic data by design, not real payment traffic. The engineering around it is production-shaped; the data is not.</span></dd>
               </div>
-            </div>
-          </div>
-        </div>
+            </dl>
+            <p class="proof-mechanism">Kafka exactly-once into FastAPI, model held in memory.</p>
+          </article>
 
-        <div class="peer-cta" data-reveal>
-          <a href="https://www.linkedin.com/in/narendranathe/" class="btn peer-cta-btn peer-cta-btn--linkedin" target="_blank" rel="noreferrer"
-             data-hover-preview="/static/preview-linkedin.png"
-             data-hover-title="LinkedIn - Narendranath Edara"
-             data-hover-caption="Senior AI/ML Engineer - open to remote">
-            <i class="fab fa-linkedin"></i> Connect on LinkedIn
-          </a>
-          <a href="https://narendranathe.substack.com" class="btn peer-cta-btn peer-cta-btn--substack" target="_blank" rel="noreferrer"
-             data-hover-preview="/static/preview-substack.png"
-             data-hover-embed="substack-feed"
-             data-hover-feed="/static/substack-latest.json"
-             data-hover-title="Substack - narendranathe"
-             data-hover-caption="AI infra notes, weekly cadence">
-            <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;flex-shrink:0" aria-hidden="true"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg> Follow on Substack
-          </a>
-        </div>
+          <article class="proof-card">
+            <h2 class="proof-card-title" id="card-oss">repo-context-hooks</h2>
+            <p class="proof-card-source">Python package on PyPI, anyone can check it<br>Git hooks that snapshot repo context for AI agents</p>
+            <dl class="impact-strip" aria-labelledby="card-oss">
+              <div class="impact-stat">
+                <dt class="impact-value">330+</dt>
+                <dd class="impact-label">tests at v1.0<span class="sr-only"> — more than three hundred thirty automated tests passing as of the version one point zero release; verifiable by anyone who clones the repository.</span></dd>
+              </div>
+              <div class="impact-stat">
+                <dt class="impact-value">0</dt>
+                <dd class="impact-label">outside libraries used<span class="sr-only"> — zero runtime dependencies. The package uses only what ships with Python, so installing it pulls in no other code to audit or patch.</span></dd>
+              </div>
+              <div class="impact-stat">
+                <dt class="impact-value">Signed</dt>
+                <dd class="impact-label">every release<span class="sr-only"> — every release is cryptographically signed through Sigstore, and CodeQL static analysis runs on every pull request; both are verifiable in the workflow files.</span></dd>
+              </div>
+            </dl>
+            <p class="proof-mechanism">Sigstore signs every release. No stored publishing key.</p>
+          </article>
 
+        </div>
       </div>
     </section>
 
-    <!-- ===== CONNECT ===== -->
-    <section class="section" id="connect">
+    <!-- ===== 3. BEFORE ENGINEERING ===== -->
+    <section class="section" id="before" aria-labelledby="before-label">
       <div class="container">
+        <span class="section-label" id="before-label">Before engineering</span>
 
-        <div class="section-head" data-reveal>
-          <span class="section-label">Contact</span>
-          <h2 class="section-title">Let's talk.</h2>
-          <p class="section-subtitle">Based in Dallas TX, open to remote. I'm most useful to teams building production AI systems who want someone who can own the full stack - from retrieval design through deployment and observability.</p>
+        <div class="proof-cards">
+
+          <article class="proof-card">
+            <h2 class="proof-card-title" id="card-zomato">Zomato</h2>
+            <p class="proof-card-source">Business Analyst &middot; Mar 2018 to Sep 2020<br>Marketplace analytics &middot; 300 restaurants</p>
+            <dl class="impact-strip" aria-labelledby="card-zomato">
+              <div class="impact-stat">
+                <dt class="impact-value">-&#8377;18 &rarr; +&#8377;2</dt>
+                <dd class="impact-label">profit per order<span class="sr-only"> — contribution margin per order across a three-hundred-restaurant portfolio, moved from a loss of eighteen rupees to a gain of two, by rebalancing how discounts were shared against advertising revenue.</span></dd>
+              </div>
+              <div class="impact-stat">
+                <dt class="impact-value">+14%</dt>
+                <dd class="impact-label">growth in one quarter<span class="sr-only"> — compounded growth in a single quarter across the same three hundred restaurants, with campaign coverage lifted to seventy percent of the portfolio.</span></dd>
+              </div>
+              <div class="impact-stat">
+                <dt class="impact-value">-80%</dt>
+                <dd class="impact-label">support desk volume<span class="sr-only"> — support desk volume fell eighty percent after an Elasticsearch index over more than one hundred thousand internal documents let staff answer their own questions.</span></dd>
+              </div>
+            </dl>
+            <p class="proof-mechanism">Rebalanced discount sharing against ad revenue per restaurant.</p>
+          </article>
+
+          <article class="proof-card">
+            <h2 class="proof-card-title" id="card-udaan">udaan.com</h2>
+            <p class="proof-card-source">Business Intelligence Analyst &middot; Sep 2020 to Mar 2021<br>New-city B2B marketplace launch</p>
+            <dl class="impact-strip" aria-labelledby="card-udaan">
+              <div class="impact-stat">
+                <dt class="impact-value">&rarr; &#8377;5&nbsp;Cr/mo</dt>
+                <dd class="impact-label">city sales, up 400 points<span class="sr-only"> — city gross merchandise value grown four hundred percentage points to five crore rupees a month, roughly eight million dollars a year, matching the incumbent competitor three months after the new city launched.</span></dd>
+              </div>
+              <div class="impact-stat">
+                <dt class="impact-value">99.3%</dt>
+                <dd class="impact-label">orders fulfilled<span class="sr-only"> — order fulfillment rate held at ninety-nine point three percent through statistical demand analysis for capacity planning under just-in-time and warehouse models.</span></dd>
+              </div>
+              <div class="impact-stat">
+                <dt class="impact-value">+7%</dt>
+                <dd class="impact-label">return on inventory<span class="sr-only"> — return on inventory investment lifted seven percent through demand forecasting and inventory models.</span></dd>
+              </div>
+            </dl>
+            <p class="proof-mechanism">Power BI forecasting. Continuity plan for app downtime.</p>
+          </article>
+
         </div>
 
-        <div class="contact-grid" data-reveal>
-          <div class="contact-profile">
-            <img src="https://github.com/user-attachments/assets/a31266a6-37af-4717-b031-de03ae6058a9"
-                 alt="Narendranath Edara" class="contact-photo"
-                 onerror="this.style.display='none';">
-            <p class="contact-intro">Response within 24 hours. Based in Dallas TX. Open to Senior Data Engineer, ML Engineer, and AI/ML Platform Engineer roles.</p>
-          </div>
-          <div class="contact-links">
-            <a href="mailto:edara.narendranath@gmail.com" class="contact-link">
-              <i class="fas fa-envelope"></i><span>edara.narendranath@gmail.com</span>
-            </a>
-            <a href="https://www.linkedin.com/in/narendranathe/" target="_blank" rel="noreferrer" class="contact-link contact-linkedin"
-               data-hover-preview="/static/preview-linkedin.png"
-               data-hover-title="LinkedIn - Narendranath Edara"
-               data-hover-caption="Senior AI/ML Engineer - open to remote">
-              <i class="fab fa-linkedin-in"></i><span>Connect on LinkedIn</span>
-            </a>
-            <a href="https://github.com/narendranathe" target="_blank" rel="noreferrer" class="contact-link contact-github"
-               data-hover-preview="/static/preview-github.png"
-               data-hover-title="GitHub - @narendranathe"
-               data-hover-caption="Production AI/ML codebases - Senior+ data engineering">
-              <i class="fab fa-github"></i><span>Browse the code on GitHub</span>
-            </a>
-            <a href="https://narendranathe.substack.com" target="_blank" rel="noreferrer" class="contact-link contact-substack"
-               data-hover-preview="/static/preview-substack.png"
-               data-hover-embed="substack-feed"
-               data-hover-feed="/static/substack-latest.json"
-               data-hover-title="Substack - narendranathe"
-               data-hover-caption="AI infra notes, weekly cadence">
-              <i class="fas fa-newspaper"></i><span>Follow my writing on Substack</span>
-            </a>
-            <a href="/static/resume.pdf?v=7a55b6b6"
-               target="_blank" rel="noreferrer" class="contact-link"
-               data-hover-preview="/static/resume-page1-preview.png?v=fc9a5e8c"
-               data-hover-title="Resume - last updated Apr 30, 2026"
-               data-hover-caption="1 page - click to download PDF"
-               onclick="typeof plausible!=='undefined'&&plausible('Resume Download')">
-              <i class="fas fa-file-pdf"></i><span>Download resume (PDF)</span>
-            </a>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ===== HOW THIS SITE IS BUILT ===== -->
-    <section class="section section-alt" id="site-discipline" aria-label="How this site is built">
-      <div class="container">
-        <div class="section-head" data-reveal>
-          <span class="section-label">How This Site Is Built</span>
-        </div>
-        <p class="section-subtitle" data-reveal style="max-width:72ch;">
-          This portfolio is itself CI-tested infrastructure. Every project card follows the
-          <a href="https://github.com/narendranathe/narendranathe.github.io/blob/main/docs/impact-strip-pattern.md" target="_blank" rel="noreferrer">impact-strip pattern contract</a>,
-          enforced by 17 structural assertions in <code>scripts/test-portfolio.py</code> on every push.
-          The resume link follows an RFC-8615 stable-URL protocol (<code>/.well-known/resume.json</code>) with a
-          content-hash cache-buster, verified by <code>scripts/snap-resume.py --self-test</code> in GitHub Actions -
-          the same design-for-recovery discipline I bring to production data platforms.
+        <p class="prior-close">
+          I wrote that continuity plan three years before I owned a failover path.
+          Same instinct: plan for the failure, not just the fix.
         </p>
+      </div>
+    </section>
+
+    <!-- ===== 4. PROJECTS (collapsed) ===== -->
+    <section class="section" id="projects" aria-labelledby="projects-label">
+      <div class="container">
+        <span class="section-label" id="projects-label">Projects</span>
+
+        <!-- <details> is native HTML. Collapsed by default keeps roughly
+             900px of repo detail off the phone scroll for the reader who
+             only wants the numbers, and costs one tap for the one who
+             wants the code. No JavaScript. -->
+        <details class="repo-details">
+          <summary>
+            <span class="repo-summary-main">5 repositories</span>
+            <span class="repo-summary-hint">tap to open</span>
+          </summary>
+          <ul class="repo-list">
+            <li>
+              <a class="repo-name" href="https://github.com/narendranathe/repo-context-hooks" target="_blank" rel="noreferrer">repo-context-hooks</a>
+              <span class="repo-line">Commit hooks that snapshot repo context for AI agents. No outside libraries, signed releases, 330+ tests.</span>
+            </li>
+            <li>
+              <a class="repo-name" href="https://github.com/narendranathe/fraud-detection-ml-platform" target="_blank" rel="noreferrer">fraud-detection-ml-platform</a>
+              <span class="repo-line">Kafka to LightGBM to MLflow, served over FastAPI. P99 1.12 ms above 100 TPS. Synthetic data.</span>
+            </li>
+            <li>
+              <a class="repo-name" href="https://github.com/narendranathe/fintune" target="_blank" rel="noreferrer">fintune</a>
+              <span class="repo-line">Mistral-7B tuned with QLoRA on 4-bit adapters. PII redaction, drift monitoring, 35+ tests.</span>
+            </li>
+            <li>
+              <a class="repo-name" href="https://github.com/narendranathe/autoapply-ai" target="_blank" rel="noreferrer">autoapply-ai</a>
+              <span class="repo-line">Chrome extension plus FastAPI backend. 11 ATS adapters, six-provider LLM cascade, 355 tests. Private deployment.</span>
+            </li>
+            <li>
+              <a class="repo-name" href="https://github.com/narendranathe/job-scout" target="_blank" rel="noreferrer">job-scout</a>
+              <span class="repo-line">109 career pages watched on free GitHub Actions. SQLite WAL, circuit breakers that isolate a dead scraper.</span>
+            </li>
+          </ul>
+        </details>
+      </div>
+    </section>
+
+    <!-- ===== 5. CONTACT - the only ask on the page ===== -->
+    <section class="section" id="contact" aria-labelledby="contact-label">
+      <div class="container">
+        <span class="section-label" id="contact-label">Contact</span>
+        <p class="cta-line">
+          I am currently exploring senior data engineering roles at companies where data is
+          money-adjacent.
+        </p>
+        <a class="cta-btn"
+           href="mailto:edara.narendranath@gmail.com?subject=Re%3A%20Data%20Engineering%20-%20%5BCompany%20Name%5D">
+          edara.narendranath@gmail.com
+        </a>
+        <p class="cta-meta">Dallas, TX</p>
       </div>
     </section>
 
   </main>
 
-  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container footer-inner">
-      <div class="footer-left">
-        <span class="footer-name">Narendranath Edara</span>
-        <span class="footer-tagline">Data Engineer &middot; AI-Enabled Data Platforms &middot; Dallas TX</span>
-      </div>
-      <nav class="footer-nav" aria-label="Footer navigation">
-        <a href="#systems">Projects</a>
-        <a href="#experience">Experience</a>
-        <a href="#notes">Publications</a>
-        <a href="#connect">Contact</a>
-      </nav>
-      <div class="footer-social">
-        <a href="https://github.com/narendranathe" target="_blank" rel="noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
-        <a href="https://www.linkedin.com/in/narendranathe/" target="_blank" rel="noreferrer" aria-label="LinkedIn"
-           data-hover-preview="/static/preview-linkedin.png"
-           data-hover-title="LinkedIn - Narendranath Edara"
-           data-hover-caption="Senior AI/ML Engineer - open to remote"><i class="fab fa-linkedin-in"></i></a>
-        <a href="https://narendranathe.substack.com" target="_blank" rel="noreferrer" aria-label="Substack"
-           data-hover-preview="/static/preview-substack.png"
-           data-hover-embed="substack-feed"
-           data-hover-feed="/static/substack-latest.json"
-           data-hover-title="Substack - narendranathe"
-           data-hover-caption="AI infra notes, weekly cadence"><i class="fas fa-newspaper"></i></a>
-        <a href="mailto:edara.narendranath@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
-      </div>
-      <p class="footer-copy">&copy; <span id="footer-year"></span> Narendranath Edara</p>
+      <span>Narendranath Edara &middot; Data Engineer &middot; Dallas, TX</span>
+      <span><a href="#proof">Back to top</a></span>
     </div>
   </footer>
 
-  <script src="app.js"></script>
-
 </body>
 </html>
-

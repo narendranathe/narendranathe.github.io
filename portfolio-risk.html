@@ -34,14 +34,16 @@
         <p class="cs-hero__summary">
           A streaming financial risk platform: Kafka-driven market data ingestion,
           Apache Spark Structured Streaming for rolling VaR calculations, FastAPI for
-          risk query endpoints, and a Streamlit dashboard with live P&amp;L and exposure
-          breakdowns. Built to process multi-asset portfolios with sub-second risk metric updates.
+          risk query endpoints, and a Streamlit dashboard for exposure breakdowns.
+          <strong>In progress:</strong> the Spark to FastAPI handoff writes to console only.
+          The CSV sink is planned, not shipped, so the API falls back to generated data.
+          No latency or throughput figure on this page is a production measurement.
         </p>
         <div class="cs-proof-strip">
-          <span>Sub-second VaR updates</span>
-          <span>Multi-asset portfolios</span>
+          <span>In progress</span>
+          <span>Kafka tick ingestion</span>
+          <span>Spark Structured Streaming</span>
           <span>Historical simulation VaR</span>
-          <span>Live P&amp;L tracking</span>
           <span>REST risk API</span>
           <span>Streamlit dashboard</span>
         </div>
@@ -65,16 +67,16 @@
       <!-- Metrics -->
       <div class="cs-metrics">
         <div class="cs-metric">
-          <span class="cs-metric-num">&lt;1s</span>
-          <span class="cs-metric-lbl">VaR update latency</span>
+          <span class="cs-metric-num">5s</span>
+          <span class="cs-metric-lbl">tumbling window</span>
         </div>
         <div class="cs-metric">
-          <span class="cs-metric-num">500+</span>
-          <span class="cs-metric-lbl">price ticks/sec</span>
+          <span class="cs-metric-num">in progress</span>
+          <span class="cs-metric-lbl">Spark to FastAPI sink</span>
         </div>
         <div class="cs-metric">
-          <span class="cs-metric-num">95%</span>
-          <span class="cs-metric-lbl">VaR confidence level</span>
+          <span class="cs-metric-num">95% / 99%</span>
+          <span class="cs-metric-lbl">VaR confidence levels</span>
         </div>
         <div class="cs-metric">
           <span class="cs-metric-num">30-day</span>
@@ -138,7 +140,7 @@
               A Kafka producer simulates realistic equity price ticks: mid-price with configurable
               bid-ask spread, volume weighting, and random walk drift. Produces to a
               <code>market_data</code> topic partitioned by ticker symbol for ordering guarantees
-              within each instrument. Tested to 500+ ticks/second sustained.
+              within each instrument. Single-node demo; no sustained-throughput figure is claimed.
             </p>
           </div>
           <div class="arch-box">
@@ -156,8 +158,8 @@
             <p>
               FastAPI exposes risk query endpoints: current VaR by portfolio or asset class,
               historical VaR timeseries, position-level attribution, and scenario analysis.
-              Redis caches the most recent risk snapshot per portfolio for sub-millisecond
-              API response times. Streamlit polls the API every 2 seconds and renders
+              Redis caches the most recent risk snapshot per portfolio so a query does not
+              re-read Postgres. Streamlit polls the API every 2 seconds and renders
               live P&amp;L curves, VaR gauges, and exposure heatmaps.
             </p>
           </div>
@@ -224,7 +226,7 @@
           </div>
           <div class="cs-lesson worked">
             <h4>What worked</h4>
-            <p><strong>Redis position cache.</strong> Loading position data once at startup and caching in Redis eliminated repeated PostgreSQL reads on every Spark micro-batch. API response times stayed sub-millisecond even at peak tick rates.</p>
+            <p><strong>Redis position cache.</strong> Loading position data once at startup and caching in Redis eliminated repeated PostgreSQL reads on every Spark micro-batch. This is a single-node demo, so no latency figure here is a production measurement.</p>
           </div>
           <div class="cs-lesson failed">
             <h4>What failed</h4>
@@ -264,8 +266,8 @@
       </div>
       <nav class="footer-nav">
         <a href="index.html">Portfolio</a>
-        <a href="index.html#experience">Experience</a>
-        <a href="index.html#connect">Contact</a>
+        <a href="index.html#proof">Experience</a>
+        <a href="index.html#contact">Contact</a>
       </nav>
     </div>
   </footer>
