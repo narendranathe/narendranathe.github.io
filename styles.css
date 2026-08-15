@@ -332,6 +332,82 @@ button { font-family: inherit; cursor: pointer; }
 }
 
 /* ============================================================
+   VERIFICATION AND CLAIMS REGISTER
+   ============================================================ */
+.verify-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+.verify-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 1.4rem 1.5rem;
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.verify-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; font-weight: 500; color: var(--fg);
+}
+.verify-desc { font-size: 0.85rem; line-height: 1.65; color: var(--fg-soft); }
+.verify-links {
+  list-style: none; display: flex; flex-direction: column;
+  gap: 0.7rem; margin-top: 0.3rem;
+}
+.verify-links li {
+  display: flex; flex-direction: column; gap: 0.1rem;
+  font-size: 0.85rem; color: var(--fg);
+  padding-left: 1.5rem; position: relative;
+}
+.verify-links li i {
+  position: absolute; left: 0; top: 0.22rem;
+  width: 1rem; text-align: center;
+  color: var(--accent-warm); font-size: 0.82rem;
+}
+.verify-links a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+.verify-links a:hover, .verify-links a:focus-visible { border-bottom-color: var(--accent); }
+.verify-links span { font-size: 0.76rem; color: var(--fg-muted); line-height: 1.45; }
+
+.register {
+  margin-top: 1.5rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent-warm);
+  border-radius: var(--r);
+  background: var(--bg);
+  padding: 1.4rem 1.6rem;
+}
+.register-head {
+  display: flex; flex-wrap: wrap; align-items: center;
+  justify-content: space-between; gap: 1rem; margin-bottom: 0.6rem;
+}
+.register-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 500; color: var(--fg);
+}
+.register-note {
+  font-size: 0.88rem; line-height: 1.7; color: var(--fg-soft);
+  max-width: 80ch; margin-bottom: 1.1rem;
+}
+.register-note strong { color: var(--fg); font-weight: 600; }
+.register-tally {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border); border-radius: var(--r); overflow: hidden;
+}
+.register-tally > div {
+  background: var(--bg-alt); padding: 0.85rem 1rem;
+  display: flex; flex-direction: column; gap: 0.15rem;
+}
+.register-tally dt {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 1.3rem; color: var(--fg); line-height: 1;
+}
+.register-tally dd {
+  margin: 0; font-size: 0.72rem; color: var(--fg-muted); line-height: 1.4;
+}
+@media (max-width: 1000px) { .verify-grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px)  { .register-tally { grid-template-columns: 1fr 1fr; } }
+
+/* ============================================================
    WHERE THIS FITS
    Three role-shape blocks. The gap line at the foot of each is the
    structurally important part, so it gets the warm rule and sits last

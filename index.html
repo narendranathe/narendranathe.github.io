@@ -1110,23 +1110,23 @@
             <h3 class="fit-head">Money-adjacent data, under formal change control</h3>
             <p class="fit-maps">Goldman Sachs and JPMorgan data and platform requisitions, and roles shaped like them: correctness, audit, and delivery discipline over raw scale.</p>
             <dl class="fit-rows">
-              <div class="fit-row">
+              <div class="fit-row" data-gt-id="E-PTO, E-SECURE2">
                 <dt class="fit-row-key">Change control and audit trail<span class="fit-gt" title="Ground truth: E-PTO, E-SECURE2">E-PTO, E-SECURE2</span></dt>
                 <dd class="fit-row-val">A payroll accrual defect shipped through change-request review rather than patched, and SECURE 2.0 delivered against a legislated date. Reviewed once, applied to every client tenant.</dd>
               </div>
-              <div class="fit-row">
+              <div class="fit-row" data-gt-id="E-PTO">
                 <dt class="fit-row-key">Tenant isolation<span class="fit-gt" title="Ground truth: E-PTO">E-PTO</span></dt>
                 <dd class="fit-row-val">Corrected logic reaching every tenant through one reviewed change, rather than per-tenant fixes drifting apart.</dd>
               </div>
-              <div class="fit-row">
+              <div class="fit-row" data-gt-id="E5-RECOVERY, E1-CDC">
                 <dt class="fit-row-key">Reconciliation and recovery<span class="fit-gt" title="Ground truth: E5-RECOVERY, E1-CDC">E5-RECOVERY, E1-CDC</span></dt>
                 <dd class="fit-row-val">Idempotent merge-upserts where a failed run reruns clean, and capture restored in under an hour after an availability-group failover, on a runbook.</dd>
               </div>
-              <div class="fit-row">
+              <div class="fit-row" data-gt-id="E-IDEM">
                 <dt class="fit-row-key">Safe retry<span class="fit-gt" title="Ground truth: E-IDEM">E-IDEM</span></dt>
                 <dd class="fit-row-val">Provisioning rewritten so a failed attempt does not require a person to clean up before the next one.</dd>
               </div>
-              <div class="fit-row">
+              <div class="fit-row" data-gt-id="P-FRAUD">
                 <dt class="fit-row-key">Domain adjacency<span class="fit-gt" title="Ground truth: P-FRAUD">P-FRAUD</span></dt>
                 <dd class="fit-row-val">A streaming fraud pipeline at 1.12ms P99, on synthetic data. Financial-shaped engineering, explicitly not live payment traffic.</dd>
               </div>
@@ -1139,23 +1139,23 @@
             <h3 class="fit-head">Multi-service pipelines, and the release process around them</h3>
             <p class="fit-maps">Databricks and comparable data-platform teams, where the role spans pipelines, orchestration, serving, and the delivery process rather than one of them.</p>
             <dl class="fit-rows">
-              <div class="fit-row">
+              <div class="fit-row" data-gt-id="P-FRAUD, P-FINTUNE">
                 <dt class="fit-row-key">Owns complex components<span class="fit-gt" title="Ground truth: P-FRAUD, P-FINTUNE">P-FRAUD, P-FINTUNE</span></dt>
                 <dd class="fit-row-val">Kafka into a LightGBM scoring service with MLflow, Airflow, and Prometheus around it. A 7B model served behind PII redaction, drift monitoring, and a three-state circuit breaker. L4-shaped scope: whole components, end to end.</dd>
               </div>
-              <div class="fit-row">
+              <div class="fit-row" data-gt-id="E2-CICD, E1-CDC">
                 <dt class="fit-row-key">Sets direction across teams<span class="fit-gt" title="Ground truth: E2-CICD, E1-CDC">E2-CICD, E1-CDC</span></dt>
                 <dd class="fit-row-val">CI/CD owned end to end with Scrum aligning dev, test, IT, and business on shared priorities, and a CDC pattern that became the platform's standing approach rather than one pipeline's fix. L5-shaped scope: the thing other people then build on.</dd>
               </div>
-              <div class="fit-row">
+              <div class="fit-row" data-gt-id="P-HOOKS">
                 <dt class="fit-row-key">Ships something others consume<span class="fit-gt" title="Ground truth: P-HOOKS">P-HOOKS</span></dt>
                 <dd class="fit-row-val">A signed, statically analyzed package on PyPI with 330+ tests. Direction-setting that leaves an artifact rather than a decision.</dd>
               </div>
-              <div class="fit-row">
+              <div class="fit-row" data-gt-id="E-PTO, P-FINTUNE">
                 <dt class="fit-row-key">Data security<span class="fit-gt" title="Ground truth: E-PTO, P-FINTUNE">E-PTO, P-FINTUNE</span></dt>
                 <dd class="fit-row-val">Change-request review on money-adjacent logic; pre-inference PII redaction on the serving path.</dd>
               </div>
-              <div class="fit-row">
+              <div class="fit-row" data-gt-id="E-OBS, M2, M3">
                 <dt class="fit-row-key">Observability and cost<span class="fit-gt" title="Ground truth: E-OBS, M2, M3">E-OBS, M2, M3</span></dt>
                 <dd class="fit-row-val">Alert thresholds tuned per service, drift made alertable, and autoscaling that moved CPU utilization from 12% to 64%.</dd>
               </div>
@@ -1168,27 +1168,27 @@
             <h3 class="fit-head">The layer that decides what happens when it breaks</h3>
             <p class="fit-maps">Platform, SRE-adjacent data, and cost-engineering roles, where the question is MTTR and spend rather than feature throughput.</p>
             <dl class="fit-rows">
-              <div class="fit-row">
+              <div class="fit-row" data-gt-id="E5-RECOVERY">
                 <dt class="fit-row-key">MTTR and runbooks<span class="fit-gt" title="Ground truth: E5-RECOVERY">E5-RECOVERY</span></dt>
                 <dd class="fit-row-val">Capture restored in under an hour after failover, turning a specialist-only restore into a documented procedure.</dd>
               </div>
-              <div class="fit-row">
+              <div class="fit-row" data-gt-id="E-SELFHEAL, E-LIVEREC">
                 <dt class="fit-row-key">Incident response<span class="fit-gt" title="Ground truth: E-SELFHEAL, E-LIVEREC">E-SELFHEAL, E-LIVEREC</span></dt>
                 <dd class="fit-row-val">Monitoring instrumented against missed runs, stuck runs, and silent failures, and one live incremental-load failure diagnosed and restored in place under production pressure.</dd>
               </div>
-              <div class="fit-row">
+              <div class="fit-row" data-gt-id="E-OBS">
                 <dt class="fit-row-key">Data quality checks<span class="fit-gt" title="Ground truth: E-OBS">E-OBS</span></dt>
                 <dd class="fit-row-val">Control-table-driven validation turning quiet data drift into an alertable failure, with a named owner and a documented response.</dd>
               </div>
-              <div class="fit-row">
+              <div class="fit-row" data-gt-id="E1-CDC">
                 <dt class="fit-row-key">Freshness SLA<span class="fit-gt" title="Ground truth: E1-CDC">E1-CDC</span></dt>
                 <dd class="fit-row-val">The SLA named alongside the speedup, because a speedup that hides a reliability regression is the thing worth checking for.</dd>
               </div>
-              <div class="fit-row">
+              <div class="fit-row" data-gt-id="M3, E1-CDC">
                 <dt class="fit-row-key">Compute optimization<span class="fit-gt" title="Ground truth: M3, E1-CDC">M3, E1-CDC</span></dt>
                 <dd class="fit-row-val">Autoscaling that cut $3,200 a month while raising utilization 12% to 64%, and a pipeline moving 257 TB a year where it used to move roughly 2.46M.</dd>
               </div>
-              <div class="fit-row">
+              <div class="fit-row" data-gt-id="E-IDEM, E-REPORTAUTO">
                 <dt class="fit-row-key">Toil removed<span class="fit-gt" title="Ground truth: E-IDEM, E-REPORTAUTO">E-IDEM, E-REPORTAUTO</span></dt>
                 <dd class="fit-row-val">5,000 engineering hours a year from provisioning, plus 15+ hours a sprint from delivery reporting.</dd>
               </div>
@@ -1459,6 +1459,88 @@
              data-hover-caption="AI infra notes, weekly cadence">
             <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;flex-shrink:0" aria-hidden="true"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg> Follow on Substack
           </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== VERIFICATION =====
+         Everything on this page a reviewer can check without contacting
+         me, plus the register that says which claims those are. The
+         register is generated from the page's own data-gt-id attributes
+         by scripts/build-claims-register.py and checked in CI, so it
+         cannot drift from what is actually written above. -->
+    <section class="section" id="verify">
+      <div class="container">
+
+        <div class="section-head" data-reveal>
+          <span class="section-label">Verification</span>
+          <h2 class="section-title">What you can check without asking me.</h2>
+          <p class="section-subtitle">Claims on this page cite an evidence record, and the register below says which ones are independently checkable and which are my own account. Nothing unresolved is published; the withheld items are listed by name in the register file.</p>
+        </div>
+
+        <div class="verify-grid" data-reveal>
+
+          <article class="verify-card">
+            <span class="section-label">Open source</span>
+            <h3 class="verify-name">repo-context-hooks</h3>
+            <p class="verify-desc">The one project here that needs nothing from me. Install it, read the release signature, read the analysis runs, count the tests.</p>
+            <ul class="verify-links">
+              <li><a href="https://pypi.org/project/repo-context-hooks/" target="_blank" rel="noreferrer"><i class="fab fa-python"></i> PyPI package</a><span>pip install repo-context-hooks</span></li>
+              <li><a href="https://github.com/narendranathe/repo-context-hooks" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> Source</a><span>330+ tests, MIT</span></li>
+              <li><a href="https://github.com/narendranathe/repo-context-hooks/actions/workflows/publish.yml" target="_blank" rel="noreferrer"><i class="fas fa-signature"></i> Release provenance</a><span>Sigstore via OIDC Trusted Publisher</span></li>
+              <li><a href="https://github.com/narendranathe/repo-context-hooks/actions/workflows/codeql.yml" target="_blank" rel="noreferrer"><i class="fas fa-shield-halved"></i> CodeQL runs</a><span>static analysis on every pull request</span></li>
+              <li><a href="https://github.com/narendranathe/repo-context-hooks/blob/main/pyproject.toml" target="_blank" rel="noreferrer"><i class="fas fa-cube"></i> pyproject.toml</a><span>dependencies = [] &mdash; stdlib only at runtime</span></li>
+            </ul>
+          </article>
+
+          <article class="verify-card">
+            <span class="section-label">Research and credentials</span>
+            <h3 class="verify-name">Publication and certifications</h3>
+            <p class="verify-desc">Third-party records. The publication is peer reviewed; the certifications are issuer-verifiable.</p>
+            <ul class="verify-links">
+              <li><a href="https://doi.org/10.1080/10495142.2025.2525123" target="_blank" rel="noreferrer"><i class="fas fa-book"></i> DOI 10.1080/10495142.2025.2525123</a><span>Journal of Nonprofit &amp; Public Sector Marketing, Taylor &amp; Francis, 2025</span></li>
+              <li><i class="fas fa-certificate"></i> DP-700 Fabric Data Engineer Associate<span>Microsoft</span></li>
+              <li><i class="fas fa-certificate"></i> Certified Scrum Product Owner<span>Scrum Alliance</span></li>
+              <li><i class="fas fa-certificate"></i> Tableau Analyst badge<span>Tableau</span></li>
+              <li><i class="fas fa-graduation-cap"></i> M.S. Information Science and Technology<span>Missouri S&amp;T, GPA 4.0 / 4.0</span></li>
+            </ul>
+          </article>
+
+          <article class="verify-card">
+            <span class="section-label">Other public repositories</span>
+            <h3 class="verify-name">Checkable project claims</h3>
+            <p class="verify-desc">Every number on the three public project cards was read out of these repositories rather than recalled.</p>
+            <ul class="verify-links">
+              <li><a href="https://github.com/narendranathe/fraud-detection-ml-platform" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> fraud-detection-ml-platform</a><span>P99 1.12ms; synthetic dataset generator</span></li>
+              <li><a href="https://github.com/narendranathe/fintune" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> fintune</a><span>35+ tests across 7 modules</span></li>
+              <li><a href="https://github.com/narendranathe/job-scout" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> job-scout</a><span>153 companies in backend/config/companies.py</span></li>
+              <li><a href="https://github.com/narendranathe" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> github.com/narendranathe</a><span>everything else</span></li>
+              <li><a href="https://www.linkedin.com/in/narendranathe/" target="_blank" rel="noreferrer" data-hover-preview="/static/preview-linkedin.png" data-hover-title="LinkedIn - Narendranath Edara" data-hover-caption="Data Engineer - Dallas TX"><i class="fab fa-linkedin"></i> linkedin.com/in/narendranathe</a><span>titles as HR holds them</span></li>
+            </ul>
+          </article>
+
+        </div>
+
+        <div class="register" data-reveal>
+          <div class="register-head">
+            <h3 class="register-title">Claims register</h3>
+            <a class="cs-btn" href="/static/claims-register.csv" download>Download CSV</a>
+          </div>
+          <p class="register-note">
+            Generated from this page's own evidence attributes and checked in CI, so it cannot drift
+            from what is written above. <strong>12</strong> of 37 published claims are
+            independently checkable; the remaining <strong>25</strong> are my own account of my
+            work and are labeled that way rather than dressed up. Six further items are withheld
+            entirely because they are unresolved or do not reconcile, and the register file names each
+            one and why.
+          </p>
+          <dl class="register-tally">
+            <div><dt>12</dt><dd>DOC &middot; a third party can open it</dd></div>
+            <div><dt>25</dt><dd>STATED &middot; my account, no public artifact</dd></div>
+            <div><dt>0</dt><dd>VERIFY or BLOCKED published</dd></div>
+            <div><dt>6</dt><dd>withheld, listed by name in the file</dd></div>
+          </dl>
         </div>
 
       </div>

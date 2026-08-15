@@ -431,6 +431,26 @@ def test_fit_blocks_each_name_a_gap(html: str) -> None:
         )
 
 
+def test_claims_register_in_sync_with_page() -> None:
+    """The claims register must be generated from the page, not kept by
+    hand, and must not publish anything unresolved.
+
+    build-claims-register.py --check enforces three things at once: the
+    committed CSV matches what the page currently claims, every
+    data-gt-id has an evidence row behind it, and no VERIFY or BLOCKED
+    id has leaked into visible markup. A register that disagrees with
+    the page is worse than no register, so this is a build failure
+    rather than a note."""
+    import subprocess
+    result = subprocess.run(
+        [sys.executable, str(REPO_ROOT / "scripts" / "build-claims-register.py"), "--check"],
+        capture_output=True, text=True, timeout=30,
+    )
+    assert result.returncode == 0, (
+        f"claims register check failed:\n{result.stdout}\n{result.stderr}"
+    )
+
+
 def test_no_never_publish_claims_on_public_surfaces() -> None:
     """Cross-file guard for claims that may never ship, checked on every
     public surface rather than just index.html.
@@ -1714,6 +1734,7 @@ TESTS = [
     test_no_never_publish_claims_on_public_surfaces,
     test_hero_claims_carry_ground_truth_ids,
     test_fit_blocks_each_name_a_gap,
+    test_claims_register_in_sync_with_page,
     test_hero_uses_local_photo_not_external_cdn,
     test_hero_aside_no_data_reveal,
     test_hero_picture_has_mobile_variant,
