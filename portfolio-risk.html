@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Case study: Real-Time Portfolio Risk Analytics - streaming VaR calculations at 100ms update cycles, built with Kafka, Apache Spark, FastAPI, and Streamlit.">
+  <meta name="description" content="Case study, in progress: streaming VaR on Kafka and Spark Structured Streaming, with a FastAPI risk service. The Spark-to-API handoff is not wired yet.">
   <meta name="author" content="Narendranath Edara">
   <meta property="og:title" content="Portfolio Risk Analytics | Narendranath Edara">
   <meta property="og:type" content="article">
@@ -30,20 +30,27 @@
       <!-- Hero -->
       <section class="cs-hero">
         <span class="cs-hero__kicker">ML Infrastructure</span>
-        <h1>Real-Time Portfolio Risk Analytics</h1>
+        <h1>Portfolio Risk Analytics <span class="wip-tag">in progress</span></h1>
         <p class="cs-hero__summary">
-          A streaming financial risk platform: Kafka-driven market data ingestion,
-          Apache Spark Structured Streaming for rolling VaR calculations, FastAPI for
-          risk query endpoints, and a Streamlit dashboard with live P&amp;L and exposure
-          breakdowns. Built to process multi-asset portfolios with sub-second risk metric updates.
+          A streaming financial risk pipeline: Kafka market-tick ingestion, Apache Spark
+          Structured Streaming for rolling VaR aggregates, and a FastAPI service computing
+          historical-simulation VaR. Written up here as an architecture and methodology study,
+          not a finished platform - see the build status below for what actually runs today.
         </p>
+        <div class="cs-status-note">
+          <strong>Build status.</strong> Spark currently writes its windowed aggregates to a
+          console sink. The CSV file sink that would hand those aggregates to FastAPI is
+          designed but not wired, so the API computes VaR over generated data rather than the
+          live stream, and the Streamlit view is a local development surface. Everything below
+          describes the design and the methodology behind it; the numbers a finished version
+          would produce are deliberately absent, because the pipeline does not produce them yet.
+        </div>
         <div class="cs-proof-strip">
-          <span>Sub-second VaR updates</span>
-          <span>Multi-asset portfolios</span>
+          <span>Kafka to Spark Structured Streaming</span>
+          <span>5s tumbling windows, 10s watermark</span>
           <span>Historical simulation VaR</span>
-          <span>Live P&amp;L tracking</span>
-          <span>REST risk API</span>
-          <span>Streamlit dashboard</span>
+          <span>95% and 99% confidence</span>
+          <span>FastAPI risk endpoints</span>
         </div>
         <div class="cs-links">
           <a href="https://github.com/narendranathe/portfolio-risk-analytics" class="text-link" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub repo</a>
@@ -62,19 +69,20 @@
         </div>
       </section>
 
-      <!-- Metrics -->
+      <!-- Design parameters. Not outcomes: this pipeline does not yet run
+           end to end, so no throughput or latency figures are published. -->
       <div class="cs-metrics">
         <div class="cs-metric">
-          <span class="cs-metric-num">&lt;1s</span>
-          <span class="cs-metric-lbl">VaR update latency</span>
+          <span class="cs-metric-num">5s</span>
+          <span class="cs-metric-lbl">tumbling window</span>
         </div>
         <div class="cs-metric">
-          <span class="cs-metric-num">500+</span>
-          <span class="cs-metric-lbl">price ticks/sec</span>
+          <span class="cs-metric-num">10s</span>
+          <span class="cs-metric-lbl">watermark</span>
         </div>
         <div class="cs-metric">
-          <span class="cs-metric-num">95%</span>
-          <span class="cs-metric-lbl">VaR confidence level</span>
+          <span class="cs-metric-num">95 / 99%</span>
+          <span class="cs-metric-lbl">VaR confidence levels</span>
         </div>
         <div class="cs-metric">
           <span class="cs-metric-num">30-day</span>
@@ -117,17 +125,21 @@
             <div class="cs-arch-box">Rolling VaR Engine</div>
           </div>
           <div class="cs-arch-arrow">&#8595;</div>
-          <div class="cs-arch-label">Storage + API Layer</div>
+          <div class="cs-arch-label">Handoff - not wired yet</div>
           <div class="cs-arch-row">
-            <div class="cs-arch-box accent">PostgreSQL (risk snapshots)</div>
-            <div class="cs-arch-box accent">Redis (live position cache)</div>
+            <div class="cs-arch-box">Console sink (what runs today)</div>
+            <div class="cs-arch-box">CSV file sink (designed, not built)</div>
+          </div>
+          <div class="cs-arch-arrow">&#8595;</div>
+          <div class="cs-arch-label">API Layer</div>
+          <div class="cs-arch-row">
             <div class="cs-arch-box accent">FastAPI (risk endpoints)</div>
+            <div class="cs-arch-box">Generated-data fallback</div>
           </div>
           <div class="cs-arch-arrow">&#8595;</div>
           <div class="cs-arch-label">Visualization</div>
           <div class="cs-arch-row">
-            <div class="cs-arch-box">Streamlit Dashboard</div>
-            <div class="cs-arch-box">P&amp;L + Exposure Breakdowns</div>
+            <div class="cs-arch-box">Streamlit (local dev)</div>
           </div>
         </div>
 
@@ -138,7 +150,7 @@
               A Kafka producer simulates realistic equity price ticks: mid-price with configurable
               bid-ask spread, volume weighting, and random walk drift. Produces to a
               <code>market_data</code> topic partitioned by ticker symbol for ordering guarantees
-              within each instrument. Tested to 500+ ticks/second sustained.
+              within each instrument.
             </p>
           </div>
           <div class="arch-box">
@@ -147,18 +159,18 @@
               Spark Structured Streaming joins live price ticks against a position snapshot loaded
               at startup. For each 5-second micro-batch, it computes mark-to-market P&amp;L, updates
               the rolling 30-day return history, and recalculates Historical Simulation VaR at 95%
-              confidence. Results are written to the <code>risk_snapshots</code> Kafka topic and
-              persisted to PostgreSQL.
+              confidence. Those aggregates currently go to a console sink; routing them onward is
+              the open work item.
             </p>
           </div>
           <div class="arch-box">
             <h4>API and dashboard</h4>
             <p>
               FastAPI exposes risk query endpoints: current VaR by portfolio or asset class,
-              historical VaR timeseries, position-level attribution, and scenario analysis.
-              Redis caches the most recent risk snapshot per portfolio for sub-millisecond
-              API response times. Streamlit polls the API every 2 seconds and renders
-              live P&amp;L curves, VaR gauges, and exposure heatmaps.
+              historical VaR timeseries, and position-level attribution. Because the Spark handoff
+              is not built, these endpoints read generated data rather than the live stream, and
+              the Streamlit view runs locally against them. Treat both as a working surface for
+              the VaR methodology, not as a deployed dashboard.
             </p>
           </div>
         </div>
@@ -191,9 +203,10 @@
 
       <!-- Streamlit dashboard -->
       <section class="cs-section">
-        <h2>Live Risk Dashboard</h2>
+        <h2>Dashboard Design</h2>
         <p>
-          The Streamlit dashboard refreshes every 2 seconds and renders four panels:
+          The Streamlit surface is a local development view over the FastAPI endpoints, built to
+          exercise the VaR output rather than to serve anyone. Four panels, as designed:
         </p>
         <ul>
           <li><strong>Portfolio P&amp;L curve</strong> - intraday cumulative P&amp;L with entry price baseline</li>
@@ -204,9 +217,9 @@
 
         <div class="cs-media-placeholder">
           <i class="fas fa-tachometer-alt"></i>
-          Streamlit dashboard: P&amp;L curve (top left), VaR gauge at 1.7% NAV (top right),
-          asset class exposure bar chart (bottom left), top risk contributors table (bottom right).
-          Auto-refresh every 2 seconds.
+          Panel layout: P&amp;L curve (top left), VaR gauge (top right), asset class exposure bar
+          chart (bottom left), top risk contributors table (bottom right). No screenshot is
+          published because the values shown would come from generated data, not the stream.
         </div>
       </section>
 
@@ -224,11 +237,11 @@
           </div>
           <div class="cs-lesson worked">
             <h4>What worked</h4>
-            <p><strong>Redis position cache.</strong> Loading position data once at startup and caching in Redis eliminated repeated PostgreSQL reads on every Spark micro-batch. API response times stayed sub-millisecond even at peak tick rates.</p>
+            <p><strong>Loading positions once at startup.</strong> Holding the position snapshot in memory rather than re-reading it on every Spark micro-batch kept the join cheap. The caching layer that would back this at scale is part of the unbuilt half.</p>
           </div>
           <div class="cs-lesson failed">
             <h4>What failed</h4>
-            <p><strong>Streamlit polling architecture.</strong> Polling the FastAPI every 2 seconds creates unnecessary load and causes visible refresh lag. WebSockets or server-sent events would push updates only when new VaR snapshots arrive, eliminating the polling overhead entirely.</p>
+            <p><strong>Designing the dashboard around polling.</strong> A 2-second poll against FastAPI adds load and refresh lag for no benefit. Server-sent events pushing on each micro-batch completion is the right shape, and choosing polling first meant designing the API around the wrong access pattern.</p>
           </div>
           <div class="cs-lesson worked">
             <h4>What worked</h4>

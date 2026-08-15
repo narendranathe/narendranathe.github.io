@@ -588,6 +588,24 @@ button { font-family: inherit; cursor: pointer; }
 }
 .ml-project-entry p { font-size: 0.83rem; line-height: 1.6; color: var(--fg-soft); margin-bottom: 0.6rem; }
 
+/* Status tag for work that is not shipped end-to-end. Reads as a state,
+   not a decoration - only applied where the repo cannot back a finished
+   claim, so a reviewer sees the honest state before the description. */
+.wip-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-warm);
+  border: 1px solid var(--accent-warm);
+  border-radius: 2px;
+  padding: 0.08rem 0.34rem;
+  margin-left: 0.4rem;
+  vertical-align: 0.08em;
+}
+
 @media (max-width: 900px) {
   .systems-grid { grid-template-columns: 1fr; }
   .arch-grid { grid-template-columns: 1fr; }
@@ -1015,6 +1033,20 @@ button { font-family: inherit; cursor: pointer; }
   font-size: 1.05rem; color: var(--fg-soft); max-width: 680px;
   line-height: 1.75; margin-bottom: 2rem;
 }
+/* Build-status callout for a case study whose repo cannot back a finished
+   claim. Sits above the proof strip so the honest state is read before any
+   architecture detail, not discovered afterwards. */
+.cs-status-note {
+  border-left: 3px solid var(--accent-warm);
+  background: var(--chip-bg);
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 1.75rem;
+  max-width: 680px;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--fg-soft);
+}
+.cs-status-note strong { color: var(--fg); }
 .cs-proof-strip {
   display: flex; flex-wrap: wrap; gap: 0.5rem 0.85rem; margin-bottom: 1.5rem;
 }

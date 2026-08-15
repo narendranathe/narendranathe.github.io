@@ -30,7 +30,7 @@ const CONFIG = {
 
     // ── Konami Code Easter Egg ─────────────────────────────────────
     metrics: {
-        experience_years:      4,
+        experience_years:      '6 professional, 3 in data engineering',
         current_role:          'Data Engineer @ ExponentHR - data platform + CI/CD ownership',
         gpa:                   4.0,
         sdlc_speedup:          '3 months to 14 days',
@@ -41,11 +41,10 @@ const CONFIG = {
         anomaly_accuracy:      '95%+',
         azure_savings:         '$3,200/month',
         node_consolidation:    '20 nodes to 4-8 nodes',
-        udaan_savings:         '$4M annual',
+        udaan_roi:             '+7% ROI on inventory allocation',
         fulfillment_rate:      '99.3%',
         zomato_market_share:   '+9%',
-        fraud_tps:             '100+ TPS at sub-ms P99',
-        portfolio_analytics:   '47.8 TPS, under 5s VaR latency',
+        fraud_tps:             '100+ TPS at 1.12ms P99 (synthetic dataset)',
         jobscout_companies:    109,
         jobscout_resumes:      '95+',
         publication:           'Taylor and Francis 2025, DOI: 10.1080/10495142.2025.2525123',

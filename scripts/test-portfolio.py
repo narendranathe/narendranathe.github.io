@@ -212,26 +212,73 @@ def extract_visible_text(html: str) -> str:
 # the rendered-text guard (catches adjacent-span leaks). All entries
 # lowercase; comparisons normalise both sides via .lower().
 #
-# Land mine: the ExponentHR card on index.html says "support desk
-# volume ~80%" - a future synonym swap from "desk" to "ticket" would
-# trip "support ticket reduction". Preserve "desk" or rephrase rather
-# than narrowing the guard.
+# NARROWED 2026-08-15. This list previously also banned the query-speed
+# strings ("12s to 4s" and its arrow variants, "12 second") and
+# "support ticket reduction". Those numbers were banned because they
+# had been attached to the scrapped NL-to-SQL architecture - but the
+# underlying work is separate and verified: Fabric semantic models plus
+# index and stored-procedure tuning on OLAP paths, which is what
+# actually produced the query-response gain and the support-ticket
+# reduction. Banning the numbers along with the scrapped architecture
+# suppressed real evidence. The architecture vocabulary stays banned;
+# the outcomes of the separate, real work do not.
+#
+# Land mine that survives the narrowing: the Zomato card says "support
+# desk volume ~80%". That is Z-ES, a different claim from the ExponentHR
+# support-ticket reduction. Keep them distinguishable in copy.
 FORBIDDEN_SCRAPPED_CLAIMS: tuple[str, ...] = (
     # "400 enterprise clients" - main offender. Substring covers plural.
     "400 enterprise client",
     "400+ enterprise client",
-    # 40% support-ticket-reduction claim
-    "support ticket reduction",
-    # 12s -> 4s query-response claim, ASCII + Unicode arrow variants
-    "12s to 4s",
-    "12s -> 4s",
-    "12s->4s",
-    "12s → 4s",
-    "12s→4s",
-    "12 second",
     # Architecture vocabulary
     "catalog-driven nl-to-sql",
     "faiss retrieval",
+)
+
+# Claims that may never appear on any public surface, for reasons that
+# do not expire: tools whose production ownership is not real, project
+# metrics the repo cannot support, and a term-of-art error that ends a
+# technical screen on sight. Unlike the list above (scoped to index.html
+# and one post), these are checked across every public file, because the
+# 2026-08 audit found exclusion violations sitting in skill tooltips and
+# in config.js where nothing was looking. All entries lowercase.
+NEVER_PUBLISH: tuple[str, ...] = (
+    # Term-of-art error. The word is "Contained" Always On Availability
+    # Group. "Containerized" is a different thing entirely and anyone
+    # who knows Always On will catch it.
+    "containerized aag",
+    # Scrapped architecture proper nouns.
+    "foundry bi engine",
+    "architecture 4",
+    "faiss concept index",
+    "networkx join resolver",
+    "claude query planner",
+    # Portfolio-Risk metrics the repo does not support: the Spark-to-API
+    # handoff is console-only and the API falls back to generated data.
+    "47.8 tps",
+    "15k+ records",
+    "sub-5s",
+    # Udaan savings figure that needs a base ~7x the documented city GMV.
+    # Ship the 7% ROI; the dollar figure has no reconcilable base.
+    "$4 million",
+    "$4m annual",
+)
+
+# Public surfaces checked against NEVER_PUBLISH. Every file a reviewer
+# can reach without asking for anything.
+PUBLIC_SURFACES: tuple[str, ...] = (
+    "index.html",
+    "README.md",
+    "config.js",
+    "config.template.js",
+    "autoapply-ai.html",
+    "tailor-resume.html",
+    "jobscout.html",
+    "portfolio-risk.html",
+    "fintune.html",
+    "fraud-detection.html",
+    "static/site.webmanifest",
+    "content/posts/repo-context-hooks-supply-chain.html",
 )
 
 
@@ -315,6 +362,36 @@ def test_no_scrapped_exponenthr_outcomes_in_rendered_text(html: str) -> None:
             f"Found scrapped-project phrase {phrase!r} in rendered DOM "
             f"text of index.html - must remove (rendered-text guard)."
         )
+
+
+def test_no_never_publish_claims_on_public_surfaces() -> None:
+    """Cross-file guard for claims that may never ship, checked on every
+    public surface rather than just index.html.
+
+    Motivating failure (2026-08 audit): four skill tooltips claimed
+    production ownership of tools on the permanent exclusion list, a
+    blocked Portfolio-Risk metric sat in config.js, and a blocked Udaan
+    dollar figure sat in both config.js and index.html. Every one of
+    them passed CI, because the existing scrapped-claim guard only ever
+    read index.html and one post.
+
+    Raw-text check, not rendered-text: config.js and the webmanifest are
+    not HTML, and an attribute value or a JS string is exactly where the
+    audit found these hiding."""
+    failures: list[str] = []
+    for rel in PUBLIC_SURFACES:
+        path = REPO_ROOT / rel
+        if not path.exists():
+            continue
+        body = path.read_text(encoding="utf-8").lower()
+        for phrase in NEVER_PUBLISH:
+            if phrase in body:
+                failures.append(f"{rel}: {phrase!r}")
+    assert not failures, (
+        "Never-publish claim found on a public surface:\n  "
+        + "\n  ".join(failures)
+        + "\nSee GROUND_TRUTH.md for why each of these is blocked."
+    )
 
 
 def test_hero_uses_local_photo_not_external_cdn(html: str) -> None:
@@ -1556,6 +1633,7 @@ TESTS = [
     test_each_stat_has_value_and_label,
     test_no_scrapped_exponenthr_outcomes,
     test_no_scrapped_exponenthr_outcomes_in_rendered_text,
+    test_no_never_publish_claims_on_public_surfaces,
     test_hero_uses_local_photo_not_external_cdn,
     test_hero_aside_no_data_reveal,
     test_hero_picture_has_mobile_variant,

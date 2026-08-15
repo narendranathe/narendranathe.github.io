@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Case study: Fraud Detection ML Platform - real-time scoring at 100+ TPS, sub-ms P99 latency, built with Kafka, PySpark, MLflow, Airflow, Prometheus, and Grafana.">
+  <meta name="description" content="Case study: Fraud Detection ML Platform - streaming scoring at 100+ TPS, 1.12ms P99 latency, on a synthetic dataset. Kafka, PySpark, MLflow, Airflow, Prometheus, Grafana.">
   <meta name="author" content="Narendranath Edara">
   <meta property="og:title" content="Fraud Detection ML Platform | Narendranath Edara">
   <meta property="og:type" content="article">
@@ -32,16 +32,22 @@
         <span class="cs-hero__kicker">ML Infrastructure</span>
         <h1>Fraud Detection ML Platform</h1>
         <p class="cs-hero__summary">
-          A real-time ML pipeline for financial fraud detection: Kafka-driven transaction ingestion,
-          PySpark feature engineering, MLflow model lifecycle management, FastAPI scoring at sub-ms P99
-          latency, and a Grafana observability stack. Built to handle 100+ transactions per second
-          with a full feedback loop from detection to model retraining.
+          A streaming ML pipeline for financial fraud detection: Kafka-driven transaction ingestion,
+          PySpark feature engineering, MLflow model lifecycle management, FastAPI scoring, and a
+          Grafana observability stack, with a full feedback loop from detection to model retraining.
         </p>
+        <div class="cs-status-note">
+          <strong>Data source.</strong> This runs on a synthetic dataset: 100,000 generated
+          transactions at roughly a 2% fraud rate. Not live payment traffic, and no real
+          cardholder data touches it. Model-quality numbers are therefore not published here,
+          because accuracy against generated fraud says more about the generator than about the
+          model. The engineering below - streaming, serving, tracking, observability - is real
+          and measurable regardless.
+        </div>
         <div class="cs-proof-strip">
           <span>100+ TPS sustained</span>
-          <span>sub-ms P99 scoring</span>
-          <span>94%+ model accuracy</span>
-          <span>&lt;2% false positive rate</span>
+          <span>1.12 ms P99 scoring</span>
+          <span>exactly-once processing</span>
           <span>MLflow model registry</span>
           <span>Prometheus + Grafana</span>
         </div>
@@ -69,16 +75,16 @@
           <span class="cs-metric-lbl">transactions/sec</span>
         </div>
         <div class="cs-metric">
-          <span class="cs-metric-num">&lt;1ms</span>
+          <span class="cs-metric-num">1.12ms</span>
           <span class="cs-metric-lbl">P99 scoring latency</span>
         </div>
         <div class="cs-metric">
-          <span class="cs-metric-num">94%+</span>
-          <span class="cs-metric-lbl">detection accuracy</span>
+          <span class="cs-metric-num">100K</span>
+          <span class="cs-metric-lbl">synthetic transactions</span>
         </div>
         <div class="cs-metric">
-          <span class="cs-metric-num">&lt;2%</span>
-          <span class="cs-metric-lbl">false positive rate</span>
+          <span class="cs-metric-num">~2%</span>
+          <span class="cs-metric-lbl">generated fraud rate</span>
         </div>
       </div>
 
@@ -158,7 +164,7 @@
             <h4>Scoring service</h4>
             <p>
               FastAPI loads the production model from MLflow at startup and keeps it in memory.
-              No network hop per prediction - sub-ms P99 latency achieved by eliminating the
+              No network hop per prediction - 1.12ms P99 latency achieved by eliminating the
               model-loading roundtrip. Model swaps happen via a reload endpoint that pulls the
               new production model without dropping existing connections.
             </p>
