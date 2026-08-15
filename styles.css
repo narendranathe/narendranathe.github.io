@@ -624,6 +624,52 @@ button { font-family: inherit; cursor: pointer; }
   font-size: 1.2rem; font-weight: 500; color: var(--fg);
 }
 .system-desc { font-size: 0.89rem; line-height: 1.7; color: var(--fg-soft); }
+
+/* Full-width stack instead of the 3-up grid. Each project card now
+   carries four labelled lines, which need reading width rather than a
+   narrow column. */
+.systems-grid--stack { grid-template-columns: 1fr; gap: 1.25rem; }
+.systems-grid--stack .system-name { font-size: 1.35rem; }
+
+/* Problem / Method / Proof / What you can verify. A definition list
+   because that is what it is: four fixed questions, answered per card,
+   in the same order every time so they can be compared across cards. */
+.card-lines {
+  display: grid;
+  grid-template-columns: 11.5rem 1fr;
+  gap: 0.5rem 1.5rem;
+  align-items: baseline;
+}
+.card-lines dt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--fg-muted);
+  padding-top: 0.15rem;
+}
+.card-lines dd {
+  margin: 0;
+  font-size: 0.9rem; line-height: 1.7; color: var(--fg-soft);
+}
+.card-lines dd code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.86em; color: var(--accent);
+}
+.card-gt {
+  display: inline-block;
+  margin-left: 0.35rem;
+  font-size: 0.95em;
+  color: var(--accent-warm);
+  border-bottom: 1px dotted var(--border);
+  cursor: help;
+}
+.system-card--wip { border-style: dashed; box-shadow: none; }
+.system-card--wip:hover { transform: none; box-shadow: none; }
+
+@media (max-width: 720px) {
+  .card-lines { grid-template-columns: 1fr; gap: 0.15rem 0; }
+  .card-lines dd { margin-bottom: 0.75rem; }
+}
+
 .tech-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .card-actions {
   display: flex; flex-wrap: wrap; gap: 0.75rem;
@@ -1439,6 +1485,16 @@ body.splash-active { overflow: hidden; }
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 0.55rem 1rem;
+}
+
+/* The two-column fallback above is sized for a card in a 3-up grid.
+   Project cards are full-bleed now, so two columns strand half the row;
+   give them four across once there is width for it. Scoped rather than
+   changing the base module, which other layouts still rely on. */
+@media (min-width: 860px) {
+  .systems-grid--stack .impact-strip:has(.impact-stat:nth-child(3)) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
 .impact-strip .impact-label {
