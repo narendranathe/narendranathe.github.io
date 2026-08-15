@@ -308,7 +308,12 @@ button { font-family: inherit; cursor: pointer; }
 @media (max-width: 860px) {
   .hero { padding: 6rem 0 3.5rem; }
   .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-  .hero-visual { order: -1; width: min(100%, 300px); }
+  /* No order:-1 here. The portrait used to be hoisted above the copy on
+     mobile, which meant the entire mobile first screen was a headshot -
+     no name, no thesis, no proof until a full screen of scrolling. DOM
+     order wins now, so mobile reads the same way desktop does: who,
+     what, then evidence. The portrait follows. */
+  .hero-visual { width: min(100%, 300px); margin-inline: auto; }
   .profile-frame { width: 100%; max-width: 300px; aspect-ratio: 4/5; }
   .profile-photo { object-position: 50% 50%; }
 }

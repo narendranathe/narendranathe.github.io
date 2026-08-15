@@ -364,6 +364,43 @@ def test_no_scrapped_exponenthr_outcomes_in_rendered_text(html: str) -> None:
         )
 
 
+def test_hero_claims_carry_ground_truth_ids(html: str) -> None:
+    """Loop 1 acceptance: every proof chip and every metric tile on the
+    first screen cites the GROUND_TRUTH.md evidence ID behind its
+    numbers, via data-gt-id.
+
+    The first screen is where an unsourced number does the most damage,
+    because it is the part reviewers actually read. Requiring the
+    attribute makes an uncited claim a build failure rather than
+    something to notice later, and gives the claims register a
+    machine-readable source to export from."""
+    hero_start = html.find('<section class="hero"')
+    assert hero_start != -1, "hero <section> not found"
+    hero_end = html.find("</section>", hero_start)
+    hero = html[hero_start:hero_end]
+
+    chips = re.findall(r"<li\b[^>]*>", hero)
+    assert len(chips) >= 4, f"expected >= 4 hero proof chips, found {len(chips)}"
+    unsourced = [c for c in chips if "data-gt-id=" not in c]
+    assert not unsourced, (
+        "hero proof chip with no GROUND_TRUTH id:\n  "
+        + "\n  ".join(c[:120] for c in unsourced)
+    )
+
+    tiles = re.findall(r'<div class="metric-item"[^>]*>', hero)
+    assert tiles, "no metric tiles found in hero"
+    untiled = [t for t in tiles if "data-gt-id=" not in t]
+    assert not untiled, (
+        "hero metric tile with no GROUND_TRUTH id:\n  "
+        + "\n  ".join(t[:120] for t in untiled)
+    )
+
+    # An id attribute that is present but empty passes the checks above
+    # while carrying no evidence at all.
+    empty = re.findall(r'data-gt-id=""', hero)
+    assert not empty, "hero has an empty data-gt-id attribute"
+
+
 def test_no_never_publish_claims_on_public_surfaces() -> None:
     """Cross-file guard for claims that may never ship, checked on every
     public surface rather than just index.html.
@@ -1573,11 +1610,21 @@ def test_hero_alt_text_includes_role() -> None:
 
 
 def test_public_identity_surfaces_use_canonical_title() -> None:
-    """Issue #129: no public surface may reintroduce the unverified
-    'Senior AI Platform Engineer' claim, and the key identity anchors
-    must carry the title-accurate Data Engineer positioning that
-    shipped on the fix/p0-positioning-batch branch."""
-    stale = "Senior AI Platform Engineer"
+    """Issue #129: no public surface may reintroduce a seniority title
+    the employment record does not support, and the key identity
+    anchors must carry the title-accurate Data Engineer positioning.
+
+    Anchors updated 2026-08-15 (Loop 1). The positioning moved from
+    "AI-Enabled Data Platforms" to the payroll-critical correctness
+    thesis, which is what the evidence actually supports and what the
+    target requisitions ask for. The banned-title half of this guard is
+    unchanged in purpose and now covers both stale variants: the second
+    one survived in hover-preview captions for months because the
+    original guard only knew about the first."""
+    stale_titles = (
+        "Senior AI Platform Engineer",
+        "Senior AI/ML Engineer",
+    )
 
     public_paths = (
         INDEX_HTML,
@@ -1594,26 +1641,27 @@ def test_public_identity_surfaces_use_canonical_title() -> None:
     )
     contents = {p: p.read_text(encoding="utf-8") for p in public_paths if p.exists()}
     for path, body in contents.items():
-        assert stale not in body, (
-            f"{path.relative_to(REPO_ROOT)} still contains the stale "
-            f"'{stale}' identity claim"
-        )
+        for stale in stale_titles:
+            assert stale not in body, (
+                f"{path.relative_to(REPO_ROOT)} still contains the stale "
+                f"'{stale}' identity claim"
+            )
 
     index_html = contents[INDEX_HTML]
     for required in (
         '<meta property="og:title" content="Narendranath Edara | '
-        'Data Engineer - AI-Enabled Data Platforms">',
+        'Data Engineer - Payroll-Critical Data Platforms">',
         "<title>Narendranath Edara | Data Engineer - "
-        "AI-Enabled Data Platforms</title>",
-        '<span class="logo-role">Data Engineer &middot; AI Platforms</span>',
+        "Payroll-Critical Data Platforms</title>",
+        '<span class="logo-role">Data Engineer &middot; Dallas TX</span>',
     ):
         assert required in index_html, f"index.html missing identity anchor: {required!r}"
 
     readme = contents[REPO_ROOT / "README.md"]
-    assert "I am a Data Engineer who builds reliable data platforms first" in readme
+    assert "I am a Data Engineer working on payroll-critical data" in readme
 
     manifest = contents[REPO_ROOT / "static" / "site.webmanifest"]
-    assert "Data Engineer building AI-enabled data platforms" in manifest
+    assert "Data Engineer on payroll-critical systems" in manifest
 
     post = contents[REPO_ROOT / "content" / "posts" / "repo-context-hooks-supply-chain.html"]
     assert '"jobTitle": "Data Engineer"' in post, (
@@ -1634,6 +1682,7 @@ TESTS = [
     test_no_scrapped_exponenthr_outcomes,
     test_no_scrapped_exponenthr_outcomes_in_rendered_text,
     test_no_never_publish_claims_on_public_surfaces,
+    test_hero_claims_carry_ground_truth_ids,
     test_hero_uses_local_photo_not_external_cdn,
     test_hero_aside_no_data_reveal,
     test_hero_picture_has_mobile_variant,

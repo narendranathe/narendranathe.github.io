@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Narendranath Edara - Data Engineer building AI-enabled data platforms, workflow automation, and retrieval systems that survive real production constraints.">
+  <meta name="description" content="Narendranath Edara - Data Engineer on payroll-critical systems. CDC pipelines, change-controlled releases, and the detection and recovery layer underneath. Dallas TX.">
   <meta name="author" content="Narendranath Edara">
-  <meta property="og:title" content="Narendranath Edara | Data Engineer - AI-Enabled Data Platforms">
-  <meta property="og:description" content="Production AI systems that teams can run, govern, and trust.">
+  <meta property="og:title" content="Narendranath Edara | Data Engineer - Payroll-Critical Data Platforms">
+  <meta property="og:description" content="Money-adjacent correctness under formal change control, and the reliability layer under production pipelines.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://narendranathe.github.io">
   <meta property="og:image" content="https://narendranathe.github.io/static/og-image.jpg?v=2026-04-28">
@@ -37,7 +37,7 @@
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
 
-  <title>Narendranath Edara | Data Engineer - AI-Enabled Data Platforms</title>
+  <title>Narendranath Edara | Data Engineer - Payroll-Critical Data Platforms</title>
   <link rel="stylesheet" href="styles.css">
 
   <!-- LCP candidate: hero portrait, preload to start fetch before body parses.
@@ -84,7 +84,7 @@
     <div class="container header-inner">
       <a href="#home" class="logo">
         <span class="logo-name">Narendranath Edara</span>
-        <span class="logo-role">Data Engineer &middot; AI Platforms</span>
+        <span class="logo-role">Data Engineer &middot; Dallas TX</span>
       </a>
       <nav class="main-nav" aria-label="Main navigation">
         <a href="#experience" class="nav-link">Experience</a>
@@ -128,23 +128,35 @@
       <div class="container hero-grid">
 
         <div class="hero-copy" data-reveal>
+          <p class="hero-role">Data Engineer &middot; Dallas TX</p>
           <h1 class="hero-name">Narendranath<br>Edara</h1>
-          <p class="hero-tagline">I turn messy data and repeated workflows into reliable platforms - then add AI where it creates leverage.</p>
+          <p class="hero-tagline">Payroll data is money-adjacent: a silent defect becomes someone's paycheck. I build the correctness and recovery layers underneath.</p>
           <p class="hero-brief">
-            Data Engineer building AI-enabled data platforms, workflow automation, and retrieval systems that survive real production constraints. The foundation comes first - reliable ETL, governed SQL, CI/CD, observability, cost-aware operations - then applied AI on top: RAG pipelines, multi-provider LLM routing, document intelligence, and reusable developer tools.
+            Six years professional, three of them in data engineering. The other three went to answering business questions with data at Zomato and Udaan, so I can talk to a stakeholder and to the database.
           </p>
+          <!-- Proof chips. data-gt-id cites the GROUND_TRUTH.md evidence ID
+               backing every number in the chip; the Loop 6 claims register
+               reads these attributes. No chip ships without an ID. -->
           <ul class="hero-proof">
-            <li>
+            <li data-gt-id="E-PTO, E-SECURE2">
               <span class="proof-dot"></span>
-              <span><strong>ExponentHR (production):</strong> deployment cycles compressed <strong>3 months to 14 days</strong>, CDC ETL reengineered from full reloads to incremental merge-upserts (30min&rarr;8min, <strong>-67% compute</strong>), payroll-critical AAG automation on Azure.</span>
+              <span><strong>Money-adjacent correctness, under change control.</strong> Payroll accrual defect root-caused in SQL, shipped to every client tenant by change-request review. SECURE 2.0 on a legislated deadline.</span>
             </li>
-            <li>
+            <li data-gt-id="E1-CDC">
               <span class="proof-dot"></span>
-              <span><strong>AutoApply AI (workflow automation):</strong> Chrome MV3 + FastAPI pipeline connecting job discovery, document tailoring, form-state management, LLM routing, and application tracking - <strong>11 ATS adapters</strong>, private deployment on Fly.io.</span>
+              <span><strong>CDC ETL, full reloads to incremental merge-upserts.</strong> 30 minutes to under 8, compute <strong>-67%</strong>, 99.9% less data moved, freshness SLA held.</span>
             </li>
-            <li>
+            <li data-gt-id="E-IDEM">
               <span class="proof-dot"></span>
-              <span><strong>Reusable engines:</strong> repeated workflows become products - <strong>tailor-resume</strong> for document intelligence (MCP, PyPI, CLI, Streamlit) and <strong>JobScout</strong> for direct-source job discovery.</span>
+              <span><strong>Provisioning rewritten idempotent.</strong> 5,000 engineering hours a year, about <strong>$300K</strong>, 2.5 FTEs back on product.</span>
+            </li>
+            <li data-gt-id="E5-RECOVERY">
+              <span class="proof-dot"></span>
+              <span><strong>CDC capture restored in under an hour</strong> after an Always On failover, on a runbook rather than a specialist.</span>
+            </li>
+            <li data-gt-id="P-HOOKS">
+              <span class="proof-dot"></span>
+              <span><strong>repo-context-hooks, installable from PyPI.</strong> Sigstore-signed, CodeQL on every PR, <strong>330+ tests</strong> - checkable without asking me.</span>
             </li>
           </ul>
           <div class="hero-actions">
@@ -179,22 +191,25 @@
                    loading="eager" decoding="async" fetchpriority="high">
             </picture>
           </div>
+          <!-- Every tile carries its baseline, not just the delta: a
+               percentage with no starting point is the first thing a
+               senior reviewer says is missing. -->
           <div class="metric-grid">
-            <div class="metric-item">
-              <span class="metric-num">3mo&rarr;14d</span>
-              <span class="metric-lbl">deploy cycle &middot; ExponentHR</span>
+            <div class="metric-item" data-gt-id="E2-CICD">
+              <span class="metric-num">3mo &rarr; 14d</span>
+              <span class="metric-lbl">release cycle &middot; 11 weeks idle removed</span>
             </div>
-            <div class="metric-item">
-              <span class="metric-num" data-count="355">355</span>
-              <span class="metric-lbl">backend tests &middot; AutoApply</span>
+            <div class="metric-item" data-gt-id="E1-CDC">
+              <span class="metric-num">30 &rarr; 8min</span>
+              <span class="metric-lbl">CDC ETL runtime &middot; freshness SLA held</span>
             </div>
-            <div class="metric-item">
-              <span class="metric-num">-67%</span>
-              <span class="metric-lbl">ETL compute &middot; ExponentHR</span>
+            <div class="metric-item" data-gt-id="E-IDEM">
+              <span class="metric-num">$300K</span>
+              <span class="metric-lbl">provisioning toil &middot; 2.5 FTEs recovered</span>
             </div>
-            <div class="metric-item">
-              <span class="metric-num" data-count="11">11</span>
-              <span class="metric-lbl">ATS adapters &middot; AutoApply</span>
+            <div class="metric-item" data-gt-id="P-HOOKS">
+              <span class="metric-num" data-count="330">330</span>
+              <span class="metric-lbl">tests &middot; signed, public PyPI release</span>
             </div>
           </div>
         </aside>
@@ -1386,7 +1401,7 @@
     <div class="container footer-inner">
       <div class="footer-left">
         <span class="footer-name">Narendranath Edara</span>
-        <span class="footer-tagline">Data Engineer &middot; AI-Enabled Data Platforms &middot; Dallas TX</span>
+        <span class="footer-tagline">Data Engineer &middot; payroll-critical data platforms &middot; Dallas TX</span>
       </div>
       <nav class="footer-nav" aria-label="Footer navigation">
         <a href="#systems">Projects</a>
