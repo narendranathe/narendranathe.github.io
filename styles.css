@@ -799,6 +799,53 @@ button { font-family: inherit; cursor: pointer; }
 }
 .track-company { font-size: 0.84rem; color: var(--fg-soft); margin-bottom: 0.15rem; }
 .track-scope { font-size: 0.77rem; color: var(--accent); font-style: italic; }
+/* Case entries inside a role. Each is a titled block with the same four
+   labelled lines as a project card, so a reader who learned the pattern
+   in Projects does not have to learn a second one here. */
+.case {
+  border-top: 1px solid var(--border-soft);
+  padding-top: 1.1rem;
+  margin-top: 1.1rem;
+}
+.case:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
+.case-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; font-weight: 500; color: var(--fg);
+  margin-bottom: 0.85rem;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.6rem;
+}
+.case-gt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.06em;
+  color: var(--accent-warm);
+  border-bottom: 1px dotted var(--border);
+  cursor: help;
+  white-space: nowrap;
+}
+/* Inline evidence-quality marker. Anything the record cannot document
+   says so where it is claimed, not in a footnote nobody reaches. */
+.claim-status {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; letter-spacing: 0.03em;
+  color: var(--fg-muted);
+  background: var(--chip-bg);
+  border-radius: 2px;
+  padding: 0.05rem 0.35rem;
+  margin-left: 0.25rem;
+}
+.track-card--edu { background: var(--bg-alt); }
+/* The nine-month gap gets its own timeline row rather than being left
+   for the reader to spot between two dates. */
+.track-item--gap { padding-bottom: 2rem; }
+.track-item--gap::before { background: var(--border); }
+.track-gap {
+  font-size: 0.84rem; line-height: 1.7; color: var(--fg-muted);
+  padding: 1.1rem 1.25rem;
+  border-left: 2px dashed var(--border);
+  max-width: 62ch;
+}
+
 .track-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
 .track-bullets li {
   font-size: 0.87rem; line-height: 1.65; color: var(--fg-soft);

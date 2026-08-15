@@ -233,181 +233,278 @@
       </div>
     </section>
 
-    <!-- ===== TRACK RECORD ===== -->
+    <!-- ===== EXPERIENCE =====
+         Case entries, not resume bullets: each one states the problem,
+         what changed and from what baseline, the scope it covered, and
+         what it bought in risk, money, or time. data-gt-id on each case
+         cites its GROUND_TRUTH.md record. Titles are exactly as HR holds
+         them and are never adjusted per application. -->
     <section class="section section-alt" id="experience">
       <div class="container">
 
         <div class="section-head" data-reveal>
-          <span class="section-label">Production Data Platform Work</span>
-          <h2 class="section-title">The work that proves I can operate inside enterprise constraints.</h2>
-          <p class="section-subtitle">Six years across enterprise HR, food-tech, and fintech - current production ownership at ExponentHR: CI/CD, CDC ETL, and payroll-critical database automation.</p>
+          <span class="section-label">Experience</span>
+          <h2 class="section-title">Six years, and what each one was actually solving.</h2>
+          <p class="section-subtitle">Three years building data platforms, three years before that answering business questions with data. Written as cases rather than bullets, because the reason a change was worth making is the part a bullet drops first.</p>
         </div>
 
         <div class="track">
 
-          <!-- ExponentHR -->
           <div class="track-item" data-reveal>
             <div class="track-date">Jul 2024 - Present</div>
             <div class="track-content">
               <div class="track-card">
                 <div class="track-header">
                   <div class="track-logo">
-                    <img src="https://github.com/user-attachments/assets/8f588639-0463-4d1c-95e6-aba025804099"
-                         alt="ExponentHR" onerror="this.style.display='none';">
+                    <img src="https://github.com/user-attachments/assets/8f588639-0463-4d1c-95e6-aba025804099" alt="ExponentHR" onerror="this.style.display='none';">
                   </div>
                   <div class="track-meta">
                     <h3 class="track-title">Data Engineer</h3>
                     <p class="track-company">ExponentHR &middot; Dallas, TX</p>
-                    <p class="track-scope">Data platform engineering / CI/CD ownership</p>
+                    <p class="track-scope">Multi-tenant payroll and HR platform</p>
                   </div>
                 </div>
-                <ul class="track-bullets">
-                  <li>Compressed deployment cycles from 3 months to 14 days by owning CI/CD end-to-end through Azure DevOps, eliminating 11 weeks of cross-team idle time per release.</li>
-                  <li>Reengineered CDC ETL from full-table reloads to incremental merge upserts: runtime 30min&rarr;8min, compute cost -67%.</li>
-                  <li>Engineered one-click idempotent Azure DevOps pipeline for Contained AAG databases (restore, security, CDC, listener validation), eliminating ~1 hour per request across 20+ daily copy-downs.</li>
-                </ul>
-                <div class="track-chips">
-                  <span class="chip">Azure</span><span class="chip">Azure DevOps</span>
-                  <span class="chip">Data Platform</span><span class="chip">CDC</span>
-                  <span class="chip">Python</span><span class="chip">SQL</span>
+                <!-- GAP: role context line intentionally omitted. The scale
+                     figures (400 databases, ~70 TB across 10 servers,
+                     15-minute refresh cadence) are unverified against
+                     internal records. Add only after confirming. -->
+                <div class="case" data-gt-id="E-PTO, E-SECURE2">
+                  <h4 class="case-title">Money-adjacent correctness, shipped under change control<span class="case-gt" title="Ground truth: E-PTO, E-SECURE2">E-PTO &middot; E-SECURE2</span></h4>
+                  <dl class="card-lines">
+                    <dt>Problem</dt><dd>PTO balances convert to cash at termination, so a defect in accrual logic is not a display bug, it is a payout. Separately, SECURE 2.0 set a retirement-plan compliance date the team did not control.</dd>
+                    <dt>What changed</dt><dd>The accrual defect was root-caused to a payroll-period boundary calculation through direct SQL diagnostics, then shipped through formal change-request review rather than patched in place. SECURE 2.0 compliance went out in the same release train, alongside a Clock Out Type enhancement.</dd>
+                    <dt>Scope</dt><dd>Corrected logic reviewed once and shipped to every client tenant. A legislated deadline, set outside the team.</dd>
+                    <dt>Outcome</dt><dd>Regulatory delivery on time, and a money-adjacent calculation fixed in the model rather than row by row. Change-request review is the reason the fix shipped once instead of per-tenant.</dd>
+                  </dl>
                 </div>
+                <div class="case" data-gt-id="E-SELFHEAL, E5-RECOVERY, E-LIVEREC, E-OBS, E-RETENTION">
+                  <h4 class="case-title">The detection and recovery layer underneath<span class="case-gt" title="Ground truth: E-SELFHEAL, E5-RECOVERY, E-LIVEREC, E-OBS, E-RETENTION">E-SELFHEAL &middot; E5-RECOVERY &middot; E-LIVEREC &middot; E-OBS &middot; E-RETENTION</span></h4>
+                  <dl class="card-lines">
+                    <dt>Problem</dt><dd>Change data capture has a retention window. A capture job that fails quietly is not just a late load: once the window closes, that change history is gone for good. There was no coverage for that failure mode.</dd>
+                    <dt>What changed</dt><dd>Proactive monitoring and self-healing recovery for production SQL Agent jobs, instrumented against three distinct failure modes: missed runs, stuck runs, and silent failures. Availability-group failover recovery written up as runbooks, including the post-failover capture-job failure that fails silently. SSIS execution history rebuilt in SQL so package runs were visible to IT and the business rather than buried, with control-table-driven validation turning quiet data drift into an alertable failure.</dd>
+                    <dt>Scope</dt><dd>Owned from raising the gap through to the shipped fix. One live CDC incremental-load failure was diagnosed and restored in place under production pressure, rather than falling back to a slow full reload or leaving client-facing payroll data stale.</dd>
+                    <dt>Outcome</dt><dd>Capture restored in under an hour after a failover, on a runbook rather than a specialist. Change history that had already aged toward retention expiry was recovered through <code>fn_cdc_get_all_changes</code> before the window closed. Drift stopped being invisible, with a named owner and a documented response.</dd>
+                  </dl>
+                </div>
+                <div class="case" data-gt-id="E1-CDC, E-IDEM">
+                  <h4 class="case-title">Rebuilding the pipelines to be rerunnable<span class="case-gt" title="Ground truth: E1-CDC, E-IDEM">E1-CDC &middot; E-IDEM</span></h4>
+                  <dl class="card-lines">
+                    <dt>Problem</dt><dd>The CDC ETL reloaded entire tables on every run, and database copy-and-restore was manual orchestration repeated twenty-plus times a day. Both were slow, and both failed in ways that needed a person to clean up before the next attempt could even start.</dd>
+                    <dt>What changed</dt><dd>CDC ETL reengineered from full-table reloads to idempotent incremental merge-upserts, so a failed run reruns clean. The copy and restore pipeline for Contained availability-group databases rewritten fully idempotent, closing four latent failure modes: orphaned CDC cleanup jobs terminated rather than dropped from metadata, a guard that kills active replication sessions before disabling CDC, silently-defaulting restore parameters fixed, and stuck-restore detection with pre-flight race checks.</dd>
+                    <dt>Scope</dt><dd>Now the platform's standing CDC pattern. Provisioning runs more than twenty times a day.</dd>
+                    <dt>Outcome</dt><dd>ETL 30 minutes to under 8, compute down 67%, roughly 99.9% less data moved, and the data-freshness SLA held through the change. Provisioning gave back 5,000 engineering hours a year, about $300K, or 2.5 engineers.</dd>
+                  </dl>
+                  <figure class="system-diagram-figure" aria-labelledby="diagram-az-title" aria-describedby="diagram-az-desc">
+                                  <svg class="system-diagram" viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" role="img">
+                                    <title id="diagram-az-title">Azure Platform Engineering topology: Azure Repos triggers Azure Pipelines CI/CD, output flows to SQL Server CDC, then to AAG replica and Microsoft Fabric</title>
+                                    <desc id="diagram-az-desc">Enterprise data platform at ExponentHR. Azure Repos triggers Azure Pipelines on every push — build, test, and deploy stages run end-to-end, compressing the release cycle from three months to fourteen days. SQL Server uses CDC incremental merge-upserts, cutting ETL compute by sixty-seven percent. An idempotent pipeline automates Contained Always-On Availability Group copy-downs, saving about an hour per request. Microsoft Fabric semantic models consume the CDC stream for reporting.</desc>
+                                    <defs>
+                                      <marker id="arrow-az" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                                        <path d="M0 0 L10 5 L0 10 Z" fill="currentColor"/>
+                                      </marker>
+                                    </defs>
+                                    <g fill="none" stroke="currentColor" stroke-width="1.4" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="11">
+                                      <rect x="10" y="58" width="118" height="80" rx="6"/>
+                                      <text x="69" y="78" text-anchor="middle" fill="currentColor" font-weight="600">Azure Repos</text>
+                                      <text x="69" y="96" text-anchor="middle" fill="currentColor" font-size="10">PR / push trigger</text>
+                                      <text x="69" y="128" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">protected main</text>
+                                      <rect x="148" y="40" width="158" height="116" rx="6" stroke="var(--accent-warm, #b5752a)" stroke-width="2"/>
+                                      <text x="227" y="62" text-anchor="middle" fill="var(--accent-warm, #b5752a)" font-weight="600">Azure Pipelines</text>
+                                      <text x="227" y="80" text-anchor="middle" fill="currentColor" font-size="10">CI/CD end-to-end</text>
+                                      <text x="227" y="96" text-anchor="middle" fill="currentColor" font-size="10">build → test → deploy</text>
+                                      <text x="227" y="112" text-anchor="middle" fill="currentColor" font-size="10">3mo → 14-day cycle</text>
+                                      <text x="227" y="144" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">idempotent stages</text>
+                                      <rect x="326" y="58" width="148" height="80" rx="6"/>
+                                      <text x="400" y="78" text-anchor="middle" fill="currentColor" font-weight="600">SQL Server</text>
+                                      <text x="400" y="96" text-anchor="middle" fill="currentColor" font-size="10">CDC incremental ETL</text>
+                                      <text x="400" y="112" text-anchor="middle" fill="currentColor" font-size="10">30min → &lt;8min</text>
+                                      <text x="400" y="130" text-anchor="middle" fill="currentColor" font-size="9" font-style="italic">merge-upsert</text>
+                                      <rect x="494" y="44" width="118" height="58" rx="6" stroke="var(--accent, #176b52)" stroke-width="1.5"/>
+                                      <text x="553" y="66" text-anchor="middle" fill="currentColor" font-weight="600">AAG Replica</text>
+                                      <text x="553" y="84" text-anchor="middle" fill="currentColor" font-size="10">~1hr saved / copy-down</text>
+                                      <rect x="494" y="114" width="118" height="58" rx="6"/>
+                                      <text x="553" y="136" text-anchor="middle" fill="currentColor" font-weight="600">Microsoft Fabric</text>
+                                      <text x="553" y="154" text-anchor="middle" fill="currentColor" font-size="10">semantic models</text>
+                                      <line x1="128" y1="98" x2="148" y2="98" marker-end="url(#arrow-az)"/>
+                                      <line x1="306" y1="98" x2="326" y2="98" marker-end="url(#arrow-az)"/>
+                                      <line x1="474" y1="82" x2="494" y2="73" marker-end="url(#arrow-az)"/>
+                                      <line x1="474" y1="114" x2="494" y2="133" marker-end="url(#arrow-az)"/>
+                                      <text x="360" y="178" text-anchor="middle" fill="var(--fg-muted, #9b9490)" font-size="10">ExponentHR production platform · payroll-critical availability</text>
+                                    </g>
+                                  </svg>
+                                  <figcaption class="post-figcaption">Figure: Azure platform topology — CI/CD pipeline, CDC incremental ETL, and AAG failover automation as deployed at ExponentHR.</figcaption>
+                                </figure>
+                </div>
+                <div class="case" data-gt-id="E2-CICD, E3-FABRIC, E-REPORTAUTO">
+                  <h4 class="case-title">Shortening the distance between a change and a client<span class="case-gt" title="Ground truth: E2-CICD, E3-FABRIC, E-REPORTAUTO">E2-CICD &middot; E3-FABRIC &middot; E-REPORTAUTO</span></h4>
+                  <dl class="card-lines">
+                    <dt>Problem</dt><dd>Releases went out roughly quarterly, so a client change waited a season. Reporting queries were slow enough to generate support tickets on their own.</dd>
+                    <dt>What changed</dt><dd>CI/CD owned end to end through Azure DevOps, with SSRS and Power BI release steps automated and Scrum aligning dev, test, IT, and business on shared priorities. Legacy SQL Server reporting migrated onto Microsoft Fabric semantic models with natural-language-to-SQL agent access, plus index and stored-procedure tuning on the OLAP paths. Git and Azure DevOps API workflows automated in Python so the team could see delivery state without asking for it.</dd>
+                    <dt>Scope</dt><dd>Every release. Copilot-assisted code gated through review and tests rather than trusted.</dd>
+                    <dt>Outcome</dt><dd>Release cycle 3 months to 14 days, removing roughly 11 weeks of cross-team idle time per release. Query response 12s to under 4s and client support tickets down 40%, worth about $243K a year of analyst capacity. Reporting automation returned 15+ hours a sprint, roughly $23K a year.</dd>
+                  </dl>
+                </div>
+                <div class="track-chips"><span class="chip">SQL Server</span><span class="chip">CDC</span><span class="chip">Azure DevOps</span><span class="chip">Microsoft Fabric</span><span class="chip">SSIS</span><span class="chip">Python</span><span class="chip">Always On AG</span></div>
               </div>
             </div>
           </div>
 
-          <!-- Missouri S&T -->
           <div class="track-item" data-reveal>
             <div class="track-date">Aug 2023 - Jul 2024</div>
             <div class="track-content">
               <div class="track-card">
                 <div class="track-header">
                   <div class="track-logo">
-                    <img src="https://github.com/user-attachments/assets/5dc864b8-501a-485a-b780-d0fcde01a3de"
-                         alt="Missouri S&T" onerror="this.style.display='none';">
+                    <img src="https://github.com/user-attachments/assets/5dc864b8-501a-485a-b780-d0fcde01a3de" alt="Missouri University of Science and Technology" onerror="this.style.display='none';">
                   </div>
                   <div class="track-meta">
                     <h3 class="track-title">Data Engineer</h3>
                     <p class="track-company">Missouri University of Science and Technology &middot; Rolla, MO</p>
-                    <p class="track-scope">ML infrastructure / anomaly detection &nbsp;&middot;&nbsp; M.S. Information Science and Technology - GPA 4.0 - Dec 2023</p>
+                    <p class="track-scope">ML infrastructure and anomaly detection</p>
                   </div>
                 </div>
-                <ul class="track-bullets">
-                  <li>Engineered Azure AI Anomaly Detector pipelines selecting optimal algorithms per time-series profile, achieving 95%+ detection accuracy  - caught a production memory leak 4 hours before outage.</li>
-                  <li>Implemented tunable alert thresholds, filtering ~250 weekly non-actionable P3 alerts; signal-to-noise improved from 1:5 to 1:1.2.</li>
-                  <li>Migrated from static D-Series VMs to AKS with HPA: CPU utilization 12%&rarr;64%, nodes consolidated 20&rarr;4-8 dynamic, Azure spend cut $3,200/month.</li>
-                </ul>
-                <div class="track-chips">
-                  <span class="chip">Azure AI</span><span class="chip">AKS/HPA</span>
-                  <span class="chip">Kubernetes</span><span class="chip">Anomaly Detection</span><span class="chip">Python</span>
+                <div class="case" data-gt-id="M1, M2, M3">
+                  <h4 class="case-title">Alerting people would actually act on<span class="case-gt" title="Ground truth: M1, M2, M3">M1 &middot; M2 &middot; M3</span></h4>
+                  <dl class="card-lines">
+                    <dt>Problem</dt><dd>An alerting platform that fires constantly gets ignored, and a platform that is ignored does not catch the outage it was built for.</dd>
+                    <dt>What changed</dt><dd>Azure AI Anomaly Detector pipelines selecting an algorithm per time-series profile, and tunable per-service thresholds so one noisy service could be tightened without going deaf on another. Anomaly-detection workloads then migrated off static D-series VMs onto AKS with horizontal pod autoscaling.</dd>
+                    <dt>Scope</dt><dd>About 250 non-actionable P3 alerts a week across the estate; 20 static nodes before the migration.</dd>
+                    <dt>Outcome</dt><dd>95%+ detection accuracy, and a production memory leak caught four hours before it would have taken the service down. Signal-to-noise moved from 1:5 to 1:1.2. Compute fell $3,200 a month, $38.4K a year, with CPU utilization going from 12% to 64%, so the saving came from reclaiming waste rather than cutting capacity.</dd>
+                  </dl>
                 </div>
+                <div class="case" data-gt-id="M4">
+                  <h4 class="case-title">Research: sentiment analysis on visitor feedback<span class="case-gt" title="Ground truth: M4">M4</span></h4>
+                  <dl class="card-lines">
+                    <dt>Problem</dt><dd>Free-text visitor feedback carries the signal a rating scale flattens, and nobody was reading 10,000 of them.</dd>
+                    <dt>What changed</dt><dd>End-to-end NLP pipelines in Python using spaCy, NLTK, Hugging Face RoBERTa, and VADER, feeding dimensional models and Power BI dashboards.</dd>
+                    <dt>Scope</dt><dd>10,000+ reviews. Department of Business and Information Technology.</dd>
+                    <dt>Outcome</dt><dd>Peer-reviewed publication in the <em>Journal of Nonprofit &amp; Public Sector Marketing</em> (Taylor &amp; Francis, 2025). <a href="https://doi.org/10.1080/10495142.2025.2525123" target="_blank" rel="noreferrer">DOI 10.1080/10495142.2025.2525123</a>.</dd>
+                  </dl>
+                </div>
+                <div class="track-chips"><span class="chip">Azure AI</span><span class="chip">AKS</span><span class="chip">Kubernetes</span><span class="chip">Python</span><span class="chip">spaCy</span><span class="chip">RoBERTa</span><span class="chip">Power BI</span></div>
               </div>
             </div>
           </div>
 
-          <!-- C2FO -->
           <div class="track-item" data-reveal>
             <div class="track-date">Jun 2023 - Aug 2023</div>
             <div class="track-content">
               <div class="track-card">
                 <div class="track-header">
                   <div class="track-logo">
-                    <img src="https://github.com/user-attachments/assets/3568348e-20d6-4210-83de-bdec9950333d"
-                         alt="C2FO" onerror="this.style.display='none';">
+                    <img src="https://github.com/user-attachments/assets/3568348e-20d6-4210-83de-bdec9950333d" alt="C2FO" onerror="this.style.display='none';">
                   </div>
                   <div class="track-meta">
                     <h3 class="track-title">Product Intern</h3>
-                    <p class="track-company">C2FO &middot; Leawood, KS</p>
+                    <p class="track-company">C2FO &middot; Kansas City, KS</p>
+                    <p class="track-scope">B2B fintech working-capital platform</p>
                   </div>
                 </div>
-                <ul class="track-bullets">
-                  <li>Analyzed B2B financial transaction patterns via SQL to identify user behavior trends and inform product prioritization across the preferred offers tool.</li>
-                  <li>Authored data-driven PRDs that reduced development resource allocation time by 50% by eliminating spec ambiguity across engineering, design, and business stakeholders.</li>
-                </ul>
-                <div class="track-chips">
-                  <span class="chip">SQL</span><span class="chip">Data Analysis</span><span class="chip">PRD</span>
+                <div class="case" data-gt-id="C-SQL, C-PRD, C-CSPO">
+                  <h4 class="case-title">Turning transaction behavior into a product spec<span class="case-gt" title="Ground truth: C-SQL, C-PRD, C-CSPO">C-SQL &middot; C-PRD &middot; C-CSPO</span></h4>
+                  <dl class="card-lines">
+                    <dt>Problem</dt><dd>A preferred-offers tool needed a specification that product, engineering, and operations would all read the same way.</dd>
+                    <dt>What changed</dt><dd>SQL-driven product and user-behavior analysis across a B2B fintech working-capital transaction platform, turned into product decisions with the owning team, then written up as requirement documents built from stakeholder interviews across product and operations.</dd>
+                    <dt>Scope</dt><dd>Preferred-offers tool; stakeholders across product, engineering, design, and operations. Certified Scrum Product Owner during the same period.</dd>
+                    <dt>Outcome</dt><dd>Resource-allocation time down 50% by removing spec ambiguity. <span class="claim-status">self-reported, no supporting document</span></dd>
+                  </dl>
+                </div>
+                <div class="track-chips"><span class="chip">SQL</span><span class="chip">Product analysis</span><span class="chip">Requirements</span><span class="chip">CSPO</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="track-item" data-reveal>
+            <div class="track-date">Jan 2022 - Dec 2023</div>
+            <div class="track-content">
+              <div class="track-card track-card--edu">
+                <div class="track-header">
+                  <div class="track-logo">
+                    <img src="https://github.com/user-attachments/assets/5dc864b8-501a-485a-b780-d0fcde01a3de" alt="Missouri S&amp;T" onerror="this.style.display='none';">
+                  </div>
+                  <div class="track-meta">
+                    <h3 class="track-title">M.S. Information Science and Technology</h3>
+                    <p class="track-company">Missouri University of Science and Technology &middot; Rolla, MO</p>
+                    <p class="track-scope">GPA 4.0 / 4.0 &nbsp;&middot;&nbsp; the deliberate pivot from analytics into data engineering</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- udaan.com -->
+          <div class="track-item track-item--gap" data-reveal>
+            <div class="track-date">Mar 2021 - Jan 2022</div>
+            <div class="track-content">
+              <p class="track-gap">Nine months between leaving Udaan and starting the MS program. Listed rather than glossed over, because a timeline with a hole in it invites a worse guess than the truth.</p>
+            </div>
+          </div>
+
           <div class="track-item" data-reveal>
             <div class="track-date">Sep 2020 - Mar 2021</div>
             <div class="track-content">
               <div class="track-card">
                 <div class="track-header">
                   <div class="track-logo">
-                    <img src="https://github.com/user-attachments/assets/f07f767c-50e5-4bd4-b358-3c7dbf10427f"
-                         alt="udaan.com" onerror="this.style.display='none';">
+                    <img src="https://github.com/user-attachments/assets/f07f767c-50e5-4bd4-b358-3c7dbf10427f" alt="udaan.com" onerror="this.style.display='none';">
                   </div>
                   <div class="track-meta">
-                    <h3 class="track-title">Business Intelligence Analyst | Supply</h3>
-                    <p class="track-company">udaan.com &middot; India</p>
+                    <h3 class="track-title">Business Intelligence Analyst</h3>
+                    <p class="track-company">udaan.com &middot; Nashik, India</p>
+                    <p class="track-scope">New-city Staples category launch, B2B commerce marketplace</p>
                   </div>
                 </div>
-                <ul class="track-bullets">
-                  <li>Built demand forecasting and inventory models that improved allocation ROI by 7% across the city's Staples category.</li>
-                  <li>Achieved 99.3% fulfillment rate through statistical capacity planning managing end-to-end first-mile to last-mile operations.</li>
-                  <li>Developed automated ETL pipelines for financial modeling dashboards in Power BI.</li>
-                </ul>
-                <div class="track-chips">
-                  <span class="chip">Forecasting</span><span class="chip">Power BI</span>
-                  <span class="chip">SQL</span><span class="chip">ETL</span><span class="chip">Supply Chain</span>
+                <div class="case" data-gt-id="U-FORECAST, U-FULFILL, U-RCA, U-BCP">
+                  <h4 class="case-title">Launching a category, and planning for it to break<span class="case-gt" title="Ground truth: U-FORECAST, U-FULFILL, U-RCA, U-BCP">U-FORECAST &middot; U-FULFILL &middot; U-RCA &middot; U-BCP</span></h4>
+                  <dl class="card-lines">
+                    <dt>Problem</dt><dd>A new-city Staples launch on a B2B commerce marketplace, with procurement turnaround and fulfillment to hold while volume climbed, on a value chain that failed in repeating ways.</dd>
+                    <dt>What changed</dt><dd>Demand-forecasting and inventory models in Power BI, with Excel macros driving daily inventory-lead-time and demand reporting and Google Data Studio for market-penetration planning. Statistical demand analysis for capacity planning under both just-in-time and warehouse models. Root-cause analysis on the recurring value-chain failures, with process flows rewritten so the same failure could not repeat. A business continuity plan devised and executed to keep delivery cycles moving through application downtime.</dd>
+                    <dt>Scope</dt><dd>New-city category launch, from first order to steady state.</dd>
+                    <dt>Outcome</dt><dd>Allocation ROI up 7%, and 99.3% order fulfillment sustained. Vendor onboarding turnaround cut.</dd>
+                    <dt>Bridge</dt><dd>Writing a continuity plan for application downtime in 2021 is the same instinct as the failover runbooks three years later: assume the system will fail, and decide in advance what happens next. The root-cause discipline moved across unchanged; only the subject changed, from a value chain to a pipeline.</dd>
+                  </dl>
                 </div>
+                <div class="track-chips"><span class="chip">Power BI</span><span class="chip">Excel macros</span><span class="chip">Google Data Studio</span><span class="chip">Forecasting</span><span class="chip">Capacity planning</span></div>
               </div>
             </div>
           </div>
 
-          <!-- Zomato -->
           <div class="track-item" data-reveal>
             <div class="track-date">Mar 2018 - Sep 2020</div>
             <div class="track-content">
               <div class="track-card">
                 <div class="track-header">
                   <div class="track-logo">
-                    <img src="https://github.com/user-attachments/assets/f74157d0-b609-496e-9cad-1986f3e22ab4"
-                         alt="Zomato" onerror="this.style.display='none';">
+                    <img src="https://github.com/user-attachments/assets/f74157d0-b609-496e-9cad-1986f3e22ab4" alt="Zomato" onerror="this.style.display='none';">
                   </div>
                   <div class="track-meta">
                     <h3 class="track-title">Business Analyst</h3>
                     <p class="track-company">Zomato &middot; Hyderabad, India</p>
+                    <p class="track-scope">300+ restaurant partners per quarter, South India markets</p>
                   </div>
                 </div>
-                <ul class="track-bullets">
-                  <li>Built real-time competitor analytics platform tracking pricing, delivery times, and coverage  - fed pricing changes that contributed to 9% market share gain in contested metros.</li>
-                  <li>Optimized search relevance with ranking models using contextual signals (time, location, cuisine affinity), improving search-to-conversion across millions of daily queries.</li>
-                  <li>Built Elasticsearch enterprise search indexing 100K+ documents, reducing Support Desk volume ~80% through self-serve query resolution.</li>
-                </ul>
-                <div class="track-chips">
-                  <span class="chip">Elasticsearch</span><span class="chip">SQL</span>
-                  <span class="chip">Ranking Models</span><span class="chip">Competitor Analytics</span>
+                <div class="case" data-gt-id="Z-COMP, Z-ES, Z-CAMPAIGN, Z-DASH, Z-SEARCH">
+                  <h4 class="case-title">Making the decisions run on current data<span class="case-gt" title="Ground truth: Z-COMP, Z-ES, Z-CAMPAIGN, Z-DASH, Z-SEARCH">Z-COMP &middot; Z-ES &middot; Z-CAMPAIGN &middot; Z-DASH &middot; Z-SEARCH</span></h4>
+                  <dl class="card-lines">
+                    <dt>Problem</dt><dd>Pricing decisions ran on week-old competitor data, support answered the same questions over and over, and campaign spend went where it had always gone.</dd>
+                    <dt>What changed</dt><dd>A real-time competitor analytics platform tracking pricing, delivery times, and coverage, built with the ingestion and refresh cadence that let pricing run on current signal. An Elasticsearch index over 100K+ internal documents for self-serve search. Campaign analytics with funnel instrumentation and A/B tests on campaign and discount strategy, spend reallocated to what converted, and Tableau dashboards on menu-to-cart and cart-to-order. A central dashboard for category-level, city-wise launch percentage. On search, I supplied and evaluated the contextual signals feeding ranking: time, location, cuisine affinity. Analyst side of that work, not model training.</dd>
+                    <dt>Scope</dt><dd>300+ restaurant partners per quarter across South India markets; millions of daily search queries.</dd>
+                    <dt>Outcome</dt><dd>9% market share gain in contested metros. Support desk volume down about 80%. Campaign revenue up 200%.</dd>
+                  </dl>
                 </div>
+                <div class="case" data-gt-id="Z-PNL, Z-GROWTH, Z-LOYALTY">
+                  <h4 class="case-title">Turning a portfolio's unit economics positive<span class="case-gt" title="Ground truth: Z-PNL, Z-GROWTH, Z-LOYALTY">Z-PNL &middot; Z-GROWTH &middot; Z-LOYALTY</span></h4>
+                  <dl class="card-lines">
+                    <dt>Problem</dt><dd>The portfolio lost money on every order. Discounting bought volume that made the hole bigger.</dd>
+                    <dt>What changed</dt><dd>Rebalanced discount sharing against ad-revenue mix across the portfolio, and moved partners onto a loyalty program instead of blanket discounting.</dd>
+                    <dt>Scope</dt><dd>300 restaurants.</dd>
+                    <dt>Outcome</dt><dd>Contribution went from &minus;&#8377;18 to +&#8377;2 per order. 14% compounded growth in a single quarter with campaign coverage lifted to 70%, and 200+ partners onboarded to the loyalty program, cutting company discount burn 7% for that cohort.</dd>
+                  </dl>
+                </div>
+                <div class="track-chips"><span class="chip">Elasticsearch</span><span class="chip">SQL</span><span class="chip">Tableau</span><span class="chip">A/B testing</span><span class="chip">Funnel analysis</span><span class="chip">Unit economics</span></div>
               </div>
             </div>
           </div>
 
-        </div>
-
-        <!-- Education -->
-        <div class="section-head" data-reveal style="margin-top:3.5rem;">
-          <span class="section-label">Education</span>
-        </div>
-        <div class="edu-card-row" data-reveal>
-          <div class="edu-card">
-            <div class="edu-logo-wrap">
-              <img src="https://github.com/user-attachments/assets/5dc864b8-501a-485a-b780-d0fcde01a3de"
-                   alt="Missouri S&T" class="edu-logo" onerror="this.style.display='none';">
-            </div>
-            <div class="edu-info">
-              <h3 class="edu-degree">M.S. Information Science and Technology</h3>
-              <p class="edu-school">Missouri University of Science and Technology &middot; Rolla, MO</p>
-              <div class="edu-meta">
-                <span class="chip">GPA 4.0 / 4.0</span>
-                <span class="chip">Jan 2022 - Dec 2023</span>
-                <span class="chip">Taylor &amp; Francis Publication</span>
-              </div>
-            </div>
-          </div>
         </div>
 
         <!-- Certifications -->
@@ -701,7 +798,7 @@
                 </div>
                 <div class="impact-stat">
                   <dt class="impact-value">100K</dt>
-                  <dd class="impact-label">synthetic rows<span class="sr-only"> &mdash; One hundred thousand generated transactions, of which 2,034 are labelled fraud.</span></dd>
+                  <dd class="impact-label">synthetic rows<span class="sr-only"> &mdash; One hundred thousand generated transactions, of which 2,034 are labeled fraud.</span></dd>
                 </div>
                 <div class="impact-stat">
                   <dt class="impact-value">2.03%</dt>
@@ -712,7 +809,7 @@
                 <dt>Problem</dt><dd>Scoring a payment stream means the model has to answer inside the request, not overnight in a batch.</dd>
                 <dt>Method</dt><dd>A Kafka producer streams into a partitioned topic; a consumer scores each transaction with LightGBM behind FastAPI; predictions and latencies persist to PostgreSQL. MLflow tracks the model, Airflow the retraining, Prometheus and Grafana the runtime. Docker Compose end to end.</dd>
                 <dt>Proof <span class="card-gt" title="Ground truth: P-FRAUD">P-FRAUD</span></dt><dd>P50 0.45ms, P95 0.89ms, P99 1.12ms at 100 TPS. Most of that 1.12ms is FastAPI overhead - request parsing, Pydantic, a one-row DataFrame built per call. LightGBM itself takes microseconds, so the DataFrame is what goes first if latency ever matters.</dd>
-                <dt>What you can verify</dt><dd>Public repo, runnable with Docker Compose. The data is synthetic: 100,000 generated transactions with 2,034 labelled fraud, on one laptop. That means the pipeline holds together. It does not mean it survives real payment traffic.</dd>
+                <dt>What you can verify</dt><dd>Public repo, runnable with Docker Compose. The data is synthetic: 100,000 generated transactions with 2,034 labeled fraud, on one laptop. That means the pipeline holds together. It does not mean it survives real payment traffic.</dd>
               </dl>
               <div class="tech-chips"><span class="chip">Kafka</span><span class="chip">LightGBM</span><span class="chip">FastAPI</span><span class="chip">MLflow</span><span class="chip">Airflow</span><span class="chip">Prometheus + Grafana</span></div>
               <div class="card-actions">
