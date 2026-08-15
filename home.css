@@ -460,6 +460,22 @@ a { color: inherit; }
   }
 }
 
+/* ---------- Reduced motion ----------
+   The page has no entrance animation; these are the only two moving
+   parts (link colour, the details marker rotating open). Both are
+   affordances rather than decoration, so they are cut to zero rather
+   than removed.
+   ------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* ---------- Print ---------- */
 
 @media print {
