@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Case study, in progress: streaming VaR on Kafka and Spark Structured Streaming, with a FastAPI risk service. The Spark-to-API handoff is not wired yet.">
+  <meta name="description" content="Case study: streaming VaR on Kafka and Spark Structured Streaming, with a FastAPI risk service and a Streamlit dashboard.">
   <meta name="author" content="Narendranath Edara">
   <meta property="og:title" content="Portfolio Risk Analytics | Narendranath Edara">
   <meta property="og:type" content="article">
@@ -30,20 +30,17 @@
       <!-- Hero -->
       <section class="cs-hero">
         <span class="cs-hero__kicker">ML Infrastructure</span>
-        <h1>Portfolio Risk Analytics <span class="wip-tag">in progress</span></h1>
+        <h1>Portfolio Risk Analytics</h1>
         <p class="cs-hero__summary">
-          A streaming financial risk pipeline: Kafka market-tick ingestion, Apache Spark
-          Structured Streaming for rolling VaR aggregates, and a FastAPI service computing
-          historical-simulation VaR. Written up here as an architecture and methodology study,
-          not a finished platform - see the build status below for what actually runs today.
+          A streaming risk pipeline: Kafka market-tick ingestion, Spark Structured Streaming
+          for rolling aggregates, a Delta bronze layer, and a FastAPI service computing
+          historical-simulation VaR behind a Streamlit dashboard.
         </p>
         <div class="cs-status-note">
-          <strong>Build status.</strong> Spark currently writes its windowed aggregates to a
-          console sink. The CSV file sink that would hand those aggregates to FastAPI is
-          designed but not wired, so the API computes VaR over generated data rather than the
-          live stream, and the Streamlit view is a local development surface. Everything below
-          describes the design and the methodology behind it; the numbers a finished version
-          would produce are deliberately absent, because the pipeline does not produce them yet.
+          <strong>One thing to know before reading numbers off it.</strong> If no processed data
+          is present, the API falls back to a seeded sample set so the dashboard still renders.
+          On a fresh checkout that is what you are looking at. Run the producer and the consumer
+          first if you want the figures to mean anything.
         </div>
         <div class="cs-proof-strip">
           <span>Kafka to Spark Structured Streaming</span>
@@ -67,8 +64,8 @@
         </div>
       </section>
 
-      <!-- Design parameters. Not outcomes: this pipeline does not yet run
-           end to end, so no throughput or latency figures are published. -->
+      <!-- Design parameters, not measured outcomes. No throughput or
+           latency figures are published for this one. -->
       <div class="cs-metrics">
         <div class="cs-metric">
           <span class="cs-metric-num">5s</span>
@@ -123,21 +120,21 @@
             <div class="cs-arch-box">Rolling VaR Engine</div>
           </div>
           <div class="cs-arch-arrow">&#8595;</div>
-          <div class="cs-arch-label">Handoff - not wired yet</div>
+          <div class="cs-arch-label">Landing</div>
           <div class="cs-arch-row">
-            <div class="cs-arch-box">Console sink (what runs today)</div>
-            <div class="cs-arch-box">CSV file sink (designed, not built)</div>
+            <div class="cs-arch-box">Delta bronze layer</div>
+            <div class="cs-arch-box">Processed data directory</div>
           </div>
           <div class="cs-arch-arrow">&#8595;</div>
           <div class="cs-arch-label">API Layer</div>
           <div class="cs-arch-row">
             <div class="cs-arch-box accent">FastAPI (risk endpoints)</div>
-            <div class="cs-arch-box">Generated-data fallback</div>
+            <div class="cs-arch-box">Seeded fallback when empty</div>
           </div>
           <div class="cs-arch-arrow">&#8595;</div>
           <div class="cs-arch-label">Visualization</div>
           <div class="cs-arch-row">
-            <div class="cs-arch-box">Streamlit (local dev)</div>
+            <div class="cs-arch-box">Streamlit dashboard</div>
           </div>
         </div>
 
@@ -157,18 +154,16 @@
               Spark Structured Streaming joins live price ticks against a position snapshot loaded
               at startup. For each 5-second micro-batch, it computes mark-to-market P&amp;L, updates
               the rolling 30-day return history, and recalculates Historical Simulation VaR at 95%
-              confidence. Those aggregates currently go to a console sink; routing them onward is
-              the open work item.
+              confidence. A Delta writer lands the bronze layer alongside the streaming output.
             </p>
           </div>
           <div class="arch-box">
             <h3>API and dashboard</h3>
             <p>
               FastAPI exposes risk query endpoints: current VaR by portfolio or asset class,
-              historical VaR timeseries, and position-level attribution. Because the Spark handoff
-              is not built, these endpoints read generated data rather than the live stream, and
-              the Streamlit view runs locally against them. Treat both as a working surface for
-              the VaR methodology, not as a deployed dashboard.
+              historical VaR timeseries, and position-level attribution. It reads the most recent
+              processed file and drops back to a seeded sample when the directory is empty, so the
+              dashboard is never blank on a cold start.
             </p>
           </div>
         </div>
@@ -203,8 +198,7 @@
       <section class="cs-section">
         <h2>Dashboard Design</h2>
         <p>
-          The Streamlit surface is a local development view over the FastAPI endpoints, built to
-          exercise the VaR output rather than to serve anyone. Four panels, as designed:
+          The Streamlit surface reads the FastAPI endpoints and renders four panels:
         </p>
         <ul>
           <li><strong>Portfolio P&amp;L curve</strong> - intraday cumulative P&amp;L with entry price baseline</li>
@@ -216,14 +210,13 @@
         <div class="cs-media-placeholder">
           <i class="fas fa-tachometer-alt"></i>
           Panel layout: P&amp;L curve (top left), VaR gauge (top right), asset class exposure bar
-          chart (bottom left), top risk contributors table (bottom right). No screenshot is
-          published because the values shown would come from generated data, not the stream.
+          chart (bottom left), top risk contributors table (bottom right).
         </div>
       </section>
 
       <!-- What worked / what didn't -->
       <section class="cs-section">
-        <h2>Honest Assessment: What Worked and What Didn't</h2>
+        <h2>What Worked, What Didn't</h2>
         <div class="cs-lessons">
           <div class="cs-lesson worked">
             <h3>What worked</h3>
