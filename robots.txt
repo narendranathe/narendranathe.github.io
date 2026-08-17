@@ -1,0 +1,9 @@
+# narendranathe.github.io
+User-agent: *
+Allow: /
+
+# Generated artifacts and internal scaffolding: no value in an index.
+Disallow: /scripts/
+Disallow: /specs/
+
+Sitemap: https://narendranathe.github.io/sitemap.xml

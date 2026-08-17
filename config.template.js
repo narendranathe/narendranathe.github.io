@@ -6,7 +6,7 @@
 // 1. Copy this file → rename to config.js
 // 2. Fill in your information below
 // 3. Edit index.html for your experience, projects, skills, etc.
-// 4. Push to GitHub — GitHub Pages deploys automatically
+// 4. Push to GitHub - GitHub Pages deploys automatically
 //
 // config.js is gitignored so your personal data stays private.
 // ============================================

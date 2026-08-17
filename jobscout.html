@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Case study: JobScout - monitors 130+ company career pages directly, bypasses job board noise, sponsorship-aware ranking, feeds AutoApply AI.">
+  <meta name="description" content="Case study: JobScout - monitors 153 company career pages directly, bypasses job board noise, sponsorship-aware ranking, feeds AutoApply AI.">
   <meta name="author" content="Narendranath Edara">
   <meta property="og:title" content="JobScout | Narendranath Edara">
   <meta property="og:type" content="article">
@@ -32,19 +32,19 @@
         <span class="cs-hero__kicker">Discovery Engine</span>
         <h1>JobScout</h1>
         <p class="cs-hero__summary">
-          JobScout is a direct-source discovery engine that monitors 130+ company career pages, detects
+          JobScout is a direct-source discovery engine that monitors 153 company career pages, detects
           ATS platforms, deduplicates noisy listings, enriches job records, and exposes clean search
           APIs for downstream workflows. Job boards are noisy by design - duplicated listings, stale
           postings, inconsistent metadata. JobScout captures cleaner data earlier and ranks opportunities
           using structured enrichment signals: location, role type, ATS platform, and sponsorship likelihood.
         </p>
         <div class="cs-proof-strip">
-          <span>130+ career pages</span>
+          <span>153 career pages</span>
           <span>6 ATS platforms</span>
           <span>Sponsorship-aware</span>
           <span>Live dashboard</span>
           <span>AutoApply AI integration</span>
-          <span>FastAPI backend</span>
+          <span>Flask backend</span>
         </div>
         <div class="cs-links">
           <a href="https://narendranathe.github.io/job-scout/" class="text-link" target="_blank" rel="noreferrer"><i class="fas fa-external-link-alt"></i> Live demo</a>
@@ -52,7 +52,7 @@
         </div>
         <div style="margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
           <span class="skill-chip">Python</span>
-          <span class="skill-chip">FastAPI</span>
+          <span class="skill-chip">Flask</span>
           <span class="skill-chip">BeautifulSoup</span>
           <span class="skill-chip">Playwright</span>
           <span class="skill-chip">PostgreSQL</span>
@@ -65,7 +65,7 @@
       <!-- Metrics -->
       <div class="cs-metrics">
         <div class="cs-metric">
-          <span class="cs-metric-num">130+</span>
+          <span class="cs-metric-num">153</span>
           <span class="cs-metric-lbl">career pages monitored</span>
         </div>
         <div class="cs-metric">
@@ -110,7 +110,7 @@
           <div class="cs-arch-label">Monitoring Layer</div>
           <div class="cs-arch-row">
             <div class="cs-arch-box accent">Scheduled Crawler</div>
-            <div class="cs-arch-box accent">130+ Company Career Pages</div>
+            <div class="cs-arch-box accent">153 Company Career Pages</div>
           </div>
           <div class="cs-arch-arrow">&#8595;</div>
           <div class="cs-arch-label">Detection + Enrichment</div>
@@ -123,7 +123,7 @@
           <div class="cs-arch-label">Storage + Delivery</div>
           <div class="cs-arch-row">
             <div class="cs-arch-box accent">PostgreSQL (job listings)</div>
-            <div class="cs-arch-box accent">FastAPI (REST endpoints)</div>
+            <div class="cs-arch-box accent">Flask (REST endpoints)</div>
           </div>
           <div class="cs-arch-arrow">&#8595;</div>
           <div class="cs-arch-label">Consumers</div>
@@ -135,16 +135,16 @@
 
         <div class="arch-grid">
           <div class="arch-box">
-            <h4>Monitoring layer</h4>
+            <h3>Monitoring layer</h3>
             <p>
-              A scheduled crawler visits 130+ company career pages on a configurable cadence.
-              Dynamic pages (SPA-heavy sites like Workday, Greenhouse) are handled with
+              A scheduled crawler visits 153 company career pages on a configurable cadence.
+              JavaScript-rendered pages (Workday, Greenhouse) are handled with
               Playwright for JavaScript rendering. Static pages use BeautifulSoup. The
               crawler detects which ATS platform each company uses and routes accordingly.
             </p>
           </div>
           <div class="arch-box">
-            <h4>Enrichment layer</h4>
+            <h3>Enrichment layer</h3>
             <p>
               Each discovered listing is enriched with: ATS platform tag (Workday, Greenhouse,
               Lever, Ashby, LinkedIn, iCIMS), known H1B sponsorship history for the company,
@@ -153,9 +153,9 @@
             </p>
           </div>
           <div class="arch-box">
-            <h4>API and dashboard</h4>
+            <h3>API and dashboard</h3>
             <p>
-              FastAPI exposes search endpoints: filter by role type, location, ATS platform,
+              Flask exposes search endpoints: filter by role type, location, ATS platform,
               and sponsorship status. The live dashboard renders job listings with one-click
               apply links that hand off to AutoApply AI. Rankings surface sponsor-likely roles
               at the top for the specific use case this tool was built to solve.
@@ -184,7 +184,7 @@
 
         <div class="cs-media-placeholder">
           <i class="fas fa-search"></i>
-          JobScout live dashboard - job listings from 130+ company career pages with sponsorship
+          JobScout live dashboard - job listings from 153 company career pages with sponsorship
           indicators, ATS platform tags, and one-click hand-off to AutoApply AI.
         </div>
       </section>
@@ -205,11 +205,11 @@
         </p>
       </section>
 
-      <!-- Shipped vs Next -->
+      <!-- Where it stands -->
       <section class="cs-section">
-        <h2>Shipped vs Next</h2>
+        <h2>Where It Stands</h2>
         <p>
-          <strong>Shipped:</strong> direct-source monitoring of 130+ career pages, 6 ATS parsers,
+          <strong>Working now:</strong> direct-source monitoring of 153 career pages, 6 ATS parsers,
           deduplication, enrichment signals, and a live dashboard with AutoApply AI hand-off.
           <strong>Status:</strong> public demo dashboard; scraping runs on a personal schedule, not a
           hosted service. <strong>Known limitations:</strong> client-rendered ATS pages (Workday)
@@ -221,30 +221,30 @@
 
       <!-- What worked / what didn't -->
       <section class="cs-section">
-        <h2>Honest Assessment: What Worked and What Didn't</h2>
+        <h2>What Worked, What Didn't</h2>
         <div class="cs-lessons">
           <div class="cs-lesson worked">
-            <h4>What worked</h4>
+            <h3>What worked</h3>
             <p><strong>Going direct to source.</strong> Career page data is consistently fresher than job board aggregates. Several listings appeared on the career page 2-3 days before showing on LinkedIn, with fewer duplicate entries and more accurate job details.</p>
           </div>
           <div class="cs-lesson failed">
-            <h4>What failed</h4>
-            <p><strong>Bot detection on Workday pages.</strong> Workday's client-side rendering triggers bot detection on some domains even with Playwright. Had to add randomized request timing and user-agent rotation, which slowed the crawler significantly on Workday-hosted sites.</p>
+            <h3>What failed</h3>
+            <p><strong>Bot detection on Workday pages.</strong> Workday's client-side rendering triggers bot detection on some domains even with Playwright. Had to add randomized request timing and user-agent rotation, which slowed the crawler on Workday-hosted sites.</p>
           </div>
           <div class="cs-lesson worked">
-            <h4>What worked</h4>
-            <p><strong>Sponsorship-aware ranking.</strong> Surfacing sponsorship-likely companies at the top of results cut irrelevant application attempts significantly. The H1B lookup table, even when incomplete, dramatically improves signal quality for international candidates.</p>
+            <h3>What worked</h3>
+            <p><strong>Sponsorship-aware ranking.</strong> Surfacing sponsorship-likely companies at the top of results cut irrelevant application attempts. The H1B lookup table, even when incomplete, improves signal quality for international candidates.</p>
           </div>
           <div class="cs-lesson failed">
-            <h4>What failed</h4>
+            <h3>What failed</h3>
             <p><strong>Closed job detection.</strong> Detecting when a job listing is no longer active requires re-crawling every URL periodically. Without a job state machine (open → closed → archived), stale listings persist in the database longer than they should.</p>
           </div>
           <div class="cs-lesson worked">
-            <h4>What worked</h4>
+            <h3>What worked</h3>
             <p><strong>Modular ATS parsers.</strong> The platform-detect-then-parse pattern made adding new ATS support straightforward. Each parser is isolated - breaking one doesn't break others, and testing is simple because parsers are pure functions over HTML/JSON.</p>
           </div>
           <div class="cs-lesson failed">
-            <h4>What failed</h4>
+            <h3>What failed</h3>
             <p><strong>Rate limiting from smaller companies.</strong> Large tech companies rarely rate-limit their career pages. Smaller companies sometimes return 429s on repeated visits, especially from a single IP. A rotating proxy layer would solve this but adds operational cost.</p>
           </div>
         </div>
@@ -274,7 +274,7 @@
       <nav class="footer-nav">
         <a href="index.html">Portfolio</a>
         <a href="index.html#experience">Experience</a>
-        <a href="index.html#connect">Contact</a>
+        <a href="index.html#contact">Contact</a>
       </nav>
     </div>
   </footer>

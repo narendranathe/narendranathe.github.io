@@ -34,34 +34,51 @@ SUBSTACK_PREVIEW_PNG = REPO_ROOT / "static" / "preview-substack.png"
 SKILLS_DIR = REPO_ROOT / "static" / "skills"
 SKILLS_PATTERN_DOC = REPO_ROOT / "docs" / "skills-grid-pattern.md"
 
-# #71 skills-grid budgets
-SKILLS_EXPECTED_CATEGORIES = 6
-SKILLS_MIN_ICONS_PER_CATEGORY = 4
-SKILLS_MAX_ICONS_PER_CATEGORY = 6
+# #71 skills-grid byte budgets. The 32-tile grid itself was cut from
+# index.html on 2026-08-17 (a wall of logos reads as keyword padding, not
+# as evidence), so the structural assertions that policed its shape are
+# gone. The byte budgets stay: static/skills/ is still committed and still
+# referenced by docs/skills-grid-pattern.md, and an oversized SVG landing
+# in that directory should still fail loudly.
 SKILLS_MAX_ICON_BYTES = 6 * 1024
 SKILLS_MAX_TOTAL_BYTES = 60 * 1024
 
 # #70 hover-preview budget: 30 KB per asset matches #67's resume-preview budget.
 HOVER_PREVIEW_BUDGET_BYTES = 30 * 1024
-# Minimum trigger count: 4 resume + 6 LinkedIn (3 testimonials + peer-CTA + contact + footer)
-# + 1 GitHub + 7 Substack (3 writing CTAs + hero CTA + peer-CTA + contact + footer) = 18.
-# We use 14 as the floor to allow minor markup churn without test thrash.
-HOVER_PREVIEW_MIN_TRIGGERS = 14
-HOVER_PREVIEW_MIN_RESUME_TRIGGERS = 4
-HOVER_PREVIEW_MIN_LINKEDIN_TRIGGERS = 5
-HOVER_PREVIEW_MIN_SUBSTACK_TRIGGERS = 5
+# Floors, not targets. The home page went from 12 sections to 6 across the
+# 2026-08-17 rewrite, which removed link sites rather than previews: the
+# writing CTAs, the peer CTA and all three testimonial author profiles
+# went with their sections. Live counts are 3 resume + 2 LinkedIn (own
+# profile in contact and footer) + 1 GitHub + 2 Substack = 8. The floors
+# sit at the live counts so a preview silently losing its annotation fails.
+HOVER_PREVIEW_MIN_TRIGGERS = 8
+# Was 4 (header, mobile menu, hero, contact). The hero's resume button
+# was removed on 2026-08-16 so the first screen carries exactly one call
+# to action; header, mobile menu and contact remain.
+HOVER_PREVIEW_MIN_RESUME_TRIGGERS = 3
+# Was 5 (own profile in contact and footer, plus three testimonial authors).
+# The testimonials went on 2026-08-17. Read against the review questions
+# they failed three: no engineering information, prose that could sit on any
+# portfolio, and seniority asserted in adjectives (outstanding, exceptional,
+# keen, efficient, expertly) rather than shown in evidence. Two remain, both
+# pointing at the owner's own profile.
+HOVER_PREVIEW_MIN_LINKEDIN_TRIGGERS = 2
+# Was 5, when three writing CTAs plus a hero follow button pointed at
+# Substack. The rebuild kept one link in Research and one in the footer.
+HOVER_PREVIEW_MIN_SUBSTACK_TRIGGERS = 2
 
 REQUIRED_POST_SECTIONS = ("problem", "constraints", "design", "tradeoffs", "outcome")
 POST_MIN_WORDS = 1500
 POST_MAX_WORDS = 2500
 
-# Number of impact strips expected on the home page. Five flagship cards
-# carry a strip after the v3 trim: AutoApply AI, tailor-resume, JobScout
-# (system-grid) + Azure Platform Engineering, repo-context-hooks
-# (supporting-row). Cards with no defensible quantified impact (Fraud
-# Detection, Portfolio Risk, FinTune) intentionally have no strip — see
-# docs/impact-strip-pattern.md "no strip is better than a weak strip."
-EXPECTED_STRIP_COUNT = 5
+# Impact strips expected on the home page: none. Five cards carried one
+# until the 2026-08-17 rebuild, which put the same numbers into sentences
+# and a comparison table instead. A row of large stat badges reads as a
+# pitch deck, and a badge divorced from its baseline is unverifiable by the
+# reader. The remaining strip assertions below still run against whatever
+# the parser finds, so they hold if a strip ever comes back; this one is
+# the guard that says the home page ships without them.
+EXPECTED_STRIP_COUNT = 0
 
 
 # ------- HTML parsing helpers -------
@@ -212,26 +229,79 @@ def extract_visible_text(html: str) -> str:
 # the rendered-text guard (catches adjacent-span leaks). All entries
 # lowercase; comparisons normalise both sides via .lower().
 #
-# Land mine: the ExponentHR card on index.html says "support desk
-# volume ~80%" - a future synonym swap from "desk" to "ticket" would
-# trip "support ticket reduction". Preserve "desk" or rephrase rather
-# than narrowing the guard.
+# NARROWED 2026-08-15. This list previously also banned the query-speed
+# strings ("12s to 4s" and its arrow variants, "12 second") and
+# "support ticket reduction". Those numbers were banned because they
+# had been attached to the scrapped NL-to-SQL architecture - but the
+# underlying work is separate and verified: Fabric semantic models plus
+# index and stored-procedure tuning on OLAP paths, which is what
+# actually produced the query-response gain and the support-ticket
+# reduction. Banning the numbers along with the scrapped architecture
+# suppressed real evidence. The architecture vocabulary stays banned;
+# the outcomes of the separate, real work do not.
+#
+# Land mine that survives the narrowing: the Zomato card says "support
+# desk volume ~80%". That is Z-ES, a different claim from the ExponentHR
+# support-ticket reduction. Keep them distinguishable in copy.
 FORBIDDEN_SCRAPPED_CLAIMS: tuple[str, ...] = (
     # "400 enterprise clients" - main offender. Substring covers plural.
     "400 enterprise client",
     "400+ enterprise client",
-    # 40% support-ticket-reduction claim
-    "support ticket reduction",
-    # 12s -> 4s query-response claim, ASCII + Unicode arrow variants
-    "12s to 4s",
-    "12s -> 4s",
-    "12s->4s",
-    "12s → 4s",
-    "12s→4s",
-    "12 second",
     # Architecture vocabulary
     "catalog-driven nl-to-sql",
     "faiss retrieval",
+)
+
+# Claims that may never appear on any public surface, for reasons that
+# do not expire: tools whose production ownership is not real, project
+# metrics the repo cannot support, and a term-of-art error that ends a
+# technical screen on sight. Unlike the list above (scoped to index.html
+# and one post), these are checked across every public file, because the
+# 2026-08 audit found exclusion violations sitting in skill tooltips and
+# in config.js where nothing was looking. All entries lowercase.
+NEVER_PUBLISH: tuple[str, ...] = (
+    # Term-of-art error. The word is "Contained" Always On Availability
+    # Group. "Containerized" is a different thing entirely and anyone
+    # who knows Always On will catch it.
+    "containerized aag",
+    # Scrapped architecture proper nouns.
+    "foundry bi engine",
+    "architecture 4",
+    "faiss concept index",
+    "networkx join resolver",
+    "claude query planner",
+    # Portfolio-Risk metrics the repo does not support: the Spark-to-API
+    # handoff is console-only and the API falls back to generated data.
+    "47.8 tps",
+    "15k+ records",
+    "sub-5s",
+    # Udaan savings figure that needs a base ~7x the documented city GMV.
+    # Ship the 7% ROI; the dollar figure has no reconcilable base.
+    "$4 million",
+    "$4m annual",
+)
+
+# Public surfaces checked against NEVER_PUBLISH. Every file a reviewer
+# can reach without asking for anything.
+PUBLIC_SURFACES: tuple[str, ...] = (
+    "index.html",
+    "README.md",
+    "config.js",
+    "config.template.js",
+    "autoapply-ai.html",
+    "tailor-resume.html",
+    "jobscout.html",
+    "portfolio-risk.html",
+    "fintune.html",
+    "fraud-detection.html",
+    "static/site.webmanifest",
+    "content/posts/repo-context-hooks-supply-chain.html",
+    # Served from /static/, so a reviewer can fetch it whether or not the
+    # page links to it. It was missing from this list, and the generated
+    # evidence note for P-RISK recited "15K+ records / 47.8 TPS / sub-5s"
+    # inside a sentence explaining that those figures are blocked, which
+    # published them. Caught on the pre-merge scan, not by this guard.
+    "static/claims-register.csv",
 )
 
 
@@ -248,8 +318,8 @@ def test_styles_css_has_impact_strip_module() -> None:
 
 def test_strip_count_matches_expected(strips: list[dict]) -> None:
     assert len(strips) == EXPECTED_STRIP_COUNT, (
-        f"expected {EXPECTED_STRIP_COUNT} impact strips on index.html "
-        f"after v3 trim, found {len(strips)}"
+        f"expected {EXPECTED_STRIP_COUNT} impact strips on index.html, "
+        f"found {len(strips)} — see the EXPECTED_STRIP_COUNT comment"
     )
 
 
@@ -315,6 +385,234 @@ def test_no_scrapped_exponenthr_outcomes_in_rendered_text(html: str) -> None:
             f"Found scrapped-project phrase {phrase!r} in rendered DOM "
             f"text of index.html - must remove (rendered-text guard)."
         )
+
+
+def test_hero_claims_carry_ground_truth_ids(html: str) -> None:
+    """Loop 1 acceptance: every proof chip and every metric tile on the
+    first screen cites the GROUND_TRUTH.md evidence ID behind its
+    numbers, via data-gt-id.
+
+    The first screen is where an unsourced number does the most damage,
+    because it is the part reviewers actually read. Requiring the
+    attribute makes an uncited claim a build failure rather than
+    something to notice later, and gives the claims register a
+    machine-readable source to export from."""
+    hero_start = html.find('<section class="hero"')
+    assert hero_start != -1, "hero <section> not found"
+    hero_end = html.find("</section>", hero_start)
+    hero = html[hero_start:hero_end]
+
+    # Three, not four-or-more. Cut from five on 2026-08-16: the hero has
+    # to clear the fold on a 390px phone, and five chips did not. The
+    # requirement that survives is that every chip cites its evidence.
+    chips = re.findall(r"<li\b[^>]*>", hero)
+    assert len(chips) >= 3, f"expected >= 3 hero proof chips, found {len(chips)}"
+    unsourced = [c for c in chips if "data-gt-id=" not in c]
+    assert not unsourced, (
+        "hero proof chip with no GROUND_TRUTH id:\n  "
+        + "\n  ".join(c[:120] for c in unsourced)
+    )
+
+    # Metric tiles were removed from the hero on 2026-08-17. The four of
+    # them restated the three chips above and the first rows of the systems
+    # table below, and one converted 5,000 hours into a dollar figure using
+    # an hourly rate no source provides. The rule they were here to enforce
+    # still applies to any that come back: cite the evidence or fail.
+    tiles = re.findall(r'<div class="metric-item"[^>]*>', hero)
+    untiled = [t for t in tiles if "data-gt-id=" not in t]
+    assert not untiled, (
+        "hero metric tile with no GROUND_TRUTH id:\n  "
+        + "\n  ".join(t[:120] for t in untiled)
+    )
+
+    # An id attribute that is present but empty passes the checks above
+    # while carrying no evidence at all.
+    empty = re.findall(r'data-gt-id=""', hero)
+    assert not empty, "hero has an empty data-gt-id attribute"
+
+
+def test_fit_blocks_each_name_a_gap(html: str) -> None:
+    """Loop 5 acceptance: every role-fit block ends with an explicit
+    statement of what is missing.
+
+    The gap line is the whole reason the section is defensible. A block
+    that maps evidence onto a requisition without naming what it lacks
+    is a pitch; with the gap it is an honest map. Losing the gap line in
+    a future edit would quietly turn one into the other, so it is
+    checked rather than trusted."""
+    start = html.find('<section class="section" id="fit">')
+    if start == -1:
+        return  # section is optional; only assert its shape when present
+    end = html.find("</section>", start)
+    fit = html[start:end]
+
+    blocks = re.findall(r'<article class="fit-block"[^>]*>', fit)
+    assert len(blocks) >= 3, f"expected >= 3 fit blocks, found {len(blocks)}"
+
+    gaps = re.findall(r'<p class="fit-gap">.*?</p>', fit, flags=re.S)
+    assert len(gaps) == len(blocks), (
+        f"{len(blocks)} fit blocks but {len(gaps)} gap statements; "
+        "every block must name what it is missing"
+    )
+    for g in gaps:
+        text = re.sub(r"<[^>]+>", " ", g)
+        assert len(text.split()) >= 8, (
+            f"fit-gap statement is too short to be a real gap: {text.strip()!r}"
+        )
+
+
+# Words that make copy read as generated rather than written, and empty
+# intensifiers that stand in for a number. Checked against rendered text
+# on every public surface, because the mechanical cost is real: templated
+# phrasing reaches for broad wording instead of the requisition's own
+# terms, which is exactly what a keyword match scores badly.
+#
+# "dynamic" and "ecosystem" are on the list despite having legitimate
+# technical senses (autoscaled nodes, a Dependabot package-ecosystem).
+# In every case here a more specific word existed and was used instead,
+# so the guard costs nothing and stops the vague sense creeping back.
+BANNED_WORDS: tuple[str, ...] = (
+    "delve", "leverage", "robust", "seamless", "cutting-edge", "passionate",
+    "dynamic", "innovative", "transformative", "synergy", "utilize",
+    "spearhead", "results-driven", "thought leader", "best-in-class",
+    "world-class", "game-changing", "empower", "unlock", "supercharge",
+    "ecosystem", "holistic",
+    # Empty adverbs: each one is a number the sentence declined to give.
+    "quickly", "efficiently", "effectively", "seamlessly", "significantly",
+    "successfully", "dramatically",
+)
+
+
+def test_no_banned_words_in_visible_copy() -> None:
+    """No banned word or empty adverb in rendered text on any public page.
+
+    Rendered text, not raw HTML: an attribute or a class name may contain
+    these strings harmlessly, and a false positive on `class="dynamic"`
+    would push someone to weaken the guard rather than fix the copy."""
+    failures: list[str] = []
+    for rel in PUBLIC_SURFACES:
+        path = REPO_ROOT / rel
+        if not path.exists():
+            continue
+        body = path.read_text(encoding="utf-8")
+        text = extract_visible_text(body) if rel.endswith(".html") else body
+        lowered = text.lower()
+        for word in BANNED_WORDS:
+            for m in re.finditer(rf"\b{re.escape(word)}", lowered):
+                ctx = text[max(0, m.start() - 45):m.end() + 45].strip()
+                failures.append(f"{rel}: {word!r} in ...{ctx}...")
+    assert not failures, (
+        "banned word or empty adverb in visible copy:\n  "
+        + "\n  ".join(failures)
+    )
+
+
+def test_no_en_or_em_dashes_in_public_copy() -> None:
+    """CLAUDE.md: hyphens for every case, never en or em dashes.
+
+    Easy to reintroduce by pasting from anywhere that autocorrects, and
+    invisible in review at small sizes, so it is checked rather than
+    remembered."""
+    failures: list[str] = []
+    for rel in PUBLIC_SURFACES:
+        path = REPO_ROOT / rel
+        if not path.exists():
+            continue
+        body = path.read_text(encoding="utf-8")
+        # Literal characters AND the HTML entities that render as them.
+        # The entity form is the one that slips through review: an
+        # &mdash; looks like markup in a diff and like an em dash on the
+        # page. 24 of them were live when this guard was first written.
+        dash_re = r"[\u2013\u2014]|&mdash;|&ndash;|&#8211;|&#8212;|&#x201[34];"
+        for m in re.finditer(dash_re, body):
+            ctx = body[max(0, m.start() - 45):m.end() + 45].replace("\n", " ").strip()
+            failures.append(f"{rel}: ...{ctx}...")
+    assert not failures, (
+        "en or em dash in public copy (CLAUDE.md requires hyphens):\n  "
+        + "\n  ".join(failures[:20])
+    )
+
+
+def test_sitemap_covers_every_public_page() -> None:
+    """Every shipped HTML page must appear in sitemap.xml, and every
+    sitemap entry must point at a file that exists.
+
+    Both directions matter: a page missing from the sitemap does not get
+    crawled, and a sitemap entry pointing at a deleted page is a 404 in
+    the one file search engines read most carefully. Loops 3 and 7
+    removed sections and Loop 5 added one, so this drifts on its own."""
+    sitemap = REPO_ROOT / "sitemap.xml"
+    assert sitemap.exists(), "sitemap.xml missing"
+    body = sitemap.read_text(encoding="utf-8")
+    locs = re.findall(r"<loc>https://narendranathe\.github\.io/([^<]*)</loc>", body)
+
+    listed = {("index.html" if loc == "" else loc) for loc in locs}
+    for rel in listed:
+        assert (REPO_ROOT / rel).exists(), f"sitemap lists a missing file: {rel}"
+
+    shipped = {p.name for p in REPO_ROOT.glob("*.html")}
+    shipped |= {
+        str(p.relative_to(REPO_ROOT))
+        for p in (REPO_ROOT / "content" / "posts").glob("*.html")
+    }
+    missing = shipped - listed
+    assert not missing, f"public pages absent from sitemap.xml: {sorted(missing)}"
+
+    robots = REPO_ROOT / "robots.txt"
+    assert robots.exists(), "robots.txt missing"
+    assert "Sitemap: https://narendranathe.github.io/sitemap.xml" in robots.read_text(encoding="utf-8"), (
+        "robots.txt does not point at the sitemap"
+    )
+
+
+def test_claims_register_in_sync_with_page() -> None:
+    """The claims register must be generated from the page, not kept by
+    hand, and must not publish anything unresolved.
+
+    build-claims-register.py --check enforces three things at once: the
+    committed CSV matches what the page currently claims, every
+    data-gt-id has an evidence row behind it, and no VERIFY or BLOCKED
+    id has leaked into visible markup. A register that disagrees with
+    the page is worse than no register, so this is a build failure
+    rather than a note."""
+    import subprocess
+    result = subprocess.run(
+        [sys.executable, str(REPO_ROOT / "scripts" / "build-claims-register.py"), "--check"],
+        capture_output=True, text=True, timeout=30,
+    )
+    assert result.returncode == 0, (
+        f"claims register check failed:\n{result.stdout}\n{result.stderr}"
+    )
+
+
+def test_no_never_publish_claims_on_public_surfaces() -> None:
+    """Cross-file guard for claims that may never ship, checked on every
+    public surface rather than just index.html.
+
+    Motivating failure (2026-08 audit): four skill tooltips claimed
+    production ownership of tools on the permanent exclusion list, a
+    blocked Portfolio-Risk metric sat in config.js, and a blocked Udaan
+    dollar figure sat in both config.js and index.html. Every one of
+    them passed CI, because the existing scrapped-claim guard only ever
+    read index.html and one post.
+
+    Raw-text check, not rendered-text: config.js and the webmanifest are
+    not HTML, and an attribute value or a JS string is exactly where the
+    audit found these hiding."""
+    failures: list[str] = []
+    for rel in PUBLIC_SURFACES:
+        path = REPO_ROOT / rel
+        if not path.exists():
+            continue
+        body = path.read_text(encoding="utf-8").lower()
+        for phrase in NEVER_PUBLISH:
+            if phrase in body:
+                failures.append(f"{rel}: {phrase!r}")
+    assert not failures, (
+        "Never-publish claim found on a public surface:\n  "
+        + "\n  ".join(failures)
+        + "\nSee GROUND_TRUTH.md for why each of these is blocked."
+    )
 
 
 def test_hero_uses_local_photo_not_external_cdn(html: str) -> None:
@@ -709,9 +1007,14 @@ def test_index_links_to_supply_chain_post(html: str) -> None:
 
 
 def test_index_has_architecture_section(html: str) -> None:
-    assert 'id="architecture"' in html, (
-        "index.html missing the Architecture & Write-Ups section "
-        "(issue #56 acceptance criteria)."
+    """Issue #56 asked for a place on the home page where written work is
+    reachable. That was <section id="architecture">; the 2026-08-17 rebuild
+    folded it into <section id="research">, which carries the write-ups
+    alongside the published paper and the certifications. The acceptance
+    criterion is that the destination exists, not that it keeps the old id."""
+    assert 'id="research"' in html, (
+        "index.html missing the section that carries written work "
+        "(issue #56 acceptance criteria, now served by id=\"research\")."
     )
 
 
@@ -726,25 +1029,24 @@ SYSTEM_DIAGRAM_PAGE_BUDGET_BYTES = 30 * 1024  # 30 KB
 
 
 def test_index_has_two_system_diagrams(html: str) -> None:
-    """Issue #58: D1 (AutoApply AI) + D2 (Portfolio-Risk) inline SVGs.
-
-    Both diagrams live in the home index.html (D1 inside the AutoApply
-    arch-expand, D2 inside the Portfolio Risk Analytics ml-project-entry).
-    There is no separate content/posts/<slug>.html for either project,
-    so the home page is the single target location for both diagrams."""
+    """Issue #58 put two inline SVGs on the home page: D1 (AutoApply AI) and
+    D2 (Portfolio-Risk). The 2026-08-17 rebuild dropped both rather than
+    relocating them, and neither is on a project page — D1 diagrammed a
+    private system a reader cannot open, and D2's topology described a
+    console sink, which is no longer what that project does. Redrawing D2
+    against the current code is open work, tracked outside this suite.
+    What the home page keeps is the diagram for the paid work: the Azure
+    CDC and provisioning pipeline."""
     diagrams = SYSTEM_DIAGRAM_RE.findall(html)
-    assert len(diagrams) >= 2, (
-        f"index.html must contain at least 2 inline <svg class=\"system-diagram\"> "
-        f"elements (D1 AutoApply AI + D2 Portfolio-Risk per issue #58); "
-        f"found {len(diagrams)}."
+    assert len(diagrams) >= 1, (
+        "index.html must contain at least 1 inline <svg class=\"system-diagram\"> "
+        "element (the Azure CDC and provisioning pipeline); found none."
     )
-    # Sanity-check both diagrams reference the right diagram IDs.
     body = "\n".join(diagrams)
-    assert "diagram-d1-autoapply" in body, (
-        "D1 AutoApply AI diagram missing (expected id namespace 'diagram-d1-autoapply-*')."
-    )
-    assert "diagram-d2-portfolio-risk" in body, (
-        "D2 Portfolio-Risk diagram missing (expected id namespace 'diagram-d2-portfolio-risk-*')."
+    assert "diagram-az-title" in body and "diagram-az-desc" in body, (
+        "the Azure pipeline diagram is missing its <title>/<desc> ids "
+        "('diagram-az-title', 'diagram-az-desc'), which aria-labelledby "
+        "and aria-describedby point at."
     )
 
 
@@ -821,7 +1123,7 @@ def test_hover_preview_resume_triggers_count(html: str) -> None:
     matches = pattern.findall(html)
     assert len(matches) >= HOVER_PREVIEW_MIN_RESUME_TRIGGERS, (
         f"Found {len(matches)} resume hover-preview triggers; expected >= "
-        f"{HOVER_PREVIEW_MIN_RESUME_TRIGGERS} (header, mobile, hero, contact)."
+        f"{HOVER_PREVIEW_MIN_RESUME_TRIGGERS} (header, mobile menu, contact)."
     )
 
 
@@ -1086,176 +1388,22 @@ def test_styles_css_has_feed_list_module() -> None:
         assert selector in css, f"styles.css missing {selector} rule"
 
 
-def _skills_section_html(html: str) -> str:
-    """Extract the inner HTML of the <section id="skills"> block, raising
-    AssertionError if the section is missing or malformed. Reused by the
-    skills-grid assertions below to keep them scoped."""
-    start = html.find('<section class="section" id="skills">')
-    if start == -1:
-        # Allow class ordering / attribute ordering tolerance
-        m = re.search(r'<section[^>]*id="skills"[^>]*>', html)
-        assert m, "<section id=\"skills\"> not found in index.html"
-        start = m.start()
-    end = html.find("</section>", start)
-    assert end != -1, "<section id=\"skills\"> not closed"
-    return html[start:end]
-
-
-def test_skills_section_present(html: str) -> None:
-    """Issue #71: <section id="skills"> exists between Track Record and
-    What Shipped, has the expected section heading + subtitle."""
-    block = _skills_section_html(html)
-    assert 'class="section-label">Stack<' in block, (
-        "skills section missing 'Stack' section-label"
-    )
-    assert "Stack I work in daily" in block, (
-        "skills section missing 'Stack I work in daily' h2 title"
-    )
-    # Section ordering: skills must come AFTER experience and BEFORE proof
-    pos_experience = html.find('id="experience"')
-    pos_skills = html.find('id="skills"')
-    pos_proof = html.find('id="proof"')
-    assert -1 < pos_experience < pos_skills < pos_proof, (
-        f"section order broken: experience={pos_experience} "
-        f"skills={pos_skills} proof={pos_proof} (expected ascending)"
-    )
-
-
-def test_skills_nav_link_present(html: str) -> None:
-    """Issue #71: nav must include a 'Stack' link pointing to #skills,
-    in BOTH the desktop nav and the mobile nav drawer."""
-    assert html.count('href="#skills"') >= 2, (
-        "expected at least 2 nav links to #skills (desktop + mobile drawer)"
-    )
-    desktop_nav = re.search(
-        r'<a href="#skills"\s+class="nav-link">Stack</a>', html
-    )
-    mobile_nav = re.search(
-        r'<a href="#skills"\s+class="mobile-link">Stack</a>', html
-    )
-    assert desktop_nav, "desktop nav missing 'Stack' link"
-    assert mobile_nav, "mobile nav drawer missing 'Stack' link"
-
-
-def test_skills_has_expected_category_count(html: str) -> None:
-    """Issue #71: exactly 5 .skills-category subgroups, each with a
-    .skills-category-title heading."""
-    block = _skills_section_html(html)
-    cats = re.findall(r'<div class="skills-category">', block)
-    assert len(cats) == SKILLS_EXPECTED_CATEGORIES, (
-        f"expected {SKILLS_EXPECTED_CATEGORIES} .skills-category subgroups, "
-        f"found {len(cats)}"
-    )
-    titles = re.findall(
-        r'<h3 class="skills-category-title">([^<]+)</h3>', block
-    )
-    assert len(titles) == SKILLS_EXPECTED_CATEGORIES, (
-        f"expected {SKILLS_EXPECTED_CATEGORIES} category titles, found {len(titles)}"
-    )
-
-
-def test_skills_each_category_has_valid_icon_count(html: str) -> None:
-    """Issue #71: each category has 4-6 .skill-icon tiles (the spec's
-    band — fewer than 4 reads as filler, more than 6 crowds the row)."""
-    block = _skills_section_html(html)
-    parts = re.split(r'<div class="skills-category">', block)[1:]
-    for i, part in enumerate(parts, start=1):
-        end = part.find("</div>\n          </div>")
-        section = part[:end] if end != -1 else part
-        icon_count = section.count('class="skill-icon"')
-        assert SKILLS_MIN_ICONS_PER_CATEGORY <= icon_count <= SKILLS_MAX_ICONS_PER_CATEGORY, (
-            f"skills-category #{i} has {icon_count} skill-icon tiles; "
-            f"expected {SKILLS_MIN_ICONS_PER_CATEGORY}-{SKILLS_MAX_ICONS_PER_CATEGORY}"
-        )
-
-
-def test_skills_every_icon_is_keyboard_focusable(html: str) -> None:
-    """Issue #71: every .skill-icon tile must be keyboard-focusable so
-    users without a pointer can read the tooltip context. Implementation
-    is `<span tabindex="0">` (per a11y review: <button> would imply
-    activation that doesn't happen; a <div role="button"> would have the
-    same issue. <span tabindex="0"> + visible text + aria-describedby
-    is the WAI-ARIA APG canonical pattern for non-actionable focusable
-    tooltip triggers)."""
-    block = _skills_section_html(html)
-    tiles = re.findall(r'<span[^>]+class="skill-icon"[^>]*>', block)
-    assert tiles, "no .skill-icon tiles found in skills section"
-    missing = [t for t in tiles if 'tabindex="0"' not in t]
-    assert not missing, (
-        f"{len(missing)} .skill-icon tiles missing tabindex=\"0\": {missing[:3]}"
-    )
-
-
-def test_skills_every_icon_has_visible_name(html: str) -> None:
-    """Issue #71: every tile has a visible <span class="skill-name">
-    sibling so the accessible name is not duplicated via aria-label
-    (which would override the visible text and create a maintenance
-    fork between visible and announced content)."""
-    block = _skills_section_html(html)
-    tiles = re.findall(
-        r'<span[^>]+class="skill-icon"[^>]*>(.+?)</span></li>',
-        block,
-        flags=re.DOTALL,
-    )
-    assert tiles, "no .skill-icon tile bodies found"
-    missing = [t for t in tiles if 'class="skill-name"' not in t]
-    assert not missing, (
-        f"{len(missing)} .skill-icon tiles missing visible <span class=\"skill-name\">"
-    )
-    # Confirm aria-label is NOT used (would shadow the visible name)
-    has_aria_label = re.search(r'<span[^>]+class="skill-icon"[^>]+aria-label=', block)
-    assert not has_aria_label, (
-        "skill-icon tiles must not use aria-label (visible .skill-name is "
-        "the accessible name; aria-label would override and fork content)"
-    )
-
-
-def test_skills_every_icon_has_tooltip(html: str) -> None:
-    """Issue #71: every .skill-icon has aria-describedby pointing to a
-    role="tooltip" span. The describedby ID must resolve."""
-    block = _skills_section_html(html)
-    tiles = re.findall(r'<span[^>]+class="skill-icon"[^>]*>', block)
-    described_ids: list[str] = []
-    for t in tiles:
-        m = re.search(r'aria-describedby="([^"]+)"', t)
-        assert m, f".skill-icon tile missing aria-describedby: {t}"
-        described_ids.append(m.group(1))
-    tooltip_ids = set(re.findall(
-        r'<span id="([^"]+)" role="tooltip" class="skill-tooltip">', block
-    ))
-    missing = [i for i in described_ids if i not in tooltip_ids]
-    assert not missing, (
-        f"aria-describedby IDs missing matching tooltip span: {missing[:3]}"
-    )
-
-
-def test_skills_no_external_cdn_refs(html: str) -> None:
-    """Issue #71: skills section must NOT reference any external CDN for
-    icon assets (no jsdelivr, no unpkg, no Font Awesome, no devicons.dev
-    runtime). Local static/skills/ only."""
-    block = _skills_section_html(html)
-    forbidden = (
-        "cdn.jsdelivr.net",
-        "unpkg.com",
-        "fontawesome",
-        "devicons.dev",
-        "raw.githubusercontent.com",
-    )
-    for token in forbidden:
-        assert token not in block.lower(), (
-            f"skills section references external CDN token {token!r}; "
-            "icons must be local static/skills/*.svg only"
-        )
-
-
-def test_skills_icon_files_present(html: str) -> None:
-    """Every <img src="static/skills/<slug>.svg"> referenced in the
-    skills section must exist on disk at the expected path."""
-    block = _skills_section_html(html)
-    refs = re.findall(r'src="(static/skills/[^"]+)"', block)
-    assert refs, "no static/skills/*.svg references found in skills section"
-    missing = [r for r in refs if not (REPO_ROOT / r).exists()]
-    assert not missing, f"missing skill SVGs on disk: {missing}"
+# ---- Removed on 2026-08-17: the skills-grid structural assertions ----
+# Issue #71 built a 32-tile logo grid across six categories and this suite
+# policed its shape: category count, icons per category, keyboard focus,
+# visible name, tooltip, CDN-free sources, files on disk. The grid was cut
+# from index.html in the same rebuild that took the page from 12 sections
+# to 8. It is structurally the same object as the fifty-technology block
+# that reads to an applicant tracking system as keyword padding, and it
+# answered a question no reviewer asks: the stack a candidate can name
+# matters less than the systems they have run it against, which the
+# experience section now carries in prose. The one-line mono stack in the
+# hero replaced it.
+#
+# What survives below: the byte budgets (static/skills/ is still committed)
+# and the pattern doc check. Both are about the assets, not the layout, and
+# the accessibility rules the deleted tests enforced are documented in
+# docs/skills-grid-pattern.md for anyone reinstating the grid.
 
 
 def test_skills_icon_byte_budgets() -> None:
@@ -1496,11 +1644,26 @@ def test_hero_alt_text_includes_role() -> None:
 
 
 def test_public_identity_surfaces_use_canonical_title() -> None:
-    """Issue #129: no public surface may reintroduce the unverified
-    'Senior AI Platform Engineer' claim, and the key identity anchors
-    must carry the title-accurate Data Engineer positioning that
-    shipped on the fix/p0-positioning-batch branch."""
-    stale = "Senior AI Platform Engineer"
+    """Issue #129: no public surface may reintroduce a seniority title
+    the employment record does not support, and the key identity
+    anchors must carry the title-accurate Data Engineer positioning.
+
+    Anchors updated 2026-08-15 (Loop 1). The positioning moved from
+    "AI-Enabled Data Platforms" to the payroll-critical correctness
+    thesis, which is what the evidence actually supports and what the
+    target requisitions ask for. The banned-title half of this guard is
+    unchanged in purpose and now covers both stale variants: the second
+    one survived in hover-preview captions for months because the
+    original guard only knew about the first."""
+    # Matched case-insensitively against a substring, because the third
+    # entry is how the claim actually survived: config.js carried
+    # "Senior AI platform engineering" as a footer string, which the
+    # exact-title check walked straight past.
+    stale_titles = (
+        "senior ai platform engineer",
+        "senior ai/ml engineer",
+        "senior ai platform engineering",
+    )
 
     public_paths = (
         INDEX_HTML,
@@ -1517,31 +1680,71 @@ def test_public_identity_surfaces_use_canonical_title() -> None:
     )
     contents = {p: p.read_text(encoding="utf-8") for p in public_paths if p.exists()}
     for path, body in contents.items():
-        assert stale not in body, (
-            f"{path.relative_to(REPO_ROOT)} still contains the stale "
-            f"'{stale}' identity claim"
-        )
+        for stale in stale_titles:
+            assert stale not in body.lower(), (
+                f"{path.relative_to(REPO_ROOT)} still contains the stale "
+                f"'{stale}' identity claim"
+            )
 
     index_html = contents[INDEX_HTML]
     for required in (
         '<meta property="og:title" content="Narendranath Edara | '
-        'Data Engineer - AI-Enabled Data Platforms">',
+        'Data Engineer - Payroll-Critical Data Platforms">',
         "<title>Narendranath Edara | Data Engineer - "
-        "AI-Enabled Data Platforms</title>",
-        '<span class="logo-role">Data Engineer &middot; AI Platforms</span>',
+        "Payroll-Critical Data Platforms</title>",
+        '<span class="logo-role">Data Engineer &middot; Dallas TX</span>',
     ):
         assert required in index_html, f"index.html missing identity anchor: {required!r}"
 
     readme = contents[REPO_ROOT / "README.md"]
-    assert "I am a Data Engineer who builds reliable data platforms first" in readme
+    assert "I am a Data Engineer working on payroll-critical data" in readme
 
     manifest = contents[REPO_ROOT / "static" / "site.webmanifest"]
-    assert "Data Engineer building AI-enabled data platforms" in manifest
+    assert "Data Engineer on payroll-critical systems" in manifest
 
     post = contents[REPO_ROOT / "content" / "posts" / "repo-context-hooks-supply-chain.html"]
     assert '"jobTitle": "Data Engineer"' in post, (
         "schema.org jobTitle must be the actual employment title, "
         "not a branding string"
+    )
+
+
+def test_systems_table_reflows_on_narrow_screens() -> None:
+    """The systems table must stack into blocks below 700px, and nothing
+    after that block may reimpose a min-width on it.
+
+    The bug this guards: table.ps carries min-width so its four columns
+    stay readable on a wide screen, and it sits inside .scroll-x. That
+    combination means the PAGE never overflows, so a document-level
+    scrollWidth check passes while the table itself is clipped. On a 390px
+    phone the NOW and HOW columns were off-screen, so the first evidence a
+    reader met was "CDC ETL runtime / 30 min" with no after value, which
+    reads as the current state rather than the old one.
+
+    It regressed once already: a later `@media (max-width: 860px)` block
+    redeclared `table.ps { min-width: 520px }`, and at equal specificity
+    the later source position won. Hence the ordering assertion.
+    """
+    css = STYLES_CSS.read_text(encoding="utf-8")
+
+    reflow_start = css.find("@media (max-width: 700px)")
+    assert reflow_start != -1, (
+        "styles.css lost the @media (max-width: 700px) block that stacks "
+        "the systems table"
+    )
+    reflow_end = css.find("}\n\n", reflow_start)
+    block = css[reflow_start:reflow_end if reflow_end != -1 else len(css)]
+    for rule in ("table.ps { display: block", "table.ps thead { display: none",
+                 "table.ps tbody, table.ps tr { display: block"):
+        assert rule in block, f"narrow-screen table reflow missing: {rule!r}"
+
+    # Any min-width on table.ps after the reflow block wins by source order
+    # and puts the table back over the viewport edge.
+    tail = css[reflow_end if reflow_end != -1 else len(css):]
+    offenders = re.findall(r"table\.ps\s*\{[^}]*min-width[^}]*\}", tail)
+    assert not offenders, (
+        "a rule after the 700px reflow block sets min-width on table.ps, "
+        "which reintroduces the clipped-column bug:\n  " + "\n  ".join(offenders)
     )
 
 
@@ -1556,6 +1759,13 @@ TESTS = [
     test_each_stat_has_value_and_label,
     test_no_scrapped_exponenthr_outcomes,
     test_no_scrapped_exponenthr_outcomes_in_rendered_text,
+    test_no_never_publish_claims_on_public_surfaces,
+    test_hero_claims_carry_ground_truth_ids,
+    test_fit_blocks_each_name_a_gap,
+    test_claims_register_in_sync_with_page,
+    test_no_banned_words_in_visible_copy,
+    test_no_en_or_em_dashes_in_public_copy,
+    test_sitemap_covers_every_public_page,
     test_hero_uses_local_photo_not_external_cdn,
     test_hero_aside_no_data_reveal,
     test_hero_picture_has_mobile_variant,
@@ -1606,15 +1816,8 @@ TESTS = [
     test_app_js_has_substack_render_branch,
     test_styles_css_has_feed_list_module,
     # ----- Skills grid (issue #71) -----
-    test_skills_section_present,
-    test_skills_nav_link_present,
-    test_skills_has_expected_category_count,
-    test_skills_each_category_has_valid_icon_count,
-    test_skills_every_icon_is_keyboard_focusable,
-    test_skills_every_icon_has_visible_name,
-    test_skills_every_icon_has_tooltip,
-    test_skills_no_external_cdn_refs,
-    test_skills_icon_files_present,
+    # 9 skills-grid structural tests removed 2026-08-17 with the grid; see
+    # the comment block above test_skills_icon_byte_budgets.
     test_skills_icon_byte_budgets,
     test_skills_pattern_doc_present,
     test_skills_tooltip_esc_and_overflow_polish_in_app_js,
@@ -1626,6 +1829,7 @@ TESTS = [
     test_public_identity_surfaces_use_canonical_title,
     # ----- Link verification (issue #43) -----
     test_all_local_links_resolve,
+    test_systems_table_reflows_on_narrow_screens,
 ]
 
 

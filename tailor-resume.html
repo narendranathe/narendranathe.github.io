@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Case study: tailor-resume - ATS-optimized resume tailoring engine shipped as CLI, Streamlit app, MCP server, and PyPI package with 190 automated tests.">
+  <meta name="description" content="Case study: tailor-resume - ATS-optimized resume tailoring engine released as CLI, Streamlit app, MCP server, and PyPI package with 190 automated tests.">
   <meta name="author" content="Narendranath Edara">
   <meta property="og:title" content="tailor-resume | Narendranath Edara">
-  <meta property="og:description" content="How I extracted a reusable resume tailoring engine from AutoApply AI and shipped it to four distribution surfaces.">
+  <meta property="og:description" content="How I extracted a reusable resume tailoring engine from AutoApply AI and rhipped it to four distribution surfaces.">
   <meta property="og:type" content="article">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,7 +39,7 @@
           to requirements, retrieves supporting proof, and renders structured outputs under a strict
           no-fabrication constraint. Resume tailoring is the use case; the transferable system is
           evidence-grounded document generation. 190 automated tests, four distribution surfaces
-          (CLI, Streamlit, MCP, PyPI) - extracted from AutoApply AI and shipped standalone.
+          (CLI, Streamlit, MCP, PyPI) - extracted from AutoApply AI and released standalone.
         </p>
         <div class="cs-proof-strip">
           <span>190 automated tests</span>
@@ -86,7 +86,7 @@
 
         <div class="arch-grid" style="margin-top: 1.5rem;">
           <div class="arch-box">
-            <h4>Step 1: Parse Artifacts</h4>
+            <h3>Step 1: Parse Artifacts</h3>
             <p>
               Any resume format in: blob (pasted text), LaTeX, Markdown, LinkedIn PDF, uploaded PDF, DOCX.
               Three-tier PDF extraction (pdfminer.six for CMR fonts, pypdf for Word-generated, stdlib fallback).
@@ -95,7 +95,7 @@
             </p>
           </div>
           <div class="arch-box">
-            <h4>Step 2: Gap Analysis</h4>
+            <h3>Step 2: Gap Analysis</h3>
             <p>
               JD decomposition extracts must-haves and maps them to 10 signal categories
               (testing_ci_cd, orchestration, ml_ai_platform, etc.). FAISS retrieval finds the strongest
@@ -104,7 +104,7 @@
             </p>
           </div>
           <div class="arch-box">
-            <h4>Step 3: Render LaTeX</h4>
+            <h3>Step 3: Render LaTeX</h3>
             <p>
               Claude rewrites bullets using the STAR formula: "Accomplished X as measured by Y by doing Z."
               A 3-pass iterative loop converges on a single-page output - the page limit is enforced as a
@@ -124,7 +124,7 @@
 
         <div class="arch-grid" style="margin-top: 1.5rem;">
           <div class="arch-box">
-            <h4>CLI + PyPI</h4>
+            <h3>CLI + PyPI</h3>
             <p>
               <code style="font-family:var(--font-mono);font-size:0.875em;color:var(--accent);">pip install tailor-resume</code>
               then <code style="font-family:var(--font-mono);font-size:0.875em;color:var(--accent);">tailor-resume --artifact PATH:FORMAT --jd JD_PATH</code>.
@@ -133,7 +133,7 @@
             </p>
           </div>
           <div class="arch-box">
-            <h4>Streamlit + MCP Server</h4>
+            <h3>Streamlit + MCP Server</h3>
             <p>
               Browser-based UI at tailor-resume-ai.streamlit.app - paste your work history and JD, get a
               tailored PDF. MCP server on Fly.io exposes 4 typed tools (extract_profile, analyze_gap,
@@ -141,7 +141,7 @@
             </p>
           </div>
           <div class="arch-box">
-            <h4>Claude Code Skill</h4>
+            <h3>Claude Code Skill</h3>
             <p>
               The /tailor-resume skill is the interactive mode - conversational, multi-pass, with
               clarification loops when evidence is weak. This is the highest-quality surface because
@@ -168,11 +168,11 @@
         </p>
       </section>
 
-      <!-- Shipped vs Next -->
+      <!-- Where it stands -->
       <section class="cs-section">
-        <h2>Shipped vs Next</h2>
+        <h2>Where It Stands</h2>
         <p>
-          <strong>Shipped:</strong> PyPI package, MCP server on Fly.io, Streamlit app, and CLI - four
+          <strong>Working now:</strong> PyPI package, MCP server on Fly.io, Streamlit app, and CLI - four
           surfaces from one core, with 190 tests and mocked LLM boundaries.
           <strong>Status:</strong> Streamlit demo is public; the MCP server is live for agent use.
           <strong>Known limitations:</strong> LaTeX rendering assumes the single-page template family;

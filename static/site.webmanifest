@@ -1,7 +1,7 @@
 {
   "name": "Narendranath Edara",
   "short_name": "Naren",
-  "description": "Data Engineer building AI-enabled data platforms, workflow automation, and retrieval systems that survive real production constraints.",
+  "description": "Data Engineer on payroll-critical systems. CDC pipelines, change-controlled releases, and the detection and recovery layer underneath.",
   "icons": [
     {
       "src": "/static/favicon-32.png",

@@ -248,14 +248,14 @@ button { font-family: inherit; cursor: pointer; }
   color: var(--accent); letter-spacing: 0.12em;
   text-transform: uppercase; margin-bottom: 0.85rem;
 }
+/* Was serif italic behind a 3px accent rail. That is a pull-quote
+   treatment, and quoting your own tagline back at the reader is the
+   single most self-regarding thing a personal site can do. It is a
+   sentence; it is now set as one. */
 .hero-tagline {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.1rem, 2vw, 1.3rem);
-  font-weight: 400; font-style: italic;
-  line-height: 1.5; color: var(--fg);
-  margin-bottom: 1rem; max-width: 520px;
-  border-left: 3px solid var(--accent-warm);
-  padding-left: 1rem;
+  font-size: clamp(1.02rem, 1.6vw, 1.15rem);
+  line-height: 1.6; color: var(--fg);
+  margin-bottom: 1.4rem; max-width: 54ch;
 }
 .hero-brief {
   font-size: 0.97rem; line-height: 1.75; color: var(--fg-soft);
@@ -308,31 +308,535 @@ button { font-family: inherit; cursor: pointer; }
 @media (max-width: 860px) {
   .hero { padding: 6rem 0 3.5rem; }
   .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-  .hero-visual { order: -1; width: min(100%, 300px); }
+  /* No order:-1 here. The portrait used to be hoisted above the copy on
+     mobile, which meant the entire mobile first screen was a headshot -
+     no name, no thesis, no proof until a full screen of scrolling. DOM
+     order wins now, so mobile reads the same way desktop does: who,
+     what, then evidence. The portrait follows. */
+  .hero-visual { width: min(100%, 300px); margin-inline: auto; }
   .profile-frame { width: 100%; max-width: 300px; aspect-ratio: 4/5; }
   .profile-photo { object-position: 50% 50%; }
 }
 
-/* ============================================================
-   PROOF SPLIT
-   ============================================================ */
-.proof-split {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+/* Visually-hidden utility. There was only a .impact-strip-scoped copy
+   of this, so an .sr-only used anywhere else rendered as visible text.
+   The scoped rule stays where it is; this is the general one. */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
-.proof-title {
+
+
+/* In-page jump menu. Sits under the hero CTA so the first screen ends
+   with somewhere to go. */
+.hero-toc {
+  display: flex; flex-wrap: wrap; gap: 0.4rem 0.5rem;
+  margin-top: 1.5rem;
+}
+.hero-toc a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.04em;
+  color: var(--fg-soft); text-decoration: none;
+  border: 1px solid var(--border); border-radius: 2rem;
+  padding: 0.3rem 0.7rem;
+  transition: border-color 0.2s, color 0.2s;
+}
+.hero-toc a:hover, .hero-toc a:focus-visible {
+  color: var(--accent); border-color: var(--accent);
+}
+
+@media (max-width: 860px) {
+  /* The portrait used to eat 375px of a 750px fold. On a phone it is an
+     avatar beside nothing, and the proof points get the space instead. */
+  .hero { padding: 5rem 0 2.5rem; }
+  .hero-grid { gap: 1.5rem; }
+  /* Avatar leads, the way every phone profile does. The source is a
+     full-body portrait, so a plain square crop gives a small figure in
+     a lot of studio grey; scaling up and anchoring near the top lands
+     on the face. */
+  .hero-visual { order: -1; width: auto; margin-inline: 0; }
+  .profile-frame {
+    width: 76px; max-width: 76px; aspect-ratio: 1/1;
+    border-radius: 50%; box-shadow: none;
+  }
+  .profile-photo { transform: scale(2.9); transform-origin: 50% 17%; }
+  .hero-name { font-size: 2rem; margin-bottom: 0.4rem; }
+  .hero-role { font-size: 0.72rem; letter-spacing: 0.09em; margin-bottom: 0.5rem; }
+  /* margin trimmed 0.9 -> 0.65rem: dropping the serif italic for plain
+     body type cost the tagline a wrap on a 390px screen, and the hero
+     has to clear 844px. */
+  .hero-tagline { font-size: 1rem; line-height: 1.45; margin-bottom: 0.65rem; }
+  .hero-proof { gap: 0.6rem; margin-bottom: 1.1rem; }
+  .hero-proof li { font-size: 0.87rem; line-height: 1.5; }
+  /* .hero-stack / .hero-seeking mobile margins are set in the later
+     mobile block near their base rules. Setting them here would lose:
+     the base declarations sit further down the file at equal
+     specificity, so source order beats this block. */
+  /* Section chrome is desktop-sized. On a phone it stands between the
+     hero and the first number, so it gets trimmed rather than scrolled
+     past. */
+  .section { padding: 2.75rem 0; }
+  #proof .section-subtitle { display: none; }
+  #proof .section-title { font-size: 1.5rem; }
+  .ledger-row { padding: 1.1rem 1.15rem 1.2rem; }
+  .ledger-line { font-size: 0.83rem; line-height: 1.55; }
+}
+
+
+/* Projects behind one click. Six cards is a lot of scroll for a reader
+   who has not decided yet; the summary names them so the click is
+   informed rather than blind. */
+.projects-fold { border-top: 1px solid var(--border); }
+.projects-summary {
+  cursor: pointer; list-style: none;
+  padding: 1.1rem 0 1.2rem;
+  display: flex; flex-direction: column; gap: 0.25rem;
+}
+.projects-summary::-webkit-details-marker { display: none; }
+.projects-summary-open, .projects-summary-close {
   font-family: 'Playfair Display', serif;
-  font-size: 1.5rem; font-weight: 500; color: var(--fg);
-  margin-bottom: 1.75rem;
+  font-size: 1.1rem; color: var(--accent);
 }
-.kicker-list { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; }
-.kicker-item { display: flex; flex-direction: column; gap: 0.3rem; }
-.kicker {
-  font-size: 0.8rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.07em;
+.projects-summary-open::after { content: ' +'; font-family: 'JetBrains Mono', monospace; }
+.projects-summary-close::after { content: ' -'; font-family: 'JetBrains Mono', monospace; }
+.projects-summary-close { display: none; }
+.projects-fold[open] .projects-summary-open { display: none; }
+.projects-fold[open] .projects-summary-close { display: inline; }
+.projects-summary-hint { font-size: 0.78rem; color: var(--fg-muted); line-height: 1.5; }
+.projects-summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Contact: one primary action, everything else a plain link. */
+.contact-cta { justify-content: center; width: 100%; text-align: center; }
+.contact-note { font-size: 0.78rem; color: var(--fg-muted); line-height: 1.6; margin-top: 0.5rem; }
+.contact-detail { font-size: 0.8rem; color: var(--fg-muted); margin-top: 0.4rem; }
+.contact-secondary {
+  display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem;
+  margin-top: 1.25rem; padding-top: 1rem;
+  border-top: 1px solid var(--border-soft);
+}
+.contact-secondary a {
+  font-size: 0.85rem; color: var(--fg-soft); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+}
+.contact-secondary a:hover, .contact-secondary a:focus-visible { color: var(--accent); }
+.contact-secondary i { color: var(--accent-warm); font-size: 0.85rem; }
+
+
+/* ============================================================
+   PORTFOLIO LAYOUT, 2026-08 rebuild
+   Eight sections. Headings name subjects. Numbers go in a table
+   because a table is what compares numbers; prose goes in prose.
+   Deliberately not cards: a bordered box around every paragraph
+   reads as a deck, and this is a personal site.
+   ============================================================ */
+.sec-h {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.35rem, 2.6vw, 1.7rem);
+  font-weight: 500; letter-spacing: -0.01em;
+  color: var(--fg);
+  margin-bottom: 1.6rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--border);
+}
+.sec-note {
+  font-size: 0.86rem; line-height: 1.7; color: var(--fg-muted);
+  max-width: 74ch; margin-top: 1.4rem;
+}
+.sec-note--lead { margin-top: -0.6rem; margin-bottom: 1.8rem; }
+.sec-note a { color: var(--accent); }
+
+/* --- hero additions --- */
+.hero-stack {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.73rem; line-height: 1.9; color: var(--fg-muted);
+  max-width: 52ch; margin-bottom: 0.9rem;
+}
+/* Rail removed with the tagline's. Two bordered blocks in one hero is the
+   deck pattern, and neither sentence needs a frame to be read. */
+.hero-seeking {
+  font-size: 0.85rem; line-height: 1.65; color: var(--fg-soft);
+  max-width: 54ch; margin-bottom: 1.4rem;
+}
+
+/* --- production systems table --- */
+.scroll-x { overflow-x: auto; }
+table.ps {
+  border-collapse: collapse; width: 100%; min-width: 640px;
+  font-size: 0.88rem;
+}
+table.ps thead th {
+  text-align: left; padding: 0 0.9rem 0.55rem 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.11em; text-transform: uppercase;
+  color: var(--fg-muted); font-weight: 500;
+  border-bottom: 1px solid var(--border);
+}
+table.ps tbody th {
+  text-align: left; font-weight: 600; color: var(--fg);
+  padding: 0.9rem 0.9rem 0.9rem 0; vertical-align: top;
+  border-bottom: 1px solid var(--border-soft);
+  white-space: nowrap;
+}
+table.ps tbody td {
+  padding: 0.9rem 0.9rem 0.9rem 0; vertical-align: top;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--fg-soft); line-height: 1.6;
+}
+.ps-where {
+  display: block; font-weight: 400; font-size: 0.7rem;
+  color: var(--fg-muted); margin-top: 0.1rem;
+}
+/* No strikethrough. The column header already says "before", and a line
+   through "1 hr, 20+ times a day" costs legibility to restate it. The
+   muted colour against .ps-now's accent carries the contrast. */
+.ps-before {
+  color: var(--fg-muted); white-space: nowrap;
+}
+.ps-now {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent); font-weight: 500; white-space: nowrap;
+}
+.ps-mech { min-width: 26ch; }
+
+/* A 640px-wide table inside an overflow-x container does not overflow the
+   PAGE, so a page-level overflow check passes while the table itself is
+   clipped. On a 390px phone that hid the NOW and HOW columns: a reader at
+   the six-second mark saw "CDC ETL runtime / 30 min" and no after value,
+   which reads as the current state rather than the old one. Horizontal
+   scroll is also the interaction people are least likely to discover.
+   Below 700px each row becomes a block instead: subject, then
+   before/after on one line, then the mechanism. */
+@media (max-width: 700px) {
+  .scroll-x { overflow-x: visible; }
+  table.ps { display: block; min-width: 0; font-size: 0.86rem; }
+  table.ps thead { display: none; }
+  table.ps tbody, table.ps tr { display: block; }
+  table.ps tr {
+    padding: 0.9rem 0; border-bottom: 1px solid var(--border-soft);
+  }
+  table.ps tr:last-child { border-bottom: 0; }
+  table.ps tbody th, table.ps tbody td {
+    display: block; padding: 0; border: 0; white-space: normal;
+  }
+  table.ps tbody th { margin-bottom: 0.3rem; }
+  /* Specificity has to beat `table.ps tbody td` above, hence td.class. */
+  table.ps tbody td.ps-before, table.ps tbody td.ps-now { display: inline; }
+  table.ps tbody td.ps-now::before {
+    content: " \2192 "; color: var(--fg-muted); font-family: inherit;
+  }
+  table.ps tbody td.ps-mech { margin-top: 0.35rem; min-width: 0; }
+}
+
+/* --- roles --- */
+.roles { display: flex; flex-direction: column; gap: 2.75rem; }
+.role { display: grid; grid-template-columns: 10rem 1fr; gap: 0 2rem; }
+.role-when {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; color: var(--fg-muted); line-height: 1.6;
+  padding-top: 0.35rem;
+}
+.role-head { margin-bottom: 1.1rem; }
+.role-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; font-weight: 500; color: var(--fg);
+}
+.role-org { font-size: 0.86rem; color: var(--fg-soft); margin-top: 0.1rem; }
+.role-what .case + .case { margin-top: 1.5rem; padding-top: 1.4rem; border-top: 1px solid var(--border-soft); }
+.role-what .case:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+
+/* --- projects --- */
+.projs { display: flex; flex-direction: column; gap: 2.25rem; }
+.proj { max-width: 78ch; }
+.proj-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 500; color: var(--fg);
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.6rem;
+}
+.proj-gt, .role-gt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 0.06em; color: var(--accent-warm);
+  border-bottom: 1px dotted var(--border); cursor: help;
+}
+.proj-stack {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; color: var(--fg-muted);
+  margin: 0.3rem 0 0.7rem;
+}
+.proj-links { display: flex; flex-wrap: wrap; gap: 1.1rem; margin-top: 0.7rem; }
+.proj-links a { font-size: 0.85rem; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+.proj-links a:hover, .proj-links a:focus-visible { border-bottom-color: var(--accent); }
+
+/* --- research, references, contact --- */
+.creds { display: flex; flex-direction: column; gap: 0.9rem; max-width: 78ch; }
+.creds p { font-size: 0.9rem; line-height: 1.75; color: var(--fg-soft); }
+.creds a { color: var(--accent); }
+
+.contact { max-width: 62ch; display: flex; flex-direction: column; gap: 0.9rem; }
+.contact-links { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-top: 0.4rem; }
+.contact-links a { font-size: 0.88rem; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+.contact-links a:hover, .contact-links a:focus-visible { border-bottom-color: var(--accent); }
+
+@media (max-width: 860px) {
+  .role { grid-template-columns: 1fr; gap: 0.35rem; }
+  .role-when { padding-top: 0; }
+  .hero-stack { font-size: 0.7rem; line-height: 1.8; margin-bottom: 0.7rem; }
+  .hero-seeking { font-size: 0.82rem; margin-bottom: 0.85rem; }
+  /* font-size only. Do NOT set min-width here: this block sits after the
+     700px block that turns the table into stacked blocks, so at equal
+     specificity a min-width declared here wins by source order and puts
+     the table back over the viewport edge. That is exactly the bug that
+     hid the NOW and HOW columns on a phone. */
+  table.ps { font-size: 0.83rem; }
+}
+
+/* ============================================================
+   VERIFICATION AND CLAIMS REGISTER
+   ============================================================ */
+.verify-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+.verify-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 1.4rem 1.5rem;
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.verify-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; font-weight: 500; color: var(--fg);
+}
+.verify-desc { font-size: 0.85rem; line-height: 1.65; color: var(--fg-soft); }
+.verify-links {
+  list-style: none; display: flex; flex-direction: column;
+  gap: 0.7rem; margin-top: 0.3rem;
+}
+.verify-links li {
+  display: flex; flex-direction: column; gap: 0.1rem;
+  font-size: 0.85rem; color: var(--fg);
+  padding-left: 1.5rem; position: relative;
+}
+.verify-links li i {
+  position: absolute; left: 0; top: 0.22rem;
+  width: 1rem; text-align: center;
+  color: var(--accent-warm); font-size: 0.82rem;
+}
+.verify-links a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+.verify-links a:hover, .verify-links a:focus-visible { border-bottom-color: var(--accent); }
+.verify-links span { font-size: 0.76rem; color: var(--fg-muted); line-height: 1.45; }
+
+.register {
+  margin-top: 1.5rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent-warm);
+  border-radius: var(--r);
+  background: var(--bg);
+  padding: 1.4rem 1.6rem;
+}
+.register-head {
+  display: flex; flex-wrap: wrap; align-items: center;
+  justify-content: space-between; gap: 1rem; margin-bottom: 0.6rem;
+}
+.register-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 500; color: var(--fg);
+}
+.register-note {
+  font-size: 0.88rem; line-height: 1.7; color: var(--fg-soft);
+  max-width: 80ch; margin-bottom: 1.1rem;
+}
+.register-note strong { color: var(--fg); font-weight: 600; }
+.register-tally {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border); border-radius: var(--r); overflow: hidden;
+}
+.register-tally > div {
+  background: var(--bg-alt); padding: 0.85rem 1rem;
+  display: flex; flex-direction: column; gap: 0.15rem;
+}
+.register-tally dt {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 1.3rem; color: var(--fg); line-height: 1;
+}
+.register-tally dd {
+  margin: 0; font-size: 0.72rem; color: var(--fg-muted); line-height: 1.4;
+}
+@media (max-width: 1000px) { .verify-grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px)  { .register-tally { grid-template-columns: 1fr 1fr; } }
+
+/* ============================================================
+   WHERE THIS FITS
+   Three role-shape blocks. The gap line at the foot of each is the
+   structurally important part, so it gets the warm rule and sits last
+   where it cannot be skimmed past.
+   ============================================================ */
+.fit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.fit-block {
+  background: var(--bg);
+  padding: 1.6rem 1.5rem;
+  display: flex; flex-direction: column; gap: 0.7rem;
+}
+.fit-head {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 500; color: var(--fg);
+  line-height: 1.3;
+}
+.fit-maps {
+  font-size: 0.85rem; line-height: 1.65; color: var(--fg-soft);
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+.fit-rows { display: flex; flex-direction: column; gap: 0.85rem; margin: 0.25rem 0 0; }
+.fit-row { display: flex; flex-direction: column; gap: 0.15rem; }
+.fit-row-key {
+  font-size: 0.8rem; font-weight: 600; color: var(--fg);
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.45rem;
+}
+.fit-gt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 0.05em;
+  font-weight: 400;
+  color: var(--accent-warm);
+  border-bottom: 1px dotted var(--border);
+  cursor: help;
+}
+.fit-row-val {
+  margin: 0;
+  font-size: 0.83rem; line-height: 1.6; color: var(--fg-soft);
+}
+.fit-adjacency {
+  font-size: 0.79rem; line-height: 1.6; color: var(--fg-muted);
+  font-style: italic;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--border-soft);
+}
+.fit-gap {
+  margin-top: auto;
+  padding: 0.85rem 1rem;
+  border-left: 3px solid var(--accent-warm);
+  background: var(--chip-bg);
+  font-size: 0.83rem; line-height: 1.65; color: var(--fg-soft);
+}
+.fit-gap-key {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--fg-muted);
+  margin-bottom: 0.2rem;
+}
+@media (max-width: 1000px) { .fit-grid { grid-template-columns: 1fr; } }
+
+/* ============================================================
+   MEASURED-OUTCOMES LEDGER
+   Six rows, each baseline -> result -> method -> scope. Sized so the
+   delta is scannable at a glance and the method is there for whoever
+   stops to read it. Distinct from .impact-strip on purpose: that
+   module is CI-counted at exactly five instances.
+   ============================================================ */
+.ledger {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.ledger-row {
+  background: var(--bg);
+  padding: 1.4rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.ledger-top {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.75rem;
+}
+.ledger-domain {
+  font-size: 0.72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
   color: var(--accent-warm);
 }
-.kicker-item p { font-size: 0.92rem; line-height: 1.65; color: var(--fg-soft); }
-@media (max-width: 720px) { .proof-split { grid-template-columns: 1fr; gap: 2.5rem; } }
+/* Evidence tag. Cursor + dotted underline signal that the title=
+   tooltip carries the GROUND_TRUTH record id. */
+.ledger-verify {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.63rem; letter-spacing: 0.04em;
+  color: var(--fg-muted);
+  border-bottom: 1px dotted var(--border);
+  cursor: help;
+  white-space: nowrap;
+}
+.ledger-delta {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem;
+  font-family: 'Playfair Display', serif;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+  margin: 0.1rem 0 0;
+}
+.ledger-from {
+  font-size: 1.02rem; color: var(--fg-muted);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--border);
+}
+.ledger-arrow { font-size: 0.95rem; color: var(--accent-warm); }
+.ledger-to { font-size: 1.5rem; font-weight: 600; color: var(--accent); }
+.ledger-what {
+  font-size: 0.76rem; color: var(--fg-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  margin: -0.15rem 0 0.3rem;
+}
+.ledger-line {
+  font-size: 0.855rem; line-height: 1.6; color: var(--fg-soft);
+  margin: 0;
+}
+.ledger-key {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--fg-muted);
+  margin-bottom: 0.15rem;
+}
+.ledger-total {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.75rem;
+  margin-top: 1.75rem;
+  padding-left: 1.1rem;
+  border-left: 3px solid var(--accent-warm);
+  max-width: 80ch;
+}
+.ledger-total-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem; font-weight: 600; color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+.ledger-total-txt {
+  flex: 1 1 22rem;
+  font-size: 0.88rem; line-height: 1.65; color: var(--fg-soft);
+}
+@media (max-width: 1000px) { .ledger { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .ledger { grid-template-columns: 1fr; } }
+@media print {
+  .ledger { grid-template-columns: 1fr 1fr; }
+  .ledger-verify { border-bottom: 0; }
+}
 
 /* ============================================================
    GRAPH
@@ -530,6 +1034,52 @@ button { font-family: inherit; cursor: pointer; }
   font-size: 1.2rem; font-weight: 500; color: var(--fg);
 }
 .system-desc { font-size: 0.89rem; line-height: 1.7; color: var(--fg-soft); }
+
+/* Full-width stack instead of the 3-up grid. Each project card now
+   carries four labelled lines, which need reading width rather than a
+   narrow column. */
+.systems-grid--stack { grid-template-columns: 1fr; gap: 1.25rem; }
+.systems-grid--stack .system-name { font-size: 1.35rem; }
+
+/* Problem / Method / Proof / What you can verify. A definition list
+   because that is what it is: four fixed questions, answered per card,
+   in the same order every time so they can be compared across cards. */
+.card-lines {
+  display: grid;
+  grid-template-columns: 11.5rem 1fr;
+  gap: 0.5rem 1.5rem;
+  align-items: baseline;
+}
+.card-lines dt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--fg-muted);
+  padding-top: 0.15rem;
+}
+.card-lines dd {
+  margin: 0;
+  font-size: 0.9rem; line-height: 1.7; color: var(--fg-soft);
+}
+.card-lines dd code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.86em; color: var(--accent);
+}
+.card-gt {
+  display: inline-block;
+  margin-left: 0.35rem;
+  font-size: 0.95em;
+  color: var(--accent-warm);
+  border-bottom: 1px dotted var(--border);
+  cursor: help;
+}
+.system-card--wip { border-style: dashed; box-shadow: none; }
+.system-card--wip:hover { transform: none; box-shadow: none; }
+
+@media (max-width: 720px) {
+  .card-lines { grid-template-columns: 1fr; gap: 0.15rem 0; }
+  .card-lines dd { margin-bottom: 0.75rem; }
+}
+
 .tech-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .card-actions {
   display: flex; flex-wrap: wrap; gap: 0.75rem;
@@ -548,7 +1098,8 @@ button { font-family: inherit; cursor: pointer; }
   background: var(--bg-alt); border-radius: var(--r);
   padding: 0.9rem; border: 1px solid var(--border-soft);
 }
-.arch-box h4 {
+.arch-box h4,
+.arch-box h3 {
   font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.07em; color: var(--accent); margin-bottom: 0.4rem;
 }
@@ -587,6 +1138,24 @@ button { font-family: inherit; cursor: pointer; }
   font-size: 0.85rem; font-weight: 600; color: var(--fg); margin-bottom: 0.3rem;
 }
 .ml-project-entry p { font-size: 0.83rem; line-height: 1.6; color: var(--fg-soft); margin-bottom: 0.6rem; }
+
+/* Status tag for work that is not shipped end-to-end. Reads as a state,
+   not a decoration - only applied where the repo cannot back a finished
+   claim, so a reviewer sees the honest state before the description. */
+.wip-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-warm);
+  border: 1px solid var(--accent-warm);
+  border-radius: 2px;
+  padding: 0.08rem 0.34rem;
+  margin-left: 0.4rem;
+  vertical-align: 0.08em;
+}
 
 @media (max-width: 900px) {
   .systems-grid { grid-template-columns: 1fr; }
@@ -641,6 +1210,68 @@ button { font-family: inherit; cursor: pointer; }
 }
 .track-company { font-size: 0.84rem; color: var(--fg-soft); margin-bottom: 0.15rem; }
 .track-scope { font-size: 0.77rem; color: var(--accent); font-style: italic; }
+/* Case entries inside a role. Each is a titled block with the same four
+   labelled lines as a project card, so a reader who learned the pattern
+   in Projects does not have to learn a second one here. */
+.case {
+  border-top: 1px solid var(--border-soft);
+  padding-top: 1.1rem;
+  margin-top: 1.1rem;
+}
+.case:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
+/* Case bodies run as prose. The earlier version used labelled rows
+   (Problem / What changed / Scope / Outcome), which spelled out what the
+   sentences already said and read like a template. */
+.case-body {
+  font-size: 0.9rem; line-height: 1.75; color: var(--fg-soft);
+  max-width: 74ch; margin: 0;
+}
+.case-body code {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--accent);
+}
+.case-body em { color: var(--fg); }
+.case-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; font-weight: 500; color: var(--fg);
+  margin-bottom: 0.85rem;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.6rem;
+}
+.case-gt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.06em;
+  color: var(--accent-warm);
+  border-bottom: 1px dotted var(--border);
+  cursor: help;
+  /* Deliberately NOT nowrap. A case can cite five ids, and as one
+     unbreakable string its min-content width sets the timeline grid
+     track, which pushed the whole page 122px wider than a 320px
+     viewport. Single-id labels elsewhere may safely use nowrap. */
+  overflow-wrap: anywhere;
+}
+/* Inline evidence-quality marker. Anything the record cannot document
+   says so where it is claimed, not in a footnote nobody reaches. */
+.claim-status {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; letter-spacing: 0.03em;
+  color: var(--fg-muted);
+  background: var(--chip-bg);
+  border-radius: 2px;
+  padding: 0.05rem 0.35rem;
+  margin-left: 0.25rem;
+}
+.track-card--edu { background: var(--bg-alt); }
+/* The nine-month gap gets its own timeline row rather than being left
+   for the reader to spot between two dates. */
+.track-item--gap { padding-bottom: 2rem; }
+.track-item--gap::before { background: var(--border); }
+.track-gap {
+  font-size: 0.84rem; line-height: 1.7; color: var(--fg-muted);
+  padding: 1.1rem 1.25rem;
+  border-left: 2px dashed var(--border);
+  max-width: 62ch;
+}
+
 .track-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
 .track-bullets li {
   font-size: 0.87rem; line-height: 1.65; color: var(--fg-soft);
@@ -1015,6 +1646,20 @@ button { font-family: inherit; cursor: pointer; }
   font-size: 1.05rem; color: var(--fg-soft); max-width: 680px;
   line-height: 1.75; margin-bottom: 2rem;
 }
+/* Build-status callout for a case study whose repo cannot back a finished
+   claim. Sits above the proof strip so the honest state is read before any
+   architecture detail, not discovered afterwards. */
+.cs-status-note {
+  border-left: 3px solid var(--accent-warm);
+  background: var(--chip-bg);
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 1.75rem;
+  max-width: 680px;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--fg-soft);
+}
+.cs-status-note strong { color: var(--fg); }
 .cs-proof-strip {
   display: flex; flex-wrap: wrap; gap: 0.5rem 0.85rem; margin-bottom: 1.5rem;
 }
@@ -1111,7 +1756,8 @@ button { font-family: inherit; cursor: pointer; }
 }
 .cs-lesson.worked { background: rgba(23,107,82,0.06); border: 1px solid rgba(23,107,82,0.2); }
 .cs-lesson.failed { background: rgba(181,117,42,0.06); border: 1px solid rgba(181,117,42,0.2); }
-.cs-lesson h4 {
+.cs-lesson h4,
+.cs-lesson h3 {
   font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.08em; margin-bottom: 0.5rem;
 }
@@ -1315,6 +1961,16 @@ body.splash-active { overflow: hidden; }
   gap: 0.55rem 1rem;
 }
 
+/* The two-column fallback above is sized for a card in a 3-up grid.
+   Project cards are full-bleed now, so two columns strand half the row;
+   give them four across once there is width for it. Scoped rather than
+   changing the base module, which other layouts still rely on. */
+@media (min-width: 860px) {
+  .systems-grid--stack .impact-strip:has(.impact-stat:nth-child(3)) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
 .impact-strip .impact-label {
   margin: 0;
   font-size: 0.74rem;
@@ -1504,6 +2160,7 @@ body.splash-active { overflow: hidden; }
   padding: 0;
 }
 .system-diagram {
+  max-width: 100%;
   width: 100%;
   height: auto;
   color: var(--fg);
@@ -1834,6 +2491,13 @@ body.splash-active { overflow: hidden; }
 }
 
 .skills-list > li { display: contents; }
+/* Tooltips are absolutely positioned and centred on their tile, so the
+   rightmost tile's tooltip sits ~11px past the viewport even while
+   hidden, and an absolutely positioned box still extends the scrollable
+   area. app.js shifts it on hover/focus, but that does nothing for the
+   resting state. overflow-x: clip contains it horizontally while leaving
+   the vertical axis visible, which is the direction tooltips open. */
+.skills-grid { overflow-x: clip; }
 
 .skill-icon {
   position: relative;

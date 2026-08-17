@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Case study: Fraud Detection ML Platform - real-time scoring at 100+ TPS, sub-ms P99 latency, built with Kafka, PySpark, MLflow, Airflow, Prometheus, and Grafana.">
+  <meta name="description" content="Case study: Fraud Detection ML Platform - streaming scoring at 100+ TPS, 1.12ms P99 latency, on a synthetic dataset. Kafka, PySpark, MLflow, Airflow, Prometheus, Grafana.">
   <meta name="author" content="Narendranath Edara">
   <meta property="og:title" content="Fraud Detection ML Platform | Narendranath Edara">
   <meta property="og:type" content="article">
@@ -32,16 +32,22 @@
         <span class="cs-hero__kicker">ML Infrastructure</span>
         <h1>Fraud Detection ML Platform</h1>
         <p class="cs-hero__summary">
-          A real-time ML pipeline for financial fraud detection: Kafka-driven transaction ingestion,
-          PySpark feature engineering, MLflow model lifecycle management, FastAPI scoring at sub-ms P99
-          latency, and a Grafana observability stack. Built to handle 100+ transactions per second
-          with a full feedback loop from detection to model retraining.
+          A streaming ML pipeline for financial fraud detection: Kafka-driven transaction ingestion,
+          PySpark feature engineering, MLflow model lifecycle management, FastAPI scoring, and a
+          Grafana observability stack, with a full feedback loop from detection to model retraining.
         </p>
+        <div class="cs-status-note">
+          <strong>Data source.</strong> This runs on a synthetic dataset: 100,000 generated
+          transactions at roughly a 2% fraud rate. Not live payment traffic, and no real
+          cardholder data touches it. Model-quality numbers are therefore not published here,
+          because accuracy against generated fraud says more about the generator than about the
+          model. The engineering below - streaming, serving, tracking, observability - is real
+          and measurable regardless.
+        </div>
         <div class="cs-proof-strip">
           <span>100+ TPS sustained</span>
-          <span>sub-ms P99 scoring</span>
-          <span>94%+ model accuracy</span>
-          <span>&lt;2% false positive rate</span>
+          <span>1.12 ms P99 scoring</span>
+          <span>exactly-once processing</span>
           <span>MLflow model registry</span>
           <span>Prometheus + Grafana</span>
         </div>
@@ -69,16 +75,16 @@
           <span class="cs-metric-lbl">transactions/sec</span>
         </div>
         <div class="cs-metric">
-          <span class="cs-metric-num">&lt;1ms</span>
+          <span class="cs-metric-num">1.12ms</span>
           <span class="cs-metric-lbl">P99 scoring latency</span>
         </div>
         <div class="cs-metric">
-          <span class="cs-metric-num">94%+</span>
-          <span class="cs-metric-lbl">detection accuracy</span>
+          <span class="cs-metric-num">100K</span>
+          <span class="cs-metric-lbl">synthetic transactions</span>
         </div>
         <div class="cs-metric">
-          <span class="cs-metric-num">&lt;2%</span>
-          <span class="cs-metric-lbl">false positive rate</span>
+          <span class="cs-metric-num">~2%</span>
+          <span class="cs-metric-lbl">generated fraud rate</span>
         </div>
       </div>
 
@@ -138,7 +144,7 @@
 
         <div class="arch-grid">
           <div class="arch-box">
-            <h4>Ingestion layer</h4>
+            <h3>Ingestion layer</h3>
             <p>
               A Kafka producer simulates a realistic transaction stream: varying amounts, merchant categories,
               geolocation signals, and behavioral anomalies. Transactions flow into a <code>raw_transactions</code>
@@ -146,7 +152,7 @@
             </p>
           </div>
           <div class="arch-box">
-            <h4>Feature engineering</h4>
+            <h3>Feature engineering</h3>
             <p>
               PySpark Structured Streaming consumes the raw topic and computes derived features:
               rolling velocity (transactions in last 5 min / 1 hr), merchant category risk score,
@@ -155,10 +161,10 @@
             </p>
           </div>
           <div class="arch-box">
-            <h4>Scoring service</h4>
+            <h3>Scoring service</h3>
             <p>
               FastAPI loads the production model from MLflow at startup and keeps it in memory.
-              No network hop per prediction - sub-ms P99 latency achieved by eliminating the
+              No network hop per prediction - 1.12ms P99 latency achieved by eliminating the
               model-loading roundtrip. Model swaps happen via a reload endpoint that pulls the
               new production model without dropping existing connections.
             </p>
@@ -214,30 +220,30 @@
 
       <!-- What worked / what didn't -->
       <section class="cs-section">
-        <h2>Honest Assessment: What Worked and What Didn't</h2>
+        <h2>What Worked, What Didn't</h2>
         <div class="cs-lessons">
           <div class="cs-lesson worked">
-            <h4>What worked</h4>
+            <h3>What worked</h3>
             <p><strong>In-memory model serving.</strong> Loading the MLflow model at FastAPI startup and keeping it in RAM was the single biggest latency win. Eliminated 15-40ms per prediction compared to loading per-request.</p>
           </div>
           <div class="cs-lesson failed">
-            <h4>What failed</h4>
+            <h3>What failed</h3>
             <p><strong>Schema evolution.</strong> Changing the feature schema mid-stream broke the PySpark consumer. Needed a schema registry (Confluent or AWS Glue) to version feature contracts properly.</p>
           </div>
           <div class="cs-lesson worked">
-            <h4>What worked</h4>
+            <h3>What worked</h3>
             <p><strong>MLflow model staging.</strong> The Staging - Production - Archived lifecycle prevented accidental promotion of underperforming models and gave clean rollback at any point.</p>
           </div>
           <div class="cs-lesson failed">
-            <h4>What failed</h4>
+            <h3>What failed</h3>
             <p><strong>Spark executor memory.</strong> Under sustained 100+ TPS, PySpark GC pressure caused processing spikes. Fixed by tuning <code>spark.executor.memory</code>, <code>spark.sql.shuffle.partitions</code>, and switching from default GC to G1GC.</p>
           </div>
           <div class="cs-lesson worked">
-            <h4>What worked</h4>
+            <h3>What worked</h3>
             <p><strong>Airflow LocalExecutor.</strong> Dropped the CeleryExecutor for local dev. Eliminated Redis + Celery dependencies and cut environment setup time from 20 minutes to under 5.</p>
           </div>
           <div class="cs-lesson failed">
-            <h4>What failed</h4>
+            <h3>What failed</h3>
             <p><strong>Kafka consumer group rebalancing.</strong> Under rapid producer scale-up, consumer group rebalancing caused processing gaps up to 8 seconds. Mitigated with <code>session.timeout.ms</code> and <code>heartbeat.interval.ms</code> tuning, but not fully resolved.</p>
           </div>
         </div>
@@ -267,7 +273,7 @@
       <nav class="footer-nav">
         <a href="index.html">Portfolio</a>
         <a href="index.html#experience">Experience</a>
-        <a href="index.html#connect">Contact</a>
+        <a href="index.html#contact">Contact</a>
       </nav>
     </div>
   </footer>

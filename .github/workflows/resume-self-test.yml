@@ -30,6 +30,9 @@ jobs:
       - name: Run portfolio HTML invariants self-test
         run: python scripts/test-portfolio.py --self-test
 
+      - name: Verify the claims register matches the page
+        run: python scripts/build-claims-register.py --check
+
       - name: Validate sidecar against schema
         if: hashFiles('.well-known/resume.json') != ''
         run: |
