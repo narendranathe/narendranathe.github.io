@@ -141,7 +141,7 @@
             </li>
           </ul>
           <p class="hero-stack">SQL Server &middot; CDC &middot; Azure DevOps &middot; Microsoft Fabric &middot; SSIS &middot; Python &middot; Kafka &middot; Spark &middot; AKS &middot; FastAPI</p>
-          <p class="hero-seeking">Looking for senior data engineering work on systems where the data is money-adjacent. No production AWS, Snowflake or Databricks; the work below is SQL Server, Azure and Kafka.</p>
+          <p class="hero-seeking">Open to senior data engineering roles. No production AWS, Snowflake or Databricks; the work below is SQL Server, Azure and Kafka.</p>
           <div class="hero-actions">
             <a href="mailto:edara.narendranath@gmail.com?subject=Re%3A%20Data%20Engineering%20-%20%5BCompany%20Name%5D" class="btn btn-primary">Email me</a>
           </div>
@@ -236,7 +236,7 @@
             </tbody>
           </table>
         </div>
-        <p class="sec-note" data-reveal>Each row cites the evidence record behind it. Ten of the claims on this site are independently checkable and the rest are my own account of my work; the <a href="/static/claims-register.csv" download>register</a> says which is which.</p>
+        <p class="sec-note" data-reveal>Ten claims on this page can be checked by a third party. The rest are my account of my own work; the <a href="/static/claims-register.csv" download>register</a> says which are which.</p>
       </div>
     </section>
 
@@ -350,19 +350,19 @@
           <article class="proj" data-gt-id="P-FRAUD" data-reveal>
             <h3 class="proj-name">Fraud detection platform</h3>
             <p class="proj-stack">Kafka, LightGBM, FastAPI, MLflow, Airflow, Prometheus, Grafana</p>
-            <p class="case-body">Scoring a payment stream means answering inside the request, not overnight in a batch. A Kafka producer feeds a partitioned topic, a consumer scores each transaction with LightGBM behind FastAPI, and predictions and latencies persist to PostgreSQL. MLflow tracks the model, Airflow the retraining, Prometheus and Grafana the runtime. P50 0.45ms, P95 0.89ms, P99 1.12ms at 100 TPS. Most of that 1.12ms is FastAPI overhead rather than the model: LightGBM itself takes microseconds, so the per-call DataFrame is what would go first if latency ever mattered. The data is synthetic, 100,000 generated transactions with 2,034 labeled fraud, running on one laptop.</p>
+            <p class="case-body">Scoring a payment stream means answering inside the request, not overnight in a batch. A Kafka producer feeds a partitioned topic, a consumer scores each transaction with LightGBM behind FastAPI, and predictions and latencies persist to PostgreSQL. P50 0.45ms, P95 0.89ms, P99 1.12ms at 100 TPS. Most of that 1.12ms is FastAPI overhead rather than the model: LightGBM itself takes microseconds, so the per-call DataFrame is what would go first if latency ever mattered. The data is synthetic, 100,000 generated transactions with 2,034 labeled fraud, running on one laptop.</p>
             <p class="proj-links"><a href="https://github.com/narendranathe/fraud-detection-ml-platform" target="_blank" rel="noreferrer">Source</a> <a href="fraud-detection.html">Notes</a></p>
           </article>
 
           <article class="proj" data-gt-id="P-RISK" data-reveal>
             <h3 class="proj-name">Portfolio risk analytics</h3>
             <p class="proj-stack">Kafka, Spark Structured Streaming, Delta, FastAPI, Streamlit</p>
-            <p class="case-body">Overnight VaR means a portfolio manager who moves a position intraday has no idea what their risk looks like until morning. Market ticks come in through Kafka, Spark Structured Streaming aggregates them on 5-second tumbling windows behind a 10-second watermark, and a Delta writer lands the bronze layer. FastAPI computes historical-simulation VaR at 95% and 99%. Historical simulation over a 30-day window rather than a parametric model, because equity returns are fat-tailed and a normal assumption understates the tail. Component VaR is computed per position, so the dashboard can name which holding is driving portfolio risk. On a fresh checkout the API falls back to a seeded sample set, which is worth knowing before reading a number off it.</p>
+            <p class="case-body">Overnight VaR means a portfolio manager who moves a position intraday has no idea what their risk looks like until morning. Market ticks come in through Kafka, Spark Structured Streaming aggregates them on 5-second tumbling windows behind a 10-second watermark, and a Delta writer lands the bronze layer. FastAPI computes VaR at 95% and 99% by historical simulation over a 30-day window rather than a parametric model, because equity returns are fat-tailed and a normal assumption understates the tail. Component VaR is computed per position, so the dashboard can name which holding is driving portfolio risk. On a fresh checkout the API falls back to a seeded sample set, which is worth knowing before reading a number off it.</p>
             <p class="proj-links"><a href="https://github.com/narendranathe/portfolio-risk-analytics" target="_blank" rel="noreferrer">Source</a> <a href="portfolio-risk.html">Notes</a></p>
           </article>
 
         </div>
-        <p class="sec-note" data-reveal>Also public: <a href="https://github.com/narendranathe/fintune" target="_blank" rel="noreferrer">FinTune</a>, a Mistral-7B QLoRA service with PII redaction and drift monitoring, and <a href="https://github.com/narendranathe/job-scout" target="_blank" rel="noreferrer">JobScout</a>, which tracks 153 company career pages across six ATS APIs. <a href="https://github.com/narendranathe/autoapply-ai" target="_blank" rel="noreferrer">AutoApply AI</a> is a private deployment, so its numbers are my word rather than something you can open.</p>
+        <p class="sec-note" data-reveal>Also public: <a href="https://github.com/narendranathe/fintune" target="_blank" rel="noreferrer">FinTune</a>, a Mistral-7B QLoRA service with PII redaction and drift monitoring, and <a href="https://github.com/narendranathe/job-scout" target="_blank" rel="noreferrer">JobScout</a>, which tracks 153 company career pages across six ATS APIs. <a href="https://github.com/narendranathe/autoapply-ai" target="_blank" rel="noreferrer">AutoApply AI</a> is a private deployment with nothing public to open.</p>
       </div>
     </section>
 
@@ -380,7 +380,7 @@
                 <p class="role-org">C2FO &middot; Kansas City, KS</p>
               </div>
               <div class="case" data-gt-id="C-SQL, C-PRD, C-CSPO">
-                <p class="case-body">A preferred-offers tool needed a specification that product, engineering and operations would read the same way. The SQL work went across transaction and user behavior on a B2B working-capital platform, and the requirements came out of interviews on both sides. Resource-allocation time dropped 50%. <span class="claim-status">self-reported, no supporting document</span></p>
+                <p class="case-body">A preferred-offers tool needed a specification that product, engineering and operations would read the same way. The SQL work went across transaction and user behavior on a B2B working-capital platform, and the requirements came out of interviews on both sides.</p>
               </div>
             </div>
           </article>
@@ -406,7 +406,7 @@
                 <p class="role-org">Zomato &middot; Hyderabad, India</p>
               </div>
               <div class="case" data-gt-id="Z-COMP, Z-ES, Z-CAMPAIGN, Z-DASH, Z-SEARCH, Z-PNL, Z-GROWTH, Z-LOYALTY">
-                <p class="case-body">Pricing ran on week-old competitor data and support answered the same questions every day. The competitor analytics platform was built with the refresh cadence to make pricing current, 100K+ internal documents went into an Elasticsearch index, and the campaign funnel got instrumented with A/B tests on discount strategy. On search I supplied and evaluated ranking signals from the analyst side and did not train the models. Market share up 9% in contested metros, support desk volume down about 80%, campaign revenue up 200%. The portfolio also lost money on every order, and rebalancing discount sharing against ad-revenue mix moved contribution from &minus;&#8377;18 to +&#8377;2 across 300 restaurants.</p>
+                <p class="case-body">Pricing ran on week-old competitor data and support answered the same questions every day. The competitor analytics platform was built with the refresh cadence to make pricing current, 100K+ internal documents went into an Elasticsearch index, and the campaign funnel got instrumented with A/B tests on discount strategy. On search I supplied and evaluated ranking signals from the analyst side and did not train the models. The portfolio lost money on every order, and rebalancing discount sharing against ad-revenue mix moved contribution from &minus;&#8377;18 to +&#8377;2 across 300 restaurants.</p>
               </div>
             </div>
           </article>
@@ -430,10 +430,6 @@
       <div class="container">
         <h2 class="sec-h" data-reveal>References</h2>
         <div class="refs">
-          <figure class="ref" data-reveal>
-            <blockquote>Naren is a great talent in the product ownership space. He is a critical thinker and understands how to analyze a problem, and convert that problem into a tangible requirements doc.</blockquote>
-            <figcaption><a href="https://www.linkedin.com/in/richard-enright-mba/" target="_blank" rel="noreferrer" data-hover-preview="/static/preview-linkedin.png" data-hover-title="LinkedIn - Richard Enright" data-hover-caption="Lead Product Manager, Harness">Richard Enright</a>, Lead Product Manager, Harness</figcaption>
-          </figure>
           <figure class="ref" data-reveal>
             <blockquote>I had the pleasure of working closely with Narendranath for 3+ years and can confidently attest to his outstanding performance and exceptional work ethic. He had a keen eye for solving business problems by identifying trends to improve the overall business.</blockquote>
             <figcaption><a href="https://www.linkedin.com/in/snehal-moni/" target="_blank" rel="noreferrer" data-hover-preview="/static/preview-linkedin.png" data-hover-title="LinkedIn - Snehal Moni" data-hover-caption="Operations and Policy Analyst, Oregon Health Authority">Snehal Moni</a>, Operations and Policy Analyst, Oregon Health Authority</figcaption>
