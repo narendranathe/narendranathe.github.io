@@ -296,6 +296,12 @@ PUBLIC_SURFACES: tuple[str, ...] = (
     "fraud-detection.html",
     "static/site.webmanifest",
     "content/posts/repo-context-hooks-supply-chain.html",
+    # Served from /static/, so a reviewer can fetch it whether or not the
+    # page links to it. It was missing from this list, and the generated
+    # evidence note for P-RISK recited "15K+ records / 47.8 TPS / sub-5s"
+    # inside a sentence explaining that those figures are blocked, which
+    # published them. Caught on the pre-merge scan, not by this guard.
+    "static/claims-register.csv",
 )
 
 

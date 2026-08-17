@@ -89,7 +89,7 @@ EVIDENCE: dict[str, tuple[str, str, str]] = {
     "P-FINTUNE": ("FinTune: QLoRA 4-bit NF4, PII redaction, KL-divergence drift monitoring, 3-state breaker, 35+ tests across 7 modules", "DOC", "github.com/narendranathe/fintune tests/ + README"),
     "P-JOBSCOUT": ("JobScout: 153 companies across 6 ATS integrations plus Playwright fallback, Flask API, SQLite WAL", "DOC", "github.com/narendranathe/job-scout backend/config/companies.py"),
     "P-AUTOAPPLY": ("AutoApply AI: 40+ endpoints, 11 ATS adapters, 6 LLM providers, 355 backend tests, private Fly.io deployment", "STATED", "Private repo; the page says plainly that these are not checkable"),
-    "P-RISK": ("Portfolio Risk Analytics: Kafka to Spark Structured Streaming on 5s tumbling windows with a 10s watermark, Delta bronze layer, FastAPI historical-simulation VaR at 95% and 99%", "DOC", "github.com/narendranathe/portfolio-risk-analytics src/. Architecture and method only. The 15K+ records / 47.8 TPS / sub-5s figures stay BLOCKED and absent, and the seeded API fallback is disclosed on the page."),
+    "P-RISK": ("Portfolio Risk Analytics: Kafka to Spark Structured Streaming on 5s tumbling windows with a 10s watermark, Delta bronze layer, FastAPI historical-simulation VaR at 95% and 99%", "DOC", "github.com/narendranathe/portfolio-risk-analytics src/. Architecture and method only. The throughput and latency figures are withheld under P-RISK-METRICS and absent from the page; the seeded API fallback is disclosed there."),
 }
 
 # Present in GROUND_TRUTH.md but deliberately absent from the page.
