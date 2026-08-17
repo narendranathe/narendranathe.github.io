@@ -1701,6 +1701,45 @@ def test_public_identity_surfaces_use_canonical_title() -> None:
     )
 
 
+def test_systems_table_reflows_on_narrow_screens() -> None:
+    """The systems table must stack into blocks below 700px, and nothing
+    after that block may reimpose a min-width on it.
+
+    The bug this guards: table.ps carries min-width so its four columns
+    stay readable on a wide screen, and it sits inside .scroll-x. That
+    combination means the PAGE never overflows, so a document-level
+    scrollWidth check passes while the table itself is clipped. On a 390px
+    phone the NOW and HOW columns were off-screen, so the first evidence a
+    reader met was "CDC ETL runtime / 30 min" with no after value, which
+    reads as the current state rather than the old one.
+
+    It regressed once already: a later `@media (max-width: 860px)` block
+    redeclared `table.ps { min-width: 520px }`, and at equal specificity
+    the later source position won. Hence the ordering assertion.
+    """
+    css = STYLES_CSS.read_text(encoding="utf-8")
+
+    reflow_start = css.find("@media (max-width: 700px)")
+    assert reflow_start != -1, (
+        "styles.css lost the @media (max-width: 700px) block that stacks "
+        "the systems table"
+    )
+    reflow_end = css.find("}\n\n", reflow_start)
+    block = css[reflow_start:reflow_end if reflow_end != -1 else len(css)]
+    for rule in ("table.ps { display: block", "table.ps thead { display: none",
+                 "table.ps tbody, table.ps tr { display: block"):
+        assert rule in block, f"narrow-screen table reflow missing: {rule!r}"
+
+    # Any min-width on table.ps after the reflow block wins by source order
+    # and puts the table back over the viewport edge.
+    tail = css[reflow_end if reflow_end != -1 else len(css):]
+    offenders = re.findall(r"table\.ps\s*\{[^}]*min-width[^}]*\}", tail)
+    assert not offenders, (
+        "a rule after the 700px reflow block sets min-width on table.ps, "
+        "which reintroduces the clipped-column bug:\n  " + "\n  ".join(offenders)
+    )
+
+
 # ------- Test runner -------
 TESTS = [
     test_index_html_exists,
@@ -1782,6 +1821,7 @@ TESTS = [
     test_public_identity_surfaces_use_canonical_title,
     # ----- Link verification (issue #43) -----
     test_all_local_links_resolve,
+    test_systems_table_reflows_on_narrow_screens,
 ]
 
 

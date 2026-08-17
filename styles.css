@@ -504,6 +504,35 @@ table.ps tbody td {
 }
 .ps-mech { min-width: 26ch; }
 
+/* A 640px-wide table inside an overflow-x container does not overflow the
+   PAGE, so a page-level overflow check passes while the table itself is
+   clipped. On a 390px phone that hid the NOW and HOW columns: a reader at
+   the six-second mark saw "CDC ETL runtime / 30 min" and no after value,
+   which reads as the current state rather than the old one. Horizontal
+   scroll is also the interaction people are least likely to discover.
+   Below 700px each row becomes a block instead: subject, then
+   before/after on one line, then the mechanism. */
+@media (max-width: 700px) {
+  .scroll-x { overflow-x: visible; }
+  table.ps { display: block; min-width: 0; font-size: 0.86rem; }
+  table.ps thead { display: none; }
+  table.ps tbody, table.ps tr { display: block; }
+  table.ps tr {
+    padding: 0.9rem 0; border-bottom: 1px solid var(--border-soft);
+  }
+  table.ps tr:last-child { border-bottom: 0; }
+  table.ps tbody th, table.ps tbody td {
+    display: block; padding: 0; border: 0; white-space: normal;
+  }
+  table.ps tbody th { margin-bottom: 0.3rem; }
+  /* Specificity has to beat `table.ps tbody td` above, hence td.class. */
+  table.ps tbody td.ps-before, table.ps tbody td.ps-now { display: inline; }
+  table.ps tbody td.ps-now::before {
+    content: " \2192 "; color: var(--fg-muted); font-family: inherit;
+  }
+  table.ps tbody td.ps-mech { margin-top: 0.35rem; min-width: 0; }
+}
+
 /* --- roles --- */
 .roles { display: flex; flex-direction: column; gap: 2.75rem; }
 .role { display: grid; grid-template-columns: 10rem 1fr; gap: 0 2rem; }
@@ -570,7 +599,12 @@ table.ps tbody td {
   .refs { grid-template-columns: 1fr; gap: 1.5rem; }
   .hero-stack { font-size: 0.7rem; line-height: 1.8; margin-bottom: 0.7rem; }
   .hero-seeking { font-size: 0.82rem; margin-bottom: 0.85rem; }
-  table.ps { min-width: 520px; font-size: 0.83rem; }
+  /* font-size only. Do NOT set min-width here: this block sits after the
+     700px block that turns the table into stacked blocks, so at equal
+     specificity a min-width declared here wins by source order and puts
+     the table back over the viewport edge. That is exactly the bug that
+     hid the NOW and HOW columns on a phone. */
+  table.ps { font-size: 0.83rem; }
 }
 
 /* ============================================================
