@@ -335,7 +335,38 @@
       </div>
     </section>
 
-    <section class="section" id="before">
+    <section class="section" id="projects">
+      <div class="container">
+        <h2 class="sec-h" data-reveal>Projects</h2>
+        <div class="projs">
+
+          <article class="proj" data-gt-id="P-HOOKS" data-reveal>
+            <h3 class="proj-name">repo-context-hooks</h3>
+            <p class="proj-stack">Python, GitHub Actions, Sigstore, CodeQL, PyPI</p>
+            <p class="case-body">Pre-commit and post-commit hooks that snapshot repo context for an LLM agent between sessions, standard library only at runtime. The release path is where most of the work went: Sigstore-signed publishing through an OIDC Trusted Publisher, CodeQL on every pull request, Dependabot on the Actions dependencies. 330+ tests at v1.0, including Hypothesis property tests over sampling boundaries and hook dedup. Everything here is checkable without me: <code>pip install repo-context-hooks</code>, then read the signature, the analysis runs, and the empty dependencies array.</p>
+            <p class="proj-links"><a href="https://pypi.org/project/repo-context-hooks/" target="_blank" rel="noreferrer">PyPI</a> <a href="https://github.com/narendranathe/repo-context-hooks" target="_blank" rel="noreferrer">Source</a> <a href="content/posts/repo-context-hooks-supply-chain.html">Write-up</a></p>
+          </article>
+
+          <article class="proj" data-gt-id="P-FRAUD" data-reveal>
+            <h3 class="proj-name">Fraud detection platform</h3>
+            <p class="proj-stack">Kafka, LightGBM, FastAPI, MLflow, Airflow, Prometheus, Grafana</p>
+            <p class="case-body">Scoring a payment stream means answering inside the request, not overnight in a batch. A Kafka producer feeds a partitioned topic, a consumer scores each transaction with LightGBM behind FastAPI, and predictions and latencies persist to PostgreSQL. MLflow tracks the model, Airflow the retraining, Prometheus and Grafana the runtime. P50 0.45ms, P95 0.89ms, P99 1.12ms at 100 TPS. Most of that 1.12ms is FastAPI overhead rather than the model: LightGBM itself takes microseconds, so the per-call DataFrame is what would go first if latency ever mattered. The data is synthetic, 100,000 generated transactions with 2,034 labeled fraud, running on one laptop.</p>
+            <p class="proj-links"><a href="https://github.com/narendranathe/fraud-detection-ml-platform" target="_blank" rel="noreferrer">Source</a> <a href="fraud-detection.html">Notes</a></p>
+          </article>
+
+          <article class="proj" data-gt-id="P-RISK" data-reveal>
+            <h3 class="proj-name">Portfolio risk analytics</h3>
+            <p class="proj-stack">Kafka, Spark Structured Streaming, Delta, FastAPI, Streamlit</p>
+            <p class="case-body">Overnight VaR means a portfolio manager who moves a position intraday has no idea what their risk looks like until morning. Market ticks come in through Kafka, Spark Structured Streaming aggregates them on 5-second tumbling windows behind a 10-second watermark, and a Delta writer lands the bronze layer. FastAPI computes historical-simulation VaR at 95% and 99%. Historical simulation over a 30-day window rather than a parametric model, because equity returns are fat-tailed and a normal assumption understates the tail. Component VaR is computed per position, so the dashboard can name which holding is driving portfolio risk. On a fresh checkout the API falls back to a seeded sample set, which is worth knowing before reading a number off it.</p>
+            <p class="proj-links"><a href="https://github.com/narendranathe/portfolio-risk-analytics" target="_blank" rel="noreferrer">Source</a> <a href="portfolio-risk.html">Notes</a></p>
+          </article>
+
+        </div>
+        <p class="sec-note" data-reveal>Also public: <a href="https://github.com/narendranathe/fintune" target="_blank" rel="noreferrer">FinTune</a>, a Mistral-7B QLoRA service with PII redaction and drift monitoring, and <a href="https://github.com/narendranathe/job-scout" target="_blank" rel="noreferrer">JobScout</a>, which tracks 153 company career pages across six ATS APIs. <a href="https://github.com/narendranathe/autoapply-ai" target="_blank" rel="noreferrer">AutoApply AI</a> is a private deployment, so its numbers are my word rather than something you can open.</p>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="before">
       <div class="container">
         <h2 class="sec-h" data-reveal>Before Data Engineering</h2>
         <p class="sec-note sec-note--lead" data-reveal>Three years answering business questions with data, then an MS in Information Science and Technology at Missouri S&amp;T, GPA 4.0, Jan 2022 to Dec 2023.</p>
@@ -381,37 +412,6 @@
           </article>
 
         </div>
-      </div>
-    </section>
-
-    <section class="section section-alt" id="projects">
-      <div class="container">
-        <h2 class="sec-h" data-reveal>Projects</h2>
-        <div class="projs">
-
-          <article class="proj" data-gt-id="P-HOOKS" data-reveal>
-            <h3 class="proj-name">repo-context-hooks</h3>
-            <p class="proj-stack">Python, GitHub Actions, Sigstore, CodeQL, PyPI</p>
-            <p class="case-body">Pre-commit and post-commit hooks that snapshot repo context for an LLM agent between sessions, standard library only at runtime. The release path is where most of the work went: Sigstore-signed publishing through an OIDC Trusted Publisher, CodeQL on every pull request, Dependabot on the Actions dependencies. 330+ tests at v1.0, including Hypothesis property tests over sampling boundaries and hook dedup. Everything here is checkable without me: <code>pip install repo-context-hooks</code>, then read the signature, the analysis runs, and the empty dependencies array.</p>
-            <p class="proj-links"><a href="https://pypi.org/project/repo-context-hooks/" target="_blank" rel="noreferrer">PyPI</a> <a href="https://github.com/narendranathe/repo-context-hooks" target="_blank" rel="noreferrer">Source</a> <a href="content/posts/repo-context-hooks-supply-chain.html">Write-up</a></p>
-          </article>
-
-          <article class="proj" data-gt-id="P-FRAUD" data-reveal>
-            <h3 class="proj-name">Fraud detection platform</h3>
-            <p class="proj-stack">Kafka, LightGBM, FastAPI, MLflow, Airflow, Prometheus, Grafana</p>
-            <p class="case-body">Scoring a payment stream means answering inside the request, not overnight in a batch. A Kafka producer feeds a partitioned topic, a consumer scores each transaction with LightGBM behind FastAPI, and predictions and latencies persist to PostgreSQL. MLflow tracks the model, Airflow the retraining, Prometheus and Grafana the runtime. P50 0.45ms, P95 0.89ms, P99 1.12ms at 100 TPS. Most of that 1.12ms is FastAPI overhead rather than the model: LightGBM itself takes microseconds, so the per-call DataFrame is what would go first if latency ever mattered. The data is synthetic, 100,000 generated transactions with 2,034 labeled fraud, running on one laptop.</p>
-            <p class="proj-links"><a href="https://github.com/narendranathe/fraud-detection-ml-platform" target="_blank" rel="noreferrer">Source</a> <a href="fraud-detection.html">Notes</a></p>
-          </article>
-
-          <article class="proj" data-gt-id="P-RISK" data-reveal>
-            <h3 class="proj-name">Portfolio risk analytics</h3>
-            <p class="proj-stack">Kafka, Spark Structured Streaming, Delta, FastAPI, Streamlit</p>
-            <p class="case-body">Overnight VaR means a portfolio manager who moves a position intraday has no idea what their risk looks like until morning. Market ticks come in through Kafka, Spark Structured Streaming aggregates them on 5-second tumbling windows behind a 10-second watermark, and a Delta writer lands the bronze layer. FastAPI computes historical-simulation VaR at 95% and 99%. Historical simulation over a 30-day window rather than a parametric model, because equity returns are fat-tailed and a normal assumption understates the tail. Component VaR is computed per position, so the dashboard can name which holding is driving portfolio risk. On a fresh checkout the API falls back to a seeded sample set, which is worth knowing before reading a number off it.</p>
-            <p class="proj-links"><a href="https://github.com/narendranathe/portfolio-risk-analytics" target="_blank" rel="noreferrer">Source</a> <a href="portfolio-risk.html">Notes</a></p>
-          </article>
-
-        </div>
-        <p class="sec-note" data-reveal>Also public: <a href="https://github.com/narendranathe/fintune" target="_blank" rel="noreferrer">FinTune</a>, a Mistral-7B QLoRA service with PII redaction and drift monitoring, and <a href="https://github.com/narendranathe/job-scout" target="_blank" rel="noreferrer">JobScout</a>, which tracks 153 company career pages across six ATS APIs. <a href="https://github.com/narendranathe/autoapply-ai" target="_blank" rel="noreferrer">AutoApply AI</a> is a private deployment, so its numbers are my word rather than something you can open.</p>
       </div>
     </section>
 
