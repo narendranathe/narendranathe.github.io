@@ -248,14 +248,14 @@ button { font-family: inherit; cursor: pointer; }
   color: var(--accent); letter-spacing: 0.12em;
   text-transform: uppercase; margin-bottom: 0.85rem;
 }
+/* Was serif italic behind a 3px accent rail. That is a pull-quote
+   treatment, and quoting your own tagline back at the reader is the
+   single most self-regarding thing a personal site can do. It is a
+   sentence; it is now set as one. */
 .hero-tagline {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.1rem, 2vw, 1.3rem);
-  font-weight: 400; font-style: italic;
-  line-height: 1.5; color: var(--fg);
-  margin-bottom: 1rem; max-width: 520px;
-  border-left: 3px solid var(--accent-warm);
-  padding-left: 1rem;
+  font-size: clamp(1.02rem, 1.6vw, 1.15rem);
+  line-height: 1.6; color: var(--fg);
+  margin-bottom: 1.4rem; max-width: 54ch;
 }
 .hero-brief {
   font-size: 0.97rem; line-height: 1.75; color: var(--fg-soft);
@@ -367,14 +367,16 @@ button { font-family: inherit; cursor: pointer; }
   .profile-photo { transform: scale(2.9); transform-origin: 50% 17%; }
   .hero-name { font-size: 2rem; margin-bottom: 0.4rem; }
   .hero-role { font-size: 0.72rem; letter-spacing: 0.09em; margin-bottom: 0.5rem; }
-  .hero-tagline { font-size: 1rem; line-height: 1.45; margin-bottom: 0.9rem; }
+  /* margin trimmed 0.9 -> 0.65rem: dropping the serif italic for plain
+     body type cost the tagline a wrap on a 390px screen, and the hero
+     has to clear 844px. */
+  .hero-tagline { font-size: 1rem; line-height: 1.45; margin-bottom: 0.65rem; }
   .hero-proof { gap: 0.6rem; margin-bottom: 1.1rem; }
   .hero-proof li { font-size: 0.87rem; line-height: 1.5; }
-  /* The hero stat rail restates the ledger, which on mobile is now the
-     very next thing on screen. Hiding it here is what buys the hero its
-     fold: the tiles cost ~200px to say something the reader is about to
-     read anyway. Kept in the markup for desktop and for the register. */
-  .metric-grid { display: none; }
+  /* .hero-stack / .hero-seeking mobile margins are set in the later
+     mobile block near their base rules. Setting them here would lose:
+     the base declarations sit further down the file at equal
+     specificity, so source order beats this block. */
   /* Section chrome is desktop-sized. On a phone it stands between the
      hero and the first number, so it gets trimmed rather than scrolled
      past. */
@@ -423,6 +425,153 @@ button { font-family: inherit; cursor: pointer; }
 }
 .contact-secondary a:hover, .contact-secondary a:focus-visible { color: var(--accent); }
 .contact-secondary i { color: var(--accent-warm); font-size: 0.85rem; }
+
+
+/* ============================================================
+   PORTFOLIO LAYOUT, 2026-08 rebuild
+   Eight sections. Headings name subjects. Numbers go in a table
+   because a table is what compares numbers; prose goes in prose.
+   Deliberately not cards: a bordered box around every paragraph
+   reads as a deck, and this is a personal site.
+   ============================================================ */
+.sec-h {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.35rem, 2.6vw, 1.7rem);
+  font-weight: 500; letter-spacing: -0.01em;
+  color: var(--fg);
+  margin-bottom: 1.6rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--border);
+}
+.sec-note {
+  font-size: 0.86rem; line-height: 1.7; color: var(--fg-muted);
+  max-width: 74ch; margin-top: 1.4rem;
+}
+.sec-note--lead { margin-top: -0.6rem; margin-bottom: 1.8rem; }
+.sec-note a { color: var(--accent); }
+
+/* --- hero additions --- */
+.hero-stack {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.73rem; line-height: 1.9; color: var(--fg-muted);
+  max-width: 52ch; margin-bottom: 0.9rem;
+}
+/* Rail removed with the tagline's. Two bordered blocks in one hero is the
+   deck pattern, and neither sentence needs a frame to be read. */
+.hero-seeking {
+  font-size: 0.85rem; line-height: 1.65; color: var(--fg-soft);
+  max-width: 54ch; margin-bottom: 1.4rem;
+}
+
+/* --- production systems table --- */
+.scroll-x { overflow-x: auto; }
+table.ps {
+  border-collapse: collapse; width: 100%; min-width: 640px;
+  font-size: 0.88rem;
+}
+table.ps thead th {
+  text-align: left; padding: 0 0.9rem 0.55rem 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.11em; text-transform: uppercase;
+  color: var(--fg-muted); font-weight: 500;
+  border-bottom: 1px solid var(--border);
+}
+table.ps tbody th {
+  text-align: left; font-weight: 600; color: var(--fg);
+  padding: 0.9rem 0.9rem 0.9rem 0; vertical-align: top;
+  border-bottom: 1px solid var(--border-soft);
+  white-space: nowrap;
+}
+table.ps tbody td {
+  padding: 0.9rem 0.9rem 0.9rem 0; vertical-align: top;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--fg-soft); line-height: 1.6;
+}
+.ps-where {
+  display: block; font-weight: 400; font-size: 0.7rem;
+  color: var(--fg-muted); margin-top: 0.1rem;
+}
+/* No strikethrough. The column header already says "before", and a line
+   through "1 hr, 20+ times a day" costs legibility to restate it. The
+   muted colour against .ps-now's accent carries the contrast. */
+.ps-before {
+  color: var(--fg-muted); white-space: nowrap;
+}
+.ps-now {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent); font-weight: 500; white-space: nowrap;
+}
+.ps-mech { min-width: 26ch; }
+
+/* --- roles --- */
+.roles { display: flex; flex-direction: column; gap: 2.75rem; }
+.role { display: grid; grid-template-columns: 10rem 1fr; gap: 0 2rem; }
+.role-when {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; color: var(--fg-muted); line-height: 1.6;
+  padding-top: 0.35rem;
+}
+.role-head { margin-bottom: 1.1rem; }
+.role-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; font-weight: 500; color: var(--fg);
+}
+.role-org { font-size: 0.86rem; color: var(--fg-soft); margin-top: 0.1rem; }
+.role-what .case + .case { margin-top: 1.5rem; padding-top: 1.4rem; border-top: 1px solid var(--border-soft); }
+.role-what .case:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+
+/* --- projects --- */
+.projs { display: flex; flex-direction: column; gap: 2.25rem; }
+.proj { max-width: 78ch; }
+.proj-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 500; color: var(--fg);
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.6rem;
+}
+.proj-gt, .role-gt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 0.06em; color: var(--accent-warm);
+  border-bottom: 1px dotted var(--border); cursor: help;
+}
+.proj-stack {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; color: var(--fg-muted);
+  margin: 0.3rem 0 0.7rem;
+}
+.proj-links { display: flex; flex-wrap: wrap; gap: 1.1rem; margin-top: 0.7rem; }
+.proj-links a { font-size: 0.85rem; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+.proj-links a:hover, .proj-links a:focus-visible { border-bottom-color: var(--accent); }
+
+/* --- research, references, contact --- */
+.creds { display: flex; flex-direction: column; gap: 0.9rem; max-width: 78ch; }
+.creds p { font-size: 0.9rem; line-height: 1.75; color: var(--fg-soft); }
+.creds a { color: var(--accent); }
+
+.refs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+.ref { margin: 0; }
+.ref blockquote {
+  margin: 0 0 0.7rem; padding-left: 0.9rem;
+  border-left: 2px solid var(--border);
+  font-size: 0.86rem; line-height: 1.7; color: var(--fg-soft);
+}
+.ref figcaption { font-size: 0.78rem; color: var(--fg-muted); padding-left: 0.9rem; }
+.ref figcaption a { color: var(--accent); text-decoration: none; }
+
+.contact { max-width: 62ch; display: flex; flex-direction: column; gap: 0.9rem; }
+.contact-lead { font-size: 1.02rem; line-height: 1.65; color: var(--fg); }
+.contact-links { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-top: 0.4rem; }
+.contact-links a { font-size: 0.88rem; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+.contact-links a:hover, .contact-links a:focus-visible { border-bottom-color: var(--accent); }
+
+@media (max-width: 860px) {
+  .role { grid-template-columns: 1fr; gap: 0.35rem; }
+  .role-when { padding-top: 0; }
+  .refs { grid-template-columns: 1fr; gap: 1.5rem; }
+  .hero-stack { font-size: 0.7rem; line-height: 1.8; margin-bottom: 0.7rem; }
+  .hero-seeking { font-size: 0.82rem; margin-bottom: 0.85rem; }
+  table.ps { min-width: 520px; font-size: 0.83rem; }
+}
 
 /* ============================================================
    VERIFICATION AND CLAIMS REGISTER

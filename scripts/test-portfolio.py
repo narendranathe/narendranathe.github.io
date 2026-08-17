@@ -34,37 +34,45 @@ SUBSTACK_PREVIEW_PNG = REPO_ROOT / "static" / "preview-substack.png"
 SKILLS_DIR = REPO_ROOT / "static" / "skills"
 SKILLS_PATTERN_DOC = REPO_ROOT / "docs" / "skills-grid-pattern.md"
 
-# #71 skills-grid budgets
-SKILLS_EXPECTED_CATEGORIES = 6
-SKILLS_MIN_ICONS_PER_CATEGORY = 4
-SKILLS_MAX_ICONS_PER_CATEGORY = 6
+# #71 skills-grid byte budgets. The 32-tile grid itself was cut from
+# index.html on 2026-08-17 (a wall of logos reads as keyword padding, not
+# as evidence), so the structural assertions that policed its shape are
+# gone. The byte budgets stay: static/skills/ is still committed and still
+# referenced by docs/skills-grid-pattern.md, and an oversized SVG landing
+# in that directory should still fail loudly.
 SKILLS_MAX_ICON_BYTES = 6 * 1024
 SKILLS_MAX_TOTAL_BYTES = 60 * 1024
 
 # #70 hover-preview budget: 30 KB per asset matches #67's resume-preview budget.
 HOVER_PREVIEW_BUDGET_BYTES = 30 * 1024
-# Minimum trigger count: 4 resume + 6 LinkedIn (3 testimonials + peer-CTA + contact + footer)
-# + 1 GitHub + 7 Substack (3 writing CTAs + hero CTA + peer-CTA + contact + footer) = 18.
-# We use 14 as the floor to allow minor markup churn without test thrash.
-HOVER_PREVIEW_MIN_TRIGGERS = 14
+# Floors, not targets. The home page went from 12 sections to 8 on
+# 2026-08-17, which removed link sites rather than previews: the writing
+# CTAs, the peer CTA and the testimonial author profiles all went. Live
+# counts after that trim are 3 resume + 5 LinkedIn + 1 GitHub + 2 Substack
+# = 11. The floors below sit at the live counts so a preview silently
+# losing its annotation still fails.
+HOVER_PREVIEW_MIN_TRIGGERS = 11
 # Was 4 (header, mobile menu, hero, contact). The hero's resume button
 # was removed on 2026-08-16 so the first screen carries exactly one call
 # to action; header, mobile menu and contact remain.
 HOVER_PREVIEW_MIN_RESUME_TRIGGERS = 3
 HOVER_PREVIEW_MIN_LINKEDIN_TRIGGERS = 5
-HOVER_PREVIEW_MIN_SUBSTACK_TRIGGERS = 5
+# Was 5, when three writing CTAs plus a hero follow button pointed at
+# Substack. The rebuild kept one link in Research and one in the footer.
+HOVER_PREVIEW_MIN_SUBSTACK_TRIGGERS = 2
 
 REQUIRED_POST_SECTIONS = ("problem", "constraints", "design", "tradeoffs", "outcome")
 POST_MIN_WORDS = 1500
 POST_MAX_WORDS = 2500
 
-# Number of impact strips expected on the home page. Five flagship cards
-# carry a strip after the v3 trim: AutoApply AI, tailor-resume, JobScout
-# (system-grid) + Azure Platform Engineering, repo-context-hooks
-# (supporting-row). Cards with no defensible quantified impact (Fraud
-# Detection, Portfolio Risk, FinTune) intentionally have no strip — see
-# docs/impact-strip-pattern.md "no strip is better than a weak strip."
-EXPECTED_STRIP_COUNT = 5
+# Impact strips expected on the home page: none. Five cards carried one
+# until the 2026-08-17 rebuild, which put the same numbers into sentences
+# and a comparison table instead. A row of large stat badges reads as a
+# pitch deck, and a badge divorced from its baseline is unverifiable by the
+# reader. The remaining strip assertions below still run against whatever
+# the parser finds, so they hold if a strip ever comes back; this one is
+# the guard that says the home page ships without them.
+EXPECTED_STRIP_COUNT = 0
 
 
 # ------- HTML parsing helpers -------
@@ -298,8 +306,8 @@ def test_styles_css_has_impact_strip_module() -> None:
 
 def test_strip_count_matches_expected(strips: list[dict]) -> None:
     assert len(strips) == EXPECTED_STRIP_COUNT, (
-        f"expected {EXPECTED_STRIP_COUNT} impact strips on index.html "
-        f"after v3 trim, found {len(strips)}"
+        f"expected {EXPECTED_STRIP_COUNT} impact strips on index.html, "
+        f"found {len(strips)} — see the EXPECTED_STRIP_COUNT comment"
     )
 
 
@@ -393,8 +401,12 @@ def test_hero_claims_carry_ground_truth_ids(html: str) -> None:
         + "\n  ".join(c[:120] for c in unsourced)
     )
 
+    # Metric tiles were removed from the hero on 2026-08-17. The four of
+    # them restated the three chips above and the first rows of the systems
+    # table below, and one converted 5,000 hours into a dollar figure using
+    # an hourly rate no source provides. The rule they were here to enforce
+    # still applies to any that come back: cite the evidence or fail.
     tiles = re.findall(r'<div class="metric-item"[^>]*>', hero)
-    assert tiles, "no metric tiles found in hero"
     untiled = [t for t in tiles if "data-gt-id=" not in t]
     assert not untiled, (
         "hero metric tile with no GROUND_TRUTH id:\n  "
@@ -983,9 +995,14 @@ def test_index_links_to_supply_chain_post(html: str) -> None:
 
 
 def test_index_has_architecture_section(html: str) -> None:
-    assert 'id="architecture"' in html, (
-        "index.html missing the Architecture & Write-Ups section "
-        "(issue #56 acceptance criteria)."
+    """Issue #56 asked for a place on the home page where written work is
+    reachable. That was <section id="architecture">; the 2026-08-17 rebuild
+    folded it into <section id="research">, which carries the write-ups
+    alongside the published paper and the certifications. The acceptance
+    criterion is that the destination exists, not that it keeps the old id."""
+    assert 'id="research"' in html, (
+        "index.html missing the section that carries written work "
+        "(issue #56 acceptance criteria, now served by id=\"research\")."
     )
 
 
@@ -1000,25 +1017,24 @@ SYSTEM_DIAGRAM_PAGE_BUDGET_BYTES = 30 * 1024  # 30 KB
 
 
 def test_index_has_two_system_diagrams(html: str) -> None:
-    """Issue #58: D1 (AutoApply AI) + D2 (Portfolio-Risk) inline SVGs.
-
-    Both diagrams live in the home index.html (D1 inside the AutoApply
-    arch-expand, D2 inside the Portfolio Risk Analytics ml-project-entry).
-    There is no separate content/posts/<slug>.html for either project,
-    so the home page is the single target location for both diagrams."""
+    """Issue #58 put two inline SVGs on the home page: D1 (AutoApply AI) and
+    D2 (Portfolio-Risk). The 2026-08-17 rebuild dropped both rather than
+    relocating them, and neither is on a project page — D1 diagrammed a
+    private system a reader cannot open, and D2's topology described a
+    console sink, which is no longer what that project does. Redrawing D2
+    against the current code is open work, tracked outside this suite.
+    What the home page keeps is the diagram for the paid work: the Azure
+    CDC and provisioning pipeline."""
     diagrams = SYSTEM_DIAGRAM_RE.findall(html)
-    assert len(diagrams) >= 2, (
-        f"index.html must contain at least 2 inline <svg class=\"system-diagram\"> "
-        f"elements (D1 AutoApply AI + D2 Portfolio-Risk per issue #58); "
-        f"found {len(diagrams)}."
+    assert len(diagrams) >= 1, (
+        "index.html must contain at least 1 inline <svg class=\"system-diagram\"> "
+        "element (the Azure CDC and provisioning pipeline); found none."
     )
-    # Sanity-check both diagrams reference the right diagram IDs.
     body = "\n".join(diagrams)
-    assert "diagram-d1-autoapply" in body, (
-        "D1 AutoApply AI diagram missing (expected id namespace 'diagram-d1-autoapply-*')."
-    )
-    assert "diagram-d2-portfolio-risk" in body, (
-        "D2 Portfolio-Risk diagram missing (expected id namespace 'diagram-d2-portfolio-risk-*')."
+    assert "diagram-az-title" in body and "diagram-az-desc" in body, (
+        "the Azure pipeline diagram is missing its <title>/<desc> ids "
+        "('diagram-az-title', 'diagram-az-desc'), which aria-labelledby "
+        "and aria-describedby point at."
     )
 
 
@@ -1360,185 +1376,22 @@ def test_styles_css_has_feed_list_module() -> None:
         assert selector in css, f"styles.css missing {selector} rule"
 
 
-def _skills_section_html(html: str) -> str:
-    """Extract the inner HTML of the <section id="skills"> block, raising
-    AssertionError if the section is missing or malformed. Reused by the
-    skills-grid assertions below to keep them scoped."""
-    start = html.find('<section class="section" id="skills">')
-    if start == -1:
-        # Allow class ordering / attribute ordering tolerance
-        m = re.search(r'<section[^>]*id="skills"[^>]*>', html)
-        assert m, "<section id=\"skills\"> not found in index.html"
-        start = m.start()
-    end = html.find("</section>", start)
-    assert end != -1, "<section id=\"skills\"> not closed"
-    return html[start:end]
-
-
-def test_skills_section_present(html: str) -> None:
-    """Issue #71: <section id="skills"> exists between Track Record and
-    What Shipped, has the expected section heading + subtitle."""
-    block = _skills_section_html(html)
-    assert 'class="section-label">Stack<' in block, (
-        "skills section missing 'Stack' section-label"
-    )
-    assert "Stack I work in daily" in block, (
-        "skills section missing 'Stack I work in daily' h2 title"
-    )
-    # Section ordering, reset 2026-08-16 for the mobile-first pass. The
-    # numbers now come first, then current work, then the earlier career,
-    # then the stack. Rationale: on a phone the reader gets roughly one
-    # screen before deciding, so the measured outcomes have to be the
-    # thing they land on, and a stack list is the least useful thing to
-    # spend that screen on. The previous order put skills between
-    # experience and the metrics.
-    order = ["proof", "experience", "before", "skills", "systems"]
-    found = [(sid, html.find(f'id="{sid}"')) for sid in order]
-    for sid, pos in found:
-        assert pos != -1, f"section #{sid} missing from index.html"
-    positions = [pos for _, pos in found]
-    assert positions == sorted(positions), (
-        "section order broken: expected "
-        + " < ".join(f"#{s}" for s in order)
-        + f", got {found}"
-    )
-
-
-def test_skills_nav_link_present(html: str) -> None:
-    """Issue #71: nav must include a 'Stack' link pointing to #skills,
-    in BOTH the desktop nav and the mobile nav drawer."""
-    assert html.count('href="#skills"') >= 2, (
-        "expected at least 2 nav links to #skills (desktop + mobile drawer)"
-    )
-    desktop_nav = re.search(
-        r'<a href="#skills"\s+class="nav-link">Stack</a>', html
-    )
-    mobile_nav = re.search(
-        r'<a href="#skills"\s+class="mobile-link">Stack</a>', html
-    )
-    assert desktop_nav, "desktop nav missing 'Stack' link"
-    assert mobile_nav, "mobile nav drawer missing 'Stack' link"
-
-
-def test_skills_has_expected_category_count(html: str) -> None:
-    """Issue #71: exactly 5 .skills-category subgroups, each with a
-    .skills-category-title heading."""
-    block = _skills_section_html(html)
-    cats = re.findall(r'<div class="skills-category">', block)
-    assert len(cats) == SKILLS_EXPECTED_CATEGORIES, (
-        f"expected {SKILLS_EXPECTED_CATEGORIES} .skills-category subgroups, "
-        f"found {len(cats)}"
-    )
-    titles = re.findall(
-        r'<h3 class="skills-category-title">([^<]+)</h3>', block
-    )
-    assert len(titles) == SKILLS_EXPECTED_CATEGORIES, (
-        f"expected {SKILLS_EXPECTED_CATEGORIES} category titles, found {len(titles)}"
-    )
-
-
-def test_skills_each_category_has_valid_icon_count(html: str) -> None:
-    """Issue #71: each category has 4-6 .skill-icon tiles (the spec's
-    band — fewer than 4 reads as filler, more than 6 crowds the row)."""
-    block = _skills_section_html(html)
-    parts = re.split(r'<div class="skills-category">', block)[1:]
-    for i, part in enumerate(parts, start=1):
-        end = part.find("</div>\n          </div>")
-        section = part[:end] if end != -1 else part
-        icon_count = section.count('class="skill-icon"')
-        assert SKILLS_MIN_ICONS_PER_CATEGORY <= icon_count <= SKILLS_MAX_ICONS_PER_CATEGORY, (
-            f"skills-category #{i} has {icon_count} skill-icon tiles; "
-            f"expected {SKILLS_MIN_ICONS_PER_CATEGORY}-{SKILLS_MAX_ICONS_PER_CATEGORY}"
-        )
-
-
-def test_skills_every_icon_is_keyboard_focusable(html: str) -> None:
-    """Issue #71: every .skill-icon tile must be keyboard-focusable so
-    users without a pointer can read the tooltip context. Implementation
-    is `<span tabindex="0">` (per a11y review: <button> would imply
-    activation that doesn't happen; a <div role="button"> would have the
-    same issue. <span tabindex="0"> + visible text + aria-describedby
-    is the WAI-ARIA APG canonical pattern for non-actionable focusable
-    tooltip triggers)."""
-    block = _skills_section_html(html)
-    tiles = re.findall(r'<span[^>]+class="skill-icon"[^>]*>', block)
-    assert tiles, "no .skill-icon tiles found in skills section"
-    missing = [t for t in tiles if 'tabindex="0"' not in t]
-    assert not missing, (
-        f"{len(missing)} .skill-icon tiles missing tabindex=\"0\": {missing[:3]}"
-    )
-
-
-def test_skills_every_icon_has_visible_name(html: str) -> None:
-    """Issue #71: every tile has a visible <span class="skill-name">
-    sibling so the accessible name is not duplicated via aria-label
-    (which would override the visible text and create a maintenance
-    fork between visible and announced content)."""
-    block = _skills_section_html(html)
-    tiles = re.findall(
-        r'<span[^>]+class="skill-icon"[^>]*>(.+?)</span></li>',
-        block,
-        flags=re.DOTALL,
-    )
-    assert tiles, "no .skill-icon tile bodies found"
-    missing = [t for t in tiles if 'class="skill-name"' not in t]
-    assert not missing, (
-        f"{len(missing)} .skill-icon tiles missing visible <span class=\"skill-name\">"
-    )
-    # Confirm aria-label is NOT used (would shadow the visible name)
-    has_aria_label = re.search(r'<span[^>]+class="skill-icon"[^>]+aria-label=', block)
-    assert not has_aria_label, (
-        "skill-icon tiles must not use aria-label (visible .skill-name is "
-        "the accessible name; aria-label would override and fork content)"
-    )
-
-
-def test_skills_every_icon_has_tooltip(html: str) -> None:
-    """Issue #71: every .skill-icon has aria-describedby pointing to a
-    role="tooltip" span. The describedby ID must resolve."""
-    block = _skills_section_html(html)
-    tiles = re.findall(r'<span[^>]+class="skill-icon"[^>]*>', block)
-    described_ids: list[str] = []
-    for t in tiles:
-        m = re.search(r'aria-describedby="([^"]+)"', t)
-        assert m, f".skill-icon tile missing aria-describedby: {t}"
-        described_ids.append(m.group(1))
-    tooltip_ids = set(re.findall(
-        r'<span id="([^"]+)" role="tooltip" class="skill-tooltip">', block
-    ))
-    missing = [i for i in described_ids if i not in tooltip_ids]
-    assert not missing, (
-        f"aria-describedby IDs missing matching tooltip span: {missing[:3]}"
-    )
-
-
-def test_skills_no_external_cdn_refs(html: str) -> None:
-    """Issue #71: skills section must NOT reference any external CDN for
-    icon assets (no jsdelivr, no unpkg, no Font Awesome, no devicons.dev
-    runtime). Local static/skills/ only."""
-    block = _skills_section_html(html)
-    forbidden = (
-        "cdn.jsdelivr.net",
-        "unpkg.com",
-        "fontawesome",
-        "devicons.dev",
-        "raw.githubusercontent.com",
-    )
-    for token in forbidden:
-        assert token not in block.lower(), (
-            f"skills section references external CDN token {token!r}; "
-            "icons must be local static/skills/*.svg only"
-        )
-
-
-def test_skills_icon_files_present(html: str) -> None:
-    """Every <img src="static/skills/<slug>.svg"> referenced in the
-    skills section must exist on disk at the expected path."""
-    block = _skills_section_html(html)
-    refs = re.findall(r'src="(static/skills/[^"]+)"', block)
-    assert refs, "no static/skills/*.svg references found in skills section"
-    missing = [r for r in refs if not (REPO_ROOT / r).exists()]
-    assert not missing, f"missing skill SVGs on disk: {missing}"
+# ---- Removed on 2026-08-17: the skills-grid structural assertions ----
+# Issue #71 built a 32-tile logo grid across six categories and this suite
+# policed its shape: category count, icons per category, keyboard focus,
+# visible name, tooltip, CDN-free sources, files on disk. The grid was cut
+# from index.html in the same rebuild that took the page from 12 sections
+# to 8. It is structurally the same object as the fifty-technology block
+# that reads to an applicant tracking system as keyword padding, and it
+# answered a question no reviewer asks: the stack a candidate can name
+# matters less than the systems they have run it against, which the
+# experience section now carries in prose. The one-line mono stack in the
+# hero replaced it.
+#
+# What survives below: the byte budgets (static/skills/ is still committed)
+# and the pattern doc check. Both are about the assets, not the layout, and
+# the accessibility rules the deleted tests enforced are documented in
+# docs/skills-grid-pattern.md for anyone reinstating the grid.
 
 
 def test_skills_icon_byte_budgets() -> None:
@@ -1912,15 +1765,8 @@ TESTS = [
     test_app_js_has_substack_render_branch,
     test_styles_css_has_feed_list_module,
     # ----- Skills grid (issue #71) -----
-    test_skills_section_present,
-    test_skills_nav_link_present,
-    test_skills_has_expected_category_count,
-    test_skills_each_category_has_valid_icon_count,
-    test_skills_every_icon_is_keyboard_focusable,
-    test_skills_every_icon_has_visible_name,
-    test_skills_every_icon_has_tooltip,
-    test_skills_no_external_cdn_refs,
-    test_skills_icon_files_present,
+    # 9 skills-grid structural tests removed 2026-08-17 with the grid; see
+    # the comment block above test_skills_icon_byte_budgets.
     test_skills_icon_byte_budgets,
     test_skills_pattern_doc_present,
     test_skills_tooltip_esc_and_overflow_polish_in_app_js,
