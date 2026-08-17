@@ -125,7 +125,7 @@
         <div class="hero-copy" data-reveal>
           <p class="hero-role">Data Engineer &middot; Dallas, TX</p>
           <h1 class="hero-name">Narendranath Edara</h1>
-          <p class="hero-tagline">Six years in data, three of them on data platforms. Currently on a multi-tenant payroll system, where a wrong number is a wrong paycheck.</p>
+          <p class="hero-tagline">Six years in data, three of them on data platforms. Currently on a multi-tenant payroll system.</p>
           <ul class="hero-proof">
             <li data-gt-id="E1-CDC">
               <span class="proof-dot"></span>
@@ -146,7 +146,7 @@
             <a href="mailto:edara.narendranath@gmail.com?subject=Re%3A%20Data%20Engineering%20-%20%5BCompany%20Name%5D" class="btn btn-primary">Email me</a>
           </div>
           <nav class="hero-toc" aria-label="Jump to section">
-            <a href="#systems">Production Data Systems</a>
+            <a href="#systems">Systems</a>
             <a href="#experience">Experience</a>
             <a href="#projects">Projects</a>
             <a href="#contact">Contact</a>
@@ -236,7 +236,6 @@
             </tbody>
           </table>
         </div>
-        <p class="sec-note" data-reveal>Sources per row: <a href="/static/claims-register.csv" download>claims register</a>.</p>
       </div>
     </section>
 
@@ -255,11 +254,11 @@
               </div>
               <div class="case" data-gt-id="E-PTO, E-SECURE2">
                 <h4 class="case-title">Payroll accrual and SECURE 2.0</h4>
-                <p class="case-body">PTO balances convert to cash at termination, so a defect in accrual logic is a payout rather than a display bug. I traced it to a payroll-period boundary calculation in SQL and put the fix through change-request review, which meant corrected logic reached every client tenant once instead of drifting tenant by tenant. SECURE 2.0 compliance went out in the same release train, against a legislated date nobody on the team controlled.</p>
+                <p class="case-body">PTO balances convert to cash at termination, so a defect in accrual logic is a payout rather than a display bug. I traced it to a payroll-period boundary calculation in SQL and put the fix through change-request review. SECURE 2.0 compliance went out in the same release train.</p>
               </div>
               <div class="case" data-gt-id="E-SELFHEAL, E5-RECOVERY, E-LIVEREC, E-OBS, E-RETENTION">
                 <h4 class="case-title">Failure detection and failover recovery</h4>
-                <p class="case-body">CDC capture jobs fail three ways: a run that never starts, a run that hangs, and a run that exits clean having captured nothing. The third is the expensive one, because retention windows close and the change history inside them does not come back. Monitoring covers all three. Availability-group failover is written up as runbooks, including the post-failover capture failure that produces no error at all, and one live incremental-load failure was diagnosed and restored in place rather than falling back to a full reload.</p>
+                <p class="case-body">CDC capture jobs fail three ways: a run that never starts, a run that hangs, and a run that exits clean having captured nothing. Retention windows close and the change history inside them does not come back. Monitoring covers all three. Availability-group failover is written up as runbooks, including the post-failover capture failure that produces no error at all, and one live incremental-load failure was diagnosed and restored in place rather than falling back to a full reload.</p>
               </div>
               <div class="case" data-gt-id="E1-CDC, E-IDEM">
                 <h4 class="case-title">CDC incrementals and idempotent provisioning</h4>
@@ -299,15 +298,13 @@
                                     <line x1="306" y1="98" x2="326" y2="98" marker-end="url(#arrow-az)"/>
                                     <line x1="474" y1="82" x2="494" y2="73" marker-end="url(#arrow-az)"/>
                                     <line x1="474" y1="114" x2="494" y2="133" marker-end="url(#arrow-az)"/>
-                                    <text x="360" y="178" text-anchor="middle" fill="var(--fg-muted, #9b9490)" font-size="10">ExponentHR production platform · payroll-critical availability</text>
                                   </g>
                                 </svg>
-                                <figcaption class="post-figcaption">Figure: Azure platform topology - CI/CD pipeline, CDC incremental ETL, and AAG failover automation as deployed at ExponentHR.</figcaption>
                               </figure>
               </div>
               <div class="case" data-gt-id="E2-CICD, E3-FABRIC, E-REPORTAUTO">
                 <h4 class="case-title">Release ownership and the reporting layer</h4>
-                <p class="case-body">Releases went out roughly quarterly, so a client-requested change waited about three months to reach production. Taking CI/CD through Azure DevOps brought the cycle to 14 days, with Scrum pulling development, test, IT and the business onto one set of priorities. Reporting moved onto Fabric semantic models with index and stored-procedure tuning underneath: query response 12s to under 4s.</p>
+                <p class="case-body">Releases went out roughly quarterly. Taking CI/CD through Azure DevOps brought the cycle to 14 days. Reporting moved onto Fabric semantic models with index and stored-procedure tuning underneath: query response 12s to under 4s.</p>
               </div>
             </div>
           </article>
@@ -343,7 +340,7 @@
           <article class="proj" data-gt-id="P-HOOKS" data-reveal>
             <h3 class="proj-name">repo-context-hooks</h3>
             <p class="proj-stack">Python, GitHub Actions, Sigstore, CodeQL, PyPI</p>
-            <p class="case-body">Pre-commit and post-commit hooks that snapshot repo context for an LLM agent between sessions, standard library only at runtime. The release path is where most of the work went: Sigstore-signed publishing through an OIDC Trusted Publisher, CodeQL on every pull request, Dependabot on the Actions dependencies. 330+ tests at v1.0, including Hypothesis property tests over sampling boundaries and hook dedup. Everything here is checkable without me: <code>pip install repo-context-hooks</code>, then read the signature, the analysis runs, and the empty dependencies array.</p>
+            <p class="case-body">Pre-commit and post-commit hooks that snapshot repo context for an LLM agent between sessions, standard library only at runtime. The release path is where most of the work went: Sigstore-signed publishing through an OIDC Trusted Publisher, CodeQL on every pull request, Dependabot on the Actions dependencies. 330+ tests at v1.0, including Hypothesis property tests over sampling boundaries and hook dedup.</p>
             <p class="proj-links"><a href="https://pypi.org/project/repo-context-hooks/" target="_blank" rel="noreferrer">PyPI</a> <a href="https://github.com/narendranathe/repo-context-hooks" target="_blank" rel="noreferrer">Source</a> <a href="content/posts/repo-context-hooks-supply-chain.html">Write-up</a></p>
           </article>
 
@@ -362,14 +359,14 @@
           </article>
 
         </div>
-        <p class="sec-note" data-reveal>Also public: <a href="https://github.com/narendranathe/fintune" target="_blank" rel="noreferrer">FinTune</a>, a Mistral-7B QLoRA service with PII redaction and drift monitoring, and <a href="https://github.com/narendranathe/job-scout" target="_blank" rel="noreferrer">JobScout</a>, which tracks 153 company career pages across six ATS APIs. <a href="https://github.com/narendranathe/autoapply-ai" target="_blank" rel="noreferrer">AutoApply AI</a> is a private deployment with nothing public to open.</p>
+        <p class="sec-note" data-reveal>Also public: <a href="https://github.com/narendranathe/fintune" target="_blank" rel="noreferrer">FinTune</a>, a Mistral-7B QLoRA service with PII redaction and drift monitoring, and <a href="https://github.com/narendranathe/job-scout" target="_blank" rel="noreferrer">JobScout</a>, which tracks 153 company career pages across six ATS APIs. <a href="https://github.com/narendranathe/autoapply-ai" target="_blank" rel="noreferrer">AutoApply AI</a> is a private deployment.</p>
       </div>
     </section>
 
     <section class="section section-alt" id="before">
       <div class="container">
         <h2 class="sec-h" data-reveal>Analytics and Business Intelligence</h2>
-        <p class="sec-note sec-note--lead" data-reveal>Three years answering business questions with data, then an MS in Information Science and Technology at Missouri S&amp;T, GPA 4.0, Jan 2022 to Dec 2023.</p>
+        <p class="sec-note sec-note--lead" data-reveal>MS in Information Science and Technology at Missouri S&amp;T, GPA 4.0, Jan 2022 to Dec 2023.</p>
         <div class="roles">
 
           <article class="role" data-reveal>
@@ -380,7 +377,7 @@
                 <p class="role-org">C2FO &middot; Kansas City, KS</p>
               </div>
               <div class="case" data-gt-id="C-SQL, C-PRD, C-CSPO">
-                <p class="case-body">A preferred-offers tool needed a specification that product, engineering and operations would read the same way. The SQL work went across transaction and user behavior on a B2B working-capital platform, and the requirements came out of interviews on both sides.</p>
+                <p class="case-body">The SQL work went across transaction and user behavior on a B2B working-capital platform.</p>
               </div>
             </div>
           </article>
@@ -393,7 +390,7 @@
                 <p class="role-org">udaan.com &middot; Nashik, India</p>
               </div>
               <div class="case" data-gt-id="U-FORECAST, U-FULFILL, U-RCA, U-BCP">
-                <p class="case-body">A new-city Staples launch on a B2B marketplace, with procurement turnaround and fulfillment to hold while volume climbed. Demand and inventory models ran in Power BI, root-cause analysis went into the value-chain failures that kept repeating, and a continuity plan kept deliveries moving through application downtime. Allocation ROI up 7%, fulfillment held at 99.3%.</p>
+                <p class="case-body">A new-city Staples launch on a B2B marketplace. Demand and inventory models ran in Power BI, root-cause analysis went into the value-chain failures that kept repeating, and a continuity plan kept deliveries moving through application downtime. Allocation ROI up 7%, fulfillment held at 99.3%.</p>
               </div>
             </div>
           </article>
@@ -426,29 +423,11 @@
       </div>
     </section>
 
-    <section class="section section-alt" id="references">
-      <div class="container">
-        <h2 class="sec-h" data-reveal>References</h2>
-        <div class="refs">
-          <figure class="ref" data-reveal>
-            <blockquote>I had the pleasure of working closely with Narendranath for 3+ years and can confidently attest to his outstanding performance and exceptional work ethic. He had a keen eye for solving business problems by identifying trends to improve the overall business.</blockquote>
-            <figcaption><a href="https://www.linkedin.com/in/snehal-moni/" target="_blank" rel="noreferrer" data-hover-preview="/static/preview-linkedin.png" data-hover-title="LinkedIn - Snehal Moni" data-hover-caption="Operations and Policy Analyst, Oregon Health Authority">Snehal Moni</a>, Operations and Policy Analyst, Oregon Health Authority</figcaption>
-          </figure>
-          <figure class="ref" data-reveal>
-            <blockquote>Narendranath has been an efficient source to the team at all times. He expertly trained himself to adapt to the various sectors of the business and was one of the few people who took up every challenge offered to him.</blockquote>
-            <figcaption><a href="https://www.linkedin.com/in/pranav-s-47356a58/" target="_blank" rel="noreferrer" data-hover-preview="/static/preview-linkedin.png" data-hover-title="LinkedIn - Pranav Suresh" data-hover-caption="Business Effectiveness, CIBC">Pranav Suresh</a>, Business Effectiveness, CIBC</figcaption>
-          </figure>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="contact">
+    <section class="section section-alt" id="contact">
       <div class="container">
         <h2 class="sec-h" data-reveal>Contact</h2>
         <div class="contact" data-reveal>
-          <p class="contact-lead">I am currently exploring senior data engineering roles at companies where data is money-adjacent.</p>
           <p><a href="mailto:edara.narendranath@gmail.com?subject=Re%3A%20Data%20Engineering%20-%20%5BCompany%20Name%5D" class="btn btn-primary">edara.narendranath@gmail.com</a></p>
-          <p class="sec-note">Subject line is pre-filled. Put your company in the brackets.</p>
           <p class="contact-links">
             <a href="https://github.com/narendranathe" target="_blank" rel="noreferrer" data-hover-preview="/static/preview-github.png" data-hover-title="GitHub - @narendranathe" data-hover-caption="Public repositories behind the claims above">GitHub</a>
             <a href="https://www.linkedin.com/in/narendranathe/" target="_blank" rel="noreferrer" data-hover-preview="/static/preview-linkedin.png" data-hover-title="LinkedIn - Narendranath Edara" data-hover-caption="Data Engineer, Dallas TX">LinkedIn</a>

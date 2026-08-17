@@ -45,22 +45,24 @@ SKILLS_MAX_TOTAL_BYTES = 60 * 1024
 
 # #70 hover-preview budget: 30 KB per asset matches #67's resume-preview budget.
 HOVER_PREVIEW_BUDGET_BYTES = 30 * 1024
-# Floors, not targets. The home page went from 12 sections to 8 on
-# 2026-08-17, which removed link sites rather than previews: the writing
-# CTAs, the peer CTA and one testimonial author profile all went. Live
-# counts after that trim are 3 resume + 4 LinkedIn + 1 GitHub + 2 Substack
-# = 10. The floors below sit at the live counts so a preview silently
-# losing its annotation still fails.
-HOVER_PREVIEW_MIN_TRIGGERS = 10
+# Floors, not targets. The home page went from 12 sections to 6 across the
+# 2026-08-17 rewrite, which removed link sites rather than previews: the
+# writing CTAs, the peer CTA and all three testimonial author profiles
+# went with their sections. Live counts are 3 resume + 2 LinkedIn (own
+# profile in contact and footer) + 1 GitHub + 2 Substack = 8. The floors
+# sit at the live counts so a preview silently losing its annotation fails.
+HOVER_PREVIEW_MIN_TRIGGERS = 8
 # Was 4 (header, mobile menu, hero, contact). The hero's resume button
 # was removed on 2026-08-16 so the first screen carries exactly one call
 # to action; header, mobile menu and contact remain.
 HOVER_PREVIEW_MIN_RESUME_TRIGGERS = 3
 # Was 5 (own profile in contact and footer, plus three testimonial authors).
-# One testimonial was removed on 2026-08-17: it praised product-ownership
-# talent, which on a senior data engineering page answers the hiring
-# manager's "is this direction relevant to my team" with a no.
-HOVER_PREVIEW_MIN_LINKEDIN_TRIGGERS = 4
+# The testimonials went on 2026-08-17. Read against the review questions
+# they failed three: no engineering information, prose that could sit on any
+# portfolio, and seniority asserted in adjectives (outstanding, exceptional,
+# keen, efficient, expertly) rather than shown in evidence. Two remain, both
+# pointing at the owner's own profile.
+HOVER_PREVIEW_MIN_LINKEDIN_TRIGGERS = 2
 # Was 5, when three writing CTAs plus a hero follow button pointed at
 # Substack. The rebuild kept one link in Research and one in the footer.
 HOVER_PREVIEW_MIN_SUBSTACK_TRIGGERS = 2
