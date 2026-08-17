@@ -13,7 +13,7 @@ E-SELFHEAL,"Self-healing monitoring for production SQL Agent jobs across missed,
 E1-CDC,"CDC ETL from full reloads to idempotent incremental merge-upserts: 30 min to under 8, compute -67%, freshness SLA held",STATED,Employment record; no public artifact,Experience; Hero; Measured outcomes; Where this fits
 E2-CICD,Release cycle 3 months to 14 days through end-to-end Azure DevOps ownership; ~11 weeks idle removed per release,STATED,Employment record; no public artifact,Experience; Hero; Measured outcomes; Where this fits
 E3-FABRIC,"Reporting migrated to Microsoft Fabric semantic models with OLAP tuning: 12s to under 4s, support tickets -40%",STATED,Employment record; ticket derivation in GROUND_TRUTH.md,Experience; Measured outcomes
-E5-RECOVERY,"CDC capture restored under one hour after an availability-group failover, on a documented runbook",STATED,Employment record; no public artifact,Experience; Hero; Where this fits
+E5-RECOVERY,"CDC capture restored under one hour after an availability-group failover, on a documented runbook",STATED,Employment record; no public artifact,Experience; Where this fits
 M1,Azure AI Anomaly Detector pipelines at 95%+ accuracy; production memory leak caught 4 hrs before outage,STATED,Employment record; no public artifact,Experience
 M2,"Tunable per-service alert thresholds: ~250 weekly P3 alerts filtered, signal-to-noise 1:5 to 1:1.2",STATED,Employment record; no public artifact,Experience; Measured outcomes; Where this fits
 M3,"Static D-series VMs to AKS with horizontal pod autoscaling: -$3,200/mo, CPU 12% to 64%",STATED,Employment record; no public artifact,Experience; Measured outcomes; Where this fits

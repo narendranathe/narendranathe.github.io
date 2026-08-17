@@ -47,7 +47,10 @@ HOVER_PREVIEW_BUDGET_BYTES = 30 * 1024
 # + 1 GitHub + 7 Substack (3 writing CTAs + hero CTA + peer-CTA + contact + footer) = 18.
 # We use 14 as the floor to allow minor markup churn without test thrash.
 HOVER_PREVIEW_MIN_TRIGGERS = 14
-HOVER_PREVIEW_MIN_RESUME_TRIGGERS = 4
+# Was 4 (header, mobile menu, hero, contact). The hero's resume button
+# was removed on 2026-08-16 so the first screen carries exactly one call
+# to action; header, mobile menu and contact remain.
+HOVER_PREVIEW_MIN_RESUME_TRIGGERS = 3
 HOVER_PREVIEW_MIN_LINKEDIN_TRIGGERS = 5
 HOVER_PREVIEW_MIN_SUBSTACK_TRIGGERS = 5
 
@@ -379,8 +382,11 @@ def test_hero_claims_carry_ground_truth_ids(html: str) -> None:
     hero_end = html.find("</section>", hero_start)
     hero = html[hero_start:hero_end]
 
+    # Three, not four-or-more. Cut from five on 2026-08-16: the hero has
+    # to clear the fold on a 390px phone, and five chips did not. The
+    # requirement that survives is that every chip cites its evidence.
     chips = re.findall(r"<li\b[^>]*>", hero)
-    assert len(chips) >= 4, f"expected >= 4 hero proof chips, found {len(chips)}"
+    assert len(chips) >= 3, f"expected >= 3 hero proof chips, found {len(chips)}"
     unsourced = [c for c in chips if "data-gt-id=" not in c]
     assert not unsourced, (
         "hero proof chip with no GROUND_TRUTH id:\n  "
@@ -1089,7 +1095,7 @@ def test_hover_preview_resume_triggers_count(html: str) -> None:
     matches = pattern.findall(html)
     assert len(matches) >= HOVER_PREVIEW_MIN_RESUME_TRIGGERS, (
         f"Found {len(matches)} resume hover-preview triggers; expected >= "
-        f"{HOVER_PREVIEW_MIN_RESUME_TRIGGERS} (header, mobile, hero, contact)."
+        f"{HOVER_PREVIEW_MIN_RESUME_TRIGGERS} (header, mobile menu, contact)."
     )
 
 
@@ -1379,13 +1385,22 @@ def test_skills_section_present(html: str) -> None:
     assert "Stack I work in daily" in block, (
         "skills section missing 'Stack I work in daily' h2 title"
     )
-    # Section ordering: skills must come AFTER experience and BEFORE proof
-    pos_experience = html.find('id="experience"')
-    pos_skills = html.find('id="skills"')
-    pos_proof = html.find('id="proof"')
-    assert -1 < pos_experience < pos_skills < pos_proof, (
-        f"section order broken: experience={pos_experience} "
-        f"skills={pos_skills} proof={pos_proof} (expected ascending)"
+    # Section ordering, reset 2026-08-16 for the mobile-first pass. The
+    # numbers now come first, then current work, then the earlier career,
+    # then the stack. Rationale: on a phone the reader gets roughly one
+    # screen before deciding, so the measured outcomes have to be the
+    # thing they land on, and a stack list is the least useful thing to
+    # spend that screen on. The previous order put skills between
+    # experience and the metrics.
+    order = ["proof", "experience", "before", "skills", "systems"]
+    found = [(sid, html.find(f'id="{sid}"')) for sid in order]
+    for sid, pos in found:
+        assert pos != -1, f"section #{sid} missing from index.html"
+    positions = [pos for _, pos in found]
+    assert positions == sorted(positions), (
+        "section order broken: expected "
+        + " < ".join(f"#{s}" for s in order)
+        + f", got {found}"
     )
 
 

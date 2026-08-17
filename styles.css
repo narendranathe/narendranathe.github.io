@@ -331,6 +331,99 @@ button { font-family: inherit; cursor: pointer; }
   border: 0;
 }
 
+
+/* In-page jump menu. Sits under the hero CTA so the first screen ends
+   with somewhere to go. */
+.hero-toc {
+  display: flex; flex-wrap: wrap; gap: 0.4rem 0.5rem;
+  margin-top: 1.5rem;
+}
+.hero-toc a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.04em;
+  color: var(--fg-soft); text-decoration: none;
+  border: 1px solid var(--border); border-radius: 2rem;
+  padding: 0.3rem 0.7rem;
+  transition: border-color 0.2s, color 0.2s;
+}
+.hero-toc a:hover, .hero-toc a:focus-visible {
+  color: var(--accent); border-color: var(--accent);
+}
+
+@media (max-width: 860px) {
+  /* The portrait used to eat 375px of a 750px fold. On a phone it is an
+     avatar beside nothing, and the proof points get the space instead. */
+  .hero { padding: 5rem 0 2.5rem; }
+  .hero-grid { gap: 1.5rem; }
+  /* Avatar leads, the way every phone profile does. The source is a
+     full-body portrait, so a plain square crop gives a small figure in
+     a lot of studio grey; scaling up and anchoring near the top lands
+     on the face. */
+  .hero-visual { order: -1; width: auto; margin-inline: 0; }
+  .profile-frame {
+    width: 76px; max-width: 76px; aspect-ratio: 1/1;
+    border-radius: 50%; box-shadow: none;
+  }
+  .profile-photo { transform: scale(2.9); transform-origin: 50% 17%; }
+  .hero-name { font-size: 2rem; margin-bottom: 0.4rem; }
+  .hero-role { font-size: 0.72rem; letter-spacing: 0.09em; margin-bottom: 0.5rem; }
+  .hero-tagline { font-size: 1rem; line-height: 1.45; margin-bottom: 0.9rem; }
+  .hero-proof { gap: 0.6rem; margin-bottom: 1.1rem; }
+  .hero-proof li { font-size: 0.87rem; line-height: 1.5; }
+  /* The hero stat rail restates the ledger, which on mobile is now the
+     very next thing on screen. Hiding it here is what buys the hero its
+     fold: the tiles cost ~200px to say something the reader is about to
+     read anyway. Kept in the markup for desktop and for the register. */
+  .metric-grid { display: none; }
+  /* Section chrome is desktop-sized. On a phone it stands between the
+     hero and the first number, so it gets trimmed rather than scrolled
+     past. */
+  .section { padding: 2.75rem 0; }
+  #proof .section-subtitle { display: none; }
+  #proof .section-title { font-size: 1.5rem; }
+  .ledger-row { padding: 1.1rem 1.15rem 1.2rem; }
+  .ledger-line { font-size: 0.83rem; line-height: 1.55; }
+}
+
+
+/* Projects behind one click. Six cards is a lot of scroll for a reader
+   who has not decided yet; the summary names them so the click is
+   informed rather than blind. */
+.projects-fold { border-top: 1px solid var(--border); }
+.projects-summary {
+  cursor: pointer; list-style: none;
+  padding: 1.1rem 0 1.2rem;
+  display: flex; flex-direction: column; gap: 0.25rem;
+}
+.projects-summary::-webkit-details-marker { display: none; }
+.projects-summary-open, .projects-summary-close {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; color: var(--accent);
+}
+.projects-summary-open::after { content: ' +'; font-family: 'JetBrains Mono', monospace; }
+.projects-summary-close::after { content: ' -'; font-family: 'JetBrains Mono', monospace; }
+.projects-summary-close { display: none; }
+.projects-fold[open] .projects-summary-open { display: none; }
+.projects-fold[open] .projects-summary-close { display: inline; }
+.projects-summary-hint { font-size: 0.78rem; color: var(--fg-muted); line-height: 1.5; }
+.projects-summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Contact: one primary action, everything else a plain link. */
+.contact-cta { justify-content: center; width: 100%; text-align: center; }
+.contact-note { font-size: 0.78rem; color: var(--fg-muted); line-height: 1.6; margin-top: 0.5rem; }
+.contact-detail { font-size: 0.8rem; color: var(--fg-muted); margin-top: 0.4rem; }
+.contact-secondary {
+  display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem;
+  margin-top: 1.25rem; padding-top: 1rem;
+  border-top: 1px solid var(--border-soft);
+}
+.contact-secondary a {
+  font-size: 0.85rem; color: var(--fg-soft); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+}
+.contact-secondary a:hover, .contact-secondary a:focus-visible { color: var(--accent); }
+.contact-secondary i { color: var(--accent-warm); font-size: 0.85rem; }
+
 /* ============================================================
    VERIFICATION AND CLAIMS REGISTER
    ============================================================ */
@@ -955,6 +1048,17 @@ button { font-family: inherit; cursor: pointer; }
   margin-top: 1.1rem;
 }
 .case:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
+/* Case bodies run as prose. The earlier version used labelled rows
+   (Problem / What changed / Scope / Outcome), which spelled out what the
+   sentences already said and read like a template. */
+.case-body {
+  font-size: 0.9rem; line-height: 1.75; color: var(--fg-soft);
+  max-width: 74ch; margin: 0;
+}
+.case-body code {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--accent);
+}
+.case-body em { color: var(--fg); }
 .case-title {
   font-family: 'Playfair Display', serif;
   font-size: 1rem; font-weight: 500; color: var(--fg);
