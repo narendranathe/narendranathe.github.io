@@ -39,6 +39,9 @@
 
   <title>Narendranath Edara | Data Engineer - Payroll-Critical Data Platforms</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles-2.css">
+  <link rel="stylesheet" href="styles-3.css">
+  <link rel="stylesheet" href="styles-4.css">
 
   <!-- LCP candidate: hero portrait, preload to start fetch before body parses.
        Three type-aware preloads in priority order so the browser only
@@ -157,9 +160,6 @@
 
           <div class="profile-frame hero-photo-stack">
             <picture>
-              <!-- Mobile: dedicated square face crop. The 76px avatar circle
-                   deserves a face, not a scaled-down full-body figure. -->
-              <source media="(max-width: 860px)" srcset="static/originals/headshot-face.jpg">
               <!-- AVIF first (smallest bytes; Chrome 85+ / Safari 16.4+ / Firefox 113+) -->
               <source type="image/avif" srcset="static/originals/headshot-fullbody.avif">
               <!-- WebP second (universal modern; covers every evergreen browser) -->
@@ -576,7 +576,7 @@ stats_df = enriched_df \
       <div class="container">
         <h2 class="sec-h" data-reveal>Contact</h2>
         <div class="contact" data-reveal>
-          <img src="static/originals/headshot-face.jpg" alt="Naren Edara" class="contact-avatar" width="480" height="480" loading="lazy">
+          <span class="contact-avatar"><img src="static/originals/headshot-fullbody-800.jpg" alt="Naren Edara" width="800" height="1000" loading="lazy"></span>
           <div class="contact-body">
             <p class="contact-lead">Open to senior data engineering roles. Email is the fastest way to reach me.</p>
             <p><a href="mailto:edara.narendranath@gmail.com?subject=Re%3A%20Data%20Engineering%20-%20%5BCompany%20Name%5D" class="btn btn-primary contact-email">edara.narendranath@gmail.com</a></p>
@@ -631,3 +631,4 @@ stats_df = enriched_df \
 
 </body>
 </html>
+
