@@ -45,13 +45,15 @@ SKILLS_MAX_TOTAL_BYTES = 60 * 1024
 
 # #70 hover-preview budget: 30 KB per asset matches #67's resume-preview budget.
 HOVER_PREVIEW_BUDGET_BYTES = 30 * 1024
-# Floors, not targets. The home page went from 12 sections to 6 across the
-# 2026-08-17 rewrite, which removed link sites rather than previews: the
-# writing CTAs, the peer CTA and all three testimonial author profiles
-# went with their sections. Live counts are 3 resume + 2 LinkedIn (own
-# profile in contact and footer) + 1 GitHub + 2 Substack = 8. The floors
-# sit at the live counts so a preview silently losing its annotation fails.
-HOVER_PREVIEW_MIN_TRIGGERS = 8
+# Floors, not targets. Successive trims removed link sites rather than
+# previews: the writing CTAs, the peer CTA, three testimonial author
+# profiles, and then the contact section's three profile links when it was
+# cut to one sentence, one mailto and the resume. Those profiles remain as
+# footer icons, and GitHub's annotation moved onto the footer icon with
+# them. Live counts are 3 resume + 1 LinkedIn + 1 GitHub + 1 Substack = 6.
+# The floors sit at the live counts so a preview silently losing its
+# annotation still fails.
+HOVER_PREVIEW_MIN_TRIGGERS = 6
 # Was 4 (header, mobile menu, hero, contact). The hero's resume button
 # was removed on 2026-08-16 so the first screen carries exactly one call
 # to action; header, mobile menu and contact remain.
@@ -62,10 +64,10 @@ HOVER_PREVIEW_MIN_RESUME_TRIGGERS = 3
 # portfolio, and seniority asserted in adjectives (outstanding, exceptional,
 # keen, efficient, expertly) rather than shown in evidence. Two remain, both
 # pointing at the owner's own profile.
-HOVER_PREVIEW_MIN_LINKEDIN_TRIGGERS = 2
+HOVER_PREVIEW_MIN_LINKEDIN_TRIGGERS = 1
 # Was 5, when three writing CTAs plus a hero follow button pointed at
 # Substack. The rebuild kept one link in Research and one in the footer.
-HOVER_PREVIEW_MIN_SUBSTACK_TRIGGERS = 2
+HOVER_PREVIEW_MIN_SUBSTACK_TRIGGERS = 1
 
 REQUIRED_POST_SECTIONS = ("problem", "constraints", "design", "tradeoffs", "outcome")
 POST_MIN_WORDS = 1500
@@ -1128,8 +1130,10 @@ def test_hover_preview_resume_triggers_count(html: str) -> None:
 
 
 def test_hover_preview_contact_icons_annotated(html: str) -> None:
-    """GitHub + LinkedIn contact icons must carry data-hover-preview pointing at
-    static/preview-github.png and static/preview-linkedin.png respectively."""
+    """GitHub and LinkedIn must each carry a data-hover-preview somewhere on the
+    page. Both annotations now sit on the footer icons: the contact section was
+    reduced to one sentence, one mailto and the resume link, which removed the
+    profile links it used to hold."""
     assert 'data-hover-preview="/static/preview-github.png"' in html, (
         "GitHub contact icon missing data-hover-preview annotation"
     )
