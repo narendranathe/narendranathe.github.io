@@ -2,10 +2,10 @@
    NARENDRANATH EDARA — Portfolio Design System
    Light warm theme · Inter + Playfair Display + JetBrains Mono
    ============================================================ */
-/* ---- This is sheet 1 of 3: tokens, base elements, header, hero,
-     homepage sections. styles-2.css (shared components) and
-     styles-3.css (subpage patterns) load after it; the tokens defined
-     here are document-wide, so later sheets only read them. ---- */
+/* ---- This is sheet 1 of 4: tokens, base elements, header, hero,
+     homepage sections through the artifact-register grammar.
+     styles-2/3/4.css load after it; tokens here are document-wide. ---- */
+
 
 :root {
   --bg:           #fafaf8;
