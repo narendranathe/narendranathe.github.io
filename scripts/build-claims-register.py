@@ -88,7 +88,7 @@ EVIDENCE: dict[str, tuple[str, str, str]] = {
     "P-FRAUD": ("Fraud platform: P99 1.12ms at 100 TPS on 100,000 synthetic transactions with 2,034 labeled fraud", "DOC", "github.com/narendranathe/fraud-detection-ml-platform README + data generator"),
     "P-FINTUNE": ("FinTune: QLoRA 4-bit NF4, PII redaction, KL-divergence drift monitoring, 3-state breaker, 35+ tests across 7 modules", "DOC", "github.com/narendranathe/fintune tests/ + README"),
     "P-JOBSCOUT": ("JobScout: 153 companies across 6 ATS integrations plus Playwright fallback, Flask API, SQLite WAL", "DOC", "github.com/narendranathe/job-scout backend/config/companies.py"),
-    "P-AUTOAPPLY": ("AutoApply AI: 40+ endpoints, 11 ATS adapters, 6 LLM providers, 355 backend tests, private Fly.io deployment", "STATED", "Private repo; the page says plainly that these are not checkable"),
+    "P-AUTOAPPLY": ("AutoApply AI: 40+ endpoints, 11 ATS adapters, 6 LLM providers, 355 backend tests", "STATED", "github.com/narendranathe/autoapply-ai is public, so the code can be read; the counts themselves are unverified here and the deployment is not reachable"),
     "P-RISK": ("Portfolio Risk Analytics: Kafka to Spark Structured Streaming on 5s tumbling windows with a 10s watermark, Delta bronze layer, FastAPI historical-simulation VaR at 95% and 99%", "DOC", "github.com/narendranathe/portfolio-risk-analytics src/. Architecture and method only. The throughput and latency figures are withheld under P-RISK-METRICS and absent from the page; the seeded API fallback is disclosed there."),
 }
 
