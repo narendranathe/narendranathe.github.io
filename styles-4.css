@@ -1,0 +1,856 @@
+/* ============================================================
+   Sheet 4 of 4 — hero greeting, reduced-motion overrides, impact
+   strip, architecture post pages, hover-preview, skills grid.
+   Load AFTER styles.css.
+   ============================================================ */
+
+body.splash-active { overflow: hidden; }
+
+.splash-inner {
+  display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+  text-align: center;
+}
+.splash-svg { width: 120px; height: 60px; }
+
+/* Draw the bracket paths via stroke-dashoffset */
+.sp-bracket-l {
+  stroke-dasharray: 80;
+  stroke-dashoffset: 80;
+  animation: splash-draw 0.7s cubic-bezier(0.4,0,0.2,1) 0.1s forwards;
+}
+.sp-slash {
+  stroke-dasharray: 68;
+  stroke-dashoffset: 68;
+  animation: splash-draw 0.45s cubic-bezier(0.4,0,0.2,1) 0.35s forwards;
+}
+.sp-bracket-r {
+  stroke-dasharray: 80;
+  stroke-dashoffset: 80;
+  animation: splash-draw 0.7s cubic-bezier(0.4,0,0.2,1) 0.5s forwards;
+}
+@keyframes splash-draw { to { stroke-dashoffset: 0; } }
+
+.splash-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; font-weight: 500; color: var(--fg);
+  margin: 0;
+  opacity: 0; transform: translateY(8px);
+  animation: splash-fade-up 0.5s ease 1.1s forwards;
+}
+.splash-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem; color: var(--fg-muted); letter-spacing: 0.08em;
+  text-transform: uppercase; margin: -0.75rem 0 0;
+  opacity: 0;
+  animation: splash-fade-up 0.5s ease 1.35s forwards;
+}
+@keyframes splash-fade-up {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   HERO GREETING
+   ============================================================ */
+.hero-greeting {
+  font-size: 0.88rem; font-weight: 500;
+  color: var(--fg-muted); margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
+}
+
+
+/* ============================================================
+   REDUCED MOTION — respect user preference globally
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .wave-emoji         { animation: none; }
+  #splash-screen      { transition: none; }
+  .sp-bracket-l,
+  .sp-slash,
+  .sp-bracket-r       { animation: none; stroke-dashoffset: 0; }
+  /* Reveal content IMMEDIATELY on reduced-motion. Just nuking the
+     transition (previous behavior) left blocks at opacity:0 + the
+     translateY offset until JS toggled .revealed — meaning a user
+     with reduced-motion AND JS disabled (or with throttled
+     IntersectionObserver) would see invisible content below the
+     fold. Override the initial state too so content is visible
+     regardless of JS state. (Issue #86) */
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none;
+  }
+}
+
+
+/* ============================================================
+   IMPACT STRIP — quantified-impact ledger pattern
+   See docs/impact-strip-pattern.md for the drop-in spec.
+
+   Visual: warm-rule ledger (NOT a chip row). Each stat is a
+   left-ruled value-over-label block, deliberately distinct from
+   .chip (rounded pill) so the eye reads "evidence, not stack list."
+   Tokens reuse the site palette (--fg, --fg-muted, --accent-warm)
+   so the pattern is native rather than bolt-on.
+
+   Semantics: <dl> contains <div> wrappers per HTML Living Standard;
+   each wrapper holds <dt class="impact-value"> + <dd class="impact-
+   label">. Per-stat provenance lives as <span class="sr-only">
+   *inside* the <dd>, so screen readers announce it in document
+   order after the visible label.
+   ============================================================ */
+.impact-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.5rem;
+  margin: 0 0 1.1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.impact-strip > .impact-stat {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.05rem;
+  margin: 0;
+  padding: 0.1rem 0 0.1rem 0.6rem;
+  border-left: 2px solid var(--accent-warm, #b5752a);
+  /* Allow wrap inside a stat on small viewports (WCAG 1.4.10 reflow);
+     suppress wrap on >=600px where horizontal real estate exists. */
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.impact-strip .impact-value {
+  margin: 0;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  /* Regular weight + body-ink colour. Earlier iterations went bold-black
+     (read as "hardened") and then warm-sienna (read as decorative);
+     regular black is the right balance — credible, professional, no
+     theme drift. */
+  font-weight: 400;
+  font-size: 1.05rem;
+  line-height: 1.2;
+  color: var(--fg, #1a1818);
+  /* tabular-nums prevents font-swap CLS; the JetBrains Mono fallback
+     chain (ui-monospace -> monospace) is not always tabular by default. */
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Whenever a strip carries 3+ stats (the impact-strip pattern's stated
+   minimum is 3 — see docs/impact-strip-pattern.md), use a 2-column
+   grid so the left rules + values align cleanly across rows. Plain
+   flex-wrap produces visible column drift because each stat's
+   intrinsic width depends on its value text (e.g. ~1hr vs 3mo→14d
+   vs Sigstore + CodeQL). CSS :has() is baseline across the four
+   target engines (Chrome 105+, Safari 15.4+, Firefox 121+, Edge 105+). */
+.impact-strip:has(.impact-stat:nth-child(3)) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.55rem 1rem;
+}
+
+/* The two-column fallback above is sized for a card in a 3-up grid.
+   Project cards are full-bleed now, so two columns strand half the row;
+   give them four across once there is width for it. Scoped rather than
+   changing the base module, which other layouts still rely on. */
+@media (min-width: 860px) {
+  .systems-grid--stack .impact-strip:has(.impact-stat:nth-child(3)) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.impact-strip .impact-label {
+  margin: 0;
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-muted, #9b9490);
+  line-height: 1.3;
+}
+
+.impact-strip .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Keep multi-digit values single-line (e.g. "130+", "3mo→14d") on
+   >=600px viewports, but allow LABELS to wrap freely so long ones
+   like "CAREER PAGES MONITORED" or "DISTRIBUTION SURFACES" don't
+   overflow the grid column and bleed into the neighboring stat or
+   the card edge. Below 600px, both wrap to satisfy WCAG 1.4.10
+   reflow at 320px. */
+@media (min-width: 600px) {
+  .impact-strip .impact-value {
+    white-space: nowrap;
+  }
+}
+
+/* Dark-mode adaptation — drop-in default for adopters whose host
+   palette uses prefers-color-scheme. */
+@media (prefers-color-scheme: dark) {
+  .impact-strip .impact-value {
+    color: var(--fg, #f0f0f0);
+  }
+  .impact-strip .impact-label {
+    color: var(--fg-muted, #c0c0c0);
+  }
+}
+
+/* Print — keep the rule + text legible on PDF export. */
+@media print {
+  .impact-strip > .impact-stat {
+    border-left-color: #000;
+  }
+  .impact-strip .impact-value,
+  .impact-strip .impact-label {
+    color: #000;
+  }
+}
+
+/* ============================================================
+   ARCHITECTURE WRITE-UP POST PAGES
+   Standalone post template at /content/posts/<slug>.html.
+   Reuses the home-page palette + typography tokens; no new
+   font loads. Inline SVG diagrams use currentColor so they
+   adopt the post-prose color in light + dark + print.
+   ============================================================ */
+
+.post-body {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.post-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+@media (min-width: 768px) { .post-container { padding: 0 2.5rem; } }
+
+.post-header {
+  padding: 4rem 0 2rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.post-back {
+  display: inline-block;
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.02em;
+}
+.post-back:hover { color: var(--accent); }
+
+.post-meta {
+  font-size: 0.78rem;
+  color: var(--fg-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.post-meta-sep { margin: 0 0.5rem; }
+
+.post-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.7rem, 1.4rem + 1.6vw, 2.5rem);
+  line-height: 1.18;
+  font-weight: 500;
+  margin: 0 0 1.1rem;
+  letter-spacing: -0.01em;
+}
+
+.post-deck {
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--fg-soft);
+  max-width: 60ch;
+}
+
+.post-prose {
+  padding: 2.5rem 0 4rem;
+}
+
+.post-section {
+  margin: 0 0 2.5rem;
+}
+.post-section h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin: 0 0 1rem;
+  padding-top: 1rem;
+  border-top: 2px solid var(--accent-warm);
+  display: inline-block;
+  padding-right: 1.25rem;
+}
+.post-section h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 1.8rem 0 0.6rem;
+  color: var(--fg);
+}
+.post-section p {
+  margin: 0 0 1rem;
+}
+.post-section a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s ease;
+}
+.post-section a:hover { border-bottom-color: var(--accent); }
+
+.post-list {
+  margin: 0 0 1.1rem 1.4rem;
+  padding: 0;
+}
+.post-list li {
+  margin: 0 0 0.5rem;
+}
+
+.post-section pre {
+  background: var(--bg-alt);
+  border-left: 2px solid var(--accent-warm);
+  padding: 0.9rem 1.1rem;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  overflow-x: auto;
+  margin: 0 0 1.2rem;
+  border-radius: 0 var(--r) var(--r) 0;
+}
+.post-section code {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.85em;
+  background: var(--bg-alt);
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+}
+.post-section pre code {
+  background: transparent;
+  padding: 0;
+}
+
+/* Inline SVG architecture diagrams. currentColor inheritance
+   means the same markup renders correctly in light, dark, and
+   print. Warm-token highlights are scoped via stroke="var(...)". */
+.system-diagram-figure {
+  margin: 1.5rem 0 1.8rem;
+  padding: 0;
+}
+.system-diagram {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  color: var(--fg);
+  display: block;
+}
+.post-figcaption {
+  font-size: 0.78rem;
+  color: var(--fg-muted);
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+.post-rule {
+  border: 0;
+  border-top: 1px solid var(--border-soft);
+  margin: 2.5rem 0;
+}
+
+.post-cta,
+.post-bio {
+  font-size: 0.92rem;
+  color: var(--fg-soft);
+  line-height: 1.6;
+}
+.post-cta-label {
+  display: inline-block;
+  font-weight: 600;
+  color: var(--fg);
+  margin-right: 0.5rem;
+}
+.post-bio { margin-top: 1rem; }
+
+.post-footer {
+  padding: 2rem 0 3rem;
+  border-top: 1px solid var(--border-soft);
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+}
+
+/* Dark-mode aware: respect user preference; fall back to root tokens. */
+@media (prefers-color-scheme: dark) {
+  .post-body {
+    background: #1a1818;
+    color: #f0f0f0;
+  }
+  .post-section pre,
+  .post-section code {
+    background: #2a2522;
+  }
+  .post-body .system-diagram { color: #f0f0f0; }
+  .post-figcaption,
+  .post-meta,
+  .post-footer { color: #b0a8a0; }
+}
+
+/* Print: monochrome, preserve diagram readability, no bg. */
+@media print {
+  .post-body { background: #fff; color: #000; }
+  .post-back, .post-footer { display: none; }
+  .post-section pre {
+    background: #f5f5f5;
+    border-left-color: #000;
+  }
+  .system-diagram { color: #000; }
+  .post-section h2 { border-top-color: #000; }
+  /* Warm-accent strokes/fills fall back to #000 in print so they meet
+     WCAG 1.4.11 (3:1) on a B&W laser printer. CSS tokens overridden
+     here cascade through var() lookups inside inline SVG. */
+  .system-diagram { --accent-warm: #000; --fg-muted: #333; }
+}
+
+/* Windows High Contrast Mode (forced-colors): CSS custom-property
+   warm accents are NOT remapped by the OS. Force every stroke + fill
+   inside the diagram onto the system CanvasText token so the diagram
+   stays readable when the user has selected an accessibility theme. */
+@media (forced-colors: active) {
+  .system-diagram [stroke] { stroke: CanvasText; }
+  .system-diagram [fill]:not([fill="none"]) { fill: CanvasText; }
+}
+
+/* ============================================================
+   Hover-preview pattern (#70) — drop-in floating cards on important
+   links. Visual enrichment ONLY for sighted desktop users; touch
+   devices fall through to native link navigation, screen readers
+   read the link's accessible name and skip the popover entirely.
+   See docs/hover-preview-pattern.md for the full pattern.
+   ============================================================ */
+:root {
+  --hover-preview-open-delay:  80ms;
+  --hover-preview-close-grace: 250ms;
+  --hover-preview-fade:        280ms;
+  --hover-preview-ease:        cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-preview {
+  /* HTML Popover API target: rendered in the top layer, no position
+     stacking-context concerns. Margin/padding/border reset because
+     UA stylesheets put a default frame around the [popover] element. */
+  position: fixed;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  inset: unset;
+  width: max-content;
+  z-index: 80;
+  opacity: 0;
+  /* Slight downward + scaled-in resting state. ease-out-expo lets the
+     entrance feel like the card is rising and settling rather than
+     cross-fading in place — that's what makes a hover-preview read as
+     "graceful" instead of "flicked on". */
+  transform: translateY(8px) scale(0.96);
+  transform-origin: top center;
+  transition:
+    opacity   var(--hover-preview-fade) var(--hover-preview-ease),
+    transform var(--hover-preview-fade) var(--hover-preview-ease);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.hover-preview:popover-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.hover-preview-card {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 0.5rem;
+  width: 220px;
+  padding: 0.625rem;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 14px 36px -8px rgba(20, 14, 8, 0.22);
+  font-family: inherit;
+  /* Layered entrance: thumb fades in slightly later than the card
+     itself, text follows the thumb. The eye reads it as a small
+     reveal animation instead of one flat opacity step. */
+}
+
+.hover-preview-thumb {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  border-radius: 8px;
+  background: #ffffff;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(0.985);
+  transition:
+    opacity   calc(var(--hover-preview-fade) * 0.95) var(--hover-preview-ease) 80ms,
+    transform calc(var(--hover-preview-fade) * 0.95) var(--hover-preview-ease) 80ms;
+}
+.hover-preview:popover-open .hover-preview-thumb {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hover-preview-text {
+  display: grid;
+  gap: 0.125rem;
+  opacity: 0;
+  transform: translateY(2px);
+  transition:
+    opacity   calc(var(--hover-preview-fade) * 0.85) var(--hover-preview-ease) 140ms,
+    transform calc(var(--hover-preview-fade) * 0.85) var(--hover-preview-ease) 140ms;
+}
+.hover-preview:popover-open .hover-preview-text {
+  opacity: 1;
+  transform: none;
+}
+
+.hover-preview-title {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--fg);
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+}
+
+.hover-preview-caption {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--fg-muted);
+  line-height: 1.4;
+  /* Smaller card means less room for prose; clamp to 2 lines so a
+     long caption never blows up the card height past its sibling tile. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Substack live-feed mode: when the trigger has data-hover-embed=
+   "substack-feed", the JS swaps the static thumbnail+title+caption
+   for a stacked list of the 3 most recent posts (title + relative
+   date + 1-line excerpt). Source: build-time JSON snapshot generated
+   by .github/workflows/substack-snapshot.yml — same-origin fetch,
+   no CORS, no third-party tracking. */
+.hp-feed-header {
+  display: flex; align-items: center; gap: 0.4rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.66rem; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--fg-muted);
+}
+.hp-feed-header::before {
+  content: ""; width: 6px; height: 6px;
+  background: var(--accent-warm); border-radius: 50%;
+  flex-shrink: 0;
+}
+.hp-feed-list {
+  display: flex; flex-direction: column;
+  gap: 0.45rem;
+  margin: 0; padding: 0;
+  list-style: none;
+}
+.hp-feed-item {
+  display: block;
+  padding: 0.4rem 0.05rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: inherit;
+  transition: background 140ms ease;
+}
+.hp-feed-item + .hp-feed-item {
+  border-top: 1px solid var(--border-soft, var(--border));
+}
+.hp-feed-item:hover,
+.hp-feed-item:focus-visible {
+  background: var(--bg-alt);
+  outline: none;
+}
+.hp-feed-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0 0 0.15rem;
+  font-size: 0.78rem; font-weight: 600;
+  line-height: 1.3; color: var(--fg);
+}
+.hp-feed-meta {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.64rem; color: var(--fg-muted);
+  letter-spacing: 0.02em;
+}
+.hp-feed-empty {
+  padding: 0.6rem 0;
+  font-size: 0.72rem; color: var(--fg-muted);
+  font-style: italic;
+}
+
+/* Touch devices: hide the popover entirely. Mobile users get the
+   normal link-tap behaviour they expect, plus iOS Safari's native
+   long-press preview menu. Detection: BOTH no-hover AND coarse
+   pointer — hybrid devices (Surface, iPad+trackpad) keep the
+   desktop preview. */
+@media (hover: none) and (pointer: coarse) {
+  .hover-preview { display: none !important; }
+}
+
+/* Reduced motion: snap-open / snap-close, no fade or scale. */
+@media (prefers-reduced-motion: reduce) {
+  .hover-preview,
+  .hover-preview .hover-preview-thumb,
+  .hover-preview .hover-preview-text {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* Print: never print the popover. */
+@media print {
+  .hover-preview { display: none !important; }
+}
+
+/* Forced-colors / High-contrast: keep the card readable with system
+   tokens, lose the warm shadow which the OS suppresses anyway. */
+@media (forced-colors: active) {
+  .hover-preview-card {
+    background: Canvas;
+    color: CanvasText;
+    border-color: CanvasText;
+    box-shadow: none;
+  }
+}
+
+/* ============================================================
+   Skills grid (#71) — categorized monogram tiles with hover
+   tooltips. Static text-tooltip pattern (NOT the M1 popover):
+   ARIA `role="tooltip"` + `aria-describedby`, CSS-only show/hide
+   on :hover and :focus-visible. Mobile collapses tooltips to
+   inline captions so the grid serves both surfaces from one DOM.
+   See docs/skills-grid-pattern.md for the full pattern.
+   ============================================================ */
+.skills-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+  margin-top: 2.25rem;
+}
+
+.skills-category-title {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin: 0 0 0.85rem;
+}
+
+.skills-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 0.55rem;
+  padding: 0;
+  margin: 0;
+}
+
+.skills-list > li { display: contents; }
+/* Tooltips are absolutely positioned and centred on their tile, so the
+   rightmost tile's tooltip sits ~11px past the viewport even while
+   hidden, and an absolutely positioned box still extends the scrollable
+   area. app.js shifts it on hover/focus, but that does nothing for the
+   resting state. overflow-x: clip contains it horizontally while leaving
+   the vertical axis visible, which is the direction tooltips open. */
+.skills-grid { overflow-x: clip; }
+
+.skill-icon {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.45rem;
+  width: 100%;
+  min-height: 92px;
+  padding: 0.85rem 0.55rem 0.7rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  color: var(--fg-muted);
+  font: inherit;
+  cursor: default;
+  transition: border-color 200ms ease, color 200ms ease, background 200ms ease, transform 200ms ease;
+}
+
+.skill-icon:hover,
+.skill-icon:focus-visible {
+  border-color: var(--accent-warm);
+  color: var(--fg);
+  background: var(--bg-alt);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.skill-icon:focus-visible {
+  box-shadow: 0 0 0 2px var(--accent-warm);
+}
+
+.skill-glyph {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  /* SVGs use fill="currentColor"; <img> drops that contract, but the
+     monograms are styled via the SVG's own attributes — width/height
+     declared on <img> for CLS=0 and lazy-load for off-screen tiles. */
+}
+
+.skill-name {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--fg);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.skill-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  z-index: 5;
+  padding: 0.55rem 0.7rem;
+  width: max-content;
+  max-width: 220px;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 0.72rem;
+  line-height: 1.45;
+  border-radius: var(--r);
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.skill-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--fg);
+}
+
+.skill-icon:hover > .skill-tooltip,
+.skill-icon:focus-visible > .skill-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* WAI-ARIA APG tooltip pattern (#80): Esc on a focused tile sets
+   data-tooltip-suppressed; this rule keeps the tooltip hidden even
+   while :focus-visible still matches, so focus stays on the trigger
+   but the tooltip is dismissed. Suppression clears on the next
+   focus / mouseenter — see app.js. */
+.skill-icon[data-tooltip-suppressed]:hover > .skill-tooltip,
+.skill-icon[data-tooltip-suppressed]:focus-visible > .skill-tooltip {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 780px) {
+  .skills-list {
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+    gap: 0.5rem;
+  }
+  .skill-icon { min-height: 88px; }
+}
+
+/* Mobile + any pointer:coarse device: tooltip collapses to inline
+   static caption beneath the tool name, so touch users get the context
+   without a hover gesture and iOS Safari does not fire sticky-hover on
+   tap. Triggers on max-width OR (hover: none) so iPad landscape /
+   large-phone landscape (which exceed 780px in width) also get the
+   touch-friendly behavior. */
+@media (max-width: 780px), (hover: none) {
+  .skill-tooltip {
+    position: static;
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+    background: transparent;
+    color: var(--fg-soft);
+    box-shadow: none;
+    padding: 0;
+    margin-top: 0.15rem;
+    max-width: 100%;
+    font-size: 0.66rem;
+    line-height: 1.35;
+    text-align: center;
+  }
+  .skill-tooltip::after { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-icon { transition: none; }
+  .skill-icon:hover, .skill-icon:focus-visible { transform: none; }
+  .skill-tooltip { transition: none; transform: translateX(-50%); }
+  .skill-icon:hover > .skill-tooltip,
+  .skill-icon:focus-visible > .skill-tooltip { transform: translateX(-50%); }
+}
+
+@media print {
+  .skill-icon {
+    border-color: #ccc;
+    color: #000;
+    background: #fff;
+    box-shadow: none;
+    transform: none;
+  }
+  /* Print: render tooltip inline so the page is self-explanatory
+     without needing hover state. */
+  .skill-tooltip {
+    position: static;
+    transform: none;
+    opacity: 1;
+    background: transparent;
+    color: #555;
+    padding: 0;
+    margin-top: 0.2rem;
+    box-shadow: none;
+    font-size: 0.7rem;
+    text-align: center;
+  }
+  .skill-tooltip::after { display: none; }
+}
+
+
