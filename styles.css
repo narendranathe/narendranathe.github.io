@@ -2,18 +2,22 @@
    NARENDRANATH EDARA — Portfolio Design System
    Light warm theme · Inter + Playfair Display + JetBrains Mono
    ============================================================ */
+/* ---- This is sheet 1 of 4: tokens, base elements, header, hero,
+     homepage sections through the artifact-register grammar.
+     styles-2/3/4.css load after it; tokens here are document-wide. ---- */
+
 
 :root {
   --bg:           #fafaf8;
   --bg-alt:       #f2f0eb;
   --fg:           #1a1818;
-  --fg-soft:      #5c5a55;
-  --fg-muted:     #9b9490;
+  --fg-soft:      #45423e;
+  --fg-muted:     #6e6963;
   --accent:       #176b52;
   --accent-lt:    #1e8a68;
-  --accent-warm:  #b5752a;
-  --border:       #e0dcd5;
-  --border-soft:  #eae7e0;
+  --accent-warm:  #9a6224;
+  --border:       #d8d3c9;
+  --border-soft:  #e4e0d8;
   --chip-bg:      #eae7e0;
   --chip-fg:      #3a3733;
   --nav-bg:       rgba(250,250,248,0.94);
@@ -66,6 +70,117 @@ button { font-family: inherit; cursor: pointer; }
 
 .section { padding: 5rem 0; }
 .section-alt { background: var(--bg-alt); }
+
+/* --- dark experience band ---
+   The career history gets its own inverted band: deep green-charcoal
+   ground, off-white ink, every component inside recolored by scoping
+   the same tokens the rest of the site uses. The alternating
+   cream -> dark -> cream rhythm makes the section impossible to miss
+   and ends the beige-on-beige problem for good. */
+.section-dark {
+  --fg:           #F3EEE5;
+  --fg-soft:      #C9C2B4;
+  --fg-muted:     #9A9384;
+  --accent:       #63B995;
+  --accent-lt:    #7FCBAC;
+  --accent-warm:  #D9A05B;
+  --border:       #2E3833;
+  --border-soft:  #27302B;
+  background: #1F3D2B;
+  color: var(--fg);
+}
+
+/* Career timeline: one rail down the left edge, a node per role,
+   entries numbered in mono like a service list. */
+.section-dark .roles { position: relative; counter-reset: role; }
+.section-dark .roles::before {
+  content: ""; position: absolute; left: 0; top: 0.55rem; bottom: 0.55rem;
+  width: 1px; background: var(--border);
+}
+.section-dark .role { position: relative; counter-increment: role; padding-left: 2.25rem; grid-template-columns: 11.5rem 1fr; }
+.section-dark .role::before {
+  content: ""; position: absolute; left: -4px; top: 0.55rem;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px #1F3D2B;
+}
+.section-dark .role-when { white-space: nowrap; }
+.section-dark .role-when::before {
+  content: counter(role, decimal-leading-zero) "  \00B7  ";
+  color: var(--accent-warm);
+}
+.section-dark .system-diagram { color: var(--fg-soft); }
+/* ---- Experience evidence layer (dark band) ---- */
+.section-dark .case { margin-top: 2rem; }
+.section-dark .case:first-of-type { margin-top: 1.25rem; }
+
+/* outcome strips: machine-verifiable results, mono + signal green, tabular numerals */
+.section-dark .case-outcome {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.015em;
+  color: var(--accent);
+  margin-top: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+.section-dark .case-outcome::before {
+  content: "\2192\00a0\00a0";
+  color: var(--fg-muted);
+}
+
+/* runbook: failure taxonomy as an artifact, hairline left rule, amber ordinals */
+.section-dark .runbook {
+  counter-reset: rb;
+  margin: 1.1rem 0 0;
+  padding: 0.35rem 0 0.35rem 1.1rem;
+  border-left: 1px solid var(--border);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.78rem;
+  line-height: 2;
+  color: var(--fg-soft);
+  font-variant-numeric: tabular-nums;
+}
+.section-dark .runbook .rb-h {
+  display: block;
+  font-size: 0.62rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin-bottom: 0.15rem;
+}
+.section-dark .runbook .rb-i { display: block; counter-increment: rb; }
+.section-dark .runbook .rb-i::before {
+  content: counter(rb, decimal-leading-zero) "\00a0\00a0";
+  color: var(--accent-warm);
+}
+.section-dark .runbook .rb-note {
+  display: block;
+  color: var(--accent);
+  margin-top: 0.15rem;
+}
+.section-dark .case-body--after { margin-top: 1rem; }
+
+/* technical surface area: secondary evidence, quiet mono, never a headline */
+.section-dark .role-tech {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #A8A191; /* 4.64:1 on the band; fg-muted is 3.91:1, under AA at this size */
+  margin-top: 1.6rem;
+}
+.section-dark .role--compact .role-tech { margin-top: 1rem; }
+.section-dark .role--compact .case { margin-top: 0.85rem; }
+.section-dark .role--compact .case-body { max-width: 66ch; }
+
+/* progressive disclosure of space: compressed roles breathe less */
+.section-dark .role--compact { opacity: 0.92; }
+
+@media (max-width: 860px) {
+  .section-dark .case-outcome { font-size: 0.72rem; }
+  .section-dark .runbook { font-size: 0.72rem; line-height: 1.9; }
+}
+
 
 /* ---- Typography utilities ---- */
 .section-label {
@@ -355,16 +470,26 @@ button { font-family: inherit; cursor: pointer; }
      avatar beside nothing, and the proof points get the space instead. */
   .hero { padding: 5rem 0 2.5rem; }
   .hero-grid { gap: 1.5rem; }
-  /* Avatar leads, the way every phone profile does. The source is a
-     full-body portrait, so a plain square crop gives a small figure in
-     a lot of studio grey; scaling up and anchoring near the top lands
-     on the face. */
+  /* Avatar leads, the way every phone profile does. The frame goes
+     circular here; the rule below crops the face into it. */
   .hero-visual { order: -1; width: auto; margin-inline: 0; }
   .profile-frame {
     width: 76px; max-width: 76px; aspect-ratio: 1/1;
     border-radius: 50%; box-shadow: none;
   }
-  .profile-photo { transform: scale(2.9); transform-origin: 50% 17%; }
+  /* Face crop without a duplicate asset: object-position top-aligns the
+     4:5 portrait inside the square circle, then the transform zooms on
+     the face. Derivation: face box (442,195)-(802,555) of the 1200x1500
+     original -> face center 51.8% across, 375/1200 = 31.3% down the
+     top-aligned square; 360px face square -> 1200/360 = 3.34x. If the
+     photo asset is ever replaced, delete these two transform lines. */
+  .profile-photo {
+    object-position: 50% 0%;
+    transform: scale(3.34);
+    transform-origin: 51.8% 31.3%;
+  }
+  /* Avatar takes 64px of the row; let the email button use the rest */
+  .contact-email { display: block; text-align: center; }
   .hero-name { font-size: 2rem; margin-bottom: 0.4rem; }
   .hero-role { font-size: 0.72rem; letter-spacing: 0.09em; margin-bottom: 0.5rem; }
   /* margin trimmed 0.9 -> 0.65rem: dropping the serif italic for plain
@@ -463,47 +588,6 @@ button { font-family: inherit; cursor: pointer; }
   max-width: 54ch; margin-bottom: 1.4rem;
 }
 
-/* --- production systems table --- */
-.scroll-x { overflow-x: auto; }
-table.ps {
-  border-collapse: collapse; width: 100%; min-width: 640px;
-  font-size: 0.88rem;
-}
-table.ps thead th {
-  text-align: left; padding: 0 0.9rem 0.55rem 0;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.62rem; letter-spacing: 0.11em; text-transform: uppercase;
-  color: var(--fg-muted); font-weight: 500;
-  border-bottom: 1px solid var(--border);
-}
-table.ps tbody th {
-  text-align: left; font-weight: 600; color: var(--fg);
-  padding: 0.9rem 0.9rem 0.9rem 0; vertical-align: top;
-  border-bottom: 1px solid var(--border-soft);
-  white-space: nowrap;
-}
-table.ps tbody td {
-  padding: 0.9rem 0.9rem 0.9rem 0; vertical-align: top;
-  border-bottom: 1px solid var(--border-soft);
-  color: var(--fg-soft); line-height: 1.6;
-}
-.ps-where {
-  display: block; font-weight: 400; font-size: 0.7rem;
-  color: var(--fg-muted); margin-top: 0.1rem;
-}
-/* No strikethrough. The column header already says "before", and a line
-   through "1 hr, 20+ times a day" costs legibility to restate it. The
-   muted colour against .ps-now's accent carries the contrast. */
-.ps-before {
-  color: var(--fg-muted); white-space: nowrap;
-}
-.ps-now {
-  font-family: 'JetBrains Mono', monospace;
-  font-variant-numeric: tabular-nums;
-  color: var(--accent); font-weight: 500; white-space: nowrap;
-}
-.ps-mech { min-width: 26ch; }
-
 /* A 640px-wide table inside an overflow-x container does not overflow the
    PAGE, so a page-level overflow check passes while the table itself is
    clipped. On a 390px phone that hid the NOW and HOW columns: a reader at
@@ -512,25 +596,45 @@ table.ps tbody td {
    scroll is also the interaction people are least likely to discover.
    Below 700px each row becomes a block instead: subject, then
    before/after on one line, then the mechanism. */
-@media (max-width: 700px) {
-  .scroll-x { overflow-x: visible; }
-  table.ps { display: block; min-width: 0; font-size: 0.86rem; }
-  table.ps thead { display: none; }
-  table.ps tbody, table.ps tr { display: block; }
-  table.ps tr {
-    padding: 0.9rem 0; border-bottom: 1px solid var(--border-soft);
-  }
-  table.ps tr:last-child { border-bottom: 0; }
-  table.ps tbody th, table.ps tbody td {
-    display: block; padding: 0; border: 0; white-space: normal;
-  }
-  table.ps tbody th { margin-bottom: 0.3rem; }
-  /* Specificity has to beat `table.ps tbody td` above, hence td.class. */
-  table.ps tbody td.ps-before, table.ps tbody td.ps-now { display: inline; }
-  table.ps tbody td.ps-now::before {
-    content: " \2192 "; color: var(--fg-muted); font-family: inherit;
-  }
-  table.ps tbody td.ps-mech { margin-top: 0.35rem; min-width: 0; }
+
+/* --- production systems: transformation register ---
+   Each row is a state change on a real system: the old state small and
+   muted, the new state large in signal green, the mechanism attached.
+   No cards, no derived percentages, no dashboard chrome. */
+.tr { border-top: 1px solid var(--border); }
+.tr-row {
+  display: grid;
+  grid-template-columns: 12rem 20rem 1fr;
+  gap: 0.4rem 2.5rem;
+  align-items: baseline;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+.tr-sys { font-weight: 600; font-size: 0.9rem; color: var(--fg); margin: 0; }
+.tr-org {
+  display: block;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.6rem; letter-spacing: 0.1em; font-weight: 400;
+  color: var(--accent-warm);
+  margin-top: 0.3rem;
+}
+.tr-delta {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+  display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap;
+}
+.tr-b { color: var(--fg-muted); font-size: 0.92rem; white-space: nowrap; }
+.tr-arr { color: var(--fg-muted); font-size: 0.95rem; }
+.tr-a { color: var(--accent); font-size: 1.4rem; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; }
+.tr-why {
+  font-size: 0.84rem; line-height: 1.65; color: var(--fg-soft);
+  margin: 0; max-width: 56ch;
+}
+@media (max-width: 860px) {
+  .tr-row { grid-template-columns: 1fr; gap: 0.35rem; padding: 1.15rem 0; }
+  .tr-org { display: inline; margin-left: 0.8ch; }
+  .tr-a { font-size: 1.25rem; }
 }
 
 /* --- roles --- */
@@ -571,2096 +675,52 @@ table.ps tbody td {
 .proj-links { display: flex; flex-wrap: wrap; gap: 1.1rem; margin-top: 0.7rem; }
 .proj-links a { font-size: 0.85rem; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
 .proj-links a:hover, .proj-links a:focus-visible { border-bottom-color: var(--accent); }
-
-/* --- research, references, contact --- */
-.creds { display: flex; flex-direction: column; gap: 0.9rem; max-width: 78ch; }
-.creds p { font-size: 0.9rem; line-height: 1.75; color: var(--fg-soft); }
-.creds a { color: var(--accent); }
-
-.contact { max-width: 62ch; display: flex; flex-direction: column; gap: 0.9rem; }
-.contact-links { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-top: 0.4rem; }
-.contact-links a { font-size: 0.88rem; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
-.contact-links a:hover, .contact-links a:focus-visible { border-bottom-color: var(--accent); }
-
-@media (max-width: 860px) {
-  .role { grid-template-columns: 1fr; gap: 0.35rem; }
-  .role-when { padding-top: 0; }
-  .hero-stack { font-size: 0.7rem; line-height: 1.8; margin-bottom: 0.7rem; }
-  .hero-seeking { font-size: 0.82rem; margin-bottom: 0.85rem; }
-  /* font-size only. Do NOT set min-width here: this block sits after the
-     700px block that turns the table into stacked blocks, so at equal
-     specificity a min-width declared here wins by source order and puts
-     the table back over the viewport edge. That is exactly the bug that
-     hid the NOW and HOW columns on a phone. */
-  table.ps { font-size: 0.83rem; }
-}
-
-/* ============================================================
-   VERIFICATION AND CLAIMS REGISTER
-   ============================================================ */
-.verify-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
-}
-.verify-card {
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--r-lg); padding: 1.4rem 1.5rem;
-  display: flex; flex-direction: column; gap: 0.6rem;
-}
-.verify-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.1rem; font-weight: 500; color: var(--fg);
-}
-.verify-desc { font-size: 0.85rem; line-height: 1.65; color: var(--fg-soft); }
-.verify-links {
-  list-style: none; display: flex; flex-direction: column;
-  gap: 0.7rem; margin-top: 0.3rem;
-}
-.verify-links li {
-  display: flex; flex-direction: column; gap: 0.1rem;
-  font-size: 0.85rem; color: var(--fg);
-  padding-left: 1.5rem; position: relative;
-}
-.verify-links li i {
-  position: absolute; left: 0; top: 0.22rem;
-  width: 1rem; text-align: center;
-  color: var(--accent-warm); font-size: 0.82rem;
-}
-.verify-links a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
-.verify-links a:hover, .verify-links a:focus-visible { border-bottom-color: var(--accent); }
-.verify-links span { font-size: 0.76rem; color: var(--fg-muted); line-height: 1.45; }
-
-.register {
-  margin-top: 1.5rem;
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent-warm);
-  border-radius: var(--r);
-  background: var(--bg);
-  padding: 1.4rem 1.6rem;
-}
-.register-head {
-  display: flex; flex-wrap: wrap; align-items: center;
-  justify-content: space-between; gap: 1rem; margin-bottom: 0.6rem;
-}
-.register-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.15rem; font-weight: 500; color: var(--fg);
-}
-.register-note {
-  font-size: 0.88rem; line-height: 1.7; color: var(--fg-soft);
-  max-width: 80ch; margin-bottom: 1.1rem;
-}
-.register-note strong { color: var(--fg); font-weight: 600; }
-.register-tally {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 1px; background: var(--border);
-  border: 1px solid var(--border); border-radius: var(--r); overflow: hidden;
-}
-.register-tally > div {
-  background: var(--bg-alt); padding: 0.85rem 1rem;
-  display: flex; flex-direction: column; gap: 0.15rem;
-}
-.register-tally dt {
-  font-family: 'JetBrains Mono', monospace;
-  font-variant-numeric: tabular-nums;
-  font-size: 1.3rem; color: var(--fg); line-height: 1;
-}
-.register-tally dd {
-  margin: 0; font-size: 0.72rem; color: var(--fg-muted); line-height: 1.4;
-}
-@media (max-width: 1000px) { .verify-grid { grid-template-columns: 1fr; } }
-@media (max-width: 640px)  { .register-tally { grid-template-columns: 1fr 1fr; } }
-
-/* ============================================================
-   WHERE THIS FITS
-   Three role-shape blocks. The gap line at the foot of each is the
-   structurally important part, so it gets the warm rule and sits last
-   where it cannot be skimmed past.
-   ============================================================ */
-.fit-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  overflow: hidden;
-}
-.fit-block {
-  background: var(--bg);
-  padding: 1.6rem 1.5rem;
-  display: flex; flex-direction: column; gap: 0.7rem;
-}
-.fit-head {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.15rem; font-weight: 500; color: var(--fg);
-  line-height: 1.3;
-}
-.fit-maps {
-  font-size: 0.85rem; line-height: 1.65; color: var(--fg-soft);
-  padding-bottom: 0.35rem;
-  border-bottom: 1px solid var(--border-soft);
-}
-.fit-rows { display: flex; flex-direction: column; gap: 0.85rem; margin: 0.25rem 0 0; }
-.fit-row { display: flex; flex-direction: column; gap: 0.15rem; }
-.fit-row-key {
-  font-size: 0.8rem; font-weight: 600; color: var(--fg);
-  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.45rem;
-}
-.fit-gt {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.58rem; letter-spacing: 0.05em;
-  font-weight: 400;
-  color: var(--accent-warm);
-  border-bottom: 1px dotted var(--border);
-  cursor: help;
-}
-.fit-row-val {
-  margin: 0;
-  font-size: 0.83rem; line-height: 1.6; color: var(--fg-soft);
-}
-.fit-adjacency {
-  font-size: 0.79rem; line-height: 1.6; color: var(--fg-muted);
-  font-style: italic;
-  padding-top: 0.55rem;
+/* ---- Projects: artifact register ---- */
+/* Hairline-separated entries, not cards: a register, not a gallery. */
+.projs { gap: 0; }
+.proj {
   border-top: 1px solid var(--border-soft);
+  padding: 1.6rem 0 1.7rem;
 }
-.fit-gap {
-  margin-top: auto;
-  padding: 0.85rem 1rem;
-  border-left: 3px solid var(--accent-warm);
-  background: var(--chip-bg);
-  font-size: 0.83rem; line-height: 1.65; color: var(--fg-soft);
-}
-.fit-gap-key {
-  display: block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--fg-muted);
-  margin-bottom: 0.2rem;
-}
-@media (max-width: 1000px) { .fit-grid { grid-template-columns: 1fr; } }
+.proj:first-child { border-top: 0; padding-top: 0; }
 
-/* ============================================================
-   MEASURED-OUTCOMES LEDGER
-   Six rows, each baseline -> result -> method -> scope. Sized so the
-   delta is scannable at a glance and the method is there for whoever
-   stops to read it. Distinct from .impact-strip on purpose: that
-   module is CI-counted at exactly five instances.
-   ============================================================ */
-.ledger {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  overflow: hidden;
+/* header: serif name left, mono status metadata right */
+.proj-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 0.4rem 1.25rem; flex-wrap: wrap;
 }
-.ledger-row {
-  background: var(--bg);
-  padding: 1.4rem 1.5rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
-}
-.ledger-top {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 0.75rem;
-}
-.ledger-domain {
-  font-size: 0.72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.1em;
+.proj-meta {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.62rem; letter-spacing: 0.1em;
   color: var(--accent-warm);
-}
-/* Evidence tag. Cursor + dotted underline signal that the title=
-   tooltip carries the GROUND_TRUTH record id. */
-.ledger-verify {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.63rem; letter-spacing: 0.04em;
-  color: var(--fg-muted);
-  border-bottom: 1px dotted var(--border);
-  cursor: help;
-  white-space: nowrap;
-}
-.ledger-delta {
-  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem;
-  font-family: 'Playfair Display', serif;
   font-variant-numeric: tabular-nums;
-  line-height: 1.15;
-  margin: 0.1rem 0 0;
-}
-.ledger-from {
-  font-size: 1.02rem; color: var(--fg-muted);
-  text-decoration: line-through;
-  text-decoration-thickness: 1px;
-  text-decoration-color: var(--border);
-}
-.ledger-arrow { font-size: 0.95rem; color: var(--accent-warm); }
-.ledger-to { font-size: 1.5rem; font-weight: 600; color: var(--accent); }
-.ledger-what {
-  font-size: 0.76rem; color: var(--fg-muted);
-  text-transform: uppercase; letter-spacing: 0.06em;
-  margin: -0.15rem 0 0.3rem;
-}
-.ledger-line {
-  font-size: 0.855rem; line-height: 1.6; color: var(--fg-soft);
   margin: 0;
 }
-.ledger-key {
-  display: block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--fg-muted);
-  margin-bottom: 0.15rem;
-}
-.ledger-total {
-  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.75rem;
-  margin-top: 1.75rem;
-  padding-left: 1.1rem;
-  border-left: 3px solid var(--accent-warm);
-  max-width: 80ch;
-}
-.ledger-total-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.35rem; font-weight: 600; color: var(--fg);
-  font-variant-numeric: tabular-nums;
-}
-.ledger-total-txt {
-  flex: 1 1 22rem;
-  font-size: 0.88rem; line-height: 1.65; color: var(--fg-soft);
-}
-@media (max-width: 1000px) { .ledger { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 640px)  { .ledger { grid-template-columns: 1fr; } }
-@media print {
-  .ledger { grid-template-columns: 1fr 1fr; }
-  .ledger-verify { border-bottom: 0; }
+
+/* one-line technical description */
+.proj-line {
+  font-size: 0.92rem; line-height: 1.65; color: var(--fg-soft);
+  margin: 0.45rem 0 0; max-width: 72ch;
 }
 
-/* ============================================================
-   GRAPH
-   ============================================================ */
-.graph-wrap {
-  margin: 0 0 2.5rem;
-  border-radius: var(--r-lg); overflow: hidden;
-  border: 1px solid var(--border);
-  background: radial-gradient(ellipse at 35% 40%, var(--graph-bg-a) 0%, var(--graph-bg-b) 100%);
-  box-shadow: var(--shadow-sm);
-}
-.graph-hint {
-  padding: 0.85rem 1.5rem 0;
-  font-size: 0.77rem; color: var(--fg-muted); text-align: center;
-}
-#graph-container { width: 100%; height: 460px; position: relative; }
-#graph { width: 100%; height: 100%; }
-#graph svg, #minigraph svg { width: 100%; height: 100%; display: block; }
-
-#minimap {
-  position: fixed; bottom: 1.5rem; right: 1.5rem;
-  width: 160px; height: 110px;
-  background: rgba(248,247,244,0.96);
-  border: 1px solid var(--border); border-radius: var(--r);
-  overflow: hidden; opacity: 0; pointer-events: none;
-  transition: opacity 0.35s; z-index: 50;
-  backdrop-filter: blur(6px); box-shadow: var(--shadow-md);
-}
-#minimap.show { opacity: 1; pointer-events: auto; }
-#minigraph { width: 100%; height: 100%; }
-
-#panel {
-  position: fixed; top: 0; right: 0;
-  width: min(400px, 90vw); height: 100vh;
-  background: var(--bg); border-left: 1px solid var(--border);
-  padding: 3.5rem 2rem 2rem;
-  transform: translateX(100%);
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: 300; overflow-y: auto;
-  box-shadow: -20px 0 50px rgba(0,0,0,0.1);
-}
-#panel.open { transform: translateX(0); }
-#panel-close {
-  position: absolute; top: 1rem; right: 1.25rem;
-  background: none; border: none; font-size: 1.6rem;
-  color: var(--fg-muted); cursor: pointer; line-height: 1;
-  transition: color 0.2s;
-}
-#panel-close:hover { color: var(--fg); }
-#panel-scrim {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.18);
-  z-index: 290; opacity: 0; pointer-events: none; transition: opacity 0.3s;
-}
-#panel-scrim.open { opacity: 1; pointer-events: auto; }
-
-/* ============================================================
-   PLATFORM DIAGRAM
-   ============================================================ */
-.platform-diagram {
-  background: radial-gradient(ellipse at 40% 30%, var(--graph-bg-a) 0%, var(--graph-bg-b) 100%);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 2rem;
-  margin-bottom: 2.5rem;
-  display: flex; flex-direction: column; gap: 0;
-}
-.pd-top { display: flex; justify-content: center; }
-.pd-flagship {
-  background: var(--bg);
-  border: 1.5px solid var(--accent);
-  border-radius: var(--r-lg);
-  padding: 1.5rem 2rem;
-  width: 100%; max-width: 600px;
-  box-shadow: 0 2px 16px rgba(23,107,82,0.1);
-}
-.pd-flagship-header { margin-bottom: 0.6rem; }
-.pd-type {
-  font-size: 0.68rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.12em;
-  color: var(--accent); display: block; margin-bottom: 0.2rem;
-}
-.pd-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.35rem; font-weight: 600; color: var(--fg);
-}
-.pd-flow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.85rem; color: var(--accent-warm);
-  font-weight: 500; margin-bottom: 0.85rem;
-}
-.pd-stats {
-  display: flex; flex-wrap: wrap; gap: 1.25rem;
-  margin-bottom: 0.85rem;
-}
-.pd-stat { font-size: 0.84rem; color: var(--fg-soft); }
-.pd-stat strong { color: var(--fg); font-weight: 600; }
-.pd-tech { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-
-.pd-arrow-row {
-  display: grid; grid-template-columns: 1fr 1fr;
-  max-width: 600px; margin: 0 auto;
-  width: 100%;
-}
-.pd-arrow-col {
-  display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
-  padding: 0.6rem 0;
-}
-.pd-arrow-line {
-  width: 1px; height: 28px;
-  background: var(--border);
-  position: relative;
-}
-.pd-arrow-line::after {
-  content: '▾'; position: absolute; bottom: -10px; left: 50%;
-  transform: translateX(-50%); font-size: 10px;
-  color: var(--fg-muted);
-}
-.pd-arrow-label { font-size: 0.68rem; color: var(--fg-muted); font-weight: 500; letter-spacing: 0.04em; }
-
-.pd-engines {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-.pd-engine {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 1.25rem 1.5rem;
-}
-.pd-engine-header { margin-bottom: 0.5rem; }
-.pd-engine-desc { font-size: 0.87rem; line-height: 1.6; color: var(--fg-soft); margin-bottom: 0.85rem; }
-.pd-engine-desc strong { color: var(--fg); }
-.pd-surfaces { display: flex; flex-direction: column; gap: 0.45rem; }
-.surface-item { font-size: 0.83rem; color: var(--fg-soft); display: flex; align-items: baseline; gap: 0.4rem; flex-wrap: wrap; }
-.surface-mono {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.78rem; background: var(--chip-bg);
-  padding: 0.15em 0.5em; border-radius: 4px;
-  color: var(--accent); font-weight: 500;
-}
-.surface-label { font-weight: 600; color: var(--fg); }
-
-.pd-infra {
-  margin-top: 1rem; padding-top: 1rem;
-  border-top: 1px solid var(--border-soft);
-  display: flex; flex-direction: column; gap: 0.3rem;
-  align-items: center; text-align: center;
-}
-.pd-infra-label {
-  font-size: 0.68rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.1em;
-  color: var(--fg-muted);
-}
-.pd-infra-stack {
-  font-size: 0.83rem; color: var(--fg-muted);
-}
-
-@media (max-width: 640px) {
-  .pd-engines { grid-template-columns: 1fr; }
-  .pd-flagship { padding: 1.25rem; }
-  .pd-arrow-row { max-width: 100%; }
-}
-
-/* ============================================================
-   SYSTEM CARDS
-   ============================================================ */
-.systems-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem; margin-bottom: 1.5rem;
-}
-.system-card {
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--r-lg); overflow: hidden;
-  box-shadow: var(--shadow-sm); display: flex; flex-direction: column;
-  transition: box-shadow 0.25s, transform 0.25s;
-  position: relative;
-}
-.system-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-.system-rail {
-  background: var(--bg-alt); border-bottom: 1px solid var(--border);
-  padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 0.15rem;
-}
-.system-type {
-  font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.12em; color: var(--accent);
-}
-.system-metric {
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem; font-weight: 600; color: var(--fg); line-height: 1.1;
-}
-.system-caption { font-size: 0.74rem; color: var(--fg-muted); }
-.system-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; gap: 1rem; }
-.system-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.2rem; font-weight: 500; color: var(--fg);
-}
-.system-desc { font-size: 0.89rem; line-height: 1.7; color: var(--fg-soft); }
-
-/* Full-width stack instead of the 3-up grid. Each project card now
-   carries four labelled lines, which need reading width rather than a
-   narrow column. */
-.systems-grid--stack { grid-template-columns: 1fr; gap: 1.25rem; }
-.systems-grid--stack .system-name { font-size: 1.35rem; }
-
-/* Problem / Method / Proof / What you can verify. A definition list
-   because that is what it is: four fixed questions, answered per card,
-   in the same order every time so they can be compared across cards. */
-.card-lines {
-  display: grid;
-  grid-template-columns: 11.5rem 1fr;
-  gap: 0.5rem 1.5rem;
-  align-items: baseline;
-}
-.card-lines dt {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--fg-muted);
-  padding-top: 0.15rem;
-}
-.card-lines dd {
-  margin: 0;
-  font-size: 0.9rem; line-height: 1.7; color: var(--fg-soft);
-}
-.card-lines dd code {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.86em; color: var(--accent);
-}
-.card-gt {
-  display: inline-block;
-  margin-left: 0.35rem;
-  font-size: 0.95em;
-  color: var(--accent-warm);
-  border-bottom: 1px dotted var(--border);
-  cursor: help;
-}
-.system-card--wip { border-style: dashed; box-shadow: none; }
-.system-card--wip:hover { transform: none; box-shadow: none; }
-
-@media (max-width: 720px) {
-  .card-lines { grid-template-columns: 1fr; gap: 0.15rem 0; }
-  .card-lines dd { margin-bottom: 0.75rem; }
-}
-
-.tech-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-.card-actions {
-  display: flex; flex-wrap: wrap; gap: 0.75rem;
-  align-items: center; margin-top: auto; padding-top: 0.5rem;
-}
-.expand-btn {
-  background: none; border: none; padding: 0;
-  font-size: 0.88rem; font-weight: 500; color: var(--fg-muted);
-  text-decoration: underline; text-decoration-style: dotted;
-  cursor: pointer; transition: color 0.2s;
-}
-.expand-btn:hover { color: var(--accent); }
-.arch-expand { margin-top: 1rem; border-top: 1px solid var(--border-soft); padding-top: 1rem; }
-.arch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.75rem; }
-.arch-box {
-  background: var(--bg-alt); border-radius: var(--r);
-  padding: 0.9rem; border: 1px solid var(--border-soft);
-}
-.arch-box h4,
-.arch-box h3 {
-  font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.07em; color: var(--accent); margin-bottom: 0.4rem;
-}
-.arch-box p { font-size: 0.83rem; line-height: 1.6; color: var(--fg-soft); }
-
-.supporting-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  /* Smaller row-gap stacks the left-column cards (Azure + repo-context-hooks)
-     tightly; the column-gap stays generous so the ML card on the right has
-     breathing room. */
-  gap: 1rem 1.5rem;
-  margin-top: 1.5rem;
-  align-items: start;
-}
-.support-card {
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--r-lg); padding: 1.25rem 1.4rem; box-shadow: var(--shadow-sm);
-  position: relative;
-  transition: box-shadow 0.25s, transform 0.25s;
-}
-.support-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-
-.support-card h3 {
-  font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 500;
-  color: var(--fg); margin: 0.35rem 0 0.75rem;
-}
-.support-card p { font-size: 0.88rem; line-height: 1.65; color: var(--fg-soft); margin-bottom: 0.75rem; }
-.support-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-.support-list { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
-.support-list li { font-size: 0.88rem; line-height: 1.6; color: var(--fg-soft); }
-.support-list strong { color: var(--fg); }
-.ml-projects { display: flex; flex-direction: column; gap: 1rem; margin-top: 0.5rem; }
-.ml-project-entry { border-top: 1px solid var(--border-soft); padding-top: 0.9rem; }
-.ml-project-entry h4 {
-  font-size: 0.85rem; font-weight: 600; color: var(--fg); margin-bottom: 0.3rem;
-}
-.ml-project-entry p { font-size: 0.83rem; line-height: 1.6; color: var(--fg-soft); margin-bottom: 0.6rem; }
-
-/* Status tag for work that is not shipped end-to-end. Reads as a state,
-   not a decoration - only applied where the repo cannot back a finished
-   claim, so a reviewer sees the honest state before the description. */
-.wip-tag {
-  display: inline-block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.62rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent-warm);
-  border: 1px solid var(--accent-warm);
-  border-radius: 2px;
-  padding: 0.08rem 0.34rem;
-  margin-left: 0.4rem;
-  vertical-align: 0.08em;
-}
-
-@media (max-width: 900px) {
-  .systems-grid { grid-template-columns: 1fr; }
-  .arch-grid { grid-template-columns: 1fr; }
-  .supporting-row { grid-template-columns: 1fr; gap: 1rem; }
-}
-
-/* ============================================================
-   TRACK RECORD
-   ============================================================ */
-.track { display: flex; flex-direction: column; position: relative; }
-.track::before {
-  content: ''; position: absolute;
-  left: 9.5rem; top: 0; bottom: 0;
-  width: 1px; background: var(--border);
-}
-.track-item {
-  display: grid; grid-template-columns: 9.5rem 1fr;
-  gap: 2rem; padding-bottom: 2rem; position: relative;
-}
-.track-item::before {
-  content: ''; position: absolute;
-  left: 9.5rem; top: 1.5rem;
-  width: 8px; height: 8px;
-  background: var(--accent); border-radius: 50%;
-  transform: translateX(-50%); z-index: 1;
-  box-shadow: 0 0 0 3px var(--bg-alt);
-}
-.track-date {
-  font-size: 0.74rem; color: var(--fg-muted);
-  font-weight: 500; line-height: 1.5;
-  padding-top: 1.35rem; padding-right: 1.25rem; text-align: right;
-  white-space: nowrap;
-}
-.track-card {
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--r-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);
-}
-.track-header {
-  display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1rem;
-}
-.track-logo {
-  width: 44px; height: 44px; border-radius: var(--r);
-  overflow: hidden; border: 1px solid var(--border-soft);
-  flex-shrink: 0; background: var(--bg-alt);
-  display: flex; align-items: center; justify-content: center;
-}
-.track-logo img { width: 100%; height: 100%; object-fit: contain; }
-.track-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.05rem; font-weight: 500; color: var(--fg); margin-bottom: 0.2rem;
-}
-.track-company { font-size: 0.84rem; color: var(--fg-soft); margin-bottom: 0.15rem; }
-.track-scope { font-size: 0.77rem; color: var(--accent); font-style: italic; }
-/* Case entries inside a role. Each is a titled block with the same four
-   labelled lines as a project card, so a reader who learned the pattern
-   in Projects does not have to learn a second one here. */
-.case {
-  border-top: 1px solid var(--border-soft);
-  padding-top: 1.1rem;
-  margin-top: 1.1rem;
-}
-.case:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
-/* Case bodies run as prose. The earlier version used labelled rows
-   (Problem / What changed / Scope / Outcome), which spelled out what the
-   sentences already said and read like a template. */
-.case-body {
-  font-size: 0.9rem; line-height: 1.75; color: var(--fg-soft);
-  max-width: 74ch; margin: 0;
-}
-.case-body code {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--accent);
-}
-.case-body em { color: var(--fg); }
-.case-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem; font-weight: 500; color: var(--fg);
-  margin-bottom: 0.85rem;
-  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.6rem;
-}
-.case-gt {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.6rem; letter-spacing: 0.06em;
-  color: var(--accent-warm);
-  border-bottom: 1px dotted var(--border);
-  cursor: help;
-  /* Deliberately NOT nowrap. A case can cite five ids, and as one
-     unbreakable string its min-content width sets the timeline grid
-     track, which pushed the whole page 122px wider than a 320px
-     viewport. Single-id labels elsewhere may safely use nowrap. */
-  overflow-wrap: anywhere;
-}
-/* Inline evidence-quality marker. Anything the record cannot document
-   says so where it is claimed, not in a footnote nobody reaches. */
-.claim-status {
-  display: inline-block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.65rem; letter-spacing: 0.03em;
-  color: var(--fg-muted);
-  background: var(--chip-bg);
-  border-radius: 2px;
-  padding: 0.05rem 0.35rem;
-  margin-left: 0.25rem;
-}
-.track-card--edu { background: var(--bg-alt); }
-/* The nine-month gap gets its own timeline row rather than being left
-   for the reader to spot between two dates. */
-.track-item--gap { padding-bottom: 2rem; }
-.track-item--gap::before { background: var(--border); }
-.track-gap {
-  font-size: 0.84rem; line-height: 1.7; color: var(--fg-muted);
-  padding: 1.1rem 1.25rem;
-  border-left: 2px dashed var(--border);
-  max-width: 62ch;
-}
-
-.track-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
-.track-bullets li {
-  font-size: 0.87rem; line-height: 1.65; color: var(--fg-soft);
-  padding-left: 1.1rem; position: relative;
-}
-.track-bullets li::before { content: '-'; position: absolute; left: 0; color: var(--accent-warm); }
-.track-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-
-@media (max-width: 640px) {
-  .track::before { display: none; }
-  .track-item { grid-template-columns: 1fr; gap: 0.4rem; }
-  .track-item::before { display: none; }
-  .track-date { text-align: left; padding-top: 0; }
-}
-
-/* ============================================================
-   CERTIFICATIONS
-   ============================================================ */
-.certs-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.9rem;
-}
-.cert-item {
-  display: flex; gap: 0.75rem; align-items: center;
-  padding: 0.85rem 1rem; background: var(--bg);
-  border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow-sm);
-}
-.cert-badge { width: 44px; height: 44px; object-fit: contain; flex-shrink: 0; }
-.cert-icon {
-  width: 44px; height: 44px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--bg-alt); border-radius: var(--r);
-  color: var(--accent); font-size: 1.15rem;
-}
-.cert-info { display: flex; flex-direction: column; gap: 0.1rem; }
-.cert-name { font-size: 0.81rem; font-weight: 600; color: var(--fg); line-height: 1.3; }
-.cert-issuer { font-size: 0.73rem; color: var(--fg-muted); }
-@media (max-width: 780px) { .certs-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 480px) { .certs-grid { grid-template-columns: 1fr; } }
-
-/* ============================================================
-   WRITING
-   ============================================================ */
-.writing-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem;
-}
-.writing-thumb {
-  margin: 0 0 0.25rem;
-  padding: 0.75rem;
-  background: var(--bg-alt);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r);
-  color: var(--fg-soft);
-}
-.writing-thumb .writing-diagram {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 320 / 120;
-  color: var(--fg-soft);
-}
-.writing-card {
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--r-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);
-  display: flex; flex-direction: column; gap: 0.65rem;
-  transition: box-shadow 0.25s, transform 0.25s;
-}
-.writing-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-.writing-label {
-  font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.1em; color: var(--accent-warm);
-}
-.writing-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem; font-weight: 500; color: var(--fg); line-height: 1.4;
-}
-.writing-desc { font-size: 0.86rem; line-height: 1.65; color: var(--fg-soft); flex: 1; }
-.research-card {
-  background: var(--bg-alt); border: 1px solid var(--border);
-  border-radius: var(--r-lg); padding: 1.75rem; margin-bottom: 2rem;
-  display: flex; flex-direction: column; gap: 0.4rem;
-}
-.research-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.15rem; font-weight: 500; color: var(--fg); line-height: 1.35;
-}
-.research-authors { font-size: 0.87rem; color: var(--fg-soft); }
-.research-pub { font-size: 0.8rem; color: var(--fg-muted); }
-.section-cta { text-align: center; margin: 0; }
-/* The Publications section ends in a single Substack CTA; the standard
-   5rem section bottom-padding produced visible dead space below the
-   button before the next section's own top padding. Trim the bottom
-   here so the page reads as a tight close, not a hanging break. */
-.section#notes { padding-bottom: 1.5rem; }
-@media (max-width: 780px) { .writing-grid { grid-template-columns: 1fr; } }
-
-/* ============================================================
-   PEER TESTIMONIALS
-   ============================================================ */
-.peer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-.peer-card {
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--r-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);
-  display: flex; flex-direction: column; gap: 1.25rem;
-}
-.peer-quote {
-  font-family: 'Playfair Display', Georgia, serif; font-style: italic;
-  font-size: 0.92rem; line-height: 1.7; color: var(--fg-soft); margin: 0; flex: 1;
-}
-.peer-author { display: flex; gap: 0.75rem; align-items: center; }
-.peer-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: var(--accent); color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.72rem; font-weight: 700; flex-shrink: 0;
-}
-.peer-name {
-  display: block; font-size: 0.87rem; font-weight: 600; color: var(--fg);
-  text-decoration: none; transition: color 0.2s;
-}
-.peer-name:hover { color: var(--accent); }
-.peer-role { display: block; font-size: 0.76rem; color: var(--fg-muted); }
-@media (max-width: 780px) { .peer-grid { grid-template-columns: 1fr; } }
-
-/* ============================================================
-   CONNECT
-   ============================================================ */
-.contact-grid {
-  display: grid; grid-template-columns: 1fr 1.6fr; gap: 3rem; align-items: start;
-}
-.contact-photo {
-  width: 100%; border-radius: var(--r-lg); border: 1px solid var(--border);
-  box-shadow: var(--shadow-md); object-fit: cover;
-  aspect-ratio: 4/5; max-height: 300px;
-}
-.contact-intro { font-size: 0.9rem; line-height: 1.7; color: var(--fg-soft); margin-top: 1rem; }
-.contact-links { display: flex; flex-direction: column; gap: 0.75rem; }
-.contact-link {
-  display: flex; align-items: center; gap: 0.9rem;
-  padding: 0.9rem 1.1rem; background: var(--bg);
-  border: 1px solid var(--border); border-radius: var(--r);
-  text-decoration: none; color: var(--fg-soft); font-size: 0.9rem;
-  transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
-  box-shadow: var(--shadow-sm);
-}
-.contact-link:hover {
-  border-color: var(--accent); color: var(--accent);
-  box-shadow: 0 2px 12px rgba(23,107,82,0.12);
-}
-.contact-link i { width: 18px; text-align: center; color: var(--accent); }
-@media (max-width: 720px) {
-  .contact-grid { grid-template-columns: 1fr; }
-  .contact-photo { max-height: 200px; max-width: 200px; }
-}
-
-/* ============================================================
-   FOOTER
-   ============================================================ */
-.site-footer { background: var(--fg); color: rgba(255,255,255,0.65); padding: 2.5rem 0; }
-.footer-inner {
-  display: flex; flex-wrap: wrap; gap: 1.5rem;
-  align-items: center; justify-content: space-between;
-}
-.footer-left { display: flex; flex-direction: column; gap: 0.2rem; }
-.footer-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: #fff; }
-.footer-tagline { font-size: 0.76rem; color: rgba(255,255,255,0.45); }
-.footer-nav { display: flex; gap: 1.25rem; }
-.footer-nav a {
-  color: rgba(255,255,255,0.6); text-decoration: none;
-  font-size: 0.84rem; transition: color 0.2s;
-}
-.footer-nav a:hover { color: #fff; }
-.footer-social { display: flex; gap: 1rem; }
-.footer-social a { color: rgba(255,255,255,0.5); font-size: 1rem; transition: color 0.2s; }
-.footer-social a:hover { color: #fff; }
-.footer-copy { font-size: 0.76rem; color: rgba(255,255,255,0.35); width: 100%; text-align: center; margin-top: 0.5rem; }
-@media (max-width: 580px) { .footer-nav { display: none; } }
-
-/* ============================================================
-   EDUCATION
-   ============================================================ */
-.edu-card-row { margin-bottom: 1rem; }
-.edu-card {
-  display: flex; gap: 1.25rem; align-items: center;
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--r-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);
-  max-width: 560px;
-}
-.edu-logo-wrap {
-  width: 56px; height: 56px; flex-shrink: 0;
-  border-radius: var(--r); border: 1px solid var(--border-soft);
-  background: var(--bg-alt); overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-}
-.edu-logo { width: 100%; height: 100%; object-fit: contain; }
-.edu-degree {
-  font-family: 'Playfair Display', serif; font-size: 1.05rem;
-  font-weight: 500; color: var(--fg); margin-bottom: 0.2rem;
-}
-.edu-school { font-size: 0.83rem; color: var(--fg-soft); margin-bottom: 0.5rem; }
-.edu-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-
-/* ============================================================
-   PLATFORM DIAGRAM LINKS
-   ============================================================ */
-.pd-link {
-  color: inherit; text-decoration: none;
-  transition: color 0.2s;
-}
-.pd-link:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
-
-/* ============================================================
-   CONTACT - PLATFORM BRAND HOVER COLORS
-   ============================================================ */
-.contact-linkedin i { color: #0077b5; }
-.contact-linkedin:hover { border-color: #0077b5; color: #0077b5; box-shadow: 0 2px 12px rgba(0,119,181,0.12); }
-.contact-linkedin:hover i { color: #0077b5; }
-
-.contact-github i { color: var(--fg); }
-.contact-github:hover { border-color: #333; color: #333; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
-.contact-github:hover i { color: #333; }
-
-.contact-substack i { color: #ff6719; }
-.contact-substack:hover { border-color: #ff6719; color: #ff6719; box-shadow: 0 2px 12px rgba(255,103,25,0.12); }
-.contact-substack:hover i { color: #ff6719; }
-
-/* ============================================================
-   ANIMATED CASE STUDY / ESSAY BUTTON
-   ============================================================ */
-.cs-btn {
-  display: inline-flex; align-items: center; gap: 0.45rem;
-  font-size: 0.8rem; font-weight: 600; text-decoration: none;
-  color: var(--accent); border: 1.5px solid var(--accent);
-  padding: 0.38rem 0.85rem 0.38rem 0.75rem;
-  border-radius: 50px;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
-  white-space: nowrap;
-}
-.cs-btn-arrow {
-  width: 14px; height: 14px; flex-shrink: 0;
-  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
-}
-.cs-btn:hover { background: var(--accent); color: #fff; }
-.cs-btn:hover .cs-btn-arrow { transform: translateX(3px); }
-
-.cs-btn--substack {
-  color: #ff6719; border-color: #ff6719;
-}
-.cs-btn--substack:hover { background: #ff6719; color: #fff; }
-
-/* ============================================================
-   WRITING - SUBSTACK CTA BUTTON
-   ============================================================ */
-.btn-substack {
-  background: #ff6719; color: #fff;
-  border: none; font-size: 0.9rem; font-weight: 500;
-  padding: 0.65rem 1.35rem;
-  border-radius: var(--r); text-decoration: none;
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  transition: background 0.2s, box-shadow 0.2s;
-}
-.btn-substack .substack-logo { width: 15px; height: 15px; flex-shrink: 0; }
-.btn-substack:hover { background: #e05510; box-shadow: 0 2px 14px rgba(255,103,25,0.3); }
-
-/* ============================================================
-   WRITING CARD - STRETCHED LINK (whole card clickable)
-   ============================================================ */
-.writing-card { position: relative; }
-.writing-card .writing-cta { position: static; }
-.writing-card .writing-cta::after {
-  content: ''; position: absolute; inset: 0;
-  border-radius: var(--r-lg); z-index: 1;
-}
-.writing-card .writing-cta:hover::after { background: transparent; }
-
-/* ============================================================
-   REFERENCES - LINKEDIN RECOMMENDATION STYLING
-   ============================================================ */
-.peer-linkedin-badge {
-  display: inline-flex; align-items: center; gap: 0.35rem;
-  font-size: 0.7rem; font-weight: 600; color: #0077b5;
-  background: rgba(0,119,181,0.07); border: 1px solid rgba(0,119,181,0.18);
-  padding: 0.25rem 0.65rem; border-radius: 50px; margin-bottom: 0.5rem;
-}
-.peer-linkedin-badge i { font-size: 0.75rem; }
-
-.peer-cta {
-  display: flex; flex-wrap: wrap; justify-content: center;
-  gap: 1rem; margin-top: 2rem;
-}
-.peer-cta-btn {
-  display: inline-flex; align-items: center; gap: 0.55rem;
-  font-size: 0.88rem; font-weight: 600; text-decoration: none;
-  padding: 0.65rem 1.4rem; border-radius: 50px;
-  border: 2px solid; transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-}
-.peer-cta-btn--linkedin {
-  color: #0077b5; border-color: #0077b5;
-}
-.peer-cta-btn--linkedin:hover {
-  background: #0077b5; color: #fff;
-  box-shadow: 0 2px 14px rgba(0,119,181,0.25);
-}
-.peer-cta-btn--substack {
-  color: #ff6719; border-color: #ff6719;
-}
-.peer-cta-btn--substack:hover {
-  background: #ff6719; color: #fff;
-  box-shadow: 0 2px 14px rgba(255,103,25,0.25);
-}
-
-/* ============================================================
-   ML PIPELINE ACCORDION
-   ============================================================ */
-.support-card--accordion { padding: 0; overflow: hidden; }
-.accordion-trigger {
-  width: 100%; display: flex; align-items: center; justify-content: space-between;
-  padding: 1.5rem; background: none; border: none; cursor: pointer;
-  text-align: left; gap: 1rem;
-}
-.accordion-trigger .section-label { display: block; margin-bottom: 0.25rem; }
-.accordion-trigger h3 { margin: 0; }
-.accordion-trigger:hover { background: var(--bg-alt); }
-.accordion-chevron {
-  width: 20px; height: 20px; flex-shrink: 0; color: var(--fg-muted);
-  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-}
-.accordion-trigger[aria-expanded="true"] .accordion-chevron { transform: rotate(180deg); }
-.accordion-body {
-  border-top: 1px solid var(--border);
-  display: flex; flex-direction: column; gap: 0;
-}
-.accordion-project {
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid var(--border);
-}
-.accordion-project:last-child { border-bottom: none; }
-.accordion-project strong { font-size: 0.9rem; color: var(--fg); display: block; margin-bottom: 0.3rem; }
-.accordion-project p { font-size: 0.85rem; color: var(--fg-soft); line-height: 1.6; margin-bottom: 0.75rem; }
-.accordion-body[hidden] { display: none; }
-
-/* ============================================================
-   CASE STUDY PAGES
-   ============================================================ */
-.page-shell { min-height: 100vh; }
-.cs-nav {
-  padding: 1rem 2rem; background: var(--bg);
-  border-bottom: 1px solid var(--border);
-  position: sticky; top: 0; z-index: 200;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.cs-nav__back {
-  color: var(--accent); text-decoration: none;
-  font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  transition: color 0.2s;
-}
-.cs-nav__back:hover { color: var(--accent-lt); text-decoration: underline; }
-.cs-nav__name { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--fg-muted); }
-.cs-hero { padding: 4rem 0 2.5rem; }
-.cs-hero__kicker {
-  display: inline-block; font-size: 0.72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.12em;
-  color: var(--accent-warm); margin-bottom: 0.75rem;
-}
-.cs-hero h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.85rem, 3.5vw, 2.75rem);
-  font-weight: 600; line-height: 1.15; color: var(--fg);
-  margin: 0 0 1.25rem; max-width: 780px;
-}
-.cs-hero__summary {
-  font-size: 1.05rem; color: var(--fg-soft); max-width: 680px;
-  line-height: 1.75; margin-bottom: 2rem;
-}
-/* Build-status callout for a case study whose repo cannot back a finished
-   claim. Sits above the proof strip so the honest state is read before any
-   architecture detail, not discovered afterwards. */
-.cs-status-note {
-  border-left: 3px solid var(--accent-warm);
-  background: var(--chip-bg);
-  padding: 0.9rem 1.1rem;
-  margin-bottom: 1.75rem;
-  max-width: 680px;
-  font-size: 0.92rem;
-  line-height: 1.7;
-  color: var(--fg-soft);
-}
-.cs-status-note strong { color: var(--fg); }
-.cs-proof-strip {
-  display: flex; flex-wrap: wrap; gap: 0.5rem 0.85rem; margin-bottom: 1.5rem;
-}
-.cs-proof-strip span {
-  display: inline-block; font-family: 'JetBrains Mono', monospace;
-  font-size: 0.78rem; color: var(--accent);
-  background: var(--chip-bg); border: 1px solid var(--border-soft);
-  border-radius: 4px; padding: 0.3rem 0.75rem;
-}
-.cs-links { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
-.skill-chip {
-  display: inline-flex; align-items: center; gap: 0.3rem;
-  padding: 0.25rem 0.65rem; background: var(--chip-bg);
-  border-radius: 20px; font-size: 0.78rem; font-weight: 500;
-  color: var(--accent); border: 1px solid var(--border-soft);
-}
-.cs-section {
-  padding: 2.5rem 0; border-top: 1px solid var(--border);
-}
-.cs-section h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.2rem, 2.5vw, 1.55rem);
-  font-weight: 500; margin: 0 0 1rem; color: var(--fg);
-}
-.cs-section p {
-  color: var(--fg-soft); line-height: 1.75; max-width: 720px; margin-bottom: 1rem;
-}
-.cs-section p:last-child { margin-bottom: 0; }
-.cs-section ul, .cs-section ol {
-  color: var(--fg-soft); line-height: 1.75; max-width: 720px;
-  padding-left: 1.25rem; margin-bottom: 1rem;
-}
-.cs-section li { margin-bottom: 0.4rem; }
-.cs-section strong { color: var(--fg); font-weight: 600; }
-
-/* Architecture flow diagram for case studies */
-.cs-arch {
-  display: flex; flex-direction: column; gap: 0;
-  align-items: center; margin: 2rem 0;
-  background: var(--bg-alt); border: 1px solid var(--border);
-  border-radius: var(--r-lg); padding: 2rem;
-}
-.cs-arch-row { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
-.cs-arch-box {
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--r); padding: 0.75rem 1.25rem;
-  font-size: 0.84rem; font-weight: 500; color: var(--fg);
-  text-align: center; min-width: 140px;
-}
-.cs-arch-box.accent { border-color: var(--accent); color: var(--accent); }
-.cs-arch-arrow {
-  font-size: 1.1rem; color: var(--fg-muted);
-  margin: 0.4rem 0; text-align: center;
-}
-.cs-arch-label {
-  font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.1em; color: var(--fg-muted); margin-bottom: 0.5rem;
-  text-align: center; width: 100%;
-}
-
-/* Metrics grid for case studies */
-.cs-metrics {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 1px; background: var(--border);
-  border: 1px solid var(--border); border-radius: var(--r);
-  overflow: hidden; margin: 1.5rem 0;
-}
-.cs-metric {
-  background: var(--bg); padding: 1.25rem 1rem;
-  display: flex; flex-direction: column; gap: 0.2rem;
-}
-.cs-metric-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.65rem; font-weight: 600; color: var(--accent); line-height: 1;
-}
-.cs-metric-lbl { font-size: 0.74rem; color: var(--fg-muted); font-weight: 500; }
-
-/* Image/screenshot placeholder */
-.cs-media-placeholder {
-  background: var(--bg-alt); border: 1px dashed var(--border);
-  border-radius: var(--r-lg); padding: 3rem 2rem;
-  text-align: center; margin: 1.5rem 0; color: var(--fg-muted);
-  font-size: 0.88rem; line-height: 1.6;
-}
-.cs-media-placeholder i { font-size: 2rem; display: block; margin-bottom: 0.75rem; opacity: 0.4; }
-
-/* Lessons card */
-.cs-lessons {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem;
-}
-.cs-lesson {
-  padding: 1.25rem; border-radius: var(--r);
-  font-size: 0.88rem; line-height: 1.65;
-}
-.cs-lesson.worked { background: rgba(23,107,82,0.06); border: 1px solid rgba(23,107,82,0.2); }
-.cs-lesson.failed { background: rgba(181,117,42,0.06); border: 1px solid rgba(181,117,42,0.2); }
-.cs-lesson h4,
-.cs-lesson h3 {
-  font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.08em; margin-bottom: 0.5rem;
-}
-.cs-lesson.worked h4 { color: var(--accent); }
-.cs-lesson.failed h4 { color: var(--accent-warm); }
-.cs-lesson p { color: var(--fg-soft); font-size: 0.86rem; }
-
-/* Inline <code> in case-study prose can hold long shell snippets like
-   "tailor-resume --artifact PATH:FORMAT --jd JD_PATH" (42 chars). On
-   narrow viewports those overflow the column and trigger horizontal
-   scroll. overflow-wrap: anywhere lets the browser break inside the
-   code text only when it would otherwise overflow — desktop is
-   unaffected. */
-.cs-section code, .cs-hero code, .cs-section p code {
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-@media (max-width: 780px) {
-  .cs-nav { padding: 0.875rem 1rem; }
-  .cs-hero { padding: 2.5rem 0 2rem; }
-  .cs-hero__summary { font-size: 0.97rem; line-height: 1.7; }
-  .cs-proof-strip { gap: 0.4rem 0.55rem; }
-  .cs-proof-strip span { font-size: 0.72rem; padding: 0.25rem 0.6rem; }
-  .cs-section { padding: 1.75rem 0; }
-  .cs-section p { font-size: 0.95rem; line-height: 1.7; }
-  .cs-lessons { grid-template-columns: 1fr; }
-}
-
-/* Very narrow phones: hide the right-side site-name in the back nav
-   so the back-link has the row to itself. The site-name reads as
-   chrome, not content — no information lost when it's gone. */
-@media (max-width: 480px) {
-  .cs-nav__name { display: none; }
-  .cs-nav { justify-content: flex-start; }
-  .cs-hero h1 { font-size: 1.65rem; line-height: 1.2; }
-}
-
-/* inline code in system-desc */
-.system-desc code {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.82em; background: var(--chip-bg);
-  padding: 0.1em 0.4em; border-radius: 3px;
+/* proof row: the one strong, checkable fact — same voice as experience outcome strips */
+.proj-proof {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.76rem; letter-spacing: 0.015em;
   color: var(--accent);
-}
-
-/* ============================================================
-   SPLASH SCREEN — SVG self-drawing brackets
-   ============================================================ */
-#splash-screen {
-  position: fixed; inset: 0; z-index: 10000;
-  background: var(--bg);
-  display: flex; align-items: center; justify-content: center;
-  transition: opacity 0.6s ease, visibility 0.6s ease;
-}
-#splash-screen.splash-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-body.splash-active { overflow: hidden; }
-
-.splash-inner {
-  display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
-  text-align: center;
-}
-.splash-svg { width: 120px; height: 60px; }
-
-/* Draw the bracket paths via stroke-dashoffset */
-.sp-bracket-l {
-  stroke-dasharray: 80;
-  stroke-dashoffset: 80;
-  animation: splash-draw 0.7s cubic-bezier(0.4,0,0.2,1) 0.1s forwards;
-}
-.sp-slash {
-  stroke-dasharray: 68;
-  stroke-dashoffset: 68;
-  animation: splash-draw 0.45s cubic-bezier(0.4,0,0.2,1) 0.35s forwards;
-}
-.sp-bracket-r {
-  stroke-dasharray: 80;
-  stroke-dashoffset: 80;
-  animation: splash-draw 0.7s cubic-bezier(0.4,0,0.2,1) 0.5s forwards;
-}
-@keyframes splash-draw { to { stroke-dashoffset: 0; } }
-
-.splash-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.3rem; font-weight: 500; color: var(--fg);
-  margin: 0;
-  opacity: 0; transform: translateY(8px);
-  animation: splash-fade-up 0.5s ease 1.1s forwards;
-}
-.splash-sub {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.78rem; color: var(--fg-muted); letter-spacing: 0.08em;
-  text-transform: uppercase; margin: -0.75rem 0 0;
-  opacity: 0;
-  animation: splash-fade-up 0.5s ease 1.35s forwards;
-}
-@keyframes splash-fade-up {
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ============================================================
-   HERO GREETING
-   ============================================================ */
-.hero-greeting {
-  font-size: 0.88rem; font-weight: 500;
-  color: var(--fg-muted); margin-bottom: 0.5rem;
-  letter-spacing: 0.02em;
-}
-
-
-/* ============================================================
-   REDUCED MOTION — respect user preference globally
-   ============================================================ */
-@media (prefers-reduced-motion: reduce) {
-  .wave-emoji         { animation: none; }
-  #splash-screen      { transition: none; }
-  .sp-bracket-l,
-  .sp-slash,
-  .sp-bracket-r       { animation: none; stroke-dashoffset: 0; }
-  /* Reveal content IMMEDIATELY on reduced-motion. Just nuking the
-     transition (previous behavior) left blocks at opacity:0 + the
-     translateY offset until JS toggled .revealed — meaning a user
-     with reduced-motion AND JS disabled (or with throttled
-     IntersectionObserver) would see invisible content below the
-     fold. Override the initial state too so content is visible
-     regardless of JS state. (Issue #86) */
-  [data-reveal] {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none;
-  }
-}
-
-
-/* ============================================================
-   IMPACT STRIP — quantified-impact ledger pattern
-   See docs/impact-strip-pattern.md for the drop-in spec.
-
-   Visual: warm-rule ledger (NOT a chip row). Each stat is a
-   left-ruled value-over-label block, deliberately distinct from
-   .chip (rounded pill) so the eye reads "evidence, not stack list."
-   Tokens reuse the site palette (--fg, --fg-muted, --accent-warm)
-   so the pattern is native rather than bolt-on.
-
-   Semantics: <dl> contains <div> wrappers per HTML Living Standard;
-   each wrapper holds <dt class="impact-value"> + <dd class="impact-
-   label">. Per-stat provenance lives as <span class="sr-only">
-   *inside* the <dd>, so screen readers announce it in document
-   order after the visible label.
-   ============================================================ */
-.impact-strip {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 1.5rem;
-  margin: 0 0 1.1rem;
-  padding: 0;
-  list-style: none;
-}
-
-.impact-strip > .impact-stat {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.05rem;
-  margin: 0;
-  padding: 0.1rem 0 0.1rem 0.6rem;
-  border-left: 2px solid var(--accent-warm, #b5752a);
-  /* Allow wrap inside a stat on small viewports (WCAG 1.4.10 reflow);
-     suppress wrap on >=600px where horizontal real estate exists. */
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.impact-strip .impact-value {
-  margin: 0;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  /* Regular weight + body-ink colour. Earlier iterations went bold-black
-     (read as "hardened") and then warm-sienna (read as decorative);
-     regular black is the right balance — credible, professional, no
-     theme drift. */
-  font-weight: 400;
-  font-size: 1.05rem;
-  line-height: 1.2;
-  color: var(--fg, #1a1818);
-  /* tabular-nums prevents font-swap CLS; the JetBrains Mono fallback
-     chain (ui-monospace -> monospace) is not always tabular by default. */
+  margin: 0.8rem 0 0;
   font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum" 1;
 }
+.proj-proof::before { content: "\2192\00a0\00a0"; color: var(--fg-muted); }
 
-/* Whenever a strip carries 3+ stats (the impact-strip pattern's stated
-   minimum is 3 — see docs/impact-strip-pattern.md), use a 2-column
-   grid so the left rules + values align cleanly across rows. Plain
-   flex-wrap produces visible column drift because each stat's
-   intrinsic width depends on its value text (e.g. ~1hr vs 3mo→14d
-   vs Sigstore + CodeQL). CSS :has() is baseline across the four
-   target engines (Chrome 105+, Safari 15.4+, Firefox 121+, Edge 105+). */
-.impact-strip:has(.impact-stat:nth-child(3)) {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 0.55rem 1rem;
-}
-
-/* The two-column fallback above is sized for a card in a 3-up grid.
-   Project cards are full-bleed now, so two columns strand half the row;
-   give them four across once there is width for it. Scoped rather than
-   changing the base module, which other layouts still rely on. */
-@media (min-width: 860px) {
-  .systems-grid--stack .impact-strip:has(.impact-stat:nth-child(3)) {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-.impact-strip .impact-label {
-  margin: 0;
-  font-size: 0.74rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--fg-muted, #9b9490);
-  line-height: 1.3;
-}
-
-.impact-strip .sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-/* Keep multi-digit values single-line (e.g. "130+", "3mo→14d") on
-   >=600px viewports, but allow LABELS to wrap freely so long ones
-   like "CAREER PAGES MONITORED" or "DISTRIBUTION SURFACES" don't
-   overflow the grid column and bleed into the neighboring stat or
-   the card edge. Below 600px, both wrap to satisfy WCAG 1.4.10
-   reflow at 320px. */
-@media (min-width: 600px) {
-  .impact-strip .impact-value {
-    white-space: nowrap;
-  }
-}
-
-/* Dark-mode adaptation — drop-in default for adopters whose host
-   palette uses prefers-color-scheme. */
-@media (prefers-color-scheme: dark) {
-  .impact-strip .impact-value {
-    color: var(--fg, #f0f0f0);
-  }
-  .impact-strip .impact-label {
-    color: var(--fg-muted, #c0c0c0);
-  }
-}
-
-/* Print — keep the rule + text legible on PDF export. */
-@media print {
-  .impact-strip > .impact-stat {
-    border-left-color: #000;
-  }
-  .impact-strip .impact-value,
-  .impact-strip .impact-label {
-    color: #000;
-  }
-}
-
-/* ============================================================
-   ARCHITECTURE WRITE-UP POST PAGES
-   Standalone post template at /content/posts/<slug>.html.
-   Reuses the home-page palette + typography tokens; no new
-   font loads. Inline SVG diagrams use currentColor so they
-   adopt the post-prose color in light + dark + print.
-   ============================================================ */
-
-.post-body {
-  background: var(--bg);
-  color: var(--fg);
-}
-
-.post-container {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-}
-@media (min-width: 768px) { .post-container { padding: 0 2.5rem; } }
-
-.post-header {
-  padding: 4rem 0 2rem;
-  border-bottom: 1px solid var(--border-soft);
-}
-
-.post-back {
-  display: inline-block;
-  font-size: 0.85rem;
-  color: var(--fg-muted);
-  text-decoration: none;
-  margin-bottom: 1.5rem;
-  letter-spacing: 0.02em;
-}
-.post-back:hover { color: var(--accent); }
-
-.post-meta {
-  font-size: 0.78rem;
-  color: var(--fg-muted);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-}
-.post-meta-sep { margin: 0 0.5rem; }
-
-.post-title {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(1.7rem, 1.4rem + 1.6vw, 2.5rem);
-  line-height: 1.18;
-  font-weight: 500;
-  margin: 0 0 1.1rem;
-  letter-spacing: -0.01em;
-}
-
-.post-deck {
-  font-size: 1.05rem;
-  line-height: 1.55;
-  color: var(--fg-soft);
-  max-width: 60ch;
-}
-
-.post-prose {
-  padding: 2.5rem 0 4rem;
-}
-
-.post-section {
-  margin: 0 0 2.5rem;
-}
-.post-section h2 {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 1.6rem;
-  font-weight: 500;
-  margin: 0 0 1rem;
-  padding-top: 1rem;
-  border-top: 2px solid var(--accent-warm);
-  display: inline-block;
-  padding-right: 1.25rem;
-}
-.post-section h3 {
-  font-family: 'Inter', sans-serif;
-  font-size: 1.05rem;
-  font-weight: 600;
-  margin: 1.8rem 0 0.6rem;
-  color: var(--fg);
-}
-.post-section p {
-  margin: 0 0 1rem;
-}
-.post-section a {
-  color: var(--accent);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.15s ease;
-}
-.post-section a:hover { border-bottom-color: var(--accent); }
-
-.post-list {
-  margin: 0 0 1.1rem 1.4rem;
-  padding: 0;
-}
-.post-list li {
-  margin: 0 0 0.5rem;
-}
-
-.post-section pre {
-  background: var(--bg-alt);
-  border-left: 2px solid var(--accent-warm);
-  padding: 0.9rem 1.1rem;
+/* progressive disclosure: collapsed scan is free, depth is one click */
+.t-detail { margin-top: 0.85rem; }
+.t-detail > summary {
+  cursor: pointer; list-style: none; display: inline-block;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.84rem;
-  line-height: 1.55;
-  overflow-x: auto;
-  margin: 0 0 1.2rem;
-  border-radius: 0 var(--r) var(--r) 0;
-}
-.post-section code {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.85em;
-  background: var(--bg-alt);
-  padding: 0.1rem 0.35rem;
-  border-radius: 3px;
-}
-.post-section pre code {
-  background: transparent;
-  padding: 0;
-}
-
-/* Inline SVG architecture diagrams. currentColor inheritance
-   means the same markup renders correctly in light, dark, and
-   print. Warm-token highlights are scoped via stroke="var(...)". */
-.system-diagram-figure {
-  margin: 1.5rem 0 1.8rem;
-  padding: 0;
-}
-.system-diagram {
-  max-width: 100%;
-  width: 100%;
-  height: auto;
-  color: var(--fg);
-  display: block;
-}
-.post-figcaption {
-  font-size: 0.78rem;
+  font-size: 0.66rem; letter-spacing: 0.11em;
   color: var(--fg-muted);
-  margin-top: 0.5rem;
-  font-style: italic;
+  padding: 0.15rem 0;
 }
-
-.post-rule {
-  border: 0;
-  border-top: 1px solid var(--border-soft);
-  margin: 2.5rem 0;
-}
-
-.post-cta,
-.post-bio {
-  font-size: 0.92rem;
-  color: var(--fg-soft);
-  line-height: 1.6;
-}
-.post-cta-label {
-  display: inline-block;
-  font-weight: 600;
-  color: var(--fg);
-  margin-right: 0.5rem;
-}
-.post-bio { margin-top: 1rem; }
-
-.post-footer {
-  padding: 2rem 0 3rem;
-  border-top: 1px solid var(--border-soft);
-  font-size: 0.82rem;
-  color: var(--fg-muted);
-}
-
-/* Dark-mode aware: respect user preference; fall back to root tokens. */
-@media (prefers-color-scheme: dark) {
-  .post-body {
-    background: #1a1818;
-    color: #f0f0f0;
-  }
-  .post-section pre,
-  .post-section code {
-    background: #2a2522;
-  }
-  .post-body .system-diagram { color: #f0f0f0; }
-  .post-figcaption,
-  .post-meta,
-  .post-footer { color: #b0a8a0; }
-}
-
-/* Print: monochrome, preserve diagram readability, no bg. */
-@media print {
-  .post-body { background: #fff; color: #000; }
-  .post-back, .post-footer { display: none; }
-  .post-section pre {
-    background: #f5f5f5;
-    border-left-color: #000;
-  }
-  .system-diagram { color: #000; }
-  .post-section h2 { border-top-color: #000; }
-  /* Warm-accent strokes/fills fall back to #000 in print so they meet
-     WCAG 1.4.11 (3:1) on a B&W laser printer. CSS tokens overridden
-     here cascade through var() lookups inside inline SVG. */
-  .system-diagram { --accent-warm: #000; --fg-muted: #333; }
-}
-
-/* Windows High Contrast Mode (forced-colors): CSS custom-property
-   warm accents are NOT remapped by the OS. Force every stroke + fill
-   inside the diagram onto the system CanvasText token so the diagram
-   stays readable when the user has selected an accessibility theme. */
-@media (forced-colors: active) {
-  .system-diagram [stroke] { stroke: CanvasText; }
-  .system-diagram [fill]:not([fill="none"]) { fill: CanvasText; }
-}
-
-/* ============================================================
-   Hover-preview pattern (#70) — drop-in floating cards on important
-   links. Visual enrichment ONLY for sighted desktop users; touch
-   devices fall through to native link navigation, screen readers
-   read the link's accessible name and skip the popover entirely.
-   See docs/hover-preview-pattern.md for the full pattern.
-   ============================================================ */
-:root {
-  --hover-preview-open-delay:  80ms;
-  --hover-preview-close-grace: 250ms;
-  --hover-preview-fade:        280ms;
-  --hover-preview-ease:        cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.hover-preview {
-  /* HTML Popover API target: rendered in the top layer, no position
-     stacking-context concerns. Margin/padding/border reset because
-     UA stylesheets put a default frame around the [popover] element. */
-  position: fixed;
-  margin: 0;
-  padding: 0;
-  border: none;
-  background: transparent;
-  inset: unset;
-  width: max-content;
-  z-index: 80;
-  opacity: 0;
-  /* Slight downward + scaled-in resting state. ease-out-expo lets the
-     entrance feel like the card is rising and settling rather than
-     cross-fading in place — that's what makes a hover-preview read as
-     "graceful" instead of "flicked on". */
-  transform: translateY(8px) scale(0.96);
-  transform-origin: top center;
-  transition:
-    opacity   var(--hover-preview-fade) var(--hover-preview-ease),
-    transform var(--hover-preview-fade) var(--hover-preview-ease);
-  pointer-events: none;
-  will-change: transform, opacity;
-}
-.hover-preview:popover-open {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  pointer-events: auto;
-}
-
-.hover-preview-card {
-  display: grid;
-  grid-template-rows: auto auto;
-  gap: 0.5rem;
-  width: 220px;
-  padding: 0.625rem;
-  background: var(--bg);
-  color: var(--fg);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.06),
-    0 14px 36px -8px rgba(20, 14, 8, 0.22);
-  font-family: inherit;
-  /* Layered entrance: thumb fades in slightly later than the card
-     itself, text follows the thumb. The eye reads it as a small
-     reveal animation instead of one flat opacity step. */
-}
-
-.hover-preview-thumb {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 3;
-  border-radius: 8px;
-  background: #ffffff;
-  object-fit: cover;
-  opacity: 0;
-  transform: scale(0.985);
-  transition:
-    opacity   calc(var(--hover-preview-fade) * 0.95) var(--hover-preview-ease) 80ms,
-    transform calc(var(--hover-preview-fade) * 0.95) var(--hover-preview-ease) 80ms;
-}
-.hover-preview:popover-open .hover-preview-thumb {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.hover-preview-text {
-  display: grid;
-  gap: 0.125rem;
-  opacity: 0;
-  transform: translateY(2px);
-  transition:
-    opacity   calc(var(--hover-preview-fade) * 0.85) var(--hover-preview-ease) 140ms,
-    transform calc(var(--hover-preview-fade) * 0.85) var(--hover-preview-ease) 140ms;
-}
-.hover-preview:popover-open .hover-preview-text {
-  opacity: 1;
-  transform: none;
-}
-
-.hover-preview-title {
-  margin: 0;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--fg);
-  line-height: 1.3;
-  letter-spacing: -0.005em;
-}
-
-.hover-preview-caption {
-  margin: 0;
-  font-size: 0.72rem;
-  color: var(--fg-muted);
-  line-height: 1.4;
-  /* Smaller card means less room for prose; clamp to 2 lines so a
-     long caption never blows up the card height past its sibling tile. */
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Substack live-feed mode: when the trigger has data-hover-embed=
-   "substack-feed", the JS swaps the static thumbnail+title+caption
-   for a stacked list of the 3 most recent posts (title + relative
-   date + 1-line excerpt). Source: build-time JSON snapshot generated
-   by .github/workflows/substack-snapshot.yml — same-origin fetch,
-   no CORS, no third-party tracking. */
-.hp-feed-header {
-  display: flex; align-items: center; gap: 0.4rem;
-  padding-bottom: 0.4rem;
-  border-bottom: 1px solid var(--border);
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.66rem; font-weight: 600; letter-spacing: 0.06em;
-  text-transform: uppercase; color: var(--fg-muted);
-}
-.hp-feed-header::before {
-  content: ""; width: 6px; height: 6px;
-  background: var(--accent-warm); border-radius: 50%;
-  flex-shrink: 0;
-}
-.hp-feed-list {
-  display: flex; flex-direction: column;
-  gap: 0.45rem;
-  margin: 0; padding: 0;
-  list-style: none;
-}
-.hp-feed-item {
-  display: block;
-  padding: 0.4rem 0.05rem;
-  border-radius: 6px;
-  text-decoration: none;
-  color: inherit;
-  transition: background 140ms ease;
-}
-.hp-feed-item + .hp-feed-item {
-  border-top: 1px solid var(--border-soft, var(--border));
-}
-.hp-feed-item:hover,
-.hp-feed-item:focus-visible {
-  background: var(--bg-alt);
-  outline: none;
-}
-.hp-feed-title {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  margin: 0 0 0.15rem;
-  font-size: 0.78rem; font-weight: 600;
-  line-height: 1.3; color: var(--fg);
-}
-.hp-feed-meta {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.64rem; color: var(--fg-muted);
-  letter-spacing: 0.02em;
-}
-.hp-feed-empty {
-  padding: 0.6rem 0;
-  font-size: 0.72rem; color: var(--fg-muted);
-  font-style: italic;
-}
-
-/* Touch devices: hide the popover entirely. Mobile users get the
-   normal link-tap behaviour they expect, plus iOS Safari's native
-   long-press preview menu. Detection: BOTH no-hover AND coarse
-   pointer — hybrid devices (Surface, iPad+trackpad) keep the
-   desktop preview. */
-@media (hover: none) and (pointer: coarse) {
-  .hover-preview { display: none !important; }
-}
-
-/* Reduced motion: snap-open / snap-close, no fade or scale. */
-@media (prefers-reduced-motion: reduce) {
-  .hover-preview,
-  .hover-preview .hover-preview-thumb,
-  .hover-preview .hover-preview-text {
-    transition: none;
-    transform: none;
-  }
-}
-
-/* Print: never print the popover. */
-@media print {
-  .hover-preview { display: none !important; }
-}
-
-/* Forced-colors / High-contrast: keep the card readable with system
-   tokens, lose the warm shadow which the OS suppresses anyway. */
-@media (forced-colors: active) {
-  .hover-preview-card {
-    background: Canvas;
-    color: CanvasText;
-    border-color: CanvasText;
-    box-shadow: none;
-  }
-}
-
-/* ============================================================
-   Skills grid (#71) — categorized monogram tiles with hover
-   tooltips. Static text-tooltip pattern (NOT the M1 popover):
-   ARIA `role="tooltip"` + `aria-describedby`, CSS-only show/hide
-   on :hover and :focus-visible. Mobile collapses tooltips to
-   inline captions so the grid serves both surfaces from one DOM.
-   See docs/skills-grid-pattern.md for the full pattern.
-   ============================================================ */
-.skills-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 2.25rem;
-  margin-top: 2.25rem;
-}
-
-.skills-category-title {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
-  margin: 0 0 0.85rem;
-}
-
-.skills-list {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-  gap: 0.55rem;
-  padding: 0;
-  margin: 0;
-}
-
-.skills-list > li { display: contents; }
-/* Tooltips are absolutely positioned and centred on their tile, so the
-   rightmost tile's tooltip sits ~11px past the viewport even while
-   hidden, and an absolutely positioned box still extends the scrollable
-   area. app.js shifts it on hover/focus, but that does nothing for the
-   resting state. overflow-x: clip contains it horizontally while leaving
-   the vertical axis visible, which is the direction tooltips open. */
-.skills-grid { overflow-x: clip; }
-
-.skill-icon {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.45rem;
-  width: 100%;
-  min-height: 92px;
-  padding: 0.85rem 0.55rem 0.7rem;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  color: var(--fg-muted);
-  font: inherit;
-  cursor: default;
-  transition: border-color 200ms ease, color 200ms ease, background 200ms ease, transform 200ms ease;
-}
-
-.skill-icon:hover,
-.skill-icon:focus-visible {
-  border-color: var(--accent-warm);
-  color: var(--fg);
-  background: var(--bg-alt);
-  transform: translateY(-1px);
-  outline: none;
-}
-
-.skill-icon:focus-visible {
-  box-shadow: 0 0 0 2px var(--accent-warm);
-}
-
-.skill-glyph {
-  width: 38px;
-  height: 38px;
-  flex-shrink: 0;
-  /* SVGs use fill="currentColor"; <img> drops that contract, but the
-     monograms are styled via the SVG's own attributes — width/height
-     declared on <img> for CLS=0 and lazy-load for off-screen tiles. */
-}
-
-.skill-name {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: var(--fg);
-  text-align: center;
-  line-height: 1.2;
-}
-
-.skill-tooltip {
-  position: absolute;
-  bottom: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%) translateY(4px);
-  z-index: 5;
-  padding: 0.55rem 0.7rem;
-  width: max-content;
-  max-width: 220px;
-  background: var(--fg);
-  color: var(--bg);
-  font-size: 0.72rem;
-  line-height: 1.45;
-  border-radius: var(--r);
-  box-shadow: var(--shadow-md);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 180ms ease, transform 180ms ease;
-}
-
-.skill-tooltip::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 5px solid transparent;
-  border-top-color: var(--fg);
-}
-
-.skill-icon:hover > .skill-tooltip,
-.skill-icon:focus-visible > .skill-tooltip {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-/* WAI-ARIA APG tooltip pattern (#80): Esc on a focused tile sets
-   data-tooltip-suppressed; this rule keeps the tooltip hidden even
-   while :focus-visible still matches, so focus stays on the trigger
-   but the tooltip is dismissed. Suppression clears on the next
-   focus / mouseenter — see app.js. */
-.skill-icon[data-tooltip-suppressed]:hover > .skill-tooltip,
-.skill-icon[data-tooltip-suppressed]:focus-visible > .skill-tooltip {
-  opacity: 0;
-  pointer-events: none;
-}
-
-@media (max-width: 780px) {
-  .skills-list {
-    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
-    gap: 0.5rem;
-  }
-  .skill-icon { min-height: 88px; }
-}
-
-/* Mobile + any pointer:coarse device: tooltip collapses to inline
-   static caption beneath the tool name, so touch users get the context
-   without a hover gesture and iOS Safari does not fire sticky-hover on
-   tap. Triggers on max-width OR (hover: none) so iPad landscape /
-   large-phone landscape (which exceed 780px in width) also get the
-   touch-friendly behavior. */
-@media (max-width: 780px), (hover: none) {
-  .skill-tooltip {
-    position: static;
-    transform: none;
-    opacity: 1;
-    pointer-events: auto;
-    background: transparent;
-    color: var(--fg-soft);
-    box-shadow: none;
-    padding: 0;
-    margin-top: 0.15rem;
-    max-width: 100%;
-    font-size: 0.66rem;
-    line-height: 1.35;
-    text-align: center;
-  }
-  .skill-tooltip::after { display: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .skill-icon { transition: none; }
-  .skill-icon:hover, .skill-icon:focus-visible { transform: none; }
-  .skill-tooltip { transition: none; transform: translateX(-50%); }
-  .skill-icon:hover > .skill-tooltip,
-  .skill-icon:focus-visible > .skill-tooltip { transform: translateX(-50%); }
-}
-
-@media print {
-  .skill-icon {
-    border-color: #ccc;
-    color: #000;
-    background: #fff;
-    box-shadow: none;
-    transform: none;
-  }
-  /* Print: render tooltip inline so the page is self-explanatory
-     without needing hover state. */
-  .skill-tooltip {
-    position: static;
-    transform: none;
-    opacity: 1;
-    background: transparent;
-    color: #555;
-    padding: 0;
-    margin-top: 0.2rem;
-    box-shadow: none;
-    font-size: 0.7rem;
-    text-align: center;
-  }
-  .skill-tooltip::after { display: none; }
-}
-
-
+.t-detail > summary::-webkit-details-marker { display: none; }
+.t-detail > summary::before { content: "+\00a0\00a0"; color: var(--accent); }

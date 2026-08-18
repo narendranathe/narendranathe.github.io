@@ -6,7 +6,7 @@
   <meta name="description" content="Narendranath Edara - Data Engineer on payroll-critical systems. CDC pipelines, change-controlled releases, and the detection and recovery layer underneath. Dallas TX.">
   <meta name="author" content="Narendranath Edara">
   <meta property="og:title" content="Narendranath Edara | Data Engineer - Payroll-Critical Data Platforms">
-  <meta property="og:description" content="Money-adjacent correctness under formal change control, and the reliability layer under production pipelines.">
+  <meta property="og:description" content="CDC pipelines, change-controlled releases, and the detection and recovery layer under production data platforms.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://narendranathe.github.io">
   <meta property="og:image" content="https://narendranathe.github.io/static/og-image.jpg?v=2026-04-28">
@@ -39,6 +39,9 @@
 
   <title>Narendranath Edara | Data Engineer - Payroll-Critical Data Platforms</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles-2.css">
+  <link rel="stylesheet" href="styles-3.css">
+  <link rel="stylesheet" href="styles-4.css">
 
   <!-- LCP candidate: hero portrait, preload to start fetch before body parses.
        Three type-aware preloads in priority order so the browser only
@@ -158,13 +161,10 @@
           <div class="profile-frame hero-photo-stack">
             <picture>
               <!-- AVIF first (smallest bytes; Chrome 85+ / Safari 16.4+ / Firefox 113+) -->
-              <source type="image/avif" media="(max-width: 860px)" srcset="static/originals/headshot-fullbody-800.avif">
               <source type="image/avif" srcset="static/originals/headshot-fullbody.avif">
               <!-- WebP second (universal modern; covers every evergreen browser) -->
-              <source type="image/webp" media="(max-width: 860px)" srcset="static/originals/headshot-fullbody-800.webp">
               <source type="image/webp" srcset="static/originals/headshot-fullbody.webp">
               <!-- JPEG fallback for the long tail; also matches the preload `href` -->
-              <source media="(max-width: 860px)" srcset="static/originals/headshot-fullbody-800.jpg">
               <img src="static/originals/headshot-fullbody.jpg"
                    alt="Naren Edara, Data Engineer"
                    class="profile-photo"
@@ -185,61 +185,48 @@
     <section class="section" id="systems">
       <div class="container">
         <h2 class="sec-h" data-reveal>Production Data Systems</h2>
-        <div class="scroll-x" data-reveal>
-          <table class="ps">
-            <thead>
-              <tr><th scope="col">Change</th><th scope="col">Before</th><th scope="col">Now</th><th scope="col">How</th></tr>
-            </thead>
-            <tbody>
-            <tr data-gt-id="E1-CDC">
-              <th scope="row">CDC ETL runtime<span class="ps-where">ExponentHR</span></th>
-              <td class="ps-before">30 min</td>
-              <td class="ps-now">under 8 min</td>
-              <td class="ps-mech">Full-table reloads replaced with idempotent incremental merge-upserts. Compute down 67%, freshness SLA unchanged.</td>
-            </tr>
-            <tr data-gt-id="E-IDEM">
-              <th scope="row">Database provisioning<span class="ps-where">ExponentHR</span></th>
-              <td class="ps-before">1 hr, 20+ times a day</td>
-              <td class="ps-now">one idempotent run</td>
-              <td class="ps-mech">Four latent failure modes closed. Roughly 5,000 engineering hours a year.</td>
-            </tr>
-            <tr data-gt-id="E2-CICD">
-              <th scope="row">Release cycle<span class="ps-where">ExponentHR</span></th>
-              <td class="ps-before">3 months</td>
-              <td class="ps-now">14 days</td>
-              <td class="ps-mech">Azure DevOps CI/CD owned outright, with SSRS and Power BI release steps automated.</td>
-            </tr>
-            <tr data-gt-id="E3-FABRIC">
-              <th scope="row">Report query response<span class="ps-where">ExponentHR</span></th>
-              <td class="ps-before">12s</td>
-              <td class="ps-now">under 4s</td>
-              <td class="ps-mech">Reporting moved onto Fabric semantic models, with index and stored-procedure tuning on the OLAP paths.</td>
-            </tr>
-            <tr data-gt-id="E5-RECOVERY">
-              <th scope="row">CDC capture after failover<span class="ps-where">ExponentHR</span></th>
-              <td class="ps-before">specialist restore</td>
-              <td class="ps-now">under 1 hr</td>
-              <td class="ps-mech">Availability-group failover written up as runbooks, including the post-failover capture failure that gives no signal.</td>
-            </tr>
-            <tr data-gt-id="M2">
-              <th scope="row">Alert signal-to-noise<span class="ps-where">Missouri S&amp;T</span></th>
-              <td class="ps-before">1:5</td>
-              <td class="ps-now">1:1.2</td>
-              <td class="ps-mech">Per-service thresholds filtered about 250 non-actionable P3 alerts a week.</td>
-            </tr>
-            <tr data-gt-id="M3">
-              <th scope="row">Anomaly-detection compute<span class="ps-where">Missouri S&amp;T</span></th>
-              <td class="ps-before">20 static nodes</td>
-              <td class="ps-now">4 to 8 autoscaled</td>
-              <td class="ps-mech">AKS with horizontal pod autoscaling. $3,200 a month, CPU utilization 12% to 64%.</td>
-            </tr>
-            </tbody>
-          </table>
+        <p class="sec-note sec-note--lead" data-reveal>Changes I shipped and kept running at work, tagged by where they ran.</p>
+        <div class="tr" data-reveal>
+          <div class="tr-row" data-gt-id="E1-CDC">
+            <p class="tr-sys">CDC ETL runtime<span class="tr-org">EXPONENTHR</span></p>
+            <p class="tr-delta"><span class="tr-b">30 min</span><span class="tr-arr">&rarr;</span><span class="tr-a">under 8 min</span></p>
+            <p class="tr-why">Idempotent incremental merge-upserts replaced full-table reloads. Compute down 67%, freshness SLA unchanged.</p>
+          </div>
+          <div class="tr-row" data-gt-id="E-IDEM">
+            <p class="tr-sys">Database provisioning<span class="tr-org">EXPONENTHR</span></p>
+            <p class="tr-delta"><span class="tr-b">1 hr, 20+/day</span><span class="tr-arr">&rarr;</span><span class="tr-a">one idempotent run</span></p>
+            <p class="tr-why">Safely rerunnable; four latent failure modes closed. Roughly 5,000 engineering hours a year returned.</p>
+          </div>
+          <div class="tr-row" data-gt-id="E2-CICD">
+            <p class="tr-sys">Release cycle<span class="tr-org">EXPONENTHR</span></p>
+            <p class="tr-delta"><span class="tr-b">3 months</span><span class="tr-arr">&rarr;</span><span class="tr-a">14 days</span></p>
+            <p class="tr-why">Azure DevOps CI/CD owned outright, with SSRS and Power BI release steps automated.</p>
+          </div>
+          <div class="tr-row" data-gt-id="E3-FABRIC">
+            <p class="tr-sys">Report query response<span class="tr-org">EXPONENTHR</span></p>
+            <p class="tr-delta"><span class="tr-b">12 s</span><span class="tr-arr">&rarr;</span><span class="tr-a">under 4 s</span></p>
+            <p class="tr-why">Reporting moved onto Fabric semantic models, with index and stored-procedure tuning on the OLAP paths.</p>
+          </div>
+          <div class="tr-row" data-gt-id="E5-RECOVERY">
+            <p class="tr-sys">CDC capture after failover<span class="tr-org">EXPONENTHR</span></p>
+            <p class="tr-delta"><span class="tr-b">specialist restore</span><span class="tr-arr">&rarr;</span><span class="tr-a">under 1 hr</span></p>
+            <p class="tr-why">Availability-group failover written up as runbooks, including the post-failover capture failure that gives no signal.</p>
+          </div>
+          <div class="tr-row" data-gt-id="M2">
+            <p class="tr-sys">Alert signal-to-noise<span class="tr-org">MISSOURI S&amp;T</span></p>
+            <p class="tr-delta"><span class="tr-b">1:5</span><span class="tr-arr">&rarr;</span><span class="tr-a">1:1.2</span></p>
+            <p class="tr-why">Per-service thresholds filtered about 250 non-actionable P3 alerts a week.</p>
+          </div>
+          <div class="tr-row" data-gt-id="M3">
+            <p class="tr-sys">Anomaly-detection compute<span class="tr-org">MISSOURI S&amp;T</span></p>
+            <p class="tr-delta"><span class="tr-b">20 static nodes</span><span class="tr-arr">&rarr;</span><span class="tr-a">4&ndash;8 autoscaled</span></p>
+            <p class="tr-why">AKS with horizontal pod autoscaling. $3,200 a month saved, CPU utilization 12% to 64%.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section section-alt" id="experience">
+    <section class="section section-dark" id="experience">
       <div class="container">
         <h2 class="sec-h" data-reveal>Experience</h2>
         <div class="roles">
@@ -250,20 +237,47 @@
               <div class="role-head">
                 <h3 class="role-title">Data Engineer</h3>
                 <p class="role-org">ExponentHR &middot; Dallas, TX</p>
-                  <p class="track-scope">Multi-tenant payroll and HR platform</p>
+                <p class="track-scope">Multi-tenant payroll and HR platform</p>
               </div>
+
               <div class="case" data-gt-id="E-PTO, E-SECURE2">
                 <h4 class="case-title">Payroll accrual and SECURE 2.0</h4>
                 <p class="case-body">PTO balances convert to cash at termination, so a defect in accrual logic is a payout rather than a display bug. I traced it to a payroll-period boundary calculation in SQL and put the fix through change-request review. SECURE 2.0 compliance went out in the same release train.</p>
+                <p class="case-outcome">payout-class defect &middot; traced in SQL &middot; shipped under change control</p>
               </div>
+
               <div class="case" data-gt-id="E-SELFHEAL, E5-RECOVERY, E-LIVEREC, E-OBS, E-RETENTION">
                 <h4 class="case-title">Failure detection and failover recovery</h4>
-                <p class="case-body">CDC capture jobs fail three ways: a run that never starts, a run that hangs, and a run that exits clean having captured nothing. Retention windows close and the change history inside them does not come back. Monitoring covers all three. Availability-group failover is written up as runbooks, including the post-failover capture failure that produces no error at all, and one live incremental-load failure was diagnosed and restored in place rather than falling back to a full reload.</p>
+                <p class="case-body">CDC capture jobs fail three ways, and retention windows close while they go unnoticed &mdash; the change history inside them does not come back.</p>
+                <div class="runbook">
+                  <span class="rb-h">Capture failure modes</span>
+                  <span class="rb-i">run never starts</span>
+                  <span class="rb-i">run hangs</span>
+                  <span class="rb-i">exits clean &mdash; captured nothing</span>
+                  <span class="rb-note">monitoring covers all three</span>
+                </div>
+                <p class="case-body case-body--after">Availability-group failover is documented as recovery procedures, including the post-failover capture failure that produces no error at all. One live incremental-load failure was diagnosed and restored in place rather than falling back to a full reload.</p>
+                <p class="case-outcome">3/3 modes monitored &middot; failover recovery &lt; 1 hr &middot; no full reload</p>
               </div>
+
               <div class="case" data-gt-id="E1-CDC, E-IDEM">
                 <h4 class="case-title">CDC incrementals and idempotent provisioning</h4>
-                <p class="case-body">The CDC ETL reloaded whole tables on every run, and standing up a database was an hour of manual orchestration repeated twenty-plus times a day. Both failed in ways that needed a person to clean up before the next attempt. Moving CDC onto idempotent incremental merge-upserts brought runtime from 30 minutes to under 8 with compute down 67%, and the freshness SLA held through the change. Provisioning was rewritten to be safely rerunnable, closing four latent failure modes on the way: orphaned CDC cleanup jobs terminated properly, a guard that kills active replication sessions before disabling CDC, silently-defaulting restore parameters, and stuck-restore detection with pre-flight race checks.</p>
-                <figure class="system-diagram-figure" aria-labelledby="diagram-az-title" aria-describedby="diagram-az-desc">
+                <p class="case-body">The CDC ETL reloaded whole tables on every run, and standing up a database was an hour of manual orchestration repeated twenty-plus times a day. Both failed in ways that needed a person to clean up before the next attempt. Moving CDC onto idempotent incremental merge-upserts held the freshness SLA through the change; provisioning was rewritten to be safely rerunnable, closing four latent failure modes on the way.</p>
+                <details class="t-detail">
+                  <summary>DETAIL</summary>
+                  <div class="t-body">
+                    <div class="runbook">
+                      <span class="rb-h">Latent failure modes closed</span>
+                      <span class="rb-i">orphaned CDC cleanup jobs terminated properly</span>
+                      <span class="rb-i">guard kills active replication sessions before disabling CDC</span>
+                      <span class="rb-i">restore parameters can no longer silently default</span>
+                      <span class="rb-i">stuck-restore detection with pre-flight race checks</span>
+                    </div>
+                  </div>
+                </details>
+                <p class="case-outcome">30 min &rarr; &lt;8 min &middot; compute &minus;67% &middot; freshness SLA held</p>
+                <p class="case-outcome">1 hr &times; 20+/day &rarr; idempotent rerun &middot; ~5,000 eng-hr/yr returned</p>
+<figure class="system-diagram-figure" aria-labelledby="diagram-az-title" aria-describedby="diagram-az-desc">
                                 <svg class="system-diagram" viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" role="img">
                                   <title id="diagram-az-title">Azure Platform Engineering topology: Azure Repos triggers Azure Pipelines CI/CD, output flows to SQL Server CDC, then to AAG replica and Microsoft Fabric</title>
                                   <desc id="diagram-az-desc">Enterprise data platform at ExponentHR. Azure Repos triggers Azure Pipelines on every push - build, test and deploy stages run on every push, compressing the release cycle from three months to fourteen days. SQL Server uses CDC incremental merge-upserts, cutting ETL compute by sixty-seven percent. An idempotent pipeline automates Contained Always-On Availability Group copy-downs, saving about an hour per request. Microsoft Fabric semantic models consume the CDC stream for reporting.</desc>
@@ -300,12 +314,17 @@
                                     <line x1="474" y1="114" x2="494" y2="133" marker-end="url(#arrow-az)"/>
                                   </g>
                                 </svg>
+                                <figcaption class="proj-fig-cap">FIG. 1 &mdash; EXPONENTHR PLATFORM TOPOLOGY</figcaption>
                               </figure>
               </div>
+
               <div class="case" data-gt-id="E2-CICD, E3-FABRIC, E-REPORTAUTO">
                 <h4 class="case-title">Release ownership and the reporting layer</h4>
-                <p class="case-body">Releases went out roughly quarterly. Taking CI/CD through Azure DevOps brought the cycle to 14 days. Reporting moved onto Fabric semantic models with index and stored-procedure tuning underneath: query response 12s to under 4s.</p>
+                <p class="case-body">Releases went out roughly quarterly. Taking CI/CD through Azure DevOps compressed the cycle, with SSRS and Power BI release steps automated. Reporting moved onto Fabric semantic models with index and stored-procedure tuning underneath.</p>
+                <p class="case-outcome">3 mo &rarr; 14 days &middot; query response 12 s &rarr; &lt;4 s</p>
               </div>
+
+              <p class="role-tech">SQL Server &middot; CDC &middot; SSIS &middot; Azure DevOps &middot; Microsoft Fabric &middot; AAG &middot; Power BI / SSRS</p>
             </div>
           </article>
 
@@ -315,15 +334,66 @@
               <div class="role-head">
                 <h3 class="role-title">Data Engineer</h3>
                 <p class="role-org">Missouri University of Science and Technology &middot; Rolla, MO</p>
-                  <p class="track-scope">ML infrastructure and anomaly detection</p>
+                <p class="track-scope">ML infrastructure and anomaly detection</p>
               </div>
               <div class="case" data-gt-id="M1, M2, M3">
                 <h4 class="case-title">Anomaly detection and autoscaling</h4>
-                <p class="case-body">The detection pipelines select an algorithm per time-series profile, and thresholds are set per service, so a noisy service can be tuned without raising the floor on the rest. Signal-to-noise moved from 1:5 to 1:1.2, and one memory leak surfaced four hours before it would have taken the service down. Moving the workloads off static D-series VMs onto AKS cut compute $3,200 a month while raising utilization from 12% to 64%.</p>
+                <p class="case-body">The detection pipelines select an algorithm per time-series profile, and thresholds are set per service, so a noisy service can be tuned without raising the floor on the rest. One memory leak surfaced four hours before it would have taken the service down. Moving the workloads off static D-series VMs onto AKS raised utilization while cutting compute spend.</p>
+                <p class="case-outcome">signal-to-noise 1:5 &rarr; 1:1.2 &middot; ~250 P3 alerts/wk filtered</p>
+                <p class="case-outcome">20 static nodes &rarr; 4&ndash;8 autoscaled &middot; &minus;$3,200/mo &middot; CPU 12% &rarr; 64%</p>
               </div>
               <div class="case" data-gt-id="M4">
                 <h4 class="case-title">NLP over visitor feedback</h4>
-                <p class="case-body">Pipelines in spaCy, NLTK, RoBERTa and VADER over 10,000+ reviews, feeding dimensional models and Power BI. Published in the <em>Journal of Nonprofit &amp; Public Sector Marketing</em>, 2025, as <a href="https://doi.org/10.1080/10495142.2025.2525123" target="_blank" rel="noreferrer">DOI 10.1080/10495142.2025.2525123</a>.</p>
+                <p class="case-body">Pipelines in spaCy, NLTK, RoBERTa and VADER feeding dimensional models and Power BI. Published in the <em>Journal of Nonprofit &amp; Public Sector Marketing</em>, 2025, as <a href="https://doi.org/10.1080/10495142.2025.2525123" target="_blank" rel="noreferrer">DOI 10.1080/10495142.2025.2525123</a>.</p>
+                <p class="case-outcome">10,000+ reviews &middot; peer-reviewed, 2025</p>
+              </div>
+              <p class="role-tech">Python &middot; spaCy &middot; NLTK &middot; RoBERTa &middot; AKS &middot; Power BI</p>
+            </div>
+          </article>
+
+          <article class="role role--compact" data-reveal>
+            <div class="role-when">Jun 2023 - Aug 2023</div>
+            <div class="role-what">
+              <div class="role-head">
+                <h3 class="role-title">Product Intern</h3>
+                <p class="role-org">C2FO &middot; Kansas City, KS</p>
+                <p class="track-scope">Transaction and behavioural SQL on a working-capital platform</p>
+              </div>
+              <div class="case" data-gt-id="C-SQL">
+                <p class="case-body">The SQL work went across transaction and user behavior on a B2B working-capital platform.</p>
+                <p class="role-tech">SQL</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="role role--compact" data-reveal>
+            <div class="role-when">Sep 2020 - Mar 2021</div>
+            <div class="role-what">
+              <div class="role-head">
+                <h3 class="role-title">Business Intelligence Analyst</h3>
+                <p class="role-org">udaan.com &middot; Nashik, India</p>
+                <p class="track-scope">Demand forecasting and fulfillment analytics</p>
+              </div>
+              <div class="case" data-gt-id="U-FORECAST, U-FULFILL, U-BCP">
+                <p class="case-body">Demand and inventory models in Power BI for a new-city Staples launch on a B2B marketplace, plus a continuity plan that kept deliveries moving through application downtime.</p>
+                <p class="case-outcome">allocation ROI +7% &middot; fulfillment 99.3% under volume growth</p>
+                <p class="role-tech">Power BI</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="role role--compact" data-reveal>
+            <div class="role-when">Mar 2018 - Sep 2020</div>
+            <div class="role-what">
+              <div class="role-head">
+                <h3 class="role-title">Business Analyst</h3>
+                <p class="role-org">Zomato &middot; Hyderabad, India</p>
+                <p class="track-scope">Competitor pricing data, search ranking signals, unit economics</p>
+              </div>
+              <div class="case" data-gt-id="Z-COMP, Z-ES, Z-SEARCH, Z-PNL">
+                <p class="case-body">Built the competitor analytics platform that replaced week-old pricing data with a current refresh, and indexed 100K+ internal documents in Elasticsearch so the support desk stopped answering the same questions daily. On search I supplied and evaluated ranking signals from the analyst side and did not train the models.</p>
+                <p class="case-outcome">contribution &minus;&#8377;18 &rarr; +&#8377;2 &middot; 300 restaurants</p>
+                <p class="role-tech">Elasticsearch</p>
               </div>
             </div>
           </article>
@@ -337,32 +407,152 @@
         <h2 class="sec-h" data-reveal>Projects</h2>
         <div class="projs">
 
+          <article class="proj proj--flagship" data-gt-id="P-AUTOAPPLY" data-reveal>
+            <div class="proj-head">
+              <h3 class="proj-name">AutoApply AI</h3>
+              <p class="proj-meta">SOLO BUILD</p>
+            </div>
+            <p class="proj-line">Job-application automation across three clients &mdash; Chrome extension, FastAPI backend, React dashboard &mdash; sharing one state pipeline.</p>
+            <p class="proj-proof">40+ endpoints &middot; 11 ATS adapters &middot; 6 LLM providers behind one router &middot; 355 backend tests</p>
+            <p class="proj-stack">FastAPI &middot; Chrome MV3 &middot; React &middot; PostgreSQL &middot; Redis &middot; pgvector &middot; Clerk</p>
+            <details class="t-detail">
+              <summary>DETAIL</summary>
+              <div class="t-body">
+                <p class="t-line"><span class="t-k">ARCHITECTURE</span><span>Chrome MV3 extension, FastAPI backend and React dashboard on one state pipeline.</span></p>
+                <p class="t-line"><span class="t-k">DECISION</span><span>Shadow DOM isolation on the client, so page styles cannot reach the injected UI.</span></p>
+                <p class="t-line"><span class="t-k">VERIFICATION</span><span>355 backend tests. The repository is public and the deployment is not, so the counts are my own &mdash; the code is the part you can read.</span></p>
+              </div>
+            </details>
+            <p class="proj-links"><a href="https://github.com/narendranathe/autoapply-ai" target="_blank" rel="noreferrer">Source</a> <a href="autoapply-ai.html">Notes</a></p>
+          </article>
+
           <article class="proj" data-gt-id="P-HOOKS" data-reveal>
-            <h3 class="proj-name">repo-context-hooks</h3>
-            <p class="proj-stack">Python, GitHub Actions, Sigstore, CodeQL, PyPI</p>
-            <p class="case-body">Pre-commit and post-commit hooks that snapshot repo context for an LLM agent between sessions, standard library only at runtime. The release path is where most of the work went: Sigstore-signed publishing through an OIDC Trusted Publisher, CodeQL on every pull request, Dependabot on the Actions dependencies. 330+ tests at v1.0, including Hypothesis property tests over sampling boundaries and hook dedup.</p>
+            <div class="proj-head">
+              <h3 class="proj-name">repo-context-hooks</h3>
+              <p class="proj-meta">v1.0 &middot; SIGNED</p>
+            </div>
+            <p class="proj-line">Pre-commit and post-commit hooks that snapshot repo context for an LLM agent between sessions.</p>
+            <p class="proj-proof">330+ tests @ v1.0 &middot; Hypothesis property tests &middot; 0 runtime deps</p>
+            <p class="proj-stack">Python &middot; GitHub Actions &middot; Sigstore &middot; CodeQL &middot; PyPI</p>
+            <details class="t-detail">
+              <summary>DETAIL</summary>
+              <div class="t-body">
+                <p class="t-line"><span class="t-k">DECISION</span><span>Standard library only at runtime &mdash; nothing external to break inside a hook context.</span></p>
+                <p class="t-line"><span class="t-k">RELEASE</span><span>Sigstore-signed publishing through an OIDC Trusted Publisher, CodeQL on every pull request, Dependabot on the Actions dependencies.</span></p>
+                <p class="t-line"><span class="t-k">VERIFICATION</span><span>330+ tests at v1.0, including Hypothesis property tests over sampling boundaries and hook dedup.</span></p>
+                <div class="t-code">
+                  <p class="t-code-cap"><span>repo_context_hooks/bundle/hooks.json &middot; excerpt</span><a href="https://github.com/narendranathe/repo-context-hooks/blob/main/repo_context_hooks/bundle/hooks.json" target="_blank" rel="noreferrer">SOURCE &#8599;</a></p>
+                  <pre>"SessionStart": [
+  {
+    "matcher": "",
+    "hooks": [
+      {
+        "type": "command",
+        "command": "python \"$CLAUDE_PROJECT_DIR\"/.claude/scripts/repo_specs_memory.py session-start",
+        "timeout": 20
+      },
+      {
+        "type": "command",
+        "command": "python \"$CLAUDE_PROJECT_DIR\"/.claude/scripts/session_context.py session-start",
+        "timeout": 20
+      }
+    ]
+  }
+],</pre>
+                </div>
+                <p class="t-code-note">PreCompact, PostCompact and SessionEnd are wired the same way.</p>
+              </div>
+            </details>
             <p class="proj-links"><a href="https://pypi.org/project/repo-context-hooks/" target="_blank" rel="noreferrer">PyPI</a> <a href="https://github.com/narendranathe/repo-context-hooks" target="_blank" rel="noreferrer">Source</a> <a href="content/posts/repo-context-hooks-supply-chain.html">Write-up</a></p>
           </article>
 
           <article class="proj" data-gt-id="P-FRAUD" data-reveal>
-            <h3 class="proj-name">Fraud detection platform</h3>
-            <p class="proj-stack">Kafka, LightGBM, FastAPI, MLflow, Airflow, Prometheus, Grafana</p>
-            <p class="case-body">A Kafka producer feeds a partitioned topic, a consumer scores each transaction with LightGBM behind FastAPI, and predictions and latencies persist to PostgreSQL. P50 0.45ms, P95 0.89ms, P99 1.12ms at 100 TPS. Most of that 1.12ms is FastAPI overhead rather than the model: LightGBM itself takes microseconds, so the per-call DataFrame is what would go first if latency ever mattered. The data is synthetic, 100,000 generated transactions with 2,034 labeled fraud, running on one laptop.</p>
+            <div class="proj-head">
+              <h3 class="proj-name">Fraud detection platform</h3>
+              <p class="proj-meta">100K SYNTHETIC TX</p>
+            </div>
+            <p class="proj-line">Kafka-fed transaction scoring: LightGBM behind FastAPI, predictions and latencies persisted to PostgreSQL.</p>
+            <p class="proj-proof">P50 0.45ms &middot; P95 0.89ms &middot; P99 1.12ms @ 100 TPS</p>
+            <p class="proj-stack">Kafka &middot; LightGBM &middot; FastAPI &middot; MLflow &middot; Airflow &middot; Prometheus &middot; Grafana</p>
+            <details class="t-detail">
+              <summary>DETAIL</summary>
+              <div class="t-body">
+                <p class="t-line"><span class="t-k">FLOW</span><span class="t-mono">producer &rarr; partitioned topic &rarr; consumer &rarr; lightgbm &middot; fastapi &rarr; postgresql</span></p>
+                <p class="t-line"><span class="t-k">FINDING</span><span>Most of the 1.12ms P99 is FastAPI overhead rather than the model: LightGBM itself takes microseconds, so the per-call DataFrame is what would go first if latency ever mattered.</span></p>
+                <p class="t-line"><span class="t-k">CONSTRAINT</span><span>Synthetic data: 100,000 generated transactions with 2,034 labeled fraud, running on one laptop.</span></p>
+              </div>
+            </details>
             <p class="proj-links"><a href="https://github.com/narendranathe/fraud-detection-ml-platform" target="_blank" rel="noreferrer">Source</a> <a href="fraud-detection.html">Notes</a></p>
           </article>
 
           <article class="proj" data-gt-id="P-RISK" data-reveal>
-            <h3 class="proj-name">Portfolio risk analytics</h3>
-            <p class="proj-stack">Kafka, Spark Structured Streaming, Delta, FastAPI, Streamlit</p>
-            <p class="case-body">Market ticks come in through Kafka, Spark Structured Streaming aggregates them on 5-second tumbling windows behind a 10-second watermark, and a Delta writer lands the bronze layer. FastAPI computes VaR at 95% and 99% by historical simulation over a 30-day window rather than a parametric model, because equity returns are fat-tailed and a normal assumption understates the tail. Component VaR is computed per position, so the dashboard can name which holding is driving portfolio risk. The API serves the Delta output; the seeded sample set is only what a fresh checkout falls back to before the stream has run.</p>
+            <div class="proj-head">
+              <h3 class="proj-name">Portfolio risk analytics</h3>
+              <p class="proj-meta">STRUCTURED STREAMING</p>
+            </div>
+            <p class="proj-line">Streaming value-at-risk for an equity portfolio, with per-position attribution of what is driving it.</p>
+            <p class="proj-proof">VaR 95/99 &middot; historical simulation &middot; 30d window &middot; component VaR per position</p>
+            <p class="proj-stack">Kafka &middot; Spark Structured Streaming &middot; Delta &middot; FastAPI &middot; Streamlit</p>
+            <details class="t-detail">
+              <summary>DETAIL</summary>
+              <div class="t-body">
+                <figure class="proj-fig" aria-labelledby="fig2-title" aria-describedby="fig2-desc">
+                  <svg class="system-diagram" viewBox="0 0 400 436" xmlns="http://www.w3.org/2000/svg" role="img">
+                    <title id="fig2-title">Portfolio risk streaming topology</title>
+                    <desc id="fig2-desc">Market ticks enter through Kafka. Spark Structured Streaming aggregates them on five-second tumbling windows behind a ten-second watermark and writes the bronze layer to Delta. FastAPI computes value at risk at 95 and 99 percent by historical simulation over a thirty-day window with component VaR per position, and a Streamlit dashboard consumes the API.</desc>
+                    <defs>
+                      <marker id="arrow-risk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0 0 L10 5 L0 10 Z" fill="currentColor"/>
+                      </marker>
+                    </defs>
+                    <g fill="none" stroke="currentColor" stroke-width="1.4" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="11">
+                      <rect x="80" y="8" width="240" height="58" rx="6"/>
+                      <text x="200" y="30" text-anchor="middle" fill="currentColor" font-weight="600">Kafka</text>
+                      <text x="200" y="48" text-anchor="middle" fill="currentColor" font-size="10">market ticks in</text>
+                      <line x1="200" y1="66" x2="200" y2="94" marker-end="url(#arrow-risk)"/>
+                      <rect x="80" y="94" width="240" height="78" rx="6" stroke="var(--accent, #176b52)" stroke-width="2"/>
+                      <text x="200" y="116" text-anchor="middle" fill="var(--accent, #176b52)" font-weight="600">Spark Structured Streaming</text>
+                      <text x="200" y="134" text-anchor="middle" fill="currentColor" font-size="10">5s tumbling windows</text>
+                      <text x="200" y="150" text-anchor="middle" fill="currentColor" font-size="10">10s watermark</text>
+                      <line x1="200" y1="172" x2="200" y2="200" marker-end="url(#arrow-risk)"/>
+                      <rect x="80" y="200" width="240" height="58" rx="6"/>
+                      <text x="200" y="222" text-anchor="middle" fill="currentColor" font-weight="600">Delta</text>
+                      <text x="200" y="240" text-anchor="middle" fill="currentColor" font-size="10">bronze layer</text>
+                      <line x1="200" y1="258" x2="200" y2="286" marker-end="url(#arrow-risk)"/>
+                      <rect x="80" y="286" width="240" height="78" rx="6"/>
+                      <text x="200" y="308" text-anchor="middle" fill="currentColor" font-weight="600">FastAPI</text>
+                      <text x="200" y="326" text-anchor="middle" fill="currentColor" font-size="10">VaR 95/99 &mdash; historical simulation</text>
+                      <text x="200" y="342" text-anchor="middle" fill="currentColor" font-size="10">30d window &middot; component VaR</text>
+                      <line x1="200" y1="364" x2="200" y2="392" marker-end="url(#arrow-risk)"/>
+                      <rect x="80" y="392" width="240" height="44" rx="6"/>
+                      <text x="200" y="418" text-anchor="middle" fill="currentColor" font-weight="600">Streamlit dashboard</text>
+                    </g>
+                  </svg>
+                  <figcaption class="proj-fig-cap">FIG. 2 &mdash; STREAM TOPOLOGY</figcaption>
+                </figure>
+                <div class="t-code">
+                  <p class="t-code-cap"><span>src/streaming/spark_kafka_consumer.py &middot; excerpt</span><a href="https://github.com/narendranathe/portfolio-risk-analytics/blob/main/src/streaming/spark_kafka_consumer.py" target="_blank" rel="noreferrer">SOURCE &#8599;</a></p>
+                  <pre># 5-second windowed aggregations
+stats_df = enriched_df \
+    .withWatermark('processing_time', '10 seconds') \
+    .groupBy(
+        window('processing_time', '5 seconds'),
+        'symbol'
+    ) \
+    .agg(
+        count('*').alias('ticks'),
+        round(avg('price'), 2).alias('avg_price'),
+        round(min('price'), 2).alias('min_price'),
+        round(max('price'), 2).alias('max_price'),
+        sum('volume').alias('volume')
+    )</pre>
+                </div>
+                <p class="t-line"><span class="t-k">DECISION</span><span>VaR by historical simulation over a 30-day window rather than a parametric model: equity returns are fat-tailed and a normal assumption understates the tail.</span></p>
+                <p class="t-line"><span class="t-k">RESULT</span><span>Component VaR is computed per position, so the dashboard can name which holding is driving portfolio risk.</span></p>
+                <p class="t-line"><span class="t-k">CONSTRAINT</span><span>The API serves the Delta output; the seeded sample set is only what a fresh checkout falls back to before the stream has run.</span></p>
+              </div>
+            </details>
             <p class="proj-links"><a href="https://github.com/narendranathe/portfolio-risk-analytics" target="_blank" rel="noreferrer">Source</a> <a href="portfolio-risk.html">Notes</a></p>
-          </article>
-
-          <article class="proj" data-gt-id="P-AUTOAPPLY" data-reveal>
-            <h3 class="proj-name">AutoApply AI</h3>
-            <p class="proj-stack">FastAPI, Chrome MV3, React, PostgreSQL, Redis, pgvector, Clerk</p>
-            <p class="case-body">The largest thing here by a distance, and built alone: 40+ backend endpoints, 11 ATS adapters, 6 LLM providers behind one routing layer, and 355 backend tests. A Chrome extension, a FastAPI backend and a React dashboard share one state pipeline, with Shadow DOM isolation on the client so page styles cannot reach the injected UI. The repository is public and the deployment is not, so the counts are my own and the code is the part you can read.</p>
-            <p class="proj-links"><a href="https://github.com/narendranathe/autoapply-ai" target="_blank" rel="noreferrer">Source</a> <a href="autoapply-ai.html">Notes</a></p>
           </article>
 
         </div>
@@ -370,62 +560,11 @@
       </div>
     </section>
 
-    <section class="section section-alt" id="before">
-      <div class="container">
-        <h2 class="sec-h" data-reveal>Before Engineering</h2>
-        <p class="sec-note sec-note--lead" data-reveal>MS in Information Science and Technology at Missouri S&amp;T, GPA 4.0, Jan 2022 to Dec 2023.</p>
-        <div class="roles">
-
-          <article class="role" data-reveal>
-            <div class="role-when">Jun 2023 - Aug 2023</div>
-            <div class="role-what">
-              <div class="role-head">
-                <h3 class="role-title">Product Intern</h3>
-                <p class="role-org">C2FO &middot; Kansas City, KS</p>
-                  <p class="track-scope">Transaction and behavioural SQL on a working-capital platform</p>
-              </div>
-              <div class="case" data-gt-id="C-SQL">
-                <p class="case-body">The SQL work went across transaction and user behavior on a B2B working-capital platform.</p>
-              </div>
-            </div>
-          </article>
-
-          <article class="role" data-reveal>
-            <div class="role-when">Sep 2020 - Mar 2021</div>
-            <div class="role-what">
-              <div class="role-head">
-                <h3 class="role-title">Business Intelligence Analyst</h3>
-                <p class="role-org">udaan.com &middot; Nashik, India</p>
-                  <p class="track-scope">Demand forecasting and fulfillment analytics</p>
-              </div>
-              <div class="case" data-gt-id="U-FORECAST, U-FULFILL, U-BCP">
-                <p class="case-body">Demand and inventory models in Power BI for a new-city Staples launch on a B2B marketplace, plus a continuity plan that kept deliveries moving through application downtime. Allocation ROI up 7%, fulfillment held at 99.3% while volume climbed.</p>
-              </div>
-            </div>
-          </article>
-
-          <article class="role" data-reveal>
-            <div class="role-when">Mar 2018 - Sep 2020</div>
-            <div class="role-what">
-              <div class="role-head">
-                <h3 class="role-title">Business Analyst</h3>
-                <p class="role-org">Zomato &middot; Hyderabad, India</p>
-                  <p class="track-scope">Competitor pricing data, search ranking signals, unit economics</p>
-              </div>
-              <div class="case" data-gt-id="Z-COMP, Z-ES, Z-SEARCH, Z-PNL">
-                <p class="case-body">Built the competitor analytics platform that replaced week-old pricing data with a current refresh, and indexed 100K+ internal documents in Elasticsearch so the support desk stopped answering the same questions daily. On search I supplied and evaluated ranking signals from the analyst side and did not train the models. The restaurant portfolio lost money on every order until rebalancing discount sharing against ad-revenue mix moved contribution from &minus;&#8377;18 to +&#8377;2 across 300 restaurants.</p>
-              </div>
-            </div>
-          </article>
-
-        </div>
-      </div>
-    </section>
-
     <section class="section" id="research">
       <div class="container">
-        <h2 class="sec-h" data-reveal>Research and Certifications</h2>
+        <h2 class="sec-h" data-reveal>Education, Research and Certifications</h2>
         <div class="creds" data-reveal>
+          <p>MS in Information Science and Technology, Missouri S&amp;T, GPA 4.0, Jan 2022 to Dec 2023.</p>
           <p><a href="https://doi.org/10.1080/10495142.2025.2525123" target="_blank" rel="noreferrer">An Examination of Sentiment Analysis as a Tool for Gathering Visitor Feedback</a>. Bojanic, Edara, Zhang. <em>Journal of Nonprofit &amp; Public Sector Marketing</em>, Taylor &amp; Francis, 2025.</p>
           <p><a href="content/posts/repo-context-hooks-supply-chain.html">Five Claude agents audited my plugin release in parallel</a>. Sigstore signing, OIDC Trusted Publisher, CodeQL, and the 41 findings the review produced.</p>
           <p data-gt-id="C-CSPO">DP-700 Microsoft Certified Fabric Data Engineer Associate &middot; Certified Scrum Product Owner &middot; Tableau Analyst &middot; AI-900 Azure AI Fundamentals</p>
@@ -437,9 +576,16 @@
       <div class="container">
         <h2 class="sec-h" data-reveal>Contact</h2>
         <div class="contact" data-reveal>
-          <p>I am currently exploring senior data engineering roles at companies where data is money-adjacent.</p>
-          <p><a href="mailto:edara.narendranath@gmail.com?subject=Re%3A%20Data%20Engineering%20-%20%5BCompany%20Name%5D" class="btn btn-primary">edara.narendranath@gmail.com</a></p>
-          <p class="contact-links"><a href="/static/resume.pdf?v=7a55b6b6" target="_blank" rel="noreferrer" data-hover-preview="/static/resume-page1-preview.png?v=fc9a5e8c" data-hover-title="Resume - last updated Apr 30, 2026" data-hover-caption="1 page - click to download PDF" onclick="typeof plausible!=='undefined'&&plausible('Resume Download')">Resume</a></p>
+          <span class="contact-avatar"><img src="static/originals/headshot-fullbody-800.jpg" alt="Naren Edara" width="800" height="1000" loading="lazy"></span>
+          <div class="contact-body">
+            <p class="contact-lead">Open to senior data engineering roles. Email is the fastest way to reach me.</p>
+            <p><a href="mailto:edara.narendranath@gmail.com?subject=Re%3A%20Data%20Engineering%20-%20%5BCompany%20Name%5D" class="btn btn-primary contact-email">edara.narendranath@gmail.com</a></p>
+            <p class="contact-links">
+              <a href="https://www.linkedin.com/in/narendranathe/" target="_blank" rel="noreferrer">LinkedIn</a>
+              <a href="https://github.com/narendranathe" target="_blank" rel="noreferrer">GitHub</a>
+              <a href="/static/resume.pdf?v=7a55b6b6" target="_blank" rel="noreferrer" data-hover-preview="/static/resume-page1-preview.png?v=fc9a5e8c" data-hover-title="Resume - last updated Apr 30, 2026" data-hover-caption="1 page - click to download PDF" onclick="typeof plausible!=='undefined'&&plausible('Resume Download')">Resume</a>
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -477,6 +623,7 @@
         <a href="mailto:edara.narendranath@gmail.com?subject=Re%3A%20Data%20Engineering%20-%20%5BCompany%20Name%5D" aria-label="Email"><i class="fas fa-envelope"></i></a>
       </div>
       <p class="footer-copy">&copy; <span id="footer-year"></span> Narendranath Edara</p>
+      <p class="footer-colophon">Hand-built static site &middot; no framework, no build step</p>
     </div>
   </footer>
 

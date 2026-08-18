@@ -1,0 +1,498 @@
+/* ============================================================
+   Sheet 2 of 4 — detail panels, code excerpts, verification register,
+   fit blocks, outcomes ledger, graph, platform diagram.
+   Load AFTER styles.css (it defines the tokens these rules read).
+   ============================================================ */
+
+.t-detail[open] > summary::before { content: "\2212\00a0\00a0"; }
+.t-detail > summary:hover { color: var(--fg); }
+.t-detail > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.section-dark .t-detail > summary { color: var(--fg-soft); } /* fg-muted is 3.91:1 on the band */
+.section-dark .proj-fig-cap { color: var(--fg-soft); } /* same: caption must survive the band */
+
+/* detail panel: hairline left rule, key-value technical metadata */
+.t-body {
+  margin-top: 0.75rem;
+  padding: 0.35rem 0 0.35rem 1.1rem;
+  border-left: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.t-line {
+  display: flex; gap: 1rem;
+  font-size: 0.86rem; line-height: 1.7; color: var(--fg-soft);
+  max-width: 74ch; margin: 0;
+}
+.t-k {
+  flex: none; width: 14.5ch;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.6rem; letter-spacing: 0.09em;
+  color: var(--accent-warm);
+  padding-top: 0.22rem;
+}
+.t-mono {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.78rem; color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+
+/* FIG. 2 — stream topology, same grammar as the Azure diagram */
+.proj-fig { margin: 0.35rem 0 0.35rem; }
+.proj-fig .system-diagram {
+  color: var(--fg-soft);
+  display: block; width: 100%; max-width: 24rem; height: auto;
+}
+.proj-fig-cap {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.62rem; letter-spacing: 0.1em;
+  color: var(--fg-muted);
+  margin-top: 0.45rem;
+}
+
+/* L3 evidence: verbatim code excerpts, capped sitewide like diagrams */
+.t-code { margin: 0.5rem 0 0.2rem; }
+.t-code-cap {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.62rem; letter-spacing: 0.08em;
+  color: var(--fg-muted);
+  display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  margin: 0;
+}
+.t-code-cap a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+.t-code-cap a:hover, .t-code-cap a:focus-visible { border-bottom-color: var(--accent); }
+.t-code pre {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.72rem; line-height: 1.7;
+  color: var(--fg-soft);
+  background: var(--bg-alt);
+  border: 1px solid var(--border-soft);
+  padding: 0.85rem 1rem;
+  margin: 0.45rem 0 0;
+  overflow-x: auto;
+}
+.section-dark .t-code pre { background: rgba(0,0,0,0.14); }
+.t-code-note {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.68rem; color: var(--fg-muted);
+  margin: 0.45rem 0 0;
+}
+@media (max-width: 860px) {
+  .t-code pre { font-size: 0.68rem; padding: 0.75rem 0.85rem; }
+}
+
+/* flagship: hierarchy through layout, never adjectives */
+.proj--flagship { max-width: 84ch; }
+.proj--flagship .proj-name { font-size: 1.4rem; }
+.proj--flagship .proj-line { font-size: 0.98rem; }
+.proj--flagship .proj-proof { font-size: 0.8rem; }
+
+@media (max-width: 860px) {
+  .proj { padding: 1.3rem 0 1.4rem; }
+  .proj-proof { font-size: 0.72rem; }
+  .t-line { gap: 0.75rem; font-size: 0.82rem; }
+  .t-k { width: 14.5ch; padding-top: 0.18rem; }
+  .proj--flagship .proj-name { font-size: 1.25rem; }
+}
+
+
+/* --- research, references, contact --- */
+.creds { display: flex; flex-direction: column; gap: 0.9rem; max-width: 78ch; }
+.creds p { font-size: 0.9rem; line-height: 1.75; color: var(--fg-soft); }
+.creds a { color: var(--accent); }
+
+.contact { max-width: 62ch; display: flex; gap: 1.2rem; align-items: flex-start; }
+/* A face at the moment of outreach: small, circular, quiet. Same 4:5
+   portrait asset as the hero; object-position lifts the face into frame. */
+.contact-avatar {
+  width: 64px; height: 64px; flex: none; margin-top: 0.15rem;
+  border-radius: 50%; overflow: hidden; display: block;
+  border: 1px solid var(--border);
+}
+.contact-avatar img {
+  width: 100%; height: 100%; display: block;
+  object-fit: cover; object-position: 50% 0%;
+  /* Same derived face-crop zoom as the mobile hero avatar. */
+  transform: scale(3.34); transform-origin: 51.8% 31.3%;
+}
+.contact-body { display: flex; flex-direction: column; gap: 0.9rem; }
+.contact-lead { font-size: 1.05rem; line-height: 1.7; color: var(--fg); font-weight: 500; }
+.contact-email { font-size: 1rem; padding: 0.85rem 1.4rem; }
+#contact .contact-links { flex-direction: row; flex-wrap: wrap; gap: 1.25rem; }
+.contact-links { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-top: 0.4rem; }
+.contact-links a { font-size: 0.88rem; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+.contact-links a:hover, .contact-links a:focus-visible { border-bottom-color: var(--accent); }
+
+@media (max-width: 860px) {
+  .role { grid-template-columns: 1fr; gap: 0.35rem; }
+  .section-dark .role { grid-template-columns: 1fr; }
+  .section-dark .role-when { white-space: normal; }
+  .role-when { padding-top: 0; }
+  .hero-stack { font-size: 0.7rem; line-height: 1.8; margin-bottom: 0.7rem; }
+  .hero-seeking { font-size: 0.82rem; margin-bottom: 0.85rem; }
+}
+
+/* ============================================================
+   VERIFICATION AND CLAIMS REGISTER
+   ============================================================ */
+.verify-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+.verify-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 1.4rem 1.5rem;
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.verify-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; font-weight: 500; color: var(--fg);
+}
+.verify-desc { font-size: 0.85rem; line-height: 1.65; color: var(--fg-soft); }
+.verify-links {
+  list-style: none; display: flex; flex-direction: column;
+  gap: 0.7rem; margin-top: 0.3rem;
+}
+.verify-links li {
+  display: flex; flex-direction: column; gap: 0.1rem;
+  font-size: 0.85rem; color: var(--fg);
+  padding-left: 1.5rem; position: relative;
+}
+.verify-links li i {
+  position: absolute; left: 0; top: 0.22rem;
+  width: 1rem; text-align: center;
+  color: var(--accent-warm); font-size: 0.82rem;
+}
+.verify-links a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+.verify-links a:hover, .verify-links a:focus-visible { border-bottom-color: var(--accent); }
+.verify-links span { font-size: 0.76rem; color: var(--fg-muted); line-height: 1.45; }
+
+.register {
+  margin-top: 1.5rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent-warm);
+  border-radius: var(--r);
+  background: var(--bg);
+  padding: 1.4rem 1.6rem;
+}
+.register-head {
+  display: flex; flex-wrap: wrap; align-items: center;
+  justify-content: space-between; gap: 1rem; margin-bottom: 0.6rem;
+}
+.register-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 500; color: var(--fg);
+}
+.register-note {
+  font-size: 0.88rem; line-height: 1.7; color: var(--fg-soft);
+  max-width: 80ch; margin-bottom: 1.1rem;
+}
+.register-note strong { color: var(--fg); font-weight: 600; }
+.register-tally {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border); border-radius: var(--r); overflow: hidden;
+}
+.register-tally > div {
+  background: var(--bg-alt); padding: 0.85rem 1rem;
+  display: flex; flex-direction: column; gap: 0.15rem;
+}
+.register-tally dt {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 1.3rem; color: var(--fg); line-height: 1;
+}
+.register-tally dd {
+  margin: 0; font-size: 0.72rem; color: var(--fg-muted); line-height: 1.4;
+}
+@media (max-width: 1000px) { .verify-grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px)  { .register-tally { grid-template-columns: 1fr 1fr; } }
+
+/* ============================================================
+   WHERE THIS FITS
+   Three role-shape blocks. The gap line at the foot of each is the
+   structurally important part, so it gets the warm rule and sits last
+   where it cannot be skimmed past.
+   ============================================================ */
+.fit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.fit-block {
+  background: var(--bg);
+  padding: 1.6rem 1.5rem;
+  display: flex; flex-direction: column; gap: 0.7rem;
+}
+.fit-head {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 500; color: var(--fg);
+  line-height: 1.3;
+}
+.fit-maps {
+  font-size: 0.85rem; line-height: 1.65; color: var(--fg-soft);
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+.fit-rows { display: flex; flex-direction: column; gap: 0.85rem; margin: 0.25rem 0 0; }
+.fit-row { display: flex; flex-direction: column; gap: 0.15rem; }
+.fit-row-key {
+  font-size: 0.8rem; font-weight: 600; color: var(--fg);
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.45rem;
+}
+.fit-gt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 0.05em;
+  font-weight: 400;
+  color: var(--accent-warm);
+  border-bottom: 1px dotted var(--border);
+  cursor: help;
+}
+.fit-row-val {
+  margin: 0;
+  font-size: 0.83rem; line-height: 1.6; color: var(--fg-soft);
+}
+.fit-adjacency {
+  font-size: 0.79rem; line-height: 1.6; color: var(--fg-muted);
+  font-style: italic;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--border-soft);
+}
+.fit-gap {
+  margin-top: auto;
+  padding: 0.85rem 1rem;
+  border-left: 3px solid var(--accent-warm);
+  background: var(--chip-bg);
+  font-size: 0.83rem; line-height: 1.65; color: var(--fg-soft);
+}
+.fit-gap-key {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--fg-muted);
+  margin-bottom: 0.2rem;
+}
+@media (max-width: 1000px) { .fit-grid { grid-template-columns: 1fr; } }
+
+/* ============================================================
+   MEASURED-OUTCOMES LEDGER
+   Six rows, each baseline -> result -> method -> scope. Sized so the
+   delta is scannable at a glance and the method is there for whoever
+   stops to read it. Distinct from .impact-strip on purpose: that
+   module is CI-counted at exactly five instances.
+   ============================================================ */
+.ledger {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.ledger-row {
+  background: var(--bg);
+  padding: 1.4rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.ledger-top {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.75rem;
+}
+.ledger-domain {
+  font-size: 0.72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--accent-warm);
+}
+/* Evidence tag. Cursor + dotted underline signal that the title=
+   tooltip carries the GROUND_TRUTH record id. */
+.ledger-verify {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.63rem; letter-spacing: 0.04em;
+  color: var(--fg-muted);
+  border-bottom: 1px dotted var(--border);
+  cursor: help;
+  white-space: nowrap;
+}
+.ledger-delta {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem;
+  font-family: 'Playfair Display', serif;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+  margin: 0.1rem 0 0;
+}
+.ledger-from {
+  font-size: 1.02rem; color: var(--fg-muted);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--border);
+}
+.ledger-arrow { font-size: 0.95rem; color: var(--accent-warm); }
+.ledger-to { font-size: 1.5rem; font-weight: 600; color: var(--accent); }
+.ledger-what {
+  font-size: 0.76rem; color: var(--fg-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  margin: -0.15rem 0 0.3rem;
+}
+.ledger-line {
+  font-size: 0.855rem; line-height: 1.6; color: var(--fg-soft);
+  margin: 0;
+}
+.ledger-key {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--fg-muted);
+  margin-bottom: 0.15rem;
+}
+.ledger-total {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.75rem;
+  margin-top: 1.75rem;
+  padding-left: 1.1rem;
+  border-left: 3px solid var(--accent-warm);
+  max-width: 80ch;
+}
+.ledger-total-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem; font-weight: 600; color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+.ledger-total-txt {
+  flex: 1 1 22rem;
+  font-size: 0.88rem; line-height: 1.65; color: var(--fg-soft);
+}
+@media (max-width: 1000px) { .ledger { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .ledger { grid-template-columns: 1fr; } }
+@media print {
+  .ledger { grid-template-columns: 1fr 1fr; }
+  .ledger-verify { border-bottom: 0; }
+}
+
+/* ============================================================
+   GRAPH
+   ============================================================ */
+.graph-wrap {
+  margin: 0 0 2.5rem;
+  border-radius: var(--r-lg); overflow: hidden;
+  border: 1px solid var(--border);
+  background: radial-gradient(ellipse at 35% 40%, var(--graph-bg-a) 0%, var(--graph-bg-b) 100%);
+  box-shadow: var(--shadow-sm);
+}
+.graph-hint {
+  padding: 0.85rem 1.5rem 0;
+  font-size: 0.77rem; color: var(--fg-muted); text-align: center;
+}
+#graph-container { width: 100%; height: 460px; position: relative; }
+#graph { width: 100%; height: 100%; }
+#graph svg, #minigraph svg { width: 100%; height: 100%; display: block; }
+
+#minimap {
+  position: fixed; bottom: 1.5rem; right: 1.5rem;
+  width: 160px; height: 110px;
+  background: rgba(248,247,244,0.96);
+  border: 1px solid var(--border); border-radius: var(--r);
+  overflow: hidden; opacity: 0; pointer-events: none;
+  transition: opacity 0.35s; z-index: 50;
+  backdrop-filter: blur(6px); box-shadow: var(--shadow-md);
+}
+#minimap.show { opacity: 1; pointer-events: auto; }
+#minigraph { width: 100%; height: 100%; }
+
+#panel {
+  position: fixed; top: 0; right: 0;
+  width: min(400px, 90vw); height: 100vh;
+  background: var(--bg); border-left: 1px solid var(--border);
+  padding: 3.5rem 2rem 2rem;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 300; overflow-y: auto;
+  box-shadow: -20px 0 50px rgba(0,0,0,0.1);
+}
+#panel.open { transform: translateX(0); }
+#panel-close {
+  position: absolute; top: 1rem; right: 1.25rem;
+  background: none; border: none; font-size: 1.6rem;
+  color: var(--fg-muted); cursor: pointer; line-height: 1;
+  transition: color 0.2s;
+}
+#panel-close:hover { color: var(--fg); }
+#panel-scrim {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.18);
+  z-index: 290; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+#panel-scrim.open { opacity: 1; pointer-events: auto; }
+
+/* ============================================================
+   PLATFORM DIAGRAM
+   ============================================================ */
+.platform-diagram {
+  background: radial-gradient(ellipse at 40% 30%, var(--graph-bg-a) 0%, var(--graph-bg-b) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 2rem;
+  margin-bottom: 2.5rem;
+  display: flex; flex-direction: column; gap: 0;
+}
+.pd-top { display: flex; justify-content: center; }
+.pd-flagship {
+  background: var(--bg);
+  border: 1.5px solid var(--accent);
+  border-radius: var(--r-lg);
+  padding: 1.5rem 2rem;
+  width: 100%; max-width: 600px;
+  box-shadow: 0 2px 16px rgba(23,107,82,0.1);
+}
+.pd-flagship-header { margin-bottom: 0.6rem; }
+.pd-type {
+  font-size: 0.68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--accent); display: block; margin-bottom: 0.2rem;
+}
+.pd-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem; font-weight: 600; color: var(--fg);
+}
+.pd-flow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem; color: var(--accent-warm);
+  font-weight: 500; margin-bottom: 0.85rem;
+}
+.pd-stats {
+  display: flex; flex-wrap: wrap; gap: 1.25rem;
+  margin-bottom: 0.85rem;
+}
+.pd-stat { font-size: 0.84rem; color: var(--fg-soft); }
+.pd-stat strong { color: var(--fg); font-weight: 600; }
+.pd-tech { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+.pd-arrow-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  max-width: 600px; margin: 0 auto;
+  width: 100%;
+}
+.pd-arrow-col {
+  display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
+  padding: 0.6rem 0;
+}
+.pd-arrow-line {
+  width: 1px; height: 28px;
+  background: var(--border);
+  position: relative;
+}
+.pd-arrow-line::after {
+  content: '▾'; position: absolute; bottom: -10px; left: 50%;
+  transform: translateX(-50%); font-size: 10px;
+  color: var(--fg-muted);
+}
+.pd-arrow-label { font-size: 0.68rem; color: var(--fg-muted); font-weight: 500; letter-spacing: 0.04em; }
+
+.pd-engines {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
