@@ -1,6 +1,5 @@
 id,claim,status,evidence,where_used
 C-CSPO,Certified Scrum Product Owner,DOC,Scrum Alliance certification,Experience
-C-PRD,Requirement documents from stakeholder interviews; resource-allocation time -50%,STATED,Self-reported; labeled as such on the page,Experience
 C-SQL,SQL-driven product and user-behavior analysis on a B2B fintech working-capital platform,STATED,Employment record; no public artifact,Experience
 E-IDEM,"Database provisioning rewritten idempotent, four latent failure modes closed: 5,000 eng-hrs/yr, ~$300K, 2.5 FTEs",STATED,Employment record; derivation in GROUND_TRUTH.md,Experience; Hero; Projects
 E-LIVEREC,Live CDC incremental-load failure diagnosed and restored in place under production pressure,STATED,Employment record; no public artifact,Experience
@@ -18,18 +17,17 @@ M1,Azure AI Anomaly Detector pipelines at 95%+ accuracy; production memory leak 
 M2,"Tunable per-service alert thresholds: ~250 weekly P3 alerts filtered, signal-to-noise 1:5 to 1:1.2",STATED,Employment record; no public artifact,Experience; Projects
 M3,"Static D-series VMs to AKS with horizontal pod autoscaling: -$3,200/mo, CPU 12% to 64%",STATED,Employment record; no public artifact,Experience; Projects
 M4,"NLP pipelines over 10,000+ reviews, published in the Journal of Nonprofit & Public Sector Marketing",DOC,DOI 10.1080/10495142.2025.2525123,Experience
+P-AUTOAPPLY,"AutoApply AI: 40+ endpoints, 11 ATS adapters, 6 LLM providers, 355 backend tests",STATED,"github.com/narendranathe/autoapply-ai is public, so the code can be read; the counts themselves are unverified here and the deployment is not reachable",Experience
+P-FINTUNE,"FinTune: QLoRA 4-bit NF4, PII redaction, KL-divergence drift monitoring, 3-state breaker, 35+ tests across 7 modules",DOC,github.com/narendranathe/fintune tests/ + README,Experience
 P-FRAUD,"Fraud platform: P99 1.12ms at 100 TPS on 100,000 synthetic transactions with 2,034 labeled fraud",DOC,github.com/narendranathe/fraud-detection-ml-platform README + data generator,Experience
 P-HOOKS,"repo-context-hooks: zero runtime dependencies, 330+ tests, Sigstore-signed releases, CodeQL on every PR",DOC,pypi.org/project/repo-context-hooks + pyproject.toml dependencies=[] + .github/workflows/,Experience; Hero
+P-JOBSCOUT,"JobScout: 153 companies across 6 ATS integrations plus Playwright fallback, Flask API, SQLite WAL",DOC,github.com/narendranathe/job-scout backend/config/companies.py,Experience
 P-RISK,"Portfolio Risk Analytics: Kafka to Spark Structured Streaming on 5s tumbling windows with a 10s watermark, Delta bronze layer, FastAPI historical-simulation VaR at 95% and 99%",DOC,github.com/narendranathe/portfolio-risk-analytics src/. Architecture and method only. The throughput and latency figures are withheld under P-RISK-METRICS and absent from the page; the seeded API fallback is disclosed there.,Experience
+P-TAILOR,"tailor-resume: 190 automated tests across four distribution surfaces (CLI, PyPI, Streamlit, MCP)",STATED,pypi.org/project/tailor-resume is published and openable; the test count itself is unverified here,Experience
 U-BCP,Business continuity plan devised and executed to keep delivery cycles running through application downtime,DOC,2021 resume,Experience
 U-FORECAST,"Demand-forecasting and inventory models in Power BI, Excel macros, Google Data Studio: allocation ROI +7%",STATED,Employment record; the dollar total is BLOCKED and absent,Experience
 U-FULFILL,Statistical demand analysis for capacity planning: 99.3% order fulfillment sustained,STATED,Employment record; no public artifact,Experience
-U-RCA,Root-cause analysis on recurring value-chain failures with process flows rewritten,DOC,2021 resume,Experience
-Z-CAMPAIGN,Funnel instrumentation and A/B tests on campaign and discount strategy: campaign revenue +200%,STATED,Employment record; no public artifact,Experience
 Z-COMP,Real-time competitor analytics platform: 9% market share gain in contested metros,STATED,Employment record; no public artifact,Experience
-Z-DASH,"Central dashboard for category-level, city-wise launch percentage",STATED,Employment record; no public artifact,Experience
 Z-ES,Elasticsearch index over 100K+ internal documents: support desk volume down ~80%,STATED,Employment record; no public artifact,Experience
-Z-GROWTH,"14% compounded growth in one quarter, campaign coverage lifted to 70%",DOC,2021 resume,Experience
-Z-LOYALTY,"200+ partners onboarded to a loyalty program, cutting discount burn 7% for that cohort",DOC,2021 resume,Experience
 Z-PNL,Portfolio contribution from -18 to +2 rupees per order across 300 restaurants,DOC,2021 resume,Experience
 Z-SEARCH,"Contextual signals supplied and evaluated for search ranking (analyst side, not model training)",STATED,Employment record; scope deliberately narrowed on the page,Experience

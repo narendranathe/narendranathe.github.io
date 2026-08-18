@@ -141,7 +141,7 @@
             </li>
           </ul>
           <p class="hero-stack">SQL Server &middot; CDC &middot; Azure DevOps &middot; Microsoft Fabric &middot; SSIS &middot; Python &middot; Kafka &middot; Spark &middot; AKS &middot; FastAPI</p>
-          <p class="hero-seeking">Open to senior data engineering roles. No production AWS, Snowflake or Databricks; the work below is SQL Server, Azure and Kafka.</p>
+          <p class="hero-seeking">Open to senior data engineering roles on SQL Server, Azure and Kafka.</p>
           <div class="hero-actions">
             <a href="mailto:edara.narendranath@gmail.com?subject=Re%3A%20Data%20Engineering%20-%20%5BCompany%20Name%5D" class="btn btn-primary">Email me</a>
           </div>
@@ -354,18 +354,25 @@
           <article class="proj" data-gt-id="P-RISK" data-reveal>
             <h3 class="proj-name">Portfolio risk analytics</h3>
             <p class="proj-stack">Kafka, Spark Structured Streaming, Delta, FastAPI, Streamlit</p>
-            <p class="case-body">Market ticks come in through Kafka, Spark Structured Streaming aggregates them on 5-second tumbling windows behind a 10-second watermark, and a Delta writer lands the bronze layer. FastAPI computes VaR at 95% and 99% by historical simulation over a 30-day window rather than a parametric model, because equity returns are fat-tailed and a normal assumption understates the tail. Component VaR is computed per position, so the dashboard can name which holding is driving portfolio risk. On a fresh checkout the API falls back to a seeded sample set.</p>
+            <p class="case-body">Market ticks come in through Kafka, Spark Structured Streaming aggregates them on 5-second tumbling windows behind a 10-second watermark, and a Delta writer lands the bronze layer. FastAPI computes VaR at 95% and 99% by historical simulation over a 30-day window rather than a parametric model, because equity returns are fat-tailed and a normal assumption understates the tail. Component VaR is computed per position, so the dashboard can name which holding is driving portfolio risk. The API serves the Delta output; the seeded sample set is only what a fresh checkout falls back to before the stream has run.</p>
             <p class="proj-links"><a href="https://github.com/narendranathe/portfolio-risk-analytics" target="_blank" rel="noreferrer">Source</a> <a href="portfolio-risk.html">Notes</a></p>
           </article>
 
+          <article class="proj" data-gt-id="P-AUTOAPPLY" data-reveal>
+            <h3 class="proj-name">AutoApply AI</h3>
+            <p class="proj-stack">FastAPI, Chrome MV3, React, PostgreSQL, Redis, pgvector, Clerk</p>
+            <p class="case-body">The largest thing here by a distance, and built alone: 40+ backend endpoints, 11 ATS adapters, 6 LLM providers behind one routing layer, and 355 backend tests. A Chrome extension, a FastAPI backend and a React dashboard share one state pipeline, with Shadow DOM isolation on the client so page styles cannot reach the injected UI. The repository is public and the deployment is not, so the counts are my own and the code is the part you can read.</p>
+            <p class="proj-links"><a href="https://github.com/narendranathe/autoapply-ai" target="_blank" rel="noreferrer">Source</a> <a href="autoapply-ai.html">Notes</a></p>
+          </article>
+
         </div>
-        <p class="sec-note" data-reveal>Also public: <a href="https://github.com/narendranathe/fintune" target="_blank" rel="noreferrer">FinTune</a>, a Mistral-7B QLoRA service with PII redaction and drift monitoring, and <a href="https://github.com/narendranathe/job-scout" target="_blank" rel="noreferrer">JobScout</a>, which tracks 153 company career pages across six ATS APIs. <a href="https://github.com/narendranathe/autoapply-ai" target="_blank" rel="noreferrer">AutoApply AI</a> is a private deployment.</p>
+        <p class="sec-note" data-gt-id="P-FINTUNE, P-JOBSCOUT, P-TAILOR" data-reveal>Also public: <a href="https://github.com/narendranathe/fintune" target="_blank" rel="noreferrer">FinTune</a>, a Mistral-7B QLoRA service with PII redaction and drift monitoring, <a href="https://github.com/narendranathe/job-scout" target="_blank" rel="noreferrer">JobScout</a>, which tracks 153 company career pages across six ATS APIs, and <a href="tailor-resume.html">tailor-resume</a>, a document pipeline on PyPI with 190 tests across four distribution surfaces.</p>
       </div>
     </section>
 
     <section class="section section-alt" id="before">
       <div class="container">
-        <h2 class="sec-h" data-reveal>Analytics and Business Intelligence</h2>
+        <h2 class="sec-h" data-reveal>Before Engineering</h2>
         <p class="sec-note sec-note--lead" data-reveal>MS in Information Science and Technology at Missouri S&amp;T, GPA 4.0, Jan 2022 to Dec 2023.</p>
         <div class="roles">
 
@@ -375,8 +382,9 @@
               <div class="role-head">
                 <h3 class="role-title">Product Intern</h3>
                 <p class="role-org">C2FO &middot; Kansas City, KS</p>
+                  <p class="track-scope">Transaction and behavioural SQL on a working-capital platform</p>
               </div>
-              <div class="case" data-gt-id="C-SQL, C-PRD, C-CSPO">
+              <div class="case" data-gt-id="C-SQL">
                 <p class="case-body">The SQL work went across transaction and user behavior on a B2B working-capital platform.</p>
               </div>
             </div>
@@ -388,9 +396,10 @@
               <div class="role-head">
                 <h3 class="role-title">Business Intelligence Analyst</h3>
                 <p class="role-org">udaan.com &middot; Nashik, India</p>
+                  <p class="track-scope">Demand forecasting and fulfillment analytics</p>
               </div>
-              <div class="case" data-gt-id="U-FORECAST, U-FULFILL, U-RCA, U-BCP">
-                <p class="case-body">A new-city Staples launch on a B2B marketplace. Demand and inventory models ran in Power BI, root-cause analysis went into the value-chain failures that kept repeating, and a continuity plan kept deliveries moving through application downtime. Allocation ROI up 7%, fulfillment held at 99.3%.</p>
+              <div class="case" data-gt-id="U-FORECAST, U-FULFILL, U-BCP">
+                <p class="case-body">Demand and inventory models in Power BI for a new-city Staples launch on a B2B marketplace, plus a continuity plan that kept deliveries moving through application downtime. Allocation ROI up 7%, fulfillment held at 99.3% while volume climbed.</p>
               </div>
             </div>
           </article>
@@ -401,9 +410,10 @@
               <div class="role-head">
                 <h3 class="role-title">Business Analyst</h3>
                 <p class="role-org">Zomato &middot; Hyderabad, India</p>
+                  <p class="track-scope">Competitor pricing data, search ranking signals, unit economics</p>
               </div>
-              <div class="case" data-gt-id="Z-COMP, Z-ES, Z-CAMPAIGN, Z-DASH, Z-SEARCH, Z-PNL, Z-GROWTH, Z-LOYALTY">
-                <p class="case-body">Pricing ran on week-old competitor data and support answered the same questions every day. The competitor analytics platform was built with the refresh cadence to make pricing current, 100K+ internal documents went into an Elasticsearch index, and the campaign funnel got instrumented with A/B tests on discount strategy. On search I supplied and evaluated ranking signals from the analyst side and did not train the models. The portfolio lost money on every order, and rebalancing discount sharing against ad-revenue mix moved contribution from &minus;&#8377;18 to +&#8377;2 across 300 restaurants.</p>
+              <div class="case" data-gt-id="Z-COMP, Z-ES, Z-SEARCH, Z-PNL">
+                <p class="case-body">Built the competitor analytics platform that replaced week-old pricing data with a current refresh, and indexed 100K+ internal documents in Elasticsearch so the support desk stopped answering the same questions daily. On search I supplied and evaluated ranking signals from the analyst side and did not train the models. The restaurant portfolio lost money on every order until rebalancing discount sharing against ad-revenue mix moved contribution from &minus;&#8377;18 to +&#8377;2 across 300 restaurants.</p>
               </div>
             </div>
           </article>
@@ -418,7 +428,7 @@
         <div class="creds" data-reveal>
           <p><a href="https://doi.org/10.1080/10495142.2025.2525123" target="_blank" rel="noreferrer">An Examination of Sentiment Analysis as a Tool for Gathering Visitor Feedback</a>. Bojanic, Edara, Zhang. <em>Journal of Nonprofit &amp; Public Sector Marketing</em>, Taylor &amp; Francis, 2025.</p>
           <p><a href="content/posts/repo-context-hooks-supply-chain.html">Five Claude agents audited my plugin release in parallel</a>. Sigstore signing, OIDC Trusted Publisher, CodeQL, and the 41 findings the review produced.</p>
-          <p>DP-700 Microsoft Certified Fabric Data Engineer Associate &middot; Certified Scrum Product Owner &middot; Tableau Analyst &middot; AI-900 Azure AI Fundamentals</p>
+          <p data-gt-id="C-CSPO">DP-700 Microsoft Certified Fabric Data Engineer Associate &middot; Certified Scrum Product Owner &middot; Tableau Analyst &middot; AI-900 Azure AI Fundamentals</p>
         </div>
       </div>
     </section>
@@ -427,14 +437,9 @@
       <div class="container">
         <h2 class="sec-h" data-reveal>Contact</h2>
         <div class="contact" data-reveal>
+          <p>I am currently exploring senior data engineering roles at companies where data is money-adjacent.</p>
           <p><a href="mailto:edara.narendranath@gmail.com?subject=Re%3A%20Data%20Engineering%20-%20%5BCompany%20Name%5D" class="btn btn-primary">edara.narendranath@gmail.com</a></p>
-          <p class="contact-links">
-            <a href="https://github.com/narendranathe" target="_blank" rel="noreferrer" data-hover-preview="/static/preview-github.png" data-hover-title="GitHub - @narendranathe" data-hover-caption="Public repositories behind the claims above">GitHub</a>
-            <a href="https://www.linkedin.com/in/narendranathe/" target="_blank" rel="noreferrer" data-hover-preview="/static/preview-linkedin.png" data-hover-title="LinkedIn - Narendranath Edara" data-hover-caption="Data Engineer, Dallas TX">LinkedIn</a>
-            <a href="https://narendranathe.substack.com" target="_blank" rel="noreferrer" data-hover-preview="/static/preview-substack.png" data-hover-embed="substack-feed" data-hover-feed="/static/substack-latest.json" data-hover-title="Substack - narendranathe" data-hover-caption="Notes on data and ML systems">Substack</a>
-            <a href="/static/resume.pdf?v=7a55b6b6" target="_blank" rel="noreferrer" data-hover-preview="/static/resume-page1-preview.png?v=fc9a5e8c" data-hover-title="Resume - last updated Apr 30, 2026" data-hover-caption="1 page - click to download PDF" onclick="typeof plausible!=='undefined'&&plausible('Resume Download')">Resume</a>
-          </p>
-          <p class="sec-note">Dallas, TX. Open to hybrid or relocation. H-1B transfer.</p>
+          <p class="contact-links"><a href="/static/resume.pdf?v=7a55b6b6" target="_blank" rel="noreferrer" data-hover-preview="/static/resume-page1-preview.png?v=fc9a5e8c" data-hover-title="Resume - last updated Apr 30, 2026" data-hover-caption="1 page - click to download PDF" onclick="typeof plausible!=='undefined'&&plausible('Resume Download')">Resume</a></p>
         </div>
       </div>
     </section>
@@ -455,7 +460,10 @@
         <a href="#contact">Contact</a>
       </nav>
       <div class="footer-social">
-        <a href="https://github.com/narendranathe" target="_blank" rel="noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://github.com/narendranathe" target="_blank" rel="noreferrer" aria-label="GitHub"
+           data-hover-preview="/static/preview-github.png"
+           data-hover-title="GitHub - @narendranathe"
+           data-hover-caption="Public repositories behind the claims above"><i class="fab fa-github"></i></a>
         <a href="https://www.linkedin.com/in/narendranathe/" target="_blank" rel="noreferrer" aria-label="LinkedIn"
            data-hover-preview="/static/preview-linkedin.png"
            data-hover-title="LinkedIn - Narendranath Edara"
