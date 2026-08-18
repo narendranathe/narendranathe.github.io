@@ -1,3 +1,0 @@
-line1 raw backslash: \2192\00a0 end
-line2 quotes: content: "x";
-line3 done
