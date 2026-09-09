@@ -83,6 +83,15 @@ POST_MAX_WORDS = 2500
 EXPECTED_STRIP_COUNT = 0
 
 
+
+def read_page_css() -> str:
+    """Read local linked styles in browser source order, including split modules."""
+    html = INDEX_HTML.read_text(encoding="utf-8")
+    hrefs = re.findall(r'<link[^>]+rel="stylesheet"[^>]+href="([^"]+)"', html)
+    return "\n".join((REPO_ROOT / href).read_text(encoding="utf-8")
+                     for href in hrefs if not href.startswith(("https:", "http:")))
+
+
 # ------- HTML parsing helpers -------
 class StripCollector(HTMLParser):
     """Collect <dl class="impact-strip"> elements + every id attribute on
@@ -313,7 +322,7 @@ def test_index_html_exists() -> None:
 
 
 def test_styles_css_has_impact_strip_module() -> None:
-    css = STYLES_CSS.read_text(encoding="utf-8")
+    css = read_page_css()
     for selector in (".impact-strip", ".impact-stat", ".impact-value", ".impact-label"):
         assert selector in css, f"styles.css missing {selector}"
 
@@ -837,14 +846,14 @@ def test_jetbrains_mono_loaded(html: str) -> None:
 
 
 def test_css_uses_tabular_nums() -> None:
-    css = STYLES_CSS.read_text(encoding="utf-8")
+    css = read_page_css()
     assert "tabular-nums" in css, (
         "CSS does not declare tabular-nums; font-swap will cause CLS on .impact-value."
     )
 
 
 def test_css_has_print_block() -> None:
-    css = STYLES_CSS.read_text(encoding="utf-8")
+    css = read_page_css()
     has_print = re.search(
         r"@media\s+print\s*\{[^}]*\.impact-strip", css, flags=re.S
     )
@@ -858,7 +867,7 @@ def test_data_reveal_reduced_motion_fallback() -> None:
     (reduced-motion users with JS disabled were seeing blank space
     below the fold). Check both opacity:1 and transform:none are
     declared inside the reduced-motion media block for [data-reveal]."""
-    css = STYLES_CSS.read_text(encoding="utf-8")
+    css = read_page_css()
     # Find the prefers-reduced-motion block(s) and look for the
     # [data-reveal] override inside one of them.
     blocks = re.findall(
@@ -892,7 +901,7 @@ def test_css_mobile_breakpoint_at_600px() -> None:
     iterations applied nowrap to the whole .impact-stat which caused
     long labels (e.g. "CAREER PAGES MONITORED") to overflow the grid
     column."""
-    css = STYLES_CSS.read_text(encoding="utf-8")
+    css = read_page_css()
     has_breakpoint = re.search(
         r"@media\s*\(\s*min-width:\s*600px\s*\)\s*\{[^}]*\.impact-value[^}]*white-space\s*:\s*nowrap",
         css,
@@ -910,7 +919,7 @@ def test_css_uses_warm_palette_tokens() -> None:
     """v3 visual review: strip must use --accent-warm and --fg/--fg-muted
     so it ties to the site's existing warm palette rather than introducing
     cool grays. This is a brand-fit assertion."""
-    css = STYLES_CSS.read_text(encoding="utf-8")
+    css = read_page_css()
     impact_block = re.search(
         r"\.impact-strip[^{]*\{[\s\S]*?(?=/\*={5}|\Z)", css, flags=re.S
     )
@@ -1100,7 +1109,7 @@ def test_index_inline_system_diagram_byte_budget(html: str) -> None:
 def test_hover_preview_css_module_present() -> None:
     """styles.css must contain the .hover-preview module (selector + popover-open
     state). Catches accidental deletion of the CSS block during refactors."""
-    css = STYLES_CSS.read_text(encoding="utf-8")
+    css = read_page_css()
     assert ".hover-preview {" in css, ".hover-preview block missing from styles.css"
     assert ".hover-preview:popover-open" in css, ".hover-preview:popover-open state missing"
     assert "(hover: none) and (pointer: coarse)" in css, "touch-device hide rule missing"
@@ -1386,7 +1395,7 @@ def test_app_js_has_substack_render_branch() -> None:
 def test_styles_css_has_feed_list_module() -> None:
     """The .hp-feed-* CSS module renders the live-posts list in the
     smaller card. Removing it would leave the JS-built DOM unstyled."""
-    css = STYLES_CSS.read_text(encoding="utf-8")
+    css = read_page_css()
     for selector in (".hp-feed-header", ".hp-feed-list", ".hp-feed-item",
                      ".hp-feed-title", ".hp-feed-meta", ".hp-feed-empty"):
         assert selector in css, f"styles.css missing {selector} rule"
@@ -1522,7 +1531,7 @@ def test_skills_tooltip_suppression_css_rule_present() -> None:
     Esc handler must have a matching CSS rule that hides the tooltip
     while focus remains on the tile (APG pattern). Without this rule,
     setting the attribute does nothing — the tooltip stays visible."""
-    css = STYLES_CSS.read_text(encoding="utf-8")
+    css = read_page_css()
     assert "data-tooltip-suppressed" in css, (
         "styles.css missing the .skill-icon[data-tooltip-suppressed] CSS "
         "rule that hides the tooltip while focus remains on the trigger. "
@@ -1547,7 +1556,7 @@ def test_hero_picture_breakpoint_matches_layout() -> None:
     781-860px get the desktop variant served despite the layout being
     in mobile single-column mode at max-width:300px — wasted bytes."""
     html = INDEX_HTML.read_text(encoding="utf-8")
-    css = STYLES_CSS.read_text(encoding="utf-8")
+    css = read_page_css()
     # Confirm the 860px hero layout breakpoint still exists in CSS.
     # Nested rules (`.hero { ... } .hero-grid { ... }`) make a single
     # regex over `[^}]*` unreliable, so check both invariants
@@ -1714,42 +1723,10 @@ def test_public_identity_surfaces_use_canonical_title() -> None:
 
 
 def test_systems_table_reflows_on_narrow_screens() -> None:
-    """The systems table must stack into blocks below 700px, and nothing
-    after that block may reimpose a min-width on it.
-
-    The bug this guards: table.ps carries min-width so its four columns
-    stay readable on a wide screen, and it sits inside .scroll-x. That
-    combination means the PAGE never overflows, so a document-level
-    scrollWidth check passes while the table itself is clipped. On a 390px
-    phone the NOW and HOW columns were off-screen, so the first evidence a
-    reader met was "CDC ETL runtime / 30 min" with no after value, which
-    reads as the current state rather than the old one.
-
-    It regressed once already: a later `@media (max-width: 860px)` block
-    redeclared `table.ps { min-width: 520px }`, and at equal specificity
-    the later source position won. Hence the ordering assertion.
-    """
-    css = STYLES_CSS.read_text(encoding="utf-8")
-
-    reflow_start = css.find("@media (max-width: 700px)")
-    assert reflow_start != -1, (
-        "styles.css lost the @media (max-width: 700px) block that stacks "
-        "the systems table"
-    )
-    reflow_end = css.find("}\n\n", reflow_start)
-    block = css[reflow_start:reflow_end if reflow_end != -1 else len(css)]
-    for rule in ("table.ps { display: block", "table.ps thead { display: none",
-                 "table.ps tbody, table.ps tr { display: block"):
-        assert rule in block, f"narrow-screen table reflow missing: {rule!r}"
-
-    # Any min-width on table.ps after the reflow block wins by source order
-    # and puts the table back over the viewport edge.
-    tail = css[reflow_end if reflow_end != -1 else len(css):]
-    offenders = re.findall(r"table\.ps\s*\{[^}]*min-width[^}]*\}", tail)
-    assert not offenders, (
-        "a rule after the 700px reflow block sets min-width on table.ps, "
-        "which reintroduces the clipped-column bug:\n  " + "\n  ".join(offenders)
-    )
+    """Current result rows must stack and permit long values to wrap on mobile."""
+    css = read_page_css()
+    assert re.search(r"@media\s*\(max-width:\s*860px\)[\s\S]*?\.tr-row\s*\{[^}]*grid-template-columns:\s*1fr", css)
+    assert re.search(r"\.tr-a,\.tr-b\s*\{[^}]*white-space:\s*normal", css)
 
 
 # ------- Test runner -------

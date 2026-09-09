@@ -42,6 +42,7 @@
   <link rel="stylesheet" href="styles-2.css">
   <link rel="stylesheet" href="styles-3.css">
   <link rel="stylesheet" href="styles-4.css">
+  <link rel="stylesheet" href="recruiter.css">
 
   <!-- LCP candidate: hero portrait, preload to start fetch before body parses.
        Three type-aware preloads in priority order so the browser only
@@ -67,17 +68,7 @@
 </head>
 <body>
 
-  <!-- SPLASH SCREEN -->
-  <div id="splash-screen" aria-hidden="true" role="presentation">
-    <div class="splash-inner">
-      <svg class="splash-svg" viewBox="0 0 160 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path class="sp-bracket-l" d="M45 14 L12 40 L45 66" stroke="#176b52" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-        <path class="sp-slash"     d="M83 8 L71 72"          stroke="#b5752a" stroke-width="3" stroke-linecap="round"/>
-        <path class="sp-bracket-r" d="M105 14 L138 40 L105 66" stroke="#176b52" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-
-    </div>
-  </div>
+  <a class="skip-link" href="#systems">Skip to work</a>
 
   <!-- Reading progress bar -->
   <div id="scroll-progress" aria-hidden="true"></div>
@@ -95,10 +86,10 @@
         <a href="#projects" class="nav-link">Projects</a>
         <a href="#contact" class="nav-link">Contact</a>
       </nav>
-      <a href="/static/resume.pdf?v=7a55b6b6"
+      <a href="/static/resume.pdf?v=c709a9ad"
          class="btn btn-resume" target="_blank" rel="noreferrer"
-         data-hover-preview="/static/resume-page1-preview.png?v=fc9a5e8c"
-         data-hover-title="Resume - last updated Apr 30, 2026"
+         data-hover-preview="/static/resume-page1-preview.png?v=98c9f539"
+         data-hover-title="Resume - last updated Sep 9, 2026"
          data-hover-caption="1 page - click to download PDF"
          onclick="typeof plausible!=='undefined'&&plausible('Resume Download')">
         <i class="fas fa-file-pdf"></i> Resume
@@ -112,10 +103,10 @@
       <a href="#experience" class="mobile-link">Experience</a>
       <a href="#projects" class="mobile-link">Projects</a>
       <a href="#contact" class="mobile-link">Contact</a>
-      <a href="/static/resume.pdf?v=7a55b6b6"
+      <a href="/static/resume.pdf?v=c709a9ad"
          class="mobile-link" target="_blank" rel="noreferrer"
-         data-hover-preview="/static/resume-page1-preview.png?v=fc9a5e8c"
-         data-hover-title="Resume - last updated Apr 30, 2026"
+         data-hover-preview="/static/resume-page1-preview.png?v=98c9f539"
+         data-hover-title="Resume - last updated Sep 9, 2026"
          data-hover-caption="1 page - click to download PDF">Download resume</a>
     </nav>
   </header>
@@ -128,7 +119,8 @@
         <div class="hero-copy" data-reveal>
           <p class="hero-role">Data Engineer &middot; Dallas, TX</p>
           <h1 class="hero-name">Narendranath Edara</h1>
-          <p class="hero-tagline">Six years in data. Currently on a multi-tenant payroll system.</p>
+          <p class="hero-tagline">Reliable data.<br>From pipeline to production.</p>
+          <p class="hero-brief">I build and operate payroll-critical data systems at ExponentHR. My work connects incremental pipelines, data quality, release automation, and recovery. Outside work, I build applied AI and developer tools.</p>
           <ul class="hero-proof">
             <li data-gt-id="E1-CDC">
               <span class="proof-dot"></span>
@@ -136,16 +128,17 @@
             </li>
             <li data-gt-id="E-IDEM">
               <span class="proof-dot"></span>
-              <span>Database provisioning made idempotent, returning about 5,000 engineering hours a year.</span>
+              <span>Database provisioning made safely rerunnable, removing about one hour of manual orchestration per request.</span>
             </li>
             <li data-gt-id="P-HOOKS">
               <span class="proof-dot"></span>
               <span>repo-context-hooks on PyPI: signed releases, 330+ tests, no runtime dependencies.</span>
             </li>
           </ul>
-          <p class="hero-stack">SQL Server &middot; CDC &middot; Azure DevOps &middot; Microsoft Fabric &middot; SSIS &middot; Python &middot; Kafka &middot; Spark &middot; AKS &middot; FastAPI</p>
-          <p class="hero-seeking">Open to senior data engineering roles on SQL Server, Azure and Kafka.</p>
+          <p class="hero-stack">SQL &middot; Python &middot; CDC &middot; Azure &middot; Data quality</p>
+          <p class="hero-seeking">Targeting data engineering and data platform roles.</p>
           <div class="hero-actions">
+            <a href="#systems" class="btn btn-primary">Explore my work</a>
             <a href="mailto:edara.narendranath@gmail.com?subject=Re%3A%20Data%20Engineering%20-%20%5BCompany%20Name%5D" class="btn btn-primary">Email me</a>
           </div>
           <nav class="hero-toc" aria-label="Jump to section">
@@ -160,6 +153,9 @@
 
           <div class="profile-frame hero-photo-stack">
             <picture>
+              <source type="image/avif" media="(max-width: 860px)" srcset="static/originals/headshot-fullbody-800.avif">
+              <source type="image/webp" media="(max-width: 860px)" srcset="static/originals/headshot-fullbody-800.webp">
+              <source media="(max-width: 860px)" srcset="static/originals/headshot-fullbody-800.jpg">
               <!-- AVIF first (smallest bytes; Chrome 85+ / Safari 16.4+ / Firefox 113+) -->
               <source type="image/avif" srcset="static/originals/headshot-fullbody.avif">
               <!-- WebP second (universal modern; covers every evergreen browser) -->
@@ -185,7 +181,7 @@
     <section class="section" id="systems">
       <div class="container">
         <h2 class="sec-h" data-reveal>Production Data Systems</h2>
-        <p class="sec-note sec-note--lead" data-reveal>Changes I shipped and kept running at work, tagged by where they ran.</p>
+        <p class="sec-note sec-note--lead" data-reveal>Production work at ExponentHR and Missouri S&amp;T. Baselines, mechanisms, and outcomes.</p>
         <div class="tr" data-reveal>
           <div class="tr-row" data-gt-id="E1-CDC">
             <p class="tr-sys">CDC ETL runtime<span class="tr-org">EXPONENTHR</span></p>
@@ -195,7 +191,7 @@
           <div class="tr-row" data-gt-id="E-IDEM">
             <p class="tr-sys">Database provisioning<span class="tr-org">EXPONENTHR</span></p>
             <p class="tr-delta"><span class="tr-b">1 hr, 20+/day</span><span class="tr-arr">&rarr;</span><span class="tr-a">one idempotent run</span></p>
-            <p class="tr-why">Safely rerunnable; four latent failure modes closed. Roughly 5,000 engineering hours a year returned.</p>
+            <p class="tr-why">Safely rerunnable; four latent failure modes closed. About one hour of manual orchestration removed per request.</p>
           </div>
           <div class="tr-row" data-gt-id="E2-CICD">
             <p class="tr-sys">Release cycle<span class="tr-org">EXPONENTHR</span></p>
@@ -219,7 +215,7 @@
           </div>
           <div class="tr-row" data-gt-id="M3">
             <p class="tr-sys">Anomaly-detection compute<span class="tr-org">MISSOURI S&amp;T</span></p>
-            <p class="tr-delta"><span class="tr-b">20 static nodes</span><span class="tr-arr">&rarr;</span><span class="tr-a">4&ndash;8 autoscaled</span></p>
+            <p class="tr-delta"><span class="tr-b">20 static nodes</span><span class="tr-arr">&rarr;</span><span class="tr-a">4-8 autoscaled</span></p>
             <p class="tr-why">AKS with horizontal pod autoscaling. $3,200 a month saved, CPU utilization 12% to 64%.</p>
           </div>
         </div>
@@ -240,6 +236,12 @@
                 <p class="track-scope">Multi-tenant payroll and HR platform</p>
               </div>
 
+              <div class="case" data-gt-id="E-OBS">
+                <h4 class="case-title">Data quality as a reusable system</h4>
+                <p class="case-body">Built a control-table-driven validation framework so data checks are defined as configuration. Reconstructed SSIS execution history in SQL to make pipeline behavior easier to investigate. The focus is correctness at the model boundary: grain, missing rows, unexpected values, and differences between full and incremental loads.</p>
+                <p class="case-outcome">metadata-driven checks &middot; reusable validation &middot; diagnosable failures</p>
+              </div>
+
               <div class="case" data-gt-id="E-PTO, E-SECURE2">
                 <h4 class="case-title">Payroll accrual and SECURE 2.0</h4>
                 <p class="case-body">PTO balances convert to cash at termination, so a defect in accrual logic is a payout rather than a display bug. I traced it to a payroll-period boundary calculation in SQL and put the fix through change-request review. SECURE 2.0 compliance went out in the same release train.</p>
@@ -248,12 +250,12 @@
 
               <div class="case" data-gt-id="E-SELFHEAL, E5-RECOVERY, E-LIVEREC, E-OBS, E-RETENTION">
                 <h4 class="case-title">Failure detection and failover recovery</h4>
-                <p class="case-body">CDC capture jobs fail three ways, and retention windows close while they go unnoticed &mdash; the change history inside them does not come back.</p>
+                <p class="case-body">Incremental ETL jobs can miss their schedule, become stuck, or fail without recording a completion time. I built monitoring around these distinct states so failures can be detected before the CDC retention window closes.</p>
                 <div class="runbook">
                   <span class="rb-h">Capture failure modes</span>
                   <span class="rb-i">run never starts</span>
                   <span class="rb-i">run hangs</span>
-                  <span class="rb-i">exits clean &mdash; captured nothing</span>
+                  <span class="rb-i">run ends without a completion record</span>
                   <span class="rb-note">monitoring covers all three</span>
                 </div>
                 <p class="case-body case-body--after">Availability-group failover is documented as recovery procedures, including the post-failover capture failure that produces no error at all. One live incremental-load failure was diagnosed and restored in place rather than falling back to a full reload.</p>
@@ -276,7 +278,7 @@
                   </div>
                 </details>
                 <p class="case-outcome">30 min &rarr; &lt;8 min &middot; compute &minus;67% &middot; freshness SLA held</p>
-                <p class="case-outcome">1 hr &times; 20+/day &rarr; idempotent rerun &middot; ~5,000 eng-hr/yr returned</p>
+                <p class="case-outcome">1 hr &times; 20+/day &rarr; idempotent rerun &middot; ~1 hr of manual work removed per request</p>
 <figure class="system-diagram-figure" aria-labelledby="diagram-az-title" aria-describedby="diagram-az-desc">
                                 <svg class="system-diagram" viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" role="img">
                                   <title id="diagram-az-title">Azure Platform Engineering topology: Azure Repos triggers Azure Pipelines CI/CD, output flows to SQL Server CDC, then to AAG replica and Microsoft Fabric</title>
@@ -314,7 +316,7 @@
                                     <line x1="474" y1="114" x2="494" y2="133" marker-end="url(#arrow-az)"/>
                                   </g>
                                 </svg>
-                                <figcaption class="proj-fig-cap">FIG. 1 &mdash; EXPONENTHR PLATFORM TOPOLOGY</figcaption>
+                                <figcaption class="proj-fig-cap">FIG. 1 - EXPONENTHR PLATFORM TOPOLOGY</figcaption>
                               </figure>
               </div>
 
@@ -340,7 +342,7 @@
                 <h4 class="case-title">Anomaly detection and autoscaling</h4>
                 <p class="case-body">The detection pipelines select an algorithm per time-series profile, and thresholds are set per service, so a noisy service can be tuned without raising the floor on the rest. One memory leak surfaced four hours before it would have taken the service down. Moving the workloads off static D-series VMs onto AKS raised utilization while cutting compute spend.</p>
                 <p class="case-outcome">signal-to-noise 1:5 &rarr; 1:1.2 &middot; ~250 P3 alerts/wk filtered</p>
-                <p class="case-outcome">20 static nodes &rarr; 4&ndash;8 autoscaled &middot; &minus;$3,200/mo &middot; CPU 12% &rarr; 64%</p>
+                <p class="case-outcome">20 static nodes &rarr; 4-8 autoscaled &middot; &minus;$3,200/mo &middot; CPU 12% &rarr; 64%</p>
               </div>
               <div class="case" data-gt-id="M4">
                 <h4 class="case-title">NLP over visitor feedback</h4>
@@ -407,20 +409,34 @@
         <h2 class="sec-h" data-reveal>Projects</h2>
         <div class="projs">
 
+          <article class="proj proj--flagship" data-gt-id="P-JOBSCOUT" data-reveal>
+            <div class="proj-head"><h3 class="proj-name">JobScout</h3><p class="proj-meta">DATA INGESTION</p></div>
+            <p class="proj-line">A direct-source ingestion system that turns inconsistent company career feeds into normalized, searchable job records.</p>
+            <p class="proj-proof">Per-source retries &middot; isolated failures &middot; normalized dates and salary fields</p>
+            <p class="proj-stack">Python &middot; Flask &middot; SQLite WAL &middot; React &middot; GitHub Actions</p>
+            <details class="t-detail"><summary>Engineering decisions</summary><div class="t-body">
+              <p class="t-line"><span class="t-k">PROBLEM</span><span>Third-party schemas change independently. One failed feed must not stop the rest of the ingestion run.</span></p>
+              <p class="t-line"><span class="t-k">DESIGN</span><span>ATS-specific adapters, bounded retries, a shared progress broker, and concurrency guards around maintenance operations.</span></p>
+              <p class="t-line"><span class="t-k">TRADEOFF</span><span>SQLite keeps operations small, but the process-level coordinator assumes one worker. Multiple workers would require shared coordination.</span></p>
+              <p class="t-line"><span class="t-k">BOUNDARY</span><span>Configured coverage is not the same as successful live coverage. The project README also records ranking controls whose stored weights are not yet applied.</span></p>
+            </div></details>
+            <p class="proj-links"><a href="jobscout.html">Case study</a><a href="https://github.com/narendranathe/job-scout" target="_blank" rel="noreferrer">Source</a></p>
+          </article>
+
           <article class="proj proj--flagship" data-gt-id="P-AUTOAPPLY" data-reveal>
             <div class="proj-head">
               <h3 class="proj-name">AutoApply AI</h3>
               <p class="proj-meta">SOLO BUILD</p>
             </div>
-            <p class="proj-line">Job-application automation across three clients &mdash; Chrome extension, FastAPI backend, React dashboard &mdash; sharing one state pipeline.</p>
-            <p class="proj-proof">40+ endpoints &middot; 11 ATS adapters &middot; 6 LLM providers behind one router &middot; 355 backend tests</p>
+            <p class="proj-line">Document intelligence for job-application workflows: capture unstructured pages, retrieve supporting career evidence, and generate drafts for user review across a Chrome extension, API, and dashboard.</p>
+            <p class="proj-proof">Chrome extension + API + dashboard &middot; retrieval from work history &middot; provider fallback</p>
             <p class="proj-stack">FastAPI &middot; Chrome MV3 &middot; React &middot; PostgreSQL &middot; Redis &middot; pgvector &middot; Clerk</p>
             <details class="t-detail">
               <summary>DETAIL</summary>
               <div class="t-body">
                 <p class="t-line"><span class="t-k">ARCHITECTURE</span><span>Chrome MV3 extension, FastAPI backend and React dashboard on one state pipeline.</span></p>
                 <p class="t-line"><span class="t-k">DECISION</span><span>Shadow DOM isolation on the client, so page styles cannot reach the injected UI.</span></p>
-                <p class="t-line"><span class="t-k">VERIFICATION</span><span>355 backend tests. The repository is public and the deployment is not, so the counts are my own &mdash; the code is the part you can read.</span></p>
+                <p class="t-line"><span class="t-k">VERIFICATION</span><span>Public source with backend and browser tests. The README tracks security issues that gate public launch; this is a personal project, not an enterprise production deployment.</span></p>
               </div>
             </details>
             <p class="proj-links"><a href="https://github.com/narendranathe/autoapply-ai" target="_blank" rel="noreferrer">Source</a> <a href="autoapply-ai.html">Notes</a></p>
@@ -437,7 +453,7 @@
             <details class="t-detail">
               <summary>DETAIL</summary>
               <div class="t-body">
-                <p class="t-line"><span class="t-k">DECISION</span><span>Standard library only at runtime &mdash; nothing external to break inside a hook context.</span></p>
+                <p class="t-line"><span class="t-k">DECISION</span><span>Standard library only at runtime - nothing external to break inside a hook context.</span></p>
                 <p class="t-line"><span class="t-k">RELEASE</span><span>Sigstore-signed publishing through an OIDC Trusted Publisher, CodeQL on every pull request, Dependabot on the Actions dependencies.</span></p>
                 <p class="t-line"><span class="t-k">VERIFICATION</span><span>330+ tests at v1.0, including Hypothesis property tests over sampling boundaries and hook dedup.</span></p>
                 <div class="t-code">
@@ -472,13 +488,13 @@
               <p class="proj-meta">100K SYNTHETIC TX</p>
             </div>
             <p class="proj-line">Kafka-fed transaction scoring: LightGBM behind FastAPI, predictions and latencies persisted to PostgreSQL.</p>
-            <p class="proj-proof">P50 0.45ms &middot; P95 0.89ms &middot; P99 1.12ms @ 100 TPS</p>
+            <p class="proj-proof">Synthetic transaction dataset &middot; model serving &middot; observable pipeline</p>
             <p class="proj-stack">Kafka &middot; LightGBM &middot; FastAPI &middot; MLflow &middot; Airflow &middot; Prometheus &middot; Grafana</p>
             <details class="t-detail">
               <summary>DETAIL</summary>
               <div class="t-body">
                 <p class="t-line"><span class="t-k">FLOW</span><span class="t-mono">producer &rarr; partitioned topic &rarr; consumer &rarr; lightgbm &middot; fastapi &rarr; postgresql</span></p>
-                <p class="t-line"><span class="t-k">FINDING</span><span>Most of the 1.12ms P99 is FastAPI overhead rather than the model: LightGBM itself takes microseconds, so the per-call DataFrame is what would go first if latency ever mattered.</span></p>
+                <p class="t-line"><span class="t-k">FINDING</span><span>Latency claims need a reproducible workload, hardware description, and end-to-end measurement boundary. This project is presented as an engineering implementation; local benchmark figures are not production guarantees.</span></p>
                 <p class="t-line"><span class="t-k">CONSTRAINT</span><span>Synthetic data: 100,000 generated transactions with 2,034 labeled fraud, running on one laptop.</span></p>
               </div>
             </details>
@@ -521,14 +537,14 @@
                       <line x1="200" y1="258" x2="200" y2="286" marker-end="url(#arrow-risk)"/>
                       <rect x="80" y="286" width="240" height="78" rx="6"/>
                       <text x="200" y="308" text-anchor="middle" fill="currentColor" font-weight="600">FastAPI</text>
-                      <text x="200" y="326" text-anchor="middle" fill="currentColor" font-size="10">VaR 95/99 &mdash; historical simulation</text>
+                      <text x="200" y="326" text-anchor="middle" fill="currentColor" font-size="10">VaR 95/99 - historical simulation</text>
                       <text x="200" y="342" text-anchor="middle" fill="currentColor" font-size="10">30d window &middot; component VaR</text>
                       <line x1="200" y1="364" x2="200" y2="392" marker-end="url(#arrow-risk)"/>
                       <rect x="80" y="392" width="240" height="44" rx="6"/>
                       <text x="200" y="418" text-anchor="middle" fill="currentColor" font-weight="600">Streamlit dashboard</text>
                     </g>
                   </svg>
-                  <figcaption class="proj-fig-cap">FIG. 2 &mdash; STREAM TOPOLOGY</figcaption>
+                  <figcaption class="proj-fig-cap">FIG. 2 - STREAM TOPOLOGY</figcaption>
                 </figure>
                 <div class="t-code">
                   <p class="t-code-cap"><span>src/streaming/spark_kafka_consumer.py &middot; excerpt</span><a href="https://github.com/narendranathe/portfolio-risk-analytics/blob/main/src/streaming/spark_kafka_consumer.py" target="_blank" rel="noreferrer">SOURCE &#8599;</a></p>
@@ -556,7 +572,7 @@ stats_df = enriched_df \
           </article>
 
         </div>
-        <p class="sec-note" data-gt-id="P-FINTUNE, P-JOBSCOUT, P-TAILOR" data-reveal>Also public: <a href="https://github.com/narendranathe/fintune" target="_blank" rel="noreferrer">FinTune</a>, a Mistral-7B QLoRA service with PII redaction and drift monitoring, <a href="https://github.com/narendranathe/job-scout" target="_blank" rel="noreferrer">JobScout</a>, which tracks 153 company career pages across six ATS APIs, and <a href="tailor-resume.html">tailor-resume</a>, a document pipeline on PyPI with 190 tests across four distribution surfaces.</p>
+        <p class="sec-note" data-gt-id="P-FINTUNE, P-JOBSCOUT, P-TAILOR" data-reveal>Also public: <a href="https://github.com/narendranathe/fintune" target="_blank" rel="noreferrer">FinTune</a>, a Mistral-7B QLoRA service with PII redaction and drift monitoring, <a href="https://github.com/narendranathe/job-scout" target="_blank" rel="noreferrer">JobScout</a>, with adapters for six ATS APIs, and <a href="tailor-resume.html">tailor-resume</a>, a document pipeline distributed through PyPI, a CLI, Streamlit, and MCP.</p>
       </div>
     </section>
 
@@ -567,7 +583,7 @@ stats_df = enriched_df \
           <p>MS in Information Science and Technology, Missouri S&amp;T, GPA 4.0, Jan 2022 to Dec 2023.</p>
           <p><a href="https://doi.org/10.1080/10495142.2025.2525123" target="_blank" rel="noreferrer">An Examination of Sentiment Analysis as a Tool for Gathering Visitor Feedback</a>. Bojanic, Edara, Zhang. <em>Journal of Nonprofit &amp; Public Sector Marketing</em>, Taylor &amp; Francis, 2025.</p>
           <p><a href="content/posts/repo-context-hooks-supply-chain.html">Five Claude agents audited my plugin release in parallel</a>. Sigstore signing, OIDC Trusted Publisher, CodeQL, and the 41 findings the review produced.</p>
-          <p data-gt-id="C-CSPO">DP-700 Microsoft Certified Fabric Data Engineer Associate &middot; Certified Scrum Product Owner &middot; Tableau Analyst &middot; AI-900 Azure AI Fundamentals</p>
+          <p data-gt-id="C-CSPO">DP-700 Microsoft Certified Fabric Data Engineer Associate &middot; Certified Scrum Product Owner &middot; AI-900 Azure AI Fundamentals</p>
         </div>
       </div>
     </section>
@@ -578,12 +594,12 @@ stats_df = enriched_df \
         <div class="contact" data-reveal>
           <span class="contact-avatar"><img src="static/originals/headshot-fullbody-800.jpg" alt="Naren Edara" width="800" height="1000" loading="lazy"></span>
           <div class="contact-body">
-            <p class="contact-lead">Open to senior data engineering roles. Email is the fastest way to reach me.</p>
+            <p class="contact-lead">Let's talk about your data platform. Based in Dallas; targeting data engineering and data platform opportunities.</p>
             <p><a href="mailto:edara.narendranath@gmail.com?subject=Re%3A%20Data%20Engineering%20-%20%5BCompany%20Name%5D" class="btn btn-primary contact-email">edara.narendranath@gmail.com</a></p>
             <p class="contact-links">
-              <a href="https://www.linkedin.com/in/narendranathe/" target="_blank" rel="noreferrer">LinkedIn</a>
+              <a href="https://www.linkedin.com/in/narendranathe/" target="_blank" rel="noreferrer" data-hover-preview="/static/preview-linkedin.png" data-hover-title="Narendranath Edara on LinkedIn" data-hover-caption="Data Engineer - Dallas TX">LinkedIn</a>
               <a href="https://github.com/narendranathe" target="_blank" rel="noreferrer">GitHub</a>
-              <a href="/static/resume.pdf?v=7a55b6b6" target="_blank" rel="noreferrer" data-hover-preview="/static/resume-page1-preview.png?v=fc9a5e8c" data-hover-title="Resume - last updated Apr 30, 2026" data-hover-caption="1 page - click to download PDF" onclick="typeof plausible!=='undefined'&&plausible('Resume Download')">Resume</a>
+              <a href="/static/resume.pdf?v=c709a9ad" target="_blank" rel="noreferrer" data-hover-preview="/static/resume-page1-preview.png?v=98c9f539" data-hover-title="Resume - last updated Sep 9, 2026" data-hover-caption="1 page - click to download PDF" onclick="typeof plausible!=='undefined'&&plausible('Resume Download')">Resume</a>
             </p>
           </div>
         </div>
@@ -631,4 +647,3 @@ stats_df = enriched_df \
 
 </body>
 </html>
-
