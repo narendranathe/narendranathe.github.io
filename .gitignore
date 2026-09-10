@@ -21,3 +21,7 @@ scripts/_in/
 scripts/_fonts/
 scripts/_tmp/
 *.psd
+
+# Generated staging and Python caches
+dist/
+__pycache__/

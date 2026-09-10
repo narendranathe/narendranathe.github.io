@@ -56,10 +56,10 @@ EVIDENCE: dict[str, tuple[str, str, str]] = {
     "E-OBS": ("SSIS execution history rebuilt in SQL; control-table-driven validation making data drift alertable", "STATED", "Employment record; no public artifact"),
     "E-RETENTION": ("Change history recovered through fn_cdc_get_all_changes before the CDC retention window closed", "STATED", "Employment record; no public artifact"),
     "E1-CDC": ("CDC ETL from full reloads to idempotent incremental merge-upserts: 30 min to under 8, compute -67%, freshness SLA held", "STATED", "Employment record; no public artifact"),
-    "E-IDEM": ("Database provisioning rewritten idempotent, four latent failure modes closed: 5,000 eng-hrs/yr, ~$300K, 2.5 FTEs", "STATED", "Employment record; derivation in GROUND_TRUTH.md"),
+    "E-IDEM": ("Database provisioning made idempotent with failure guards; about one hour of manual work removed per request", "STATED", "Owner account documented in docs/exponenthr-accomplishments.md; no annual extrapolation"),
     "E2-CICD": ("Release cycle 3 months to 14 days through end-to-end Azure DevOps ownership; ~11 weeks idle removed per release", "STATED", "Employment record; no public artifact"),
     "E3-FABRIC": ("Reporting migrated to Microsoft Fabric semantic models with OLAP tuning: 12s to under 4s, support tickets -40%", "STATED", "Employment record; ticket derivation in GROUND_TRUTH.md"),
-    "E-REPORTAUTO": ("Git and Azure DevOps API workflows automated in Python: 15+ hrs/sprint, ~$23K/yr", "STATED", "Employment record; no public artifact"),
+    "E-REPORTAUTO": ("Git and Azure DevOps API workflows automated in Python: 15+ hrs/sprint", "STATED", "Employment record; no public artifact"),
     # --- Missouri S&T ---
     "M1": ("Azure AI Anomaly Detector pipelines at 95%+ accuracy; production memory leak caught 4 hrs before outage", "STATED", "Employment record; no public artifact"),
     "M2": ("Tunable per-service alert thresholds: ~250 weekly P3 alerts filtered, signal-to-noise 1:5 to 1:1.2", "STATED", "Employment record; no public artifact"),
@@ -85,11 +85,11 @@ EVIDENCE: dict[str, tuple[str, str, str]] = {
     "Z-LOYALTY": ("200+ partners onboarded to a loyalty program, cutting discount burn 7% for that cohort", "DOC", "2021 resume"),
     # --- Projects ---
     "P-HOOKS": ("repo-context-hooks: zero runtime dependencies, 330+ tests, Sigstore-signed releases, CodeQL on every PR", "DOC", "pypi.org/project/repo-context-hooks + pyproject.toml dependencies=[] + .github/workflows/"),
-    "P-FRAUD": ("Fraud platform: P99 1.12ms at 100 TPS on 100,000 synthetic transactions with 2,034 labeled fraud", "DOC", "github.com/narendranathe/fraud-detection-ml-platform README + data generator"),
+    "P-FRAUD": ("Fraud platform: Kafka-fed LightGBM model serving on synthetic transactions; local latency figures withheld pending reproducible benchmark", "DOC", "github.com/narendranathe/fraud-detection-ml-platform README + data generator"),
     "P-FINTUNE": ("FinTune: QLoRA 4-bit NF4, PII redaction, KL-divergence drift monitoring, 3-state breaker, 35+ tests across 7 modules", "DOC", "github.com/narendranathe/fintune tests/ + README"),
-    "P-JOBSCOUT": ("JobScout: 153 companies across 6 ATS integrations plus Playwright fallback, Flask API, SQLite WAL", "DOC", "github.com/narendranathe/job-scout backend/config/companies.py"),
-    "P-TAILOR": ("tailor-resume: 190 automated tests across four distribution surfaces (CLI, PyPI, Streamlit, MCP)", "STATED", "pypi.org/project/tailor-resume is published and openable; the test count itself is unverified here"),
-    "P-AUTOAPPLY": ("AutoApply AI: 40+ endpoints, 11 ATS adapters, 6 LLM providers, 355 backend tests", "STATED", "github.com/narendranathe/autoapply-ai is public, so the code can be read; the counts themselves are unverified here and the deployment is not reachable"),
+    "P-JOBSCOUT": ("JobScout: six ATS API adapters, retries and failure isolation, Flask API, SQLite WAL; configured coverage is not live coverage", "DOC", "github.com/narendranathe/job-scout backend/config/companies.py"),
+    "P-TAILOR": ("tailor-resume: document pipeline across CLI, PyPI, Streamlit, MCP; test count not reverified", "STATED", "pypi.org/project/tailor-resume is published and openable; the test count itself is unverified here"),
+    "P-AUTOAPPLY": ("AutoApply AI: Chrome extension, FastAPI, React dashboard, retrieval and provider fallback; personal project with public-launch gates in README", "STATED", "github.com/narendranathe/autoapply-ai is public, so the code can be read; the counts themselves are unverified here and the deployment is not reachable"),
     "P-RISK": ("Portfolio Risk Analytics: Kafka to Spark Structured Streaming on 5s tumbling windows with a 10s watermark, Delta bronze layer, FastAPI historical-simulation VaR at 95% and 99%", "DOC", "github.com/narendranathe/portfolio-risk-analytics src/. Architecture and method only. The throughput and latency figures are withheld under P-RISK-METRICS and absent from the page; the seeded API fallback is disclosed there."),
 }
 
@@ -108,7 +108,8 @@ SECTION_LABELS = {
     "hero": "Hero",
     "proof": "Measured outcomes",
     "experience": "Experience",
-    "systems": "Projects",
+    "systems": "Production systems",
+    "projects": "Projects",
     "fit": "Where this fits",
 }
 

@@ -6,7 +6,7 @@ I am a Data Engineer working on payroll-critical data. It is a correctness probl
 
 The central story: I own the path from data foundation to shipped product - CDC and ETL, SQL, CI/CD, testing, observability - and I can explain to the business why any of it mattered, having spent three years on that side of the table first.
 
-[Live site](https://narendranathe.github.io) | [LinkedIn](https://www.linkedin.com/in/narenedara/) | [GitHub](https://github.com/narendranathe)
+[Live site](https://narendranathe.github.io) | [LinkedIn](https://www.linkedin.com/in/narendranathe/) | [GitHub](https://github.com/narendranathe)
 
 ## What This Repo Represents
 
@@ -14,9 +14,9 @@ Data Engineer on a multi-tenant payroll platform. I modernize CDC, ETL, SQL, and
 
 This repository is the public source for my portfolio and career positioning, aligned to the roles I am targeting:
 
-- Senior Data Engineer
-- ML Engineer
-- AI/ML Platform Engineer
+- Data Engineer / Data Platform Engineer
+- Selected senior data engineering roles
+- Analytics Engineering roles with platform ownership
 
 The site highlights the kind of work I want to keep doing: production data and AI systems with strong engineering discipline, not one-off demos.
 
@@ -28,11 +28,11 @@ Deployment cycles compressed from 3 months to 14 days, CDC ETL reengineered from
 
 ### AutoApply AI
 
-AI workflow automation platform: Chrome MV3 + FastAPI connecting job discovery, document tailoring, form-state management, LLM routing, and application tracking. 355 backend tests, 40+ endpoints, 11 ATS adapters, 9-page dashboard. Private deployment on Fly.io; public launch gated by tracked security fixes.
+AI workflow automation platform: Chrome MV3 + FastAPI connecting job discovery, document tailoring, form-state management, LLM routing, and application tracking. Adapter-based integrations, provider fallback, and application-state tracking. Private deployment on Fly.io; public launch gated by tracked security fixes.
 
 ### tailor-resume
 
-Document intelligence engine extracted from AutoApply AI. 190 tests, 4 distribution surfaces (PyPI, MCP server, Streamlit, CLI), and a strict no-fabrication constraint.
+Document intelligence engine extracted from AutoApply AI. Available through a Python package, MCP server, Streamlit, and CLI, with a constraint against adding unsupported candidate claims.
 
 ### JobScout
 
@@ -151,3 +151,7 @@ This site is deployed through GitHub Pages from the `main` branch.
 - LinkedIn: `https://www.linkedin.com/in/narendranathe/`
 - GitHub: `https://github.com/narendranathe`
 
+
+## Private review deployment
+
+The public GitHub Pages source remains the repository root. To stage web assets for the owner-private Sites review, run `python3 scripts/stage-site.py`. The `.openai/hosting.json` manifest points to `dist/`; generated output is excluded from Git. This staging step does not publish a GitHub Pages change.

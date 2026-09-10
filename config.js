@@ -11,10 +11,9 @@ const CONFIG = {
         available: true,
         tagline: 'Data Engineer · Payroll-Critical Data Platforms · Dallas TX',
         details: [
-            { label: 'Response', value: '< 24 hours' },
-            { label: 'Visa',     value: 'H1B Transfer' },
-            { label: 'Focus',    value: 'Senior DE · ML Engineer · AI/ML Platform' },
-            { label: 'Location', value: 'Dallas TX · Hybrid / Relocation OK' }
+            { label: 'Work', value: 'Data platforms and reliability' },
+            { label: 'Focus',    value: 'Data Engineer · Data Platform Engineer' },
+            { label: 'Location', value: 'Dallas, Texas' }
         ]
     },
 
@@ -25,7 +24,7 @@ const CONFIG = {
         { type: 'cmd',    text: 'python cdc_merge.py --mode incremental' },
         { type: 'output', text: '[OK] merge-upsert complete · 30min full reload replaced · -67% compute' },
         { type: 'cmd',    text: 'pytest backend/tests -q' },
-        { type: 'warn',   text: '✓  355 passed  ·  0 failed  ·  AutoApply backend' },
+        { type: 'warn',   text: 'Run adapter, document, and provider failure checks' },
     ],
 
     // ── Konami Code Easter Egg ─────────────────────────────────────
@@ -34,7 +33,7 @@ const CONFIG = {
         current_role:          'Data Engineer @ ExponentHR - data platform + CI/CD ownership',
         gpa:                   4.0,
         sdlc_speedup:          '3 months to 14 days',
-        etl_runtime:           '~30 min to under 8 min (67% faster)',
+        etl_runtime:           '~30 min to under 8 min',
         compute_cost_cut:      '67%',
         ats_adapters:          11,
         llm_providers:         6,
@@ -44,7 +43,6 @@ const CONFIG = {
         udaan_roi:             '+7% ROI on inventory allocation',
         fulfillment_rate:      '99.3%',
         zomato_market_share:   '+9%',
-        fraud_tps:             '100+ TPS at 1.12ms P99 (synthetic dataset)',
         jobscout_companies:    153,
         jobscout_resumes:      '95+',
         publication:           'Taylor and Francis 2025, DOI: 10.1080/10495142.2025.2525123',
@@ -120,7 +118,7 @@ window.PORTFOLIO_CONFIG = {
     ],
     links: {
         home:     'index.html',
-        resume:   'https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf',
+        resume:   '/static/resume.pdf',
         linkedin: 'https://www.linkedin.com/in/narendranathe/',
         github:   'https://github.com/narendranathe',
         substack: 'https://narendranathe.substack.com',
@@ -128,7 +126,7 @@ window.PORTFOLIO_CONFIG = {
     },
     identity: {
         name:             CONFIG.name,
-        role:             'Data Engineer, AI Platforms',
+        role:             'Data Engineer, Data Platforms',
         footerStatement:  'Data engineering on payroll-critical systems: CDC pipelines, change-controlled releases, and the detection and recovery layer underneath.'
     },
     contactLinks: [
@@ -136,6 +134,6 @@ window.PORTFOLIO_CONFIG = {
         { label: 'LinkedIn', href: 'https://www.linkedin.com/in/narendranathe/' },
         { label: 'GitHub',   href: 'https://github.com/narendranathe' },
         { label: 'Substack', href: 'https://narendranathe.substack.com' },
-        { label: 'Resume',   href: 'https://github.com/narendranathe/resume2/releases/download/resume/Narendranath.pdf' }
+        { label: 'Resume',   href: '/static/resume.pdf' }
     ]
 };
