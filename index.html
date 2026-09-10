@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Narendranath Edara - Data Engineer on payroll-critical systems. CDC pipelines, change-controlled releases, and the detection and recovery layer underneath. Dallas TX.">
+  <meta name="description" content="Narendranath Edara - Data Engineer. Automated provisioning saved 5,000 engineering hours annually; release cycles fell from three months to 14 days. Dallas, TX.">
   <meta name="author" content="Narendranath Edara">
   <meta property="og:title" content="Narendranath Edara | Data Engineer - Payroll-Critical Data Platforms">
-  <meta property="og:description" content="CDC pipelines, change-controlled releases, and the detection and recovery layer under production data platforms.">
+  <meta property="og:description" content="Data platforms that give teams time back. Production results in pipeline performance, release automation, and reusable tooling.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://narendranathe.github.io">
   <meta property="og:image" content="https://narendranathe.github.io/static/og-image.jpg?v=2026-04-28">
@@ -42,7 +42,7 @@
   <link rel="stylesheet" href="styles-2.css">
   <link rel="stylesheet" href="styles-3.css">
   <link rel="stylesheet" href="styles-4.css">
-  <link rel="stylesheet" href="recruiter.css">
+  <link rel="stylesheet" href="recruiter.css?v=20260910">
 
   <!-- LCP candidate: hero portrait, preload to start fetch before body parses.
        Three type-aware preloads in priority order so the browser only
@@ -117,28 +117,28 @@
       <div class="container hero-grid">
 
         <div class="hero-copy" data-reveal>
-          <p class="hero-role">Data Engineer &middot; Dallas, TX</p>
+          <p class="hero-role">Data engineering / Selected work</p>
           <h1 class="hero-name">Narendranath Edara</h1>
-          <p class="hero-tagline">Reliable data.<br>From pipeline to production.</p>
-          <p class="hero-brief">I build and operate payroll-critical data systems at ExponentHR. My work connects incremental pipelines, data quality, release automation, and recovery. Outside work, I build applied AI and developer tools.</p>
+          <p class="hero-tagline">Data platforms that<br>give teams time back.</p>
+          <p class="hero-brief">I turn slow pipelines and manual operations into systems teams can build on. At ExponentHR, that means automating the work behind payroll data, shortening release cycles, and making repeatable fixes instead of recurring chores.</p>
           <ul class="hero-proof">
             <li data-gt-id="E1-CDC">
               <span class="proof-dot"></span>
-              <span>CDC ETL from 30 minutes to under 8, compute down 67%, freshness SLA unchanged.</span>
+              <span>Faster data, less compute: CDC runtime cut from 30 minutes to under 8, with compute cost down 67%.</span>
             </li>
             <li data-gt-id="E-IDEM">
               <span class="proof-dot"></span>
-              <span>Database provisioning made safely rerunnable, removing about one hour of manual orchestration per request.</span>
+              <span>5,000 engineering hours saved annually through automated database provisioning.</span>
             </li>
-            <li data-gt-id="P-HOOKS">
+            <li data-gt-id="E2-CICD">
               <span class="proof-dot"></span>
-              <span>repo-context-hooks on PyPI: signed releases, 330+ tests, no runtime dependencies.</span>
+              <span>Changes shipped sooner: release cycles reduced from three months to 14 days.</span>
             </li>
           </ul>
           <p class="hero-stack">SQL &middot; Python &middot; CDC &middot; Azure &middot; Data quality</p>
-          <p class="hero-seeking">Targeting data engineering and data platform roles.</p>
+          <p class="hero-seeking">Dallas, TX &middot; Open to U.S. relocation &middot; H-1B transfer required</p>
           <div class="hero-actions">
-            <a href="#systems" class="btn btn-primary">Explore my work</a>
+            <a href="#systems" class="btn btn-primary">See what changed</a>
             <a href="mailto:edara.narendranath@gmail.com?subject=Re%3A%20Data%20Engineering%20-%20%5BCompany%20Name%5D" class="btn btn-primary">Email me</a>
           </div>
           <nav class="hero-toc" aria-label="Jump to section">
@@ -168,6 +168,7 @@
                    loading="eager" decoding="async" fetchpriority="high">
             </picture>
           </div>
+          <p class="portrait-caption">Narendranath Edara<br><span>SQL, Python &amp; Azure / Dallas, TX</span></p>
           <!-- No stat tiles here. The four that used to sit under the photo
                restated the three bullets on the left and the first rows of
                the table below, and one of them converted 5,000 hours into a
@@ -180,8 +181,9 @@
 
     <section class="section" id="systems">
       <div class="container">
-        <h2 class="sec-h" data-reveal>Production Data Systems</h2>
-        <p class="sec-note sec-note--lead" data-reveal>Production work at ExponentHR and Missouri S&amp;T. Baselines, mechanisms, and outcomes.</p>
+        <p class="section-index">01 / Production impact</p>
+        <h2 class="sec-h" data-reveal>Less waiting. More getting done.</h2>
+        <p class="sec-note sec-note--lead" data-reveal>Faster data, shorter releases, and less manual work. Here is what changed in production at ExponentHR and Missouri S&amp;T.</p>
         <div class="tr" data-reveal>
           <div class="tr-row" data-gt-id="E1-CDC">
             <p class="tr-sys">CDC ETL runtime<span class="tr-org">EXPONENTHR</span></p>
@@ -224,7 +226,8 @@
 
     <section class="section section-dark" id="experience">
       <div class="container">
-        <h2 class="sec-h" data-reveal>Experience</h2>
+        <p class="section-index">02 / Engineering in practice</p>
+        <h2 class="sec-h" data-reveal>The engineering behind the results.</h2>
         <div class="roles">
 
           <article class="role" data-reveal>
@@ -237,19 +240,19 @@
               </div>
 
               <div class="case" data-gt-id="E-OBS">
-                <h4 class="case-title">Data quality as a reusable system</h4>
+                <h4 class="case-title">Catch data defects before they become recurring work</h4>
                 <p class="case-body">Built a control-table-driven validation framework so data checks are defined as configuration. Reconstructed SSIS execution history in SQL to make pipeline behavior easier to investigate. The focus is correctness at the model boundary: grain, missing rows, unexpected values, and differences between full and incremental loads.</p>
                 <p class="case-outcome">metadata-driven checks &middot; reusable validation &middot; diagnosable failures</p>
               </div>
 
               <div class="case" data-gt-id="E-PTO, E-SECURE2">
-                <h4 class="case-title">Payroll accrual and SECURE 2.0</h4>
+                <h4 class="case-title">Get payroll rules right as requirements change</h4>
                 <p class="case-body">PTO balances convert to cash at termination, so a defect in accrual logic is a payout rather than a display bug. I traced it to a payroll-period boundary calculation in SQL and put the fix through change-request review. SECURE 2.0 compliance went out in the same release train.</p>
                 <p class="case-outcome">payout-class defect &middot; traced in SQL &middot; shipped under change control</p>
               </div>
 
               <div class="case" data-gt-id="E-SELFHEAL, E5-RECOVERY, E-LIVEREC, E-OBS, E-RETENTION">
-                <h4 class="case-title">Failure detection and failover recovery</h4>
+                <h4 class="case-title">Find the failures that do not raise an error</h4>
                 <p class="case-body">Incremental ETL jobs can miss their schedule, become stuck, or fail without recording a completion time. I built monitoring around these distinct states so failures can be detected before the CDC retention window closes.</p>
                 <div class="runbook">
                   <span class="rb-h">Capture failure modes</span>
@@ -263,7 +266,7 @@
               </div>
 
               <div class="case" data-gt-id="E1-CDC, E-IDEM">
-                <h4 class="case-title">CDC incrementals and idempotent provisioning</h4>
+                <h4 class="case-title">Stop reloading everything. Stop rebuilding by hand.</h4>
                 <p class="case-body">The CDC ETL reloaded whole tables on every run, and standing up a database was an hour of manual orchestration repeated twenty-plus times a day. Both failed in ways that needed a person to clean up before the next attempt. Moving CDC onto idempotent incremental merge-upserts held the freshness SLA through the change; provisioning was rewritten to be safely rerunnable, closing four latent failure modes on the way.</p>
                 <details class="t-detail">
                   <summary>DETAIL</summary>
@@ -321,7 +324,7 @@
               </div>
 
               <div class="case" data-gt-id="E2-CICD, E3-FABRIC, E-REPORTAUTO">
-                <h4 class="case-title">Release ownership and the reporting layer</h4>
+                <h4 class="case-title">Make the next release easier to ship</h4>
                 <p class="case-body">Releases went out roughly quarterly. Taking CI/CD through Azure DevOps compressed the cycle, with SSRS and Power BI release steps automated. Reporting moved onto Fabric semantic models with index and stored-procedure tuning underneath.</p>
                 <p class="case-outcome">3 mo &rarr; 14 days &middot; query response 12 s &rarr; &lt;4 s</p>
               </div>
@@ -339,13 +342,13 @@
                 <p class="track-scope">ML infrastructure and anomaly detection</p>
               </div>
               <div class="case" data-gt-id="M1, M2, M3">
-                <h4 class="case-title">Anomaly detection and autoscaling</h4>
+                <h4 class="case-title">Match compute to demand, not a fixed fleet</h4>
                 <p class="case-body">The detection pipelines select an algorithm per time-series profile, and thresholds are set per service, so a noisy service can be tuned without raising the floor on the rest. One memory leak surfaced four hours before it would have taken the service down. Moving the workloads off static D-series VMs onto AKS raised utilization while cutting compute spend.</p>
                 <p class="case-outcome">signal-to-noise 1:5 &rarr; 1:1.2 &middot; ~250 P3 alerts/wk filtered</p>
                 <p class="case-outcome">20 static nodes &rarr; 4-8 autoscaled &middot; &minus;$3,200/mo &middot; CPU 12% &rarr; 64%</p>
               </div>
               <div class="case" data-gt-id="M4">
-                <h4 class="case-title">NLP over visitor feedback</h4>
+                <h4 class="case-title">Turn visitor feedback into something teams can use</h4>
                 <p class="case-body">Pipelines in spaCy, NLTK, RoBERTa and VADER feeding dimensional models and Power BI. Published in the <em>Journal of Nonprofit &amp; Public Sector Marketing</em>, 2025, as <a href="https://doi.org/10.1080/10495142.2025.2525123" target="_blank" rel="noreferrer">DOI 10.1080/10495142.2025.2525123</a>.</p>
                 <p class="case-outcome">10,000+ reviews &middot; peer-reviewed, 2025</p>
               </div>
@@ -406,7 +409,9 @@
 
     <section class="section" id="projects">
       <div class="container">
-        <h2 class="sec-h" data-reveal>Projects</h2>
+        <p class="section-index">03 / Independent projects</p>
+        <h2 class="sec-h" data-reveal>From a workflow problem to a working tool.</h2>
+        <p class="sec-note sec-note--lead" data-reveal>Outside work, I build tools for the steps people keep repeating: collecting scattered data, working with documents, and giving AI the context it needs. These are independent projects, with source code and engineering tradeoffs you can inspect.</p>
         <div class="projs">
 
           <article class="proj proj--flagship" data-gt-id="P-JOBSCOUT" data-reveal>
@@ -578,7 +583,7 @@ stats_df = enriched_df \
 
     <section class="section" id="research">
       <div class="container">
-        <h2 class="sec-h" data-reveal>Education, Research and Certifications</h2>
+        <h2 class="sec-h" data-reveal>Education &amp; credentials</h2>
         <div class="creds" data-reveal>
           <p>MS in Information Science and Technology, Missouri S&amp;T, GPA 4.0, Jan 2022 to Dec 2023.</p>
           <p><a href="https://doi.org/10.1080/10495142.2025.2525123" target="_blank" rel="noreferrer">An Examination of Sentiment Analysis as a Tool for Gathering Visitor Feedback</a>. Bojanic, Edara, Zhang. <em>Journal of Nonprofit &amp; Public Sector Marketing</em>, Taylor &amp; Francis, 2025.</p>
@@ -590,11 +595,12 @@ stats_df = enriched_df \
 
     <section class="section section-alt" id="contact">
       <div class="container">
-        <h2 class="sec-h" data-reveal>Contact</h2>
+        <p class="section-index">04 / Let's talk</p>
+        <h2 class="sec-h" data-reveal>What is slowing your data team down?</h2>
         <div class="contact" data-reveal>
           <span class="contact-avatar"><img src="static/originals/headshot-fullbody-800.jpg" alt="Naren Edara" width="800" height="1000" loading="lazy"></span>
           <div class="contact-body">
-            <p class="contact-lead">Let's talk about your data platform. Based in Dallas; targeting data engineering and data platform opportunities.</p>
+            <p class="contact-lead">If your team is spending too much time on manual data work, slow releases, or pipeline recovery, I would like to help change that. I am looking for a data engineering role where I can own the problem and build the tools to solve it.</p>
             <p><a href="mailto:edara.narendranath@gmail.com?subject=Re%3A%20Data%20Engineering%20-%20%5BCompany%20Name%5D" class="btn btn-primary contact-email">edara.narendranath@gmail.com</a></p>
             <p class="contact-links">
               <a href="https://www.linkedin.com/in/narendranathe/" target="_blank" rel="noreferrer" data-hover-preview="/static/preview-linkedin.png" data-hover-title="Narendranath Edara on LinkedIn" data-hover-caption="Data Engineer - Dallas TX">LinkedIn</a>

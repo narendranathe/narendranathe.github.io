@@ -20,6 +20,7 @@ import re
 import sys
 from html.parser import HTMLParser
 from pathlib import Path
+from urllib.parse import urlsplit
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 INDEX_HTML = REPO_ROOT / "index.html"
@@ -88,7 +89,7 @@ def read_page_css() -> str:
     """Read local linked styles in browser source order, including split modules."""
     html = INDEX_HTML.read_text(encoding="utf-8")
     hrefs = re.findall(r'<link[^>]+rel="stylesheet"[^>]+href="([^"]+)"', html)
-    return "\n".join((REPO_ROOT / href).read_text(encoding="utf-8")
+    return "\n".join((REPO_ROOT / urlsplit(href).path).read_text(encoding="utf-8")
                      for href in hrefs if not href.startswith(("https:", "http:")))
 
 
