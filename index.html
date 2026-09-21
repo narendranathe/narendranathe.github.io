@@ -42,7 +42,7 @@
   <link rel="stylesheet" href="styles-2.css">
   <link rel="stylesheet" href="styles-3.css">
   <link rel="stylesheet" href="styles-4.css">
-  <link rel="stylesheet" href="recruiter.css?v=20260910">
+  <link rel="stylesheet" href="recruiter.css?v=20260911">
 
   <!-- LCP candidate: hero portrait, preload to start fetch before body parses.
        Three type-aware preloads in priority order so the browser only
@@ -81,7 +81,7 @@
         <span class="logo-role">Data Engineer &middot; Dallas TX</span>
       </a>
       <nav class="main-nav" aria-label="Main navigation">
-        <a href="#systems" class="nav-link">Systems</a>
+        <a href="#systems" class="nav-link">Outcomes</a>
         <a href="#experience" class="nav-link">Experience</a>
         <a href="#projects" class="nav-link">Projects</a>
         <a href="#contact" class="nav-link">Contact</a>
@@ -99,7 +99,7 @@
       </button>
     </div>
     <nav class="mobile-nav" aria-hidden="true">
-      <a href="#systems" class="mobile-link">Systems</a>
+      <a href="#systems" class="mobile-link">Outcomes</a>
       <a href="#experience" class="mobile-link">Experience</a>
       <a href="#projects" class="mobile-link">Projects</a>
       <a href="#contact" class="mobile-link">Contact</a>
@@ -117,36 +117,17 @@
       <div class="container hero-grid">
 
         <div class="hero-copy" data-reveal>
-          <p class="hero-role">Data engineering / Selected work</p>
+          <p class="hero-role">Data Engineer at ExponentHR / Dallas, TX</p>
           <h1 class="hero-name">Narendranath Edara</h1>
-          <p class="hero-tagline">Data platforms that<br>give teams time back.</p>
-          <p class="hero-brief">I turn slow pipelines and manual operations into systems teams can build on. At ExponentHR, that means automating the work behind payroll data, shortening release cycles, and making repeatable fixes instead of recurring chores.</p>
-          <ul class="hero-proof">
-            <li data-gt-id="E1-CDC">
-              <span class="proof-dot"></span>
-              <span>Faster data, less compute: CDC runtime cut from 30 minutes to under 8, with compute cost down 67%.</span>
-            </li>
-            <li data-gt-id="E-IDEM">
-              <span class="proof-dot"></span>
-              <span>5,000 engineering hours saved annually through automated database provisioning.</span>
-            </li>
-            <li data-gt-id="E2-CICD">
-              <span class="proof-dot"></span>
-              <span>Changes shipped sooner: release cycles reduced from three months to 14 days.</span>
-            </li>
-          </ul>
-          <p class="hero-stack">SQL &middot; Python &middot; CDC &middot; Azure &middot; Data quality</p>
-          <p class="hero-seeking">Dallas, TX &middot; Open to U.S. relocation &middot; H-1B transfer required</p>
+          <p class="hero-tagline">Payroll data ready sooner.<br>Less work done by hand.</p>
+          <p class="hero-brief">I build SQL Server and Azure pipelines for payroll teams. My work makes data processing faster, removes repetitive database setup, and helps teams ship changes sooner.</p>
+          <p class="hero-seeking">Open to U.S. relocation &middot; H-1B transfer required</p>
           <div class="hero-actions">
-            <a href="#systems" class="btn btn-primary">See what changed</a>
-            <a href="mailto:edara.narendranath@gmail.com?subject=Re%3A%20Data%20Engineering%20-%20%5BCompany%20Name%5D" class="btn btn-primary">Email me</a>
+            <a href="/static/resume.pdf?v=51cea817" class="btn btn-primary" data-hover-preview="/static/resume-page1-preview.png?v=df4165c5" data-hover-title="Resume - last updated Sep 10, 2026" data-hover-caption="1 page - click to download PDF" target="_blank" rel="noopener noreferrer">Read my resume</a>
+            <a href="mailto:edara.narendranath@gmail.com" class="btn btn-primary">Contact Naren</a>
           </div>
-          <nav class="hero-toc" aria-label="Jump to section">
-            <a href="#systems">Systems</a>
-            <a href="#experience">Experience</a>
-            <a href="#projects">Projects</a>
-            <a href="#contact">Contact</a>
-          </nav>
+          <p class="hero-stack">SQL &middot; Python &middot; Azure &middot; Data quality</p>
+          <a class="outcomes-link" href="#systems">Explore three production outcomes &darr;</a>
         </div>
 
 <aside class="hero-visual">
@@ -182,24 +163,32 @@
     <section class="section" id="systems">
       <div class="container">
         <p class="section-index">01 / Production impact</p>
-        <h2 class="sec-h" data-reveal>Less waiting. More getting done.</h2>
-        <p class="sec-note sec-note--lead" data-reveal>Faster data, shorter releases, and less manual work. Here is what changed in production at ExponentHR and Missouri S&amp;T.</p>
-        <div class="tr" data-reveal>
-          <div class="tr-row" data-gt-id="E1-CDC">
-            <p class="tr-sys">CDC ETL runtime<span class="tr-org">EXPONENTHR</span></p>
-            <p class="tr-delta"><span class="tr-b">30 min</span><span class="tr-arr">&rarr;</span><span class="tr-a">under 8 min</span></p>
-            <p class="tr-why">Idempotent incremental merge-upserts replaced full-table reloads. Compute down 67%, freshness SLA unchanged.</p>
-          </div>
-          <div class="tr-row" data-gt-id="E-IDEM">
-            <p class="tr-sys">Database provisioning<span class="tr-org">EXPONENTHR</span></p>
-            <p class="tr-delta"><span class="tr-b">1 hr, 20+/day</span><span class="tr-arr">&rarr;</span><span class="tr-a">one idempotent run</span></p>
-            <p class="tr-why">Safely rerunnable; four latent failure modes closed. About one hour of manual orchestration removed per request.</p>
-          </div>
-          <div class="tr-row" data-gt-id="E2-CICD">
-            <p class="tr-sys">Release cycle<span class="tr-org">EXPONENTHR</span></p>
-            <p class="tr-delta"><span class="tr-b">3 months</span><span class="tr-arr">&rarr;</span><span class="tr-a">14 days</span></p>
-            <p class="tr-why">Azure DevOps CI/CD owned outright, with SSRS and Power BI release steps automated.</p>
-          </div>
+        <h2 class="sec-h" data-reveal>Three changes that made work easier.</h2>
+        <p class="sec-note sec-note--lead" data-reveal>Production work at ExponentHR. Each result starts with an operational problem and a measurable change.</p>
+        <div class="outcome-grid">
+          <article class="outcome-card" data-gt-id="E1-CDC">
+            <p class="outcome-number">01 / Faster payroll data</p>
+            <h3>30 minutes to under 8</h3>
+            <p>Processing the same data repeatedly made payroll ingestion slow. I changed the pipeline to process only what had changed.</p>
+            <p class="outcome-result">CDC runtime fell from 30 minutes to under 8, with compute cost down approximately 67%.</p>
+            <details><summary>How it works</summary><p>Incremental merge-upserts replaced full-table reloads in SQL Server. Rerunnable ingestion and validation help keep the data correct.</p></details>
+          </article>
+          <article class="outcome-card" data-gt-id="E-IDEM">
+            <p class="outcome-number">02 / Less manual setup</p>
+            <h3>5,000 engineering hours a year</h3>
+            <p>Database provisioning needed repeated manual coordination. I automated the copy, restore, security, and CDC setup into a process teams can rerun.</p>
+            <p class="outcome-result">Automated provisioning saves 5,000 engineering hours annually.</p>
+            <details><summary>How it works</summary><p>Idempotent steps make it possible to recover and rerun setup without rebuilding everything by hand.</p></details>
+          </article>
+          <article class="outcome-card" data-gt-id="E2-CICD">
+            <p class="outcome-number">03 / Changes delivered sooner</p>
+            <h3>Three months to 14 days</h3>
+            <p>Long release cycles kept changes waiting. I owned Azure DevOps release automation and coordinated delivery across development, testing, IT, and business teams.</p>
+            <p class="outcome-result">Release cycles shortened from approximately three months to 14 days.</p>
+            <details><summary>How it works</summary><p>CI/CD and automated reporting release steps made delivery more repeatable and reduced manual handoffs.</p></details>
+          </article>
+        </div>
+        <details class="more-evidence"><summary>More production results: reporting, recovery, and cloud costs</summary><div class="tr">
           <div class="tr-row" data-gt-id="E3-FABRIC">
             <p class="tr-sys">Report query response<span class="tr-org">EXPONENTHR</span></p>
             <p class="tr-delta"><span class="tr-b">12 s</span><span class="tr-arr">&rarr;</span><span class="tr-a">under 4 s</span></p>
@@ -220,14 +209,14 @@
             <p class="tr-delta"><span class="tr-b">20 static nodes</span><span class="tr-arr">&rarr;</span><span class="tr-a">4-8 autoscaled</span></p>
             <p class="tr-why">AKS with horizontal pod autoscaling. $3,200 a month saved, CPU utilization 12% to 64%.</p>
           </div>
-        </div>
+        </div></details>
       </div>
     </section>
 
     <section class="section section-dark" id="experience">
       <div class="container">
-        <p class="section-index">02 / Engineering in practice</p>
-        <h2 class="sec-h" data-reveal>The engineering behind the results.</h2>
+        <p class="section-index">02 / Experience</p>
+        <h2 class="sec-h" data-reveal>The path to this work.</h2>
         <div class="roles">
 
           <article class="role" data-reveal>
@@ -239,6 +228,8 @@
                 <p class="track-scope">Multi-tenant payroll and HR platform</p>
               </div>
 
+              <p class="experience-brief">Payroll pipelines, data validation, database provisioning, and release automation.</p>
+              <details class="experience-details"><summary>Production engineering details</summary>
               <div class="case" data-gt-id="E-OBS">
                 <h4 class="case-title">Catch data defects before they become recurring work</h4>
                 <p class="case-body">Built a control-table-driven validation framework so data checks are defined as configuration. Reconstructed SSIS execution history in SQL to make pipeline behavior easier to investigate. The focus is correctness at the model boundary: grain, missing rows, unexpected values, and differences between full and incremental loads.</p>
@@ -330,6 +321,7 @@
               </div>
 
               <p class="role-tech">SQL Server &middot; CDC &middot; SSIS &middot; Azure DevOps &middot; Microsoft Fabric &middot; AAG &middot; Power BI / SSRS</p>
+              </details>
             </div>
           </article>
 
@@ -341,6 +333,8 @@
                 <p class="role-org">Missouri University of Science and Technology &middot; Rolla, MO</p>
                 <p class="track-scope">ML infrastructure and anomaly detection</p>
               </div>
+              <p class="experience-brief">Azure research workloads, anomaly detection, and lower cloud costs.</p>
+              <details class="experience-details"><summary>Research engineering details</summary>
               <div class="case" data-gt-id="M1, M2, M3">
                 <h4 class="case-title">Match compute to demand, not a fixed fleet</h4>
                 <p class="case-body">The detection pipelines select an algorithm per time-series profile, and thresholds are set per service, so a noisy service can be tuned without raising the floor on the rest. One memory leak surfaced four hours before it would have taken the service down. Moving the workloads off static D-series VMs onto AKS raised utilization while cutting compute spend.</p>
@@ -353,6 +347,7 @@
                 <p class="case-outcome">10,000+ reviews &middot; peer-reviewed, 2025</p>
               </div>
               <p class="role-tech">Python &middot; spaCy &middot; NLTK &middot; RoBERTa &middot; AKS &middot; Power BI</p>
+              </details>
             </div>
           </article>
 
@@ -364,10 +359,13 @@
                 <p class="role-org">C2FO &middot; Kansas City, KS</p>
                 <p class="track-scope">Transaction and behavioural SQL on a working-capital platform</p>
               </div>
+              <p class="experience-brief">SQL analysis of financial transactions and product usage.</p>
+              <details class="experience-details"><summary>Product analytics details</summary>
               <div class="case" data-gt-id="C-SQL">
                 <p class="case-body">The SQL work went across transaction and user behavior on a B2B working-capital platform.</p>
                 <p class="role-tech">SQL</p>
               </div>
+              </details>
             </div>
           </article>
 
@@ -379,11 +377,14 @@
                 <p class="role-org">udaan.com &middot; Nashik, India</p>
                 <p class="track-scope">Demand forecasting and fulfillment analytics</p>
               </div>
+              <p class="experience-brief">Demand forecasting and fulfillment analytics for a new-city launch.</p>
+              <details class="experience-details"><summary>Business intelligence details</summary>
               <div class="case" data-gt-id="U-FORECAST, U-FULFILL, U-BCP">
                 <p class="case-body">Demand and inventory models in Power BI for a new-city Staples launch on a B2B marketplace, plus a continuity plan that kept deliveries moving through application downtime.</p>
                 <p class="case-outcome">allocation ROI +7% &middot; fulfillment 99.3% under volume growth</p>
                 <p class="role-tech">Power BI</p>
               </div>
+              </details>
             </div>
           </article>
 
@@ -395,11 +396,14 @@
                 <p class="role-org">Zomato &middot; Hyderabad, India</p>
                 <p class="track-scope">Competitor pricing data, search ranking signals, unit economics</p>
               </div>
+              <p class="experience-brief">Competitor analytics and internal search, from the business analyst side.</p>
+              <details class="experience-details"><summary>Analytics details</summary>
               <div class="case" data-gt-id="Z-COMP, Z-ES, Z-SEARCH, Z-PNL">
                 <p class="case-body">Built the competitor analytics platform that replaced week-old pricing data with a current refresh, and indexed 100K+ internal documents in Elasticsearch so the support desk stopped answering the same questions daily. On search I supplied and evaluated ranking signals from the analyst side and did not train the models.</p>
                 <p class="case-outcome">contribution &minus;&#8377;18 &rarr; +&#8377;2 &middot; 300 restaurants</p>
                 <p class="role-tech">Elasticsearch</p>
               </div>
+              </details>
             </div>
           </article>
 
@@ -410,8 +414,8 @@
     <section class="section" id="projects">
       <div class="container">
         <p class="section-index">03 / Independent projects</p>
-        <h2 class="sec-h" data-reveal>From a workflow problem to a working tool.</h2>
-        <p class="sec-note sec-note--lead" data-reveal>Outside work, I build tools for the steps people keep repeating: collecting scattered data, working with documents, and giving AI the context it needs. These are independent projects, with source code and engineering tradeoffs you can inspect.</p>
+        <h2 class="sec-h" data-reveal>Independent projects you can inspect.</h2>
+        <p class="sec-note sec-note--lead" data-reveal>Built outside employment. These projects demonstrate ingestion, document workflows, and developer tooling; they are separate from my production SQL Server and Azure work.</p>
         <div class="projs">
 
           <article class="proj proj--flagship" data-gt-id="P-JOBSCOUT" data-reveal>
@@ -596,7 +600,7 @@ stats_df = enriched_df \
     <section class="section section-alt" id="contact">
       <div class="container">
         <p class="section-index">04 / Let's talk</p>
-        <h2 class="sec-h" data-reveal>What is slowing your data team down?</h2>
+        <h2 class="sec-h" data-reveal>Let's talk about your data engineering role.</h2>
         <div class="contact" data-reveal>
           <span class="contact-avatar"><img src="static/originals/headshot-fullbody-800.jpg" alt="Naren Edara" width="800" height="1000" loading="lazy"></span>
           <div class="contact-body">
@@ -622,7 +626,7 @@ stats_df = enriched_df \
         <span class="footer-tagline">Data Engineer &middot; Dallas TX</span>
       </div>
       <nav class="footer-nav" aria-label="Footer navigation">
-        <a href="#systems">Systems</a>
+        <a href="#systems">Outcomes</a>
         <a href="#experience">Experience</a>
         <a href="#projects">Projects</a>
         <a href="#contact">Contact</a>
