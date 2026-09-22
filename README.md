@@ -59,25 +59,53 @@ Open `index.html` in a browser for a quick preview, or serve the repo with any l
 
 ## Regenerating Favicons + Social Card
 
-The site uses a deliberate split: monogram "N" white-on-orange for the browser tab (16/32/48 px) and the actual headshot for the iOS home screen (`apple-touch-icon.png`), Android adaptive icon (`favicon-512-maskable.png`), and OpenGraph share card (`og-image.jpg`). All assets are deterministic, regenerated from a single source photo by [`scripts/snap-favicon.py`](scripts/snap-favicon.py).
+Two scripts, because the two jobs are not the same job.
+
+**Favicons / home-screen icons** - [`scripts/snap-favicon.py`](scripts/snap-favicon.py).
+A deliberate split: monogram "N" white-on-green for the browser tab (16/32/48 px),
+where a photo is unreadable, and the headshot for the iOS home screen
+(`apple-touch-icon.png`) and Android adaptive icon (`favicon-512-maskable.png`).
+The green is `--accent` (`#176447`), the color the stylesheets actually resolve
+to; it was `#E8743C` long after anything else on the page stopped being orange,
+and white on that orange measured 3.0:1, versus 7.1:1 on the green.
+
+The photo icons are matted off the studio background (shared with the share
+card, see `scripts/portrait_matte.py`) and composited onto the brand ground, so
+they read as icons rather than as a white tile. The crop frames the whole head:
+a Haar box bounds the face, brow to chin, so padding it slightly lands the top
+edge partway up the hair. Tab marks are rasterised at their target size rather
+than supersampled and reduced, which at 16px is the difference between a
+letterform and a grey smudge.
 
 ```bash
-# 1. Install pipeline deps (one-time)
 pip install -r scripts/requirements.txt
-
-# 2. Drop a fresh head-and-shoulders photo at scripts/_in/headshot-portrait.jpg
-#    (and optionally a full-body shot at scripts/_in/headshot-fullbody.jpg)
-
-# 3. Regenerate everything
+# drop a head-and-shoulders photo at scripts/_in/headshot-portrait.jpg
 python scripts/snap-favicon.py
-
-# 4. Bump the cache-bust query strings in index.html (search for "?v=2026-04-28")
-#    so existing browsers fetch the new files instead of stale cached copies.
-
-# 5. Commit and push
 ```
 
-The script auto-detects the face via OpenCV's Haar cascade, applies a tight 1.18× face-bbox crop, renders the monogram from Inter Black (or Arial Bold fallback), and writes all six tab/iOS/Android/OG outputs deterministically. Source masters are downscaled to 1200 px long-edge and saved to `static/originals/` so the repo stays light.
+**Share card** - [`scripts/snap-og-card.py`](scripts/snap-og-card.py).
+`static/og-image.jpg` is what LinkedIn, Slack and iMessage render when the URL
+is shared, and it is a layout rather than a crop: a deep green type block
+carrying the hero's own hierarchy, plus the portrait matted off its studio
+white onto a cream panel. It is generated separately because a face-detection
+box makes a bad social card - the previous one cut the forehead and sat on a
+flat orange field that matches nothing on the site.
+
+```bash
+# drop a studio headshot (plain light background) at scripts/_in/headshot-2026.jpg
+# fonts: see the script docstring for the curl commands
+python scripts/snap-og-card.py
+```
+
+The script prints a WCAG contrast reading for every ink color on the dark
+block and auto-sizes the tagline to two lines, so a copy edit cannot silently
+reflow the card or drop a color below AA.
+
+After either script: bump the `?v=` cache-bust query strings in `index.html`
+(the share-card one also appears in `content/posts/`), since LinkedIn and Slack
+cache the card by URL and will otherwise keep serving the old one. Source
+masters are downscaled to 1200 px long-edge and saved to `static/originals/` so
+the repo stays light; `scripts/_in/` and `scripts/_fonts/` are gitignored.
 
 ## Stable Resume URL - drop-in for any portfolio
 
