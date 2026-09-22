@@ -14,10 +14,11 @@ scripts/snap-og-card.py for why.
 
 Inputs
 ------
-The current headshot: scripts/_in/headshot-2026.jpg if present, otherwise the
-committed master at static/originals/headshot-2026.jpg. Head-and-shoulders
-shot, face visible, plain light background. scripts/snap-og-card.py resolves
-the same file the same way.
+The current headshot: scripts/_in/headshot-2026.* if present, otherwise the
+committed master under static/originals/. Head-and-shoulders shot, face
+visible, on a plain backdrop that differs from the subject in hue - see
+portrait_matte for what the matte can and cannot separate.
+scripts/snap-og-card.py resolves the same file the same way.
 
 Outputs (relative to repo root)
 -------------------------------
@@ -33,7 +34,7 @@ Outputs (relative to repo root)
 Usage
 -----
     pip install -r scripts/requirements.txt
-    # optional: drop a newer photo at scripts/_in/headshot-2026.jpg to
+    # optional: drop a newer photo at scripts/_in/headshot-2026.<ext> to
     # override the committed master
     python scripts/snap-favicon.py
 """

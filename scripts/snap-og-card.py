@@ -15,16 +15,15 @@ a layout.
 This script builds the card as a layout instead: a deep green type block
 carrying the same hierarchy the hero section uses (mono eyebrow in the accent,
 Playfair tagline) and a full-bleed photo panel on the right. The subject is
-set on the site's cream rather than a hard white rectangle butted against
-the green: its studio backdrop is repainted to the panel colour, so the photo
-has no edge against the panel at all.
+matted off the blue-grey studio backdrop and set on the site's cream, rather
+than a photo's own rectangle butted against the green.
 
 Inputs
 ------
-- The current headshot: scripts/_in/headshot-2026.jpg if present, otherwise
-  the committed master at static/originals/headshot-2026.jpg. A studio shot on
-  a plain light background, head and shoulders; the matte assumes the
-  background is near-white and reaches the left, right and top borders.
+- The current headshot: scripts/_in/headshot-2026.* if present, otherwise the
+  committed master under static/originals/. A studio shot, head and shoulders,
+  on a plain backdrop that differs from the subject in hue - see
+  portrait_matte for what the matte can and cannot separate.
 - scripts/_fonts/{PlayfairDisplay,JetBrainsMono,Inter-SemiBold,Inter-Regular}.ttf
 
   scripts/_in/ and scripts/_fonts/ are both gitignored. The headshot still
@@ -39,8 +38,8 @@ Inputs
 Outputs
 -------
 - static/og-image.jpg                      1200x630, the share card
-- static/originals/headshot-2026.jpg       the committed master: a verbatim
-  copy of the source, or a 1200px long-edge reduction if the source is larger
+- static/originals/headshot-2026.*         the committed master: a verbatim
+  copy of the source, or a reduction if the source exceeds the long-edge budget
 
 Usage
 -----
@@ -51,15 +50,15 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageDraw, ImageFont
 
 # Same directory as this script, so a plain import resolves when it is run
 # as `python scripts/snap-og-card.py`.
 from portrait_matte import (
     background_alpha,
-    fill_backdrop,
     find_headshot,
     reconstruct_crown,
+    subject_geometry,
     write_master,
 )
 
@@ -82,9 +81,8 @@ CREAM_SOFT = (201, 194, 180)  # #C9C2B4  secondary
 MUTED = (176, 169, 151)  # #B0A997  tertiary
 ACCENT = (99, 185, 149)  # #63B995  accent green
 WARM = (217, 160, 91)  # #D9A05B  warm accent
-# Flat, not a gradient. The portrait's own backdrop is repainted to exactly
-# this value, so the photo has no edge against the panel at all; a gradient
-# would give it one, and put the seam back that the repaint exists to remove.
+# Flat, not a gradient. A gradient behind a cut-out subject reads as two
+# separate pictures; one field reads as a panel the portrait sits on.
 PANEL = (243, 240, 233)
 
 # ------- Geometry -------
@@ -95,11 +93,14 @@ PAD_T = 58
 PAD_B = 54
 TEXT_W = PANEL_X - PAD_L - 72
 
-# Portrait placement inside the panel. The subject runs off the bottom edge
-# (a portrait that stops mid-chest in open space looks like a mistake) but
-# keeps clear air above the head and down both sides.
-SUBJECT_H = 516
-SUBJECT_TOP = CARD[1] - SUBJECT_H
+# Portrait placement, scaled off the head rather than off the frame. The
+# frame is whatever the photographer left round the subject and changes with
+# every new photo; the head is the thing the composition is actually about,
+# so sizing on it survives a swap. The subject runs off the bottom edge - a
+# portrait that stops mid-chest in open space looks like a mistake - and off
+# both sides at shoulder height, while keeping air around the head.
+HEAD_H = 268  # crown to shoulder line, in panel pixels
+CROWN_TOP = 74  # where the crown sits below the panel's top edge
 
 # ------- Copy -------
 EYEBROW = "NARENDRANATH EDARA  /  DATA ENGINEER"
@@ -193,42 +194,23 @@ def wrap(d: ImageDraw.ImageDraw, text: str, f: ImageFont.FreeTypeFont, width: in
 
 # ------- Panels -------
 def photo_panel(src: Image.Image, size: tuple[int, int]) -> Image.Image:
-    """Portrait on a flat panel, its studio backdrop repainted to match.
-
-    No cutout. The panel colour is close enough to the studio wall that the
-    wall can simply be repainted to it, which leaves the subject's real edges
-    intact - hair, collar, shoulder - instead of substituting a traced outline
-    for them. See fill_backdrop() for why tracing one is a losing game on a
-    white shirt against a white wall.
-    """
+    """Matted portrait on a flat panel, sized and placed off the head."""
     pw, ph = size
     panel = Image.new("RGB", (pw, ph), PANEL)
 
-    # The alpha is still needed, but only to repair the clipped crown and to
-    # measure where the head starts; it never composites anything.
     alpha = background_alpha(src)
     rgb, alpha = reconstruct_crown(src.convert("RGB"), alpha)
-    filled = fill_backdrop(rgb, PANEL)
+    crown, shoulder = subject_geometry(alpha)
+    scale = HEAD_H / max(1, shoulder - crown)
 
-    # Scale on the subject's own extent, not the master's frame: the master
-    # carries whatever padding the photographer left, and the composition is
-    # about where the head and the shoulders land.
-    ap = alpha.load()
-    rows = [y for y in range(alpha.height) if any(ap[x, y] > 128 for x in range(0, alpha.width, 3))]
-    top = rows[0] if rows else 0
-    scale = SUBJECT_H / (alpha.height - top)
-
-    tw, th = (int(round(v * scale)) for v in (filled.width, filled.height))
-    filled = filled.resize((tw, th), Image.LANCZOS)
-    # A light touch only. The 358px master softens when it is scaled up, but
-    # the subject now meets a flat field of exactly its own backdrop colour,
-    # and a heavier radius rings visibly along that edge.
-    filled = filled.filter(ImageFilter.UnsharpMask(radius=1.2, percent=42, threshold=3))
+    tw, th = (max(1, int(round(v * scale))) for v in (rgb.width, rgb.height))
+    rgb = rgb.resize((tw, th), Image.LANCZOS)
+    alpha = alpha.resize((tw, th), Image.LANCZOS)
 
     x = (pw - tw) // 2
-    y = SUBJECT_TOP - int(round(top * scale))
-    panel.paste(filled, (x, y))
-    print(f"  portrait: {tw}x{th} at ({x},{y}) in a {pw}x{ph} panel")
+    y = CROWN_TOP - int(round(crown * scale))
+    panel.paste(rgb, (x, y), alpha)
+    print(f"  portrait: head {shoulder - crown}px -> {HEAD_H}px, {tw}x{th} at ({x},{y})")
     return panel
 
 
