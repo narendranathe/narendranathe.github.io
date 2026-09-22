@@ -62,11 +62,20 @@ Open `index.html` in a browser for a quick preview, or serve the repo with any l
 Two scripts, because the two jobs are not the same job.
 
 **Favicons / home-screen icons** - [`scripts/snap-favicon.py`](scripts/snap-favicon.py).
-A deliberate split: monogram "N" white-on-orange for the browser tab (16/32/48 px),
+A deliberate split: monogram "N" white-on-green for the browser tab (16/32/48 px),
 where a photo is unreadable, and the headshot for the iOS home screen
 (`apple-touch-icon.png`) and Android adaptive icon (`favicon-512-maskable.png`).
-The script auto-detects the face via OpenCV's Haar cascade, applies a tight
-1.18x face-bbox crop, and renders the monogram from Inter Black.
+The green is `--accent` (`#176447`), the color the stylesheets actually resolve
+to; it was `#E8743C` long after anything else on the page stopped being orange,
+and white on that orange measured 3.0:1, versus 7.1:1 on the green.
+
+The photo icons are matted off the studio background (shared with the share
+card, see `scripts/portrait_matte.py`) and composited onto the brand ground, so
+they read as icons rather than as a white tile. The crop frames the whole head:
+a Haar box bounds the face, brow to chin, so padding it slightly lands the top
+edge partway up the hair. Tab marks are rasterised at their target size rather
+than supersampled and reduced, which at 16px is the difference between a
+letterform and a grey smudge.
 
 ```bash
 pip install -r scripts/requirements.txt
