@@ -20,13 +20,15 @@ rather than a hard white rectangle butted against the green.
 
 Inputs
 ------
-- scripts/_in/headshot-2026.jpg  - studio headshot, plain light background,
-  head and shoulders. The matte assumes the background is near-white and
-  reaches the left, right and top borders.
+- The current headshot: scripts/_in/headshot-2026.jpg if present, otherwise
+  the committed master at static/originals/headshot-2026.jpg. A studio shot on
+  a plain light background, head and shoulders; the matte assumes the
+  background is near-white and reaches the left, right and top borders.
 - scripts/_fonts/{PlayfairDisplay,JetBrainsMono,Inter-SemiBold,Inter-Regular}.ttf
 
-  Both directories are gitignored - raw masters and font binaries stay out of
-  the repo, same policy as snap-favicon.py. Fetch the fonts with:
+  scripts/_in/ and scripts/_fonts/ are both gitignored. The headshot still
+  survives a fresh clone because this script commits it to static/originals/
+  and reads it back from there; the fonts do not, so fetch them with:
 
     cd scripts/_fonts
     curl -LO "https://raw.githubusercontent.com/google/fonts/main/ofl/playfairdisplay/PlayfairDisplay%5Bwght%5D.ttf"
@@ -36,7 +38,8 @@ Inputs
 Outputs
 -------
 - static/og-image.jpg                      1200x630, the share card
-- static/originals/headshot-2026.jpg       source master, long edge 1200
+- static/originals/headshot-2026.jpg       the committed master: a verbatim
+  copy of the source, or a 1200px long-edge reduction if the source is larger
 
 Usage
 -----
@@ -51,14 +54,19 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 # Same directory as this script, so a plain import resolves when it is run
 # as `python scripts/snap-og-card.py`.
-from portrait_matte import background_alpha, decontaminate, reconstruct_crown
+from portrait_matte import (
+    background_alpha,
+    decontaminate,
+    find_headshot,
+    reconstruct_crown,
+    write_master,
+)
 
 # ------- Paths -------
 REPO_ROOT = Path(__file__).resolve().parent.parent
 STATIC = REPO_ROOT / "static"
 ORIGINALS = STATIC / "originals"
 FONTS = REPO_ROOT / "scripts" / "_fonts"
-SRC = REPO_ROOT / "scripts" / "_in" / "headshot-2026.jpg"
 
 # ------- Palette -------
 # Lifted from styles.css .section-dark, the inverted band the career history
@@ -292,34 +300,23 @@ def build_card(src: Image.Image) -> Image.Image:
     return card
 
 
-def downscale_long_edge(img: Image.Image, long_edge: int) -> Image.Image:
-    if max(img.size) <= long_edge:
-        return img
-    scale = long_edge / max(img.size)
-    return img.resize((int(img.width * scale), int(img.height * scale)), Image.LANCZOS)
-
-
 def main() -> None:
-    if not SRC.exists():
-        raise FileNotFoundError(f"missing source photo: {SRC}\nsee the module docstring")
     STATIC.mkdir(parents=True, exist_ok=True)
-    ORIGINALS.mkdir(parents=True, exist_ok=True)
 
+    src_path = find_headshot(REPO_ROOT)
+    print(f"source: {src_path.relative_to(REPO_ROOT)}")
     report_contrast()
     print()
 
-    src = Image.open(SRC).convert("RGB")
+    src = Image.open(src_path).convert("RGB")
     card = build_card(src)
 
     out = STATIC / "og-image.jpg"
     card.save(out, "JPEG", quality=88, optimize=True, progressive=True, subsampling=0)
     print(f"  static/og-image.jpg  {card.size}  {out.stat().st_size/1024:.1f} KB")
 
-    master = ORIGINALS / "headshot-2026.jpg"
-    downscale_long_edge(src, 1200).save(
-        master, "JPEG", quality=86, optimize=True, progressive=True
-    )
-    print(f"  static/originals/headshot-2026.jpg  {master.stat().st_size/1024:.1f} KB")
+    master = write_master(src_path, ORIGINALS)
+    print(f"  {master.relative_to(REPO_ROOT)}  {master.stat().st_size/1024:.1f} KB")
 
 
 if __name__ == "__main__":

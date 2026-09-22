@@ -14,9 +14,10 @@ scripts/snap-og-card.py for why.
 
 Inputs
 ------
-A single source headshot at scripts/_in/headshot-2026.jpg (head-and-shoulders
-shot; landscape or square, face visible, neutral background OK). This is the
-same master scripts/snap-og-card.py reads.
+The current headshot: scripts/_in/headshot-2026.jpg if present, otherwise the
+committed master at static/originals/headshot-2026.jpg. Head-and-shoulders
+shot, face visible, plain light background. scripts/snap-og-card.py resolves
+the same file the same way.
 
 Outputs (relative to repo root)
 -------------------------------
@@ -32,7 +33,8 @@ Outputs (relative to repo root)
 Usage
 -----
     pip install -r scripts/requirements.txt
-    # place fresh source photo at scripts/_in/headshot-2026.jpg
+    # optional: drop a newer photo at scripts/_in/headshot-2026.jpg to
+    # override the committed master
     python scripts/snap-favicon.py
 """
 from __future__ import annotations
@@ -44,7 +46,12 @@ from PIL import Image, ImageDraw, ImageFont
 
 # Same directory as this script, so a plain import resolves when it is run
 # as `python scripts/snap-favicon.py`.
-from portrait_matte import background_alpha, decontaminate, reconstruct_crown
+from portrait_matte import (
+    background_alpha,
+    decontaminate,
+    find_headshot,
+    reconstruct_crown,
+)
 
 # ------- Constants -------
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -215,16 +222,11 @@ def main() -> None:
     ORIGINALS.mkdir(parents=True, exist_ok=True)
 
     # One current headshot, two consumers: this script and snap-og-card.py
-    # read the same master so the tab mark, the home-screen icon and the
+    # resolve it the same way so the tab mark, the home-screen icon and the
     # share card cannot drift onto different photos.
-    portrait_src = INPUT_DIR / "headshot-2026.jpg"
+    portrait_src = find_headshot(REPO_ROOT)
     fullbody_src = INPUT_DIR / "headshot-fullbody.jpg"
-
-    if not portrait_src.exists():
-        raise FileNotFoundError(
-            f"missing source photo: {portrait_src}\n"
-            f"place a head-and-shoulders shot at that path and rerun."
-        )
+    print(f"source: {portrait_src.relative_to(REPO_ROOT)}")
 
     # 1. Face detection, matte, then a head-framed square crop.
     #    Matting before cropping rather than after: the flood fill needs the

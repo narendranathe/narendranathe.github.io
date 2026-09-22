@@ -1,23 +1,77 @@
 #!/usr/bin/env python3
 """
-Lift a subject off a plain studio background, so it can be placed on a chosen
-ground instead of on a white rectangle.
+Find the current headshot, and lift its subject off the studio background so
+it can be placed on a chosen ground instead of on a white rectangle.
 
 Shared by scripts/snap-og-card.py (share card) and scripts/snap-favicon.py
 (home-screen and Android adaptive icons). It lives here rather than in either
-of them because both put the same photo on a colored ground, and a matte that
-drifts between the two shows up as two slightly different faces across a
-person's own assets.
+of them because both read the same photo and put it on a colored ground, and
+a matte that drifts between the two shows up as two slightly different faces
+across a person's own assets.
 
-Assumes what a studio headshot gives you: a near-white, near-neutral
+The matte assumes what a studio headshot gives you: a near-white, near-neutral
 background reaching the left, right and top borders of the frame. It is not a
 general-purpose matter and will not cope with a busy or dark backdrop.
 """
 from __future__ import annotations
 
+import shutil
 from collections import deque
+from pathlib import Path
 
 from PIL import Image, ImageChops, ImageFilter
+
+HEADSHOT = "headshot-2026.jpg"
+MASTER_LONG_EDGE = 1200
+
+
+def find_headshot(repo_root: Path) -> Path:
+    """Locate the current headshot, preferring a freshly dropped-in file.
+
+    scripts/_in/ is gitignored, so on a fresh clone it is empty and the only
+    copy of the photo is the committed master under static/originals/. Falling
+    back to that means the asset scripts run against a clean checkout with no
+    files fetched from anywhere; without the fallback the repo carries a
+    headshot its own scripts cannot see.
+    """
+    for candidate in (
+        repo_root / "scripts" / "_in" / HEADSHOT,
+        repo_root / "static" / "originals" / HEADSHOT,
+    ):
+        if candidate.exists():
+            return candidate
+    raise FileNotFoundError(
+        f"no headshot found. Put one at scripts/_in/{HEADSHOT}, or restore the "
+        f"committed master at static/originals/{HEADSHOT}."
+    )
+
+
+def write_master(src_path: Path, originals: Path) -> Path:
+    """Refresh the committed master from `src_path`, without re-encoding it.
+
+    The master doubles as the fallback input above, so a lossy rewrite on every
+    run would feed its own losses back in and compound. Copying the bytes when
+    the photo is already inside the size budget keeps the committed copy
+    identical to what came out of the camera; a 43 KB master re-encoded at
+    quality 86 measured 42.7 dB PSNR against its source, with single channels
+    off by as much as 16.
+    """
+    originals.mkdir(parents=True, exist_ok=True)
+    master = originals / HEADSHOT
+    if src_path.resolve() == master.resolve():
+        return master  # running off the fallback; nothing to refresh
+    with Image.open(src_path) as probe:
+        oversized = max(probe.size) > MASTER_LONG_EDGE
+    if oversized:
+        with Image.open(src_path) as img:
+            img = img.convert("RGB")
+            scale = MASTER_LONG_EDGE / max(img.size)
+            img.resize(
+                (int(img.width * scale), int(img.height * scale)), Image.LANCZOS
+            ).save(master, "JPEG", quality=86, optimize=True, progressive=True)
+    else:
+        shutil.copyfile(src_path, master)
+    return master
 
 
 def background_alpha(im: Image.Image) -> Image.Image:
