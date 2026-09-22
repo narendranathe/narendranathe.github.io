@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 """
-Regenerate the full favicon + social-card asset set for narendranathe.github.io.
+Regenerate the favicon / home-screen icon set for narendranathe.github.io.
 
 Why this exists
 ---------------
 Photo at 16-32px is unreadable. Senior-tier portfolios (Stripe, Linear, Vercel,
-Anthropic) split: monogram for tab favicon, photo for Apple touch icon and OG
-share card. This script implements that split deterministically so the assets
-can be regenerated from a fresh source photo without archaeology.
+Anthropic) split: monogram for the tab favicon, photo for the iOS home screen
+and the Android adaptive icon. This script implements that split
+deterministically so the assets can be regenerated without archaeology.
+
+The OpenGraph share card used to be produced here too and no longer is; see
+scripts/snap-og-card.py for why.
 
 Inputs
 ------
@@ -22,7 +25,7 @@ Outputs (relative to repo root)
 - static/favicon-48.png           — monogram "N", 48x48
 - static/apple-touch-icon.png     — photo, 180x180, full RGBA, tight face crop
 - static/favicon-512-maskable.png — photo on safe area for Android adaptive
-- static/og-image.jpg             — photo, 1200x630, social share card
+  (static/og-image.jpg is NOT written here - scripts/snap-og-card.py owns it)
 - static/originals/<filename>.jpg — source masters downscaled to 1200px long edge
 
 Usage
@@ -54,7 +57,6 @@ FACE_PADDING_RATIO = 1.18  # multiplied by detected face bbox
 TAB_SIZES = (16, 32, 48)
 APPLE_TOUCH_SIZE = 180
 MASKABLE_SIZE = 512
-OG_SIZE = (1200, 630)
 ORIGINAL_LONG_EDGE = 1200
 
 
@@ -128,23 +130,6 @@ def maskable_photo(face_crop: Image.Image, size: int) -> Image.Image:
     return canvas
 
 
-def make_og_card(face_crop: Image.Image, full_src: Image.Image) -> Image.Image:
-    """1200x630 OG card — photo composited onto the brand orange backdrop.
-
-    Layout: face anchored on the right, brand-color block on the left for
-    future text overlay. Falls back to a simple letterboxed photo if full_src
-    is absent.
-    """
-    w, h = OG_SIZE
-    canvas = Image.new("RGB", (w, h), ORANGE)
-    # Resize face_crop to height h, centered horizontally on right 60% of canvas
-    fc_h = h
-    fc_w = fc_h
-    fc = face_crop.resize((fc_w, fc_h), Image.LANCZOS)
-    canvas.paste(fc, (w - fc_w, 0))
-    return canvas
-
-
 def downscale_long_edge(img: Image.Image, long_edge: int) -> Image.Image:
     if max(img.size) <= long_edge:
         return img
@@ -201,11 +186,11 @@ def main() -> None:
     masked.save(STATIC / "favicon-512-maskable.png", "PNG", optimize=True)
     print("  static/favicon-512-maskable.png (Android adaptive)")
 
-    # 6. OG share card — 1200x630 photo composite
-    full_img = Image.open(fullbody_src).convert("RGB") if fullbody_src.exists() else None
-    og = make_og_card(face_crop_1024, full_img or portrait)
-    og.save(STATIC / "og-image.jpg", "JPEG", quality=85, optimize=True, progressive=True)
-    print("  static/og-image.jpg (1200x630)")
+    # 6. OG share card — deliberately NOT written here.
+    #    The card is a layout (type block + matted portrait), not a crop, so it
+    #    lives in scripts/snap-og-card.py. This script used to emit a flat
+    #    orange block with a face pasted beside it; running it must not quietly
+    #    restore that.
 
     # 7. Originals — downscaled to 1200px long edge to keep repo light
     for src_path, out_name in [
@@ -225,10 +210,10 @@ def main() -> None:
     favicon_files = [
         "favicon-16.png", "favicon-32.png", "favicon-48.png",
         "favicon.ico", "apple-touch-icon.png",
-        "favicon-512-maskable.png", "og-image.jpg",
+        "favicon-512-maskable.png",
     ]
     total = sum((STATIC / n).stat().st_size for n in favicon_files if (STATIC / n).exists())
-    print(f"total favicon + OG byte budget: {total} B = {total/1024:.1f} KB")
+    print(f"total favicon byte budget: {total} B = {total/1024:.1f} KB")
 
 
 if __name__ == "__main__":
