@@ -9,17 +9,27 @@ of them because both read the same photo and put it on a colored ground, and
 a matte that drifts between the two shows up as two slightly different faces
 across a person's own assets.
 
-The matte assumes what a studio headshot gives you: a near-white, near-neutral
-background reaching the left, right and top borders of the frame. It is not a
-general-purpose matter and will not cope with a busy or dark backdrop.
+Two strategies, picked by how far the destination is from the backdrop:
+
+- `fill_backdrop` repaints the wall to a flat colour and never computes a
+  silhouette. Use it for grounds near the backdrop's own, such as the share
+  card's cream panel.
+- `background_alpha` (+ `reconstruct_crown`) cuts the subject out, for grounds
+  far from it, such as the icons' dark green.
+
+Both assume what a studio headshot gives you: a near-white, near-neutral
+background reaching the left, right and top borders of the frame. Neither is a
+general-purpose matter and neither will cope with a busy or dark backdrop.
 """
 from __future__ import annotations
 
+import math
 import shutil
 from collections import deque
 from pathlib import Path
+from statistics import median
 
-from PIL import Image, ImageChops, ImageFilter
+from PIL import Image, ImageFilter
 
 HEADSHOT = "headshot-2026.jpg"
 MASTER_LONG_EDGE = 1200
@@ -138,18 +148,89 @@ def background_alpha(im: Image.Image) -> Image.Image:
             (0, y),
         )
 
-    # Erode by about two thirds of a pixel to bite off the white rim the
-    # threshold leaves behind, then feather.
+    # Erode most of a pixel to bite off the white rim the threshold leaves
+    # behind, then feather just enough to antialias. This used to erode less
+    # and hand the rest to a decontamination pass that blurred the photo into
+    # its own outline; that pass is gone, because what it actually produced was
+    # a grey halo around the hair, and a tighter edge here is what it was
+    # standing in for.
     eroded = merged.filter(ImageFilter.MinFilter(3))
-    return Image.blend(eroded, merged, 0.35).filter(ImageFilter.GaussianBlur(0.7))
+    return Image.blend(eroded, merged, 0.15).filter(ImageFilter.GaussianBlur(0.5))
 
 
-def decontaminate(im: Image.Image, alpha: Image.Image) -> Image.Image:
-    """Pull edge pixels toward local subject color so no white rim survives."""
-    interior = im.filter(ImageFilter.GaussianBlur(3))
-    edge = ImageChops.difference(alpha, alpha.filter(ImageFilter.MinFilter(5)))
-    edge = edge.filter(ImageFilter.GaussianBlur(1.0)).point(lambda v: min(255, int(v * 1.6)))
-    return Image.composite(interior, im, edge)
+def fill_backdrop(
+    im: Image.Image,
+    target: tuple[int, int, int],
+    sigma: float = 10.0,
+    margin: int = 6,
+    smooth: int = 15,
+) -> Image.Image:
+    """Repaint the studio backdrop to a flat colour, leaving the subject alone.
+
+    This is the right tool when the target colour is near the backdrop's own -
+    a cream panel under a white studio wall - and it is deliberately not a
+    cutout. A white shirt photographed against a white backdrop has no edge to
+    find: every attempt to trace one lands somewhere different on each row and
+    shows up as a ragged shoulder, and blurring the seam to hide that paints a
+    grey halo instead. So nothing here looks for a silhouette.
+
+    Each row states the backdrop colour it actually has, because the lighting
+    falls off toward the bottom of the frame and one white point cannot
+    describe the whole wall. Every pixel is then pulled toward the target in
+    proportion to how close it already is to that row's backdrop. The weight is
+    a Gaussian on luminance rather than a ramp, and that is what keeps the
+    shirt out of it: in the shadowed rows lit fabric sits well above the
+    backdrop, so it barely moves, while a ramp would drag it along.
+
+    `sigma` is the width of that weight. Measured on this photo the backdrop
+    lands exactly on target at every value tried, so the only thing a wider
+    one buys is disturbance: at 18 the shirt moved 18.6 levels and closed to
+    14.6 of the panel's luminance, at 10 it moved 12.5 and held 20.5. Keeping
+    the shirt away from the panel is what keeps the shoulder line readable, so
+    this stays narrow.
+
+    Do not point this at a ground far from the backdrop. Aimed at the dark
+    green the icons use, the shift is large enough that the weight's tail
+    reaches the shirt and turns it green in patches; those need `background_alpha`
+    and a real composite.
+    """
+    w, h = im.size
+    px = im.convert("RGB").load()
+
+    def lum(c: tuple[int, int, int]) -> float:
+        return 0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]
+
+    # Per-row backdrop, read from the margins the subject never reaches, then
+    # smoothed down the frame so noise cannot band the fill.
+    base = []
+    for y in range(h):
+        row = [px[x, y] for x in range(margin)] + [px[x, y] for x in range(w - margin, w)]
+        row.sort(key=lum)
+        base.append(row[len(row) // 2])
+    half = smooth // 2
+    base = [
+        tuple(
+            median([base[j][i] for j in range(max(0, y - half), min(h, y + half + 1))])
+            for i in range(3)
+        )
+        for y in range(h)
+    ]
+
+    out = Image.new("RGB", (w, h))
+    op = out.load()
+    for y in range(h):
+        b = base[y]
+        bl = lum(b)
+        sr, sg, sb = (target[i] - b[i] for i in range(3))
+        for x in range(w):
+            c = px[x, y]
+            t = math.exp(-(((lum(c) - bl) / sigma) ** 2))
+            op[x, y] = (
+                max(0, min(255, int(round(c[0] + sr * t)))),
+                max(0, min(255, int(round(c[1] + sg * t)))),
+                max(0, min(255, int(round(c[2] + sb * t)))),
+            )
+    return out
 
 
 def reconstruct_crown(

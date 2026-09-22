@@ -15,8 +15,9 @@ a layout.
 This script builds the card as a layout instead: a deep green type block
 carrying the same hierarchy the hero section uses (mono eyebrow in the accent,
 Playfair tagline) and a full-bleed photo panel on the right. The subject is
-matted off the studio white so the panel background can be the site's cream
-rather than a hard white rectangle butted against the green.
+set on the site's cream rather than a hard white rectangle butted against
+the green: its studio backdrop is repainted to the panel colour, so the photo
+has no edge against the panel at all.
 
 Inputs
 ------
@@ -56,7 +57,7 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 # as `python scripts/snap-og-card.py`.
 from portrait_matte import (
     background_alpha,
-    decontaminate,
+    fill_backdrop,
     find_headshot,
     reconstruct_crown,
     write_master,
@@ -81,8 +82,10 @@ CREAM_SOFT = (201, 194, 180)  # #C9C2B4  secondary
 MUTED = (176, 169, 151)  # #B0A997  tertiary
 ACCENT = (99, 185, 149)  # #63B995  accent green
 WARM = (217, 160, 91)  # #D9A05B  warm accent
-PANEL_TOP = (244, 241, 234)  # photo panel gradient, top
-PANEL_BOT = (228, 223, 211)  # photo panel gradient, bottom
+# Flat, not a gradient. The portrait's own backdrop is repainted to exactly
+# this value, so the photo has no edge against the panel at all; a gradient
+# would give it one, and put the seam back that the repaint exists to remove.
+PANEL = (243, 240, 233)
 
 # ------- Geometry -------
 CARD = (1200, 630)
@@ -190,20 +193,22 @@ def wrap(d: ImageDraw.ImageDraw, text: str, f: ImageFont.FreeTypeFont, width: in
 
 # ------- Panels -------
 def photo_panel(src: Image.Image, size: tuple[int, int]) -> Image.Image:
-    """Subject matted onto a warm gradient panel, sized to leave air around it."""
-    pw, ph = size
-    panel = Image.new("RGB", (pw, ph))
-    pd = ImageDraw.Draw(panel)
-    for y in range(ph):
-        t = y / max(1, ph - 1)
-        pd.line(
-            [(0, y), (pw, y)],
-            fill=tuple(int(PANEL_TOP[i] + (PANEL_BOT[i] - PANEL_TOP[i]) * t) for i in range(3)),
-        )
+    """Portrait on a flat panel, its studio backdrop repainted to match.
 
+    No cutout. The panel colour is close enough to the studio wall that the
+    wall can simply be repainted to it, which leaves the subject's real edges
+    intact - hair, collar, shoulder - instead of substituting a traced outline
+    for them. See fill_backdrop() for why tracing one is a losing game on a
+    white shirt against a white wall.
+    """
+    pw, ph = size
+    panel = Image.new("RGB", (pw, ph), PANEL)
+
+    # The alpha is still needed, but only to repair the clipped crown and to
+    # measure where the head starts; it never composites anything.
     alpha = background_alpha(src)
     rgb, alpha = reconstruct_crown(src.convert("RGB"), alpha)
-    clean = decontaminate(rgb, alpha)
+    filled = fill_backdrop(rgb, PANEL)
 
     # Scale on the subject's own extent, not the master's frame: the master
     # carries whatever padding the photographer left, and the composition is
@@ -213,15 +218,16 @@ def photo_panel(src: Image.Image, size: tuple[int, int]) -> Image.Image:
     top = rows[0] if rows else 0
     scale = SUBJECT_H / (alpha.height - top)
 
-    tw, th = (int(round(v * scale)) for v in (rgb.width, rgb.height))
-    clean = clean.resize((tw, th), Image.LANCZOS)
-    alpha = alpha.resize((tw, th), Image.LANCZOS)
-    # Upscaling a 358px master softens it; put the edge acuity back.
-    clean = clean.filter(ImageFilter.UnsharpMask(radius=1.6, percent=62, threshold=3))
+    tw, th = (int(round(v * scale)) for v in (filled.width, filled.height))
+    filled = filled.resize((tw, th), Image.LANCZOS)
+    # A light touch only. The 358px master softens when it is scaled up, but
+    # the subject now meets a flat field of exactly its own backdrop colour,
+    # and a heavier radius rings visibly along that edge.
+    filled = filled.filter(ImageFilter.UnsharpMask(radius=1.2, percent=42, threshold=3))
 
     x = (pw - tw) // 2
     y = SUBJECT_TOP - int(round(top * scale))
-    panel.paste(clean, (x, y), alpha)
+    panel.paste(filled, (x, y))
     print(f"  portrait: {tw}x{th} at ({x},{y}) in a {pw}x{ph} panel")
     return panel
 
