@@ -15,18 +15,20 @@ a layout.
 This script builds the card as a layout instead: a deep green type block
 carrying the same hierarchy the hero section uses (mono eyebrow in the accent,
 Playfair tagline) and a full-bleed photo panel on the right. The subject is
-matted off the studio white so the panel background can be the site's cream
-rather than a hard white rectangle butted against the green.
+matted off the blue-grey studio backdrop and set on the site's cream, rather
+than a photo's own rectangle butted against the green.
 
 Inputs
 ------
-- scripts/_in/headshot-2026.jpg  - studio headshot, plain light background,
-  head and shoulders. The matte assumes the background is near-white and
-  reaches the left, right and top borders.
+- The current headshot: scripts/_in/headshot-2026.* if present, otherwise the
+  committed master under static/originals/. A studio shot, head and shoulders,
+  on a plain backdrop that differs from the subject in hue - see
+  portrait_matte for what the matte can and cannot separate.
 - scripts/_fonts/{PlayfairDisplay,JetBrainsMono,Inter-SemiBold,Inter-Regular}.ttf
 
-  Both directories are gitignored - raw masters and font binaries stay out of
-  the repo, same policy as snap-favicon.py. Fetch the fonts with:
+  scripts/_in/ and scripts/_fonts/ are both gitignored. The headshot still
+  survives a fresh clone because this script commits it to static/originals/
+  and reads it back from there; the fonts do not, so fetch them with:
 
     cd scripts/_fonts
     curl -LO "https://raw.githubusercontent.com/google/fonts/main/ofl/playfairdisplay/PlayfairDisplay%5Bwght%5D.ttf"
@@ -36,7 +38,8 @@ Inputs
 Outputs
 -------
 - static/og-image.jpg                      1200x630, the share card
-- static/originals/headshot-2026.jpg       source master, long edge 1200
+- static/originals/headshot-2026.*         the committed master: a verbatim
+  copy of the source, or a reduction if the source exceeds the long-edge budget
 
 Usage
 -----
@@ -47,18 +50,23 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageDraw, ImageFont
 
 # Same directory as this script, so a plain import resolves when it is run
 # as `python scripts/snap-og-card.py`.
-from portrait_matte import background_alpha, decontaminate, reconstruct_crown
+from portrait_matte import (
+    background_alpha,
+    find_headshot,
+    reconstruct_crown,
+    subject_geometry,
+    write_master,
+)
 
 # ------- Paths -------
 REPO_ROOT = Path(__file__).resolve().parent.parent
 STATIC = REPO_ROOT / "static"
 ORIGINALS = STATIC / "originals"
 FONTS = REPO_ROOT / "scripts" / "_fonts"
-SRC = REPO_ROOT / "scripts" / "_in" / "headshot-2026.jpg"
 
 # ------- Palette -------
 # Lifted from styles.css .section-dark, the inverted band the career history
@@ -73,8 +81,9 @@ CREAM_SOFT = (201, 194, 180)  # #C9C2B4  secondary
 MUTED = (176, 169, 151)  # #B0A997  tertiary
 ACCENT = (99, 185, 149)  # #63B995  accent green
 WARM = (217, 160, 91)  # #D9A05B  warm accent
-PANEL_TOP = (244, 241, 234)  # photo panel gradient, top
-PANEL_BOT = (228, 223, 211)  # photo panel gradient, bottom
+# Flat, not a gradient. A gradient behind a cut-out subject reads as two
+# separate pictures; one field reads as a panel the portrait sits on.
+PANEL = (243, 240, 233)
 
 # ------- Geometry -------
 CARD = (1200, 630)
@@ -84,11 +93,14 @@ PAD_T = 58
 PAD_B = 54
 TEXT_W = PANEL_X - PAD_L - 72
 
-# Portrait placement inside the panel. The subject runs off the bottom edge
-# (a portrait that stops mid-chest in open space looks like a mistake) but
-# keeps clear air above the head and down both sides.
-SUBJECT_H = 516
-SUBJECT_TOP = CARD[1] - SUBJECT_H
+# Portrait placement, scaled off the head rather than off the frame. The
+# frame is whatever the photographer left round the subject and changes with
+# every new photo; the head is the thing the composition is actually about,
+# so sizing on it survives a swap. The subject runs off the bottom edge - a
+# portrait that stops mid-chest in open space looks like a mistake - and off
+# both sides at shoulder height, while keeping air around the head.
+HEAD_H = 268  # crown to shoulder line, in panel pixels
+CROWN_TOP = 74  # where the crown sits below the panel's top edge
 
 # ------- Copy -------
 EYEBROW = "NARENDRANATH EDARA  /  DATA ENGINEER"
@@ -182,39 +194,23 @@ def wrap(d: ImageDraw.ImageDraw, text: str, f: ImageFont.FreeTypeFont, width: in
 
 # ------- Panels -------
 def photo_panel(src: Image.Image, size: tuple[int, int]) -> Image.Image:
-    """Subject matted onto a warm gradient panel, sized to leave air around it."""
+    """Matted portrait on a flat panel, sized and placed off the head."""
     pw, ph = size
-    panel = Image.new("RGB", (pw, ph))
-    pd = ImageDraw.Draw(panel)
-    for y in range(ph):
-        t = y / max(1, ph - 1)
-        pd.line(
-            [(0, y), (pw, y)],
-            fill=tuple(int(PANEL_TOP[i] + (PANEL_BOT[i] - PANEL_TOP[i]) * t) for i in range(3)),
-        )
+    panel = Image.new("RGB", (pw, ph), PANEL)
 
     alpha = background_alpha(src)
     rgb, alpha = reconstruct_crown(src.convert("RGB"), alpha)
-    clean = decontaminate(rgb, alpha)
+    crown, shoulder = subject_geometry(alpha)
+    scale = HEAD_H / max(1, shoulder - crown)
 
-    # Scale on the subject's own extent, not the master's frame: the master
-    # carries whatever padding the photographer left, and the composition is
-    # about where the head and the shoulders land.
-    ap = alpha.load()
-    rows = [y for y in range(alpha.height) if any(ap[x, y] > 128 for x in range(0, alpha.width, 3))]
-    top = rows[0] if rows else 0
-    scale = SUBJECT_H / (alpha.height - top)
-
-    tw, th = (int(round(v * scale)) for v in (rgb.width, rgb.height))
-    clean = clean.resize((tw, th), Image.LANCZOS)
+    tw, th = (max(1, int(round(v * scale))) for v in (rgb.width, rgb.height))
+    rgb = rgb.resize((tw, th), Image.LANCZOS)
     alpha = alpha.resize((tw, th), Image.LANCZOS)
-    # Upscaling a 358px master softens it; put the edge acuity back.
-    clean = clean.filter(ImageFilter.UnsharpMask(radius=1.6, percent=62, threshold=3))
 
     x = (pw - tw) // 2
-    y = SUBJECT_TOP - int(round(top * scale))
-    panel.paste(clean, (x, y), alpha)
-    print(f"  portrait: {tw}x{th} at ({x},{y}) in a {pw}x{ph} panel")
+    y = CROWN_TOP - int(round(crown * scale))
+    panel.paste(rgb, (x, y), alpha)
+    print(f"  portrait: head {shoulder - crown}px -> {HEAD_H}px, {tw}x{th} at ({x},{y})")
     return panel
 
 
@@ -292,34 +288,23 @@ def build_card(src: Image.Image) -> Image.Image:
     return card
 
 
-def downscale_long_edge(img: Image.Image, long_edge: int) -> Image.Image:
-    if max(img.size) <= long_edge:
-        return img
-    scale = long_edge / max(img.size)
-    return img.resize((int(img.width * scale), int(img.height * scale)), Image.LANCZOS)
-
-
 def main() -> None:
-    if not SRC.exists():
-        raise FileNotFoundError(f"missing source photo: {SRC}\nsee the module docstring")
     STATIC.mkdir(parents=True, exist_ok=True)
-    ORIGINALS.mkdir(parents=True, exist_ok=True)
 
+    src_path = find_headshot(REPO_ROOT)
+    print(f"source: {src_path.relative_to(REPO_ROOT)}")
     report_contrast()
     print()
 
-    src = Image.open(SRC).convert("RGB")
+    src = Image.open(src_path).convert("RGB")
     card = build_card(src)
 
     out = STATIC / "og-image.jpg"
     card.save(out, "JPEG", quality=88, optimize=True, progressive=True, subsampling=0)
     print(f"  static/og-image.jpg  {card.size}  {out.stat().st_size/1024:.1f} KB")
 
-    master = ORIGINALS / "headshot-2026.jpg"
-    downscale_long_edge(src, 1200).save(
-        master, "JPEG", quality=86, optimize=True, progressive=True
-    )
-    print(f"  static/originals/headshot-2026.jpg  {master.stat().st_size/1024:.1f} KB")
+    master = write_master(src_path, ORIGINALS)
+    print(f"  {master.relative_to(REPO_ROOT)}  {master.stat().st_size/1024:.1f} KB")
 
 
 if __name__ == "__main__":

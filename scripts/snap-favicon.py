@@ -14,9 +14,11 @@ scripts/snap-og-card.py for why.
 
 Inputs
 ------
-A single source headshot at scripts/_in/headshot-2026.jpg (head-and-shoulders
-shot; landscape or square, face visible, neutral background OK). This is the
-same master scripts/snap-og-card.py reads.
+The current headshot: scripts/_in/headshot-2026.* if present, otherwise the
+committed master under static/originals/. Head-and-shoulders shot, face
+visible, on a plain backdrop that differs from the subject in hue - see
+portrait_matte for what the matte can and cannot separate.
+scripts/snap-og-card.py resolves the same file the same way.
 
 Outputs (relative to repo root)
 -------------------------------
@@ -32,7 +34,8 @@ Outputs (relative to repo root)
 Usage
 -----
     pip install -r scripts/requirements.txt
-    # place fresh source photo at scripts/_in/headshot-2026.jpg
+    # optional: drop a newer photo at scripts/_in/headshot-2026.<ext> to
+    # override the committed master
     python scripts/snap-favicon.py
 """
 from __future__ import annotations
@@ -44,7 +47,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 # Same directory as this script, so a plain import resolves when it is run
 # as `python scripts/snap-favicon.py`.
-from portrait_matte import background_alpha, decontaminate, reconstruct_crown
+from portrait_matte import background_alpha, find_headshot, reconstruct_crown
 
 # ------- Constants -------
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -68,10 +71,11 @@ MASKABLE_GROUND = "#1F3D2B"  # .section-dark background, styles.css
 
 # Crop policy. A Haar box bounds the face - brow to chin - not the head, so
 # padding it by a small factor lands the top edge partway up the hair and
-# chops it flat. These two numbers frame the head instead: how far above the
-# box the crown sits, and how wide a square to take around it.
-HEAD_ABOVE_FACE = 0.30  # crown height as a fraction of face-box height
+# chops it flat. The crop is framed on the head instead: the matte already
+# knows exactly which row the crown is on, so the box is placed off that
+# measurement rather than off a guess at how much skull sits above the brow.
 HEAD_CROP_RATIO = 1.46  # square side as a multiple of face-box height
+HEAD_TOP_MARGIN = 0.07  # ground above the crown, as a fraction of the crop
 
 # Output sizes
 TAB_SIZES = (16, 32, 48)
@@ -98,26 +102,32 @@ def detect_face_bbox(img_path: Path) -> tuple[int, int, int, int]:
     return tuple(int(v) for v in faces[0])
 
 
-def head_crop_box(
-    size: tuple[int, int], face: tuple[int, int, int, int], top_pad: int = 0
-) -> tuple[int, int, int, int]:
-    """Square crop box holding the whole head, not just the face box.
+def crown_row(alpha: Image.Image) -> int:
+    """First row carrying subject, i.e. the top of the head."""
+    ap = alpha.load()
+    for y in range(alpha.height):
+        if any(ap[x, y] > 128 for x in range(0, alpha.width, 3)):
+            return y
+    return 0
 
-    Anchored to the estimated crown rather than centred on the face box: a
-    centred square of any size that reaches the chin also reaches above the
-    crown, and a square small enough to avoid that cuts the hair off flat.
-    Anchoring at the top and letting the square run down into the collar puts
-    the slack where slack looks deliberate.
+
+def head_crop_box(
+    size: tuple[int, int], face: tuple[int, int, int, int], top: int
+) -> tuple[int, int, int, int]:
+    """Square crop box holding the whole head, anchored at a measured top.
+
+    Anchored at the top and allowed to run down into the collar: a square
+    centred on the face box that reaches the chin also reaches above the
+    crown, and one small enough to avoid that cuts the hair off flat. Putting
+    the slack at the bottom is putting it where slack looks deliberate.
 
     Returns a box rather than an image so the photo and its alpha can be cut
     with exactly the same numbers.
     """
     iw, ih = size
-    x, y, w, h = face
+    x, _, w, h = face
     cx = x + w // 2
     side = int(h * HEAD_CROP_RATIO)
-    # top_pad is the crown the matte rebuilt above the original frame.
-    top = max(0, int(y + top_pad - h * HEAD_ABOVE_FACE))
     left = min(max(0, cx - side // 2), max(0, iw - side))
     # If the source cannot give a square that big, take the largest it can.
     side = min(side, iw - left, ih - top)
@@ -215,16 +225,11 @@ def main() -> None:
     ORIGINALS.mkdir(parents=True, exist_ok=True)
 
     # One current headshot, two consumers: this script and snap-og-card.py
-    # read the same master so the tab mark, the home-screen icon and the
+    # resolve it the same way so the tab mark, the home-screen icon and the
     # share card cannot drift onto different photos.
-    portrait_src = INPUT_DIR / "headshot-2026.jpg"
+    portrait_src = find_headshot(REPO_ROOT)
     fullbody_src = INPUT_DIR / "headshot-fullbody.jpg"
-
-    if not portrait_src.exists():
-        raise FileNotFoundError(
-            f"missing source photo: {portrait_src}\n"
-            f"place a head-and-shoulders shot at that path and rerun."
-        )
+    print(f"source: {portrait_src.relative_to(REPO_ROOT)}")
 
     # 1. Face detection, matte, then a head-framed square crop.
     #    Matting before cropping rather than after: the flood fill needs the
@@ -234,17 +239,35 @@ def main() -> None:
     portrait = Image.open(portrait_src).convert("RGB")
     alpha = background_alpha(portrait)
     padded, alpha = reconstruct_crown(portrait, alpha)
-    top_pad = padded.height - portrait.height
-    clean = decontaminate(padded, alpha)
+    # The photo's own pixels, composited through the alpha. There used to be a
+    # decontamination pass here that blurred the image into its own outline to
+    # kill white fringing; it left a grey halo round the hair that was worse
+    # than the fringe. The alpha erodes a little harder instead.
+    clean = padded
 
-    box = head_crop_box(padded.size, bbox, top_pad=top_pad)
-    print(f"face box {bbox} -> head crop {box} (crown pad {top_pad}px)")
+    # Put ground above the crown. Without it the head sits flush against the
+    # icon's top edge and reads as a crop that missed, and this master happens
+    # to be framed with the crown almost exactly on row 0, so there is nothing
+    # above it to borrow.
+    side = int(bbox[3] * HEAD_CROP_RATIO)
+    margin = int(side * HEAD_TOP_MARGIN)
+    crown = crown_row(alpha)
+    lift = max(0, margin - crown)
+    if lift:
+        grown = Image.new("RGB", (clean.width, clean.height + lift), (255, 255, 255))
+        grown.paste(clean, (0, lift))
+        grown_a = Image.new("L", (alpha.width, alpha.height + lift), 0)
+        grown_a.paste(alpha, (0, lift))
+        clean, alpha = grown, grown_a
+
+    box = head_crop_box(clean.size, bbox, top=crown + lift - margin)
+    print(f"face box {bbox} -> head crop {box} (crown row {crown + lift}, margin {margin}px)")
     face_crop_1024 = clean.crop(box).resize((1024, 1024), Image.LANCZOS)
     face_alpha_1024 = alpha.crop(box).resize((1024, 1024), Image.LANCZOS)
 
     # Same columns, run to the bottom of the frame: the maskable icon needs
     # shoulders it can bleed off the canvas edge.
-    tall = (box[0], box[1], box[2], padded.height)
+    tall = (box[0], box[1], box[2], clean.height)
     tall_rgb, tall_alpha = clean.crop(tall), alpha.crop(tall)
 
     # 2. Monogram favicons (tab) - 16, 32, 48 PNG

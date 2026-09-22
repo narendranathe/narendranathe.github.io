@@ -1,50 +1,158 @@
 #!/usr/bin/env python3
 """
-Lift a subject off a plain studio background, so it can be placed on a chosen
-ground instead of on a white rectangle.
+Find the current headshot, and lift its subject off the studio background so
+it can be placed on a chosen ground instead of on a white rectangle.
 
 Shared by scripts/snap-og-card.py (share card) and scripts/snap-favicon.py
 (home-screen and Android adaptive icons). It lives here rather than in either
-of them because both put the same photo on a colored ground, and a matte that
-drifts between the two shows up as two slightly different faces across a
-person's own assets.
+of them because both read the same photo and put it on a colored ground, and
+a matte that drifts between the two shows up as two slightly different faces
+across a person's own assets.
 
-Assumes what a studio headshot gives you: a near-white, near-neutral
-background reaching the left, right and top borders of the frame. It is not a
-general-purpose matter and will not cope with a busy or dark backdrop.
+Assumes a plain studio backdrop that differs from the subject in hue, not
+merely in brightness, and that reaches the left, right and top borders of the
+frame. That is what the current master gives: a cool blue-grey wall behind a
+warm jacket. It is not a general-purpose matter and will not cope with a busy
+backdrop, nor with a white wall behind a white shirt - there the two are the
+same colour and no threshold separates them.
 """
 from __future__ import annotations
 
+import math
+import shutil
 from collections import deque
+from pathlib import Path
+from statistics import median
 
-from PIL import Image, ImageChops, ImageFilter
+from PIL import Image, ImageFilter
+
+HEADSHOT_STEM = "headshot-2026"
+# Masters are committed in whatever format they arrived in, so no generation
+# of JPEG loss is introduced just to normalise a file extension.
+HEADSHOT_EXTS = (".webp", ".jpg", ".jpeg", ".png")
+MASTER_LONG_EDGE = 2000
 
 
-def background_alpha(im: Image.Image) -> Image.Image:
-    """Alpha for the subject, matted off a near-white studio background.
+def find_headshot(repo_root: Path) -> Path:
+    """Locate the current headshot, preferring a freshly dropped-in file.
 
-    Flood-fills white from the left, right and top borders only. The bottom
-    border is excluded deliberately: at the bottom of the frame the shirt spans
-    the full width, so there is no background there to find, and seeding from
-    it would leak into the shirt - which is itself near-white.
+    scripts/_in/ is gitignored, so on a fresh clone it is empty and the only
+    copy of the photo is the committed master under static/originals/. Falling
+    back to that means the asset scripts run against a clean checkout with no
+    files fetched from anywhere; without the fallback the repo carries a
+    headshot its own scripts cannot see.
+    """
+    for directory in (repo_root / "scripts" / "_in", repo_root / "static" / "originals"):
+        for ext in HEADSHOT_EXTS:
+            candidate = directory / f"{HEADSHOT_STEM}{ext}"
+            if candidate.exists():
+                return candidate
+    exts = "|".join(e.lstrip(".") for e in HEADSHOT_EXTS)
+    raise FileNotFoundError(
+        f"no headshot found. Put one at scripts/_in/{HEADSHOT_STEM}.({exts}), or "
+        f"restore the committed master under static/originals/."
+    )
+
+
+def write_master(src_path: Path, originals: Path) -> Path:
+    """Refresh the committed master from `src_path`, without re-encoding it.
+
+    The master doubles as the fallback input above, so a lossy rewrite on every
+    run would feed its own losses back in and compound. Copying the bytes when
+    the photo is already inside the size budget keeps the committed copy
+    identical to what came out of the camera; a 43 KB master re-encoded at
+    quality 86 measured 42.7 dB PSNR against its source, with single channels
+    off by as much as 16.
+    """
+    originals.mkdir(parents=True, exist_ok=True)
+    master = originals / f"{HEADSHOT_STEM}{src_path.suffix.lower()}"
+    if src_path.resolve() == master.resolve():
+        return master  # running off the fallback; nothing to refresh
+    with Image.open(src_path) as probe:
+        oversized = max(probe.size) > MASTER_LONG_EDGE
+    if oversized:
+        with Image.open(src_path) as img:
+            img = img.convert("RGB")
+            scale = MASTER_LONG_EDGE / max(img.size)
+            small = img.resize((int(img.width * scale), int(img.height * scale)), Image.LANCZOS)
+            small.save(master, quality=90, method=6) if master.suffix == ".webp" else small.save(
+                master, "JPEG", quality=88, optimize=True, progressive=True
+            )
+    else:
+        shutil.copyfile(src_path, master)
+    return master
+
+
+def _opponent(c: tuple[int, int, int]) -> tuple[float, float]:
+    """Colour as two opponent axes, independent of how bright it is.
+
+    Brightness is the axis a studio backdrop shares with everything lit by the
+    same lamps; hue is the one it does not. Separating on these two is what
+    makes a mid-grey-blue wall trivially distinguishable from a warm jacket
+    that happens to sit at the same luminance.
+    """
+    r, g, b = c
+    return (b - r, g - (r + b) / 2)
+
+
+def backdrop_signature(im: Image.Image, margin_frac: float = 0.02) -> tuple[int, int, int]:
+    """The backdrop's colour, read from the border it is guaranteed to own."""
+    w, h = im.size
+    px = im.convert("RGB").load()
+    m = max(3, int(min(w, h) * margin_frac))
+    # Top edge and the upper half of both sides. Not the bottom: shoulders
+    # reach that border in any head-and-shoulders frame.
+    samples = [px[x, y] for y in range(m) for x in range(0, w, 4)]
+    for y in range(m, h // 2, 4):
+        samples += [px[x, y] for x in range(m)] + [px[w - 1 - x, y] for x in range(m)]
+    return tuple(int(median([s[i] for s in samples])) for i in range(3))
+
+
+def background_alpha(
+    im: Image.Image,
+    hue_tol: float = 16.0,
+    lum_span: float = 62.0,
+    clear_tol: float = 11.0,
+    feather: float = 1.0,
+    erode: float = 0.6,
+) -> Image.Image:
+    """Alpha for the subject, matted off a plain studio backdrop.
+
+    Classifies on distance from the backdrop's own colour in the opponent
+    axes above, then floods that classification in from the left, right and
+    top borders. The bottom border is excluded deliberately: shoulders reach
+    it, so seeding there walks straight into the jacket.
+
+`clear_tol` then removes any remaining pixel that matches the backdrop
+    closely, connected or not. Backdrop gets trapped between an arm and the
+    frame where the flood cannot reach it. It is tighter than `hue_tol`
+    because nothing vouches for those pixels but their own colour.
+
+    The backdrop has to differ from the subject in hue, not merely in
+    brightness. A white wall behind a white shirt does not, which is why this
+    does not attempt one.
     """
     w, h = im.size
     px = im.convert("RGB").load()
+    sig = backdrop_signature(im)
+    s_op = _opponent(sig)
+    s_lum = 0.299 * sig[0] + 0.587 * sig[1] + 0.114 * sig[2]
 
-    WHITE_MIN, NEUTRAL_TOL = 243, 8
-    white = [
-        [
-            min(px[x, y]) >= WHITE_MIN and (max(px[x, y]) - min(px[x, y])) <= NEUTRAL_TOL
-            for x in range(w)
-        ]
-        for y in range(h)
-    ]
+    def score(c: tuple[int, int, int]) -> tuple[float, float]:
+        op = _opponent(c)
+        hue = math.hypot(op[0] - s_op[0], op[1] - s_op[1])
+        bright = abs((0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) - s_lum)
+        return hue, bright
+
+    def is_bg(x: int, y: int, tol: float) -> bool:
+        hue, bright = score(px[x, y])
+        return hue <= tol and bright <= lum_span
 
     seen = [[False] * w for _ in range(h)]
     q: deque[tuple[int, int]] = deque()
 
     def seed(x: int, y: int) -> None:
-        if white[y][x] and not seen[y][x]:
+        if not seen[y][x] and is_bg(x, y, hue_tol):
             seen[y][x] = True
             q.append((x, y))
 
@@ -63,39 +171,54 @@ def background_alpha(im: Image.Image) -> Image.Image:
     ap = alpha.load()
     for y in range(h):
         for x in range(w):
-            if seen[y][x]:
+            # Reached by the flood, or unmistakably the backdrop wherever it
+            # sits. The second test uses a tighter tolerance than the flood,
+            # because it answers for pixels with no connection to vouch for
+            # them: only a near-exact colour match clears one.
+            if seen[y][x] or is_bg(x, y, clear_tol):
                 ap[x, y] = 0
 
-    # Closing bridges the notches the threshold bites out of lit fabric. The
-    # shoulders take a wide kernel because a shirt edge is smooth; the hair
-    # takes a narrow one because its edge is the detail worth keeping.
-    def closed(img: Image.Image, k: int) -> Image.Image:
-        return img.filter(ImageFilter.MaxFilter(k)).filter(ImageFilter.MinFilter(k))
-
-    hair_split = int(h * 0.42)
-    gentle, strong = closed(alpha, 3), closed(alpha, 9)
-    merged = gentle.copy()
-    merged.paste(strong.crop((0, hair_split, w, h)), (0, hair_split))
-    band = 24
-    for i in range(band):
-        y = hair_split - band + i
-        merged.paste(
-            Image.blend(gentle.crop((0, y, w, y + 1)), strong.crop((0, y, w, y + 1)), i / band),
-            (0, y),
-        )
-
-    # Erode by about two thirds of a pixel to bite off the white rim the
-    # threshold leaves behind, then feather.
-    eroded = merged.filter(ImageFilter.MinFilter(3))
-    return Image.blend(eroded, merged, 0.35).filter(ImageFilter.GaussianBlur(0.7))
+    # close pinholes the threshold punches in lit fabric, then pull the edge
+    # in a fraction of a pixel so no backdrop survives in the fringe
+    alpha = alpha.filter(ImageFilter.MaxFilter(3)).filter(ImageFilter.MinFilter(3))
+    alpha = Image.blend(alpha.filter(ImageFilter.MinFilter(3)), alpha, 1 - erode)
+    return alpha.filter(ImageFilter.GaussianBlur(feather))
 
 
-def decontaminate(im: Image.Image, alpha: Image.Image) -> Image.Image:
-    """Pull edge pixels toward local subject color so no white rim survives."""
-    interior = im.filter(ImageFilter.GaussianBlur(3))
-    edge = ImageChops.difference(alpha, alpha.filter(ImageFilter.MinFilter(5)))
-    edge = edge.filter(ImageFilter.GaussianBlur(1.0)).point(lambda v: min(255, int(v * 1.6)))
-    return Image.composite(interior, im, edge)
+def subject_geometry(alpha: Image.Image, head_band: float = 0.40) -> tuple[int, int]:
+    """Return (crown row, shoulder row) from a matte.
+
+    The shoulder line is where the outline stops being a head: scanning down,
+    the width holds roughly steady through the skull and jaw, necks in, then
+    jumps as the shoulders arrive. Taking the widest row in the upper part of
+    the subject as the head's own width and calling the first row a quarter
+    wider than that the shoulder line finds the transition without needing a
+    second detector.
+
+    Composition sized off these two numbers survives a change of photo;
+    composition sized off the frame does not, because the frame is only
+    whatever the photographer left around the subject.
+    """
+    ap = alpha.load()
+    w, h = alpha.size
+    step = max(1, w // 400)
+    spans = []
+    for y in range(h):
+        xs = [x for x in range(0, w, step) if ap[x, y] > 128]
+        spans.append((xs[0], xs[-1]) if xs else None)
+
+    crown = next((y for y, sp in enumerate(spans) if sp), 0)
+    band_end = crown + int((h - crown) * head_band)
+    head_w = max((sp[1] - sp[0]) for sp in spans[crown:band_end] if sp)
+    shoulder = next(
+        (
+            y
+            for y in range(band_end, h)
+            if spans[y] and (spans[y][1] - spans[y][0]) > head_w * 1.25
+        ),
+        band_end,
+    )
+    return crown, shoulder
 
 
 def reconstruct_crown(
@@ -119,6 +242,12 @@ def reconstruct_crown(
 
     w, h = im.size
     ap = alpha.load()
+
+    # Nothing is clipped unless the subject reaches the frame's top edge. The
+    # ellipse fit is only meaningful when it does, and a photo with headroom
+    # must not have a cap invented on top of it.
+    if not any(ap[x, 0] > 128 for x in range(0, w, 3)):
+        return im, alpha
 
     # Only the skull. Read far enough down and the widest row is the jaw or a
     # shoulder, which fits an ellipse half again too wide and builds a dome.

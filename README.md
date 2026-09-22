@@ -69,17 +69,17 @@ The green is `--accent` (`#176447`), the color the stylesheets actually resolve
 to; it was `#E8743C` long after anything else on the page stopped being orange,
 and white on that orange measured 3.0:1, versus 7.1:1 on the green.
 
-The photo icons are matted off the studio background (shared with the share
+The photo icons are matted off the studio backdrop (shared with the share
 card, see `scripts/portrait_matte.py`) and composited onto the brand ground, so
-they read as icons rather than as a white tile. The crop frames the whole head:
-a Haar box bounds the face, brow to chin, so padding it slightly lands the top
-edge partway up the hair. Tab marks are rasterised at their target size rather
-than supersampled and reduced, which at 16px is the difference between a
-letterform and a grey smudge.
+they read as icons rather than as a photo tile. The crop frames the head off
+the crown the matte measured, not off the Haar box, which bounds the face brow
+to chin and leaves the hair cut flat. Tab marks are rasterised at their target
+size rather than supersampled and reduced, which at 16px is the difference
+between a letterform and a grey smudge.
 
 ```bash
 pip install -r scripts/requirements.txt
-# drop a head-and-shoulders photo at scripts/_in/headshot-portrait.jpg
+# optional: drop a newer photo at scripts/_in/headshot-2026.<ext>
 python scripts/snap-favicon.py
 ```
 
@@ -87,25 +87,40 @@ python scripts/snap-favicon.py
 `static/og-image.jpg` is what LinkedIn, Slack and iMessage render when the URL
 is shared, and it is a layout rather than a crop: a deep green type block
 carrying the hero's own hierarchy, plus the portrait matted off its studio
-white onto a cream panel. It is generated separately because a face-detection
-box makes a bad social card - the previous one cut the forehead and sat on a
-flat orange field that matches nothing on the site.
+backdrop onto a flat cream panel. It is generated separately because a
+face-detection box makes a bad social card - the previous one cut the forehead
+and sat on a flat orange field that matches nothing on the site.
 
 ```bash
-# drop a studio headshot (plain light background) at scripts/_in/headshot-2026.jpg
+# optional: drop a newer photo at scripts/_in/headshot-2026.<ext>
 # fonts: see the script docstring for the curl commands
 python scripts/snap-og-card.py
 ```
 
 The script prints a WCAG contrast reading for every ink color on the dark
 block and auto-sizes the tagline to two lines, so a copy edit cannot silently
-reflow the card or drop a color below AA.
+reflow the card or drop a color below AA. The portrait is scaled off the head
+the matte measured rather than off the photo's frame, so swapping the source
+photo does not silently change the composition.
 
-After either script: bump the `?v=` cache-bust query strings in `index.html`
-(the share-card one also appears in `content/posts/`), since LinkedIn and Slack
-cache the card by URL and will otherwise keep serving the old one. Source
-masters are downscaled to 1200 px long-edge and saved to `static/originals/` so
-the repo stays light; `scripts/_in/` and `scripts/_fonts/` are gitignored.
+### The headshot
+
+One master, `static/originals/headshot-2026.<ext>`, committed in whatever
+format it arrived in and byte-identical to the source unless it exceeds the
+long-edge budget. Both scripts prefer `scripts/_in/` and fall back to that
+committed copy, so a clean checkout regenerates every asset with nothing
+fetched from anywhere. `scripts/_in/` and `scripts/_fonts/` are gitignored.
+
+The matte separates subject from backdrop **on hue, not brightness**: the
+current master is a warm jacket against a cool blue-grey wall, which the two
+opponent-colour axes pull apart cleanly. A backdrop that differs only in
+brightness will not work - a white wall behind a white shirt is the case that
+defeated three separate attempts before the photo was replaced.
+
+After either script: the `?v=` cache-bust query strings in `index.html` and
+`content/posts/` are the files' own content hashes, so regenerating an asset
+means recomputing them. LinkedIn and Slack cache the card by URL and will
+otherwise keep serving the old one.
 
 ## Stable Resume URL - drop-in for any portfolio
 
