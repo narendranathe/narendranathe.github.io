@@ -61,17 +61,17 @@
        <picture> source anyway. imagesrcset + imagesizes mirror the
        <picture>'s mobile (max-width: 860px) breakpoint. -->
   <link rel="preload" as="image" type="image/avif"
-        imagesrcset="static/originals/headshot-fullbody-800.avif 800w, static/originals/headshot-fullbody.avif 1200w"
-        imagesizes="(max-width: 860px) 100vw, 1200px"
+        imagesrcset="static/originals/headshot-hero-800.avif 800w, static/originals/headshot-hero.avif 1122w"
+        imagesizes="(max-width: 860px) 100vw, 1122px"
         fetchpriority="high">
   <link rel="preload" as="image" type="image/webp"
-        imagesrcset="static/originals/headshot-fullbody-800.webp 800w, static/originals/headshot-fullbody.webp 1200w"
-        imagesizes="(max-width: 860px) 100vw, 1200px"
+        imagesrcset="static/originals/headshot-hero-800.webp 800w, static/originals/headshot-hero.webp 1122w"
+        imagesizes="(max-width: 860px) 100vw, 1122px"
         fetchpriority="high">
   <link rel="preload" as="image" type="image/jpeg"
-        href="static/originals/headshot-fullbody.jpg"
-        imagesrcset="static/originals/headshot-fullbody-800.jpg 800w, static/originals/headshot-fullbody.jpg 1200w"
-        imagesizes="(max-width: 860px) 100vw, 1200px"
+        href="static/originals/headshot-hero.jpg"
+        imagesrcset="static/originals/headshot-hero-800.jpg 800w, static/originals/headshot-hero.jpg 1122w"
+        imagesizes="(max-width: 860px) 100vw, 1122px"
         fetchpriority="high">
 </head>
 <body>
@@ -161,18 +161,18 @@
 
           <div class="profile-frame hero-photo-stack">
             <picture>
-              <source type="image/avif" media="(max-width: 860px)" srcset="static/originals/headshot-fullbody-800.avif">
-              <source type="image/webp" media="(max-width: 860px)" srcset="static/originals/headshot-fullbody-800.webp">
-              <source media="(max-width: 860px)" srcset="static/originals/headshot-fullbody-800.jpg">
+              <source type="image/avif" media="(max-width: 860px)" srcset="static/originals/headshot-hero-800.avif">
+              <source type="image/webp" media="(max-width: 860px)" srcset="static/originals/headshot-hero-800.webp">
+              <source media="(max-width: 860px)" srcset="static/originals/headshot-hero-800.jpg">
               <!-- AVIF first (smallest bytes; Chrome 85+ / Safari 16.4+ / Firefox 113+) -->
-              <source type="image/avif" srcset="static/originals/headshot-fullbody.avif">
+              <source type="image/avif" srcset="static/originals/headshot-hero.avif">
               <!-- WebP second (universal modern; covers every evergreen browser) -->
-              <source type="image/webp" srcset="static/originals/headshot-fullbody.webp">
+              <source type="image/webp" srcset="static/originals/headshot-hero.webp">
               <!-- JPEG fallback for the long tail; also matches the preload `href` -->
-              <img src="static/originals/headshot-fullbody.jpg"
+              <img src="static/originals/headshot-hero.jpg"
                    alt="Naren Edara, Data Engineer"
                    class="profile-photo"
-                   width="1200" height="1500"
+                   width="1122" height="1402"
                    loading="eager" decoding="async" fetchpriority="high">
             </picture>
           </div>
@@ -606,7 +606,7 @@ stats_df = enriched_df \
         <p class="section-index">04 / Let's talk</p>
         <h2 class="sec-h" data-reveal>What is slowing your data team down?</h2>
         <div class="contact" data-reveal>
-          <span class="contact-avatar"><img src="static/originals/headshot-fullbody-800.jpg" alt="Naren Edara" width="800" height="1000" loading="lazy"></span>
+          <span class="contact-avatar"><picture><source type="image/webp" srcset="static/originals/headshot-avatar.webp"><img src="static/originals/headshot-avatar.jpg" alt="Naren Edara" width="512" height="512" loading="lazy"></picture></span>
           <div class="contact-body">
             <p class="contact-lead">If your team is spending too much time on manual data work, slow releases, or pipeline recovery, I would like to help change that. I am looking for a data engineering role where I can own the problem and build the tools to solve it.</p>
             <p><a href="mailto:edara.narendranath@gmail.com?subject=Re%3A%20Data%20Engineering%20-%20%5BCompany%20Name%5D" class="btn btn-primary contact-email">edara.narendranath@gmail.com</a></p>

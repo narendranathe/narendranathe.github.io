@@ -29,7 +29,9 @@ Outputs (relative to repo root)
 - static/apple-touch-icon.png     - photo on the brand ground, 180x180, head-framed crop
 - static/favicon-512-maskable.png - photo on the brand ground, Android safe area
   (static/og-image.jpg is NOT written here - scripts/snap-og-card.py owns it)
-- static/originals/headshot-fullbody.jpg - hero master, 1200px long edge
+- static/originals/headshot-avatar.{jpg,webp} - square head crop for the
+  site's circular contact avatar
+  (the hero's variants are scripts/snap-hero-variants.py's to write)
 
 Usage
 -----
@@ -81,7 +83,7 @@ HEAD_TOP_MARGIN = 0.07  # ground above the crown, as a fraction of the crop
 TAB_SIZES = (16, 32, 48)
 APPLE_TOUCH_SIZE = 180
 MASKABLE_SIZE = 512
-ORIGINAL_LONG_EDGE = 1200
+AVATAR_SIZE = 512  # site contact avatar; 207 CSS px at 2x needs 414
 
 
 # ------- Helpers -------
@@ -208,17 +210,6 @@ def _ico_frame_sizes(path: Path) -> list[tuple[int, int]]:
     return sorted(out)
 
 
-def downscale_long_edge(img: Image.Image, long_edge: int) -> Image.Image:
-    if max(img.size) <= long_edge:
-        return img
-    if img.width >= img.height:
-        scale = long_edge / img.width
-    else:
-        scale = long_edge / img.height
-    new_size = (int(img.width * scale), int(img.height * scale))
-    return img.resize(new_size, Image.LANCZOS)
-
-
 # ------- Main pipeline -------
 def main() -> None:
     STATIC.mkdir(parents=True, exist_ok=True)
@@ -228,7 +219,6 @@ def main() -> None:
     # resolve it the same way so the tab mark, the home-screen icon and the
     # share card cannot drift onto different photos.
     portrait_src = find_headshot(REPO_ROOT)
-    fullbody_src = INPUT_DIR / "headshot-fullbody.jpg"
     print(f"source: {portrait_src.relative_to(REPO_ROOT)}")
 
     # 1. Face detection, matte, then a head-framed square crop.
@@ -264,6 +254,21 @@ def main() -> None:
     print(f"face box {bbox} -> head crop {box} (crown row {crown + lift}, margin {margin}px)")
     face_crop_1024 = clean.crop(box).resize((1024, 1024), Image.LANCZOS)
     face_alpha_1024 = alpha.crop(box).resize((1024, 1024), Image.LANCZOS)
+
+    # The site's circular contact avatar, as a square asset rather than a
+    # CSS trick. It used to be the hero photo zoomed 3.34x with its origin
+    # pinned to face coordinates measured off a particular master; when the
+    # photo changed, those numbers pointed at the wrong part of a different
+    # person's frame and the avatar cropped his head off. A pre-framed square
+    # cannot drift: the CSS just covers with it.
+    avatar = clean.crop(box).resize((AVATAR_SIZE, AVATAR_SIZE), Image.LANCZOS)
+    for fmt, ext, kw in (
+        ("JPEG", "jpg", dict(quality=86, progressive=True)),
+        ("WEBP", "webp", dict(quality=84, method=6)),
+    ):
+        out = ORIGINALS / f"headshot-avatar.{ext}"
+        avatar.save(out, fmt, optimize=True, **kw)
+        print(f"  static/originals/headshot-avatar.{ext} ({AVATAR_SIZE}px, {out.stat().st_size//1024} KB)")
 
     # Same columns, run to the bottom of the frame: the maskable icon needs
     # shoulders it can bleed off the canvas edge.
@@ -317,20 +322,12 @@ def main() -> None:
     #    orange block with a face pasted beside it; running it must not quietly
     #    restore that.
 
-    # 7. Originals — downscaled to 1200px long edge to keep repo light
-    # The portrait master is written by snap-og-card.py; writing it from both
-    # scripts at different JPEG qualities would make the file flip-flop with
-    # whichever ran last.
-    for src_path, out_name in [
-        (fullbody_src, "headshot-fullbody.jpg"),
-    ]:
-        if not src_path.exists():
-            continue
-        img = Image.open(src_path).convert("RGB")
-        small = downscale_long_edge(img, ORIGINAL_LONG_EDGE)
-        out = ORIGINALS / out_name
-        small.save(out, "JPEG", quality=82, optimize=True, progressive=True)
-        print(f"  static/originals/{out_name} ({small.size}, {out.stat().st_size} B)")
+    # 7. Originals - nothing to write. The portrait master is written by
+    #    snap-og-card.py, and the hero's responsive variants by
+    #    snap-hero-variants.py. This script used to maintain a separate
+    #    full-length photo for the hero; that photo is no longer used
+    #    anywhere, so keeping a copy of it here was keeping a copy of
+    #    nothing.
 
     # 8. Print final byte budget
     print()

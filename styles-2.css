@@ -101,8 +101,12 @@
 .creds a { color: var(--accent); }
 
 .contact { max-width: 62ch; display: flex; gap: 1.2rem; align-items: flex-start; }
-/* A face at the moment of outreach: small, circular, quiet. Same 4:5
-   portrait asset as the hero; object-position lifts the face into frame. */
+/* A face at the moment of outreach: small, circular, quiet. Its own
+   pre-framed square asset (headshot-avatar.*), so covering it is the whole
+   job. This used to reuse the hero's 4:5 portrait and zoom 3.34x with the
+   origin pinned to face coordinates measured off one particular master;
+   the moment the photo changed, those numbers framed the wrong thing and
+   the avatar cut his head off. */
 .contact-avatar {
   width: 64px; height: 64px; flex: none; margin-top: 0.15rem;
   border-radius: 50%; overflow: hidden; display: block;
@@ -110,9 +114,7 @@
 }
 .contact-avatar img {
   width: 100%; height: 100%; display: block;
-  object-fit: cover; object-position: 50% 0%;
-  /* Same derived face-crop zoom as the mobile hero avatar. */
-  transform: scale(3.34); transform-origin: 51.8% 31.3%;
+  object-fit: cover; object-position: 50% 50%;
 }
 .contact-body { display: flex; flex-direction: column; gap: 0.9rem; }
 .contact-lead { font-size: 1.05rem; line-height: 1.7; color: var(--fg); font-weight: 500; }
