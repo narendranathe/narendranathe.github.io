@@ -470,24 +470,17 @@ button { font-family: inherit; cursor: pointer; }
      avatar beside nothing, and the proof points get the space instead. */
   .hero { padding: 5rem 0 2.5rem; }
   .hero-grid { gap: 1.5rem; }
-  /* Avatar leads, the way every phone profile does. The frame goes
-     circular here; the rule below crops the face into it. */
+  /* The photo leads on a phone, the way every profile does. */
   .hero-visual { order: -1; width: auto; margin-inline: 0; }
-  .profile-frame {
-    width: 76px; max-width: 76px; aspect-ratio: 1/1;
-    border-radius: 50%; box-shadow: none;
-  }
-  /* Face crop without a duplicate asset: object-position top-aligns the
-     4:5 portrait inside the square circle, then the transform zooms on
-     the face. Derivation: face box (442,195)-(802,555) of the 1200x1500
-     original -> face center 51.8% across, 375/1200 = 31.3% down the
-     top-aligned square; 360px face square -> 1200/360 = 3.34x. If the
-     photo asset is ever replaced, delete these two transform lines. */
-  .profile-photo {
-    object-position: 50% 0%;
-    transform: scale(3.34);
-    transform-origin: 51.8% 31.3%;
-  }
+  /* There used to be a 76px circular avatar here, with .profile-photo
+     scaled 3.34x and its origin pinned to face coordinates measured off
+     the old 1200x1500 full-length photo, to crop a face out of it.
+     recruiter.css later restored a 4:5 frame at 280px and overrode the
+     frame's size, but nothing reset the zoom - so the portrait kept being
+     magnified 3.34x inside a frame that no longer wanted it, which cropped
+     the head off the top and stretched 240px of real detail across the
+     width of a phone. The frame is the portrait's own 4:5 now and the
+     photo simply fills it, so both rules are gone rather than retuned. */
   /* Avatar takes 64px of the row; let the email button use the rest */
   .contact-email { display: block; text-align: center; }
   .hero-name { font-size: 2rem; margin-bottom: 0.4rem; }

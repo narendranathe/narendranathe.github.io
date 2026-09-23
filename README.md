@@ -103,13 +103,29 @@ reflow the card or drop a color below AA. The portrait is scaled off the head
 the matte measured rather than off the photo's frame, so swapping the source
 photo does not silently change the composition.
 
+**Hero portrait** - [`scripts/snap-hero-variants.py`](scripts/snap-hero-variants.py).
+Writes `headshot-hero.{jpg,webp,avif}` at the master's native width and
+`headshot-hero-800.*` for phones. The `<picture>` offers AVIF, then WebP, then
+JPEG; the mobile JPEG is tuned lower than the desktop one because it is only
+the fallback for a browser that supports neither of the first two. Never
+upscales - the hero renders at 368 CSS px at its largest, so the master's own
+width already covers a 3x display.
+
 ### The headshot
 
 One master, `static/originals/headshot-2026.<ext>`, committed in whatever
 format it arrived in and byte-identical to the source unless it exceeds the
-long-edge budget. Both scripts prefer `scripts/_in/` and fall back to that
-committed copy, so a clean checkout regenerates every asset with nothing
+long-edge budget. All three scripts prefer `scripts/_in/` and fall back to
+that committed copy, so a clean checkout regenerates every asset with nothing
 fetched from anywhere. `scripts/_in/` and `scripts/_fonts/` are gitignored.
+
+**Frame crops in an asset, not in CSS.** The hero, the icons and the circular
+contact avatar all need the photo framed differently. Each gets its own
+pre-framed file. The alternative - one asset reused everywhere with
+`transform: scale()` and a `transform-origin` in face coordinates - was what
+the site did, and those coordinates were measured off one particular photo.
+When the photo changed they framed the wrong part of a different picture, and
+the hero and the avatar both cut the subject's head off.
 
 The matte separates subject from backdrop **on hue, not brightness**: the
 current master is a warm jacket against a cool blue-grey wall, which the two
