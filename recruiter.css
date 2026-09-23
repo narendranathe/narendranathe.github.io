@@ -115,3 +115,30 @@ body { background:var(--bg); }
   .proj-name,.proj--flagship .proj-name { font-size:1.65rem; }
 }
 @media print { .hero { padding:1rem 0; } .hero-visual { display:none; } .section-dark,#contact { background:#fff; --fg:#000; --fg-soft:#222; --fg-muted:#333; --accent:#16432f; } }
+
+/* A shorter first read, with original engineering evidence available on demand. */
+.hero { padding-top:7rem; padding-bottom:3.5rem; }
+.hero-grid { grid-template-columns:minmax(0,1.7fr) minmax(220px,.7fr); align-items:center; gap:4rem; }
+.hero-tagline { max-width:20ch; font-size:clamp(2.45rem,4.3vw,3.8rem); }
+.hero-name { margin-top:1rem; }
+.hero-role { line-height:1.7; }
+.hero-brief { font-size:1.1rem; line-height:1.7; }
+.hero-photo-stack { max-width:290px; margin-left:auto; }
+.hero-visual { padding-top:0; }
+.portrait-caption { max-width:290px; margin-left:auto; width:100%; }
+.outcomes-link { display:inline-block; margin-top:1.5rem; text-underline-offset:4px; }
+.outcome-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.5rem; }
+.outcome-card { border:1px solid var(--border); padding:1.75rem; background:#fffdf8; }
+.outcome-number { color:var(--accent); font-size:.8rem; margin-bottom:1rem; }
+.outcome-card h3 { font:400 1.8rem/1.2 Georgia,serif; margin-bottom:1.25rem; }
+.outcome-card p { line-height:1.75; margin-bottom:1rem; }
+.outcome-result { font-weight:600; }
+.outcome-card summary,.more-evidence summary,.experience-details>summary { cursor:pointer; padding:.8rem 0; line-height:1.5; text-decoration:underline; text-underline-offset:4px; }
+.more-evidence { margin-top:2rem; }
+.experience-brief { max-width:64ch; font-size:1.05rem; line-height:1.75; margin:1rem 0 .5rem; }
+.experience-details { margin-top:.5rem; }
+.experience-details[open] { padding-bottom:1rem; }
+.experience-details .case { margin-top:1.75rem; }
+.section-dark .role { padding-top:1.5rem; padding-bottom:1.5rem; }
+@media(max-width:860px) { .hero-grid { grid-template-columns:1fr; gap:2rem; } .hero-visual { display:none; } .outcome-grid { grid-template-columns:1fr; } .hero { padding-top:6.5rem; } .hero-tagline { max-width:22ch; } }
+@media(max-width:480px) { .hero-tagline { font-size:2.5rem; } .hero-actions { display:flex; flex-wrap:wrap; gap:.75rem; } .outcome-card { padding:1.3rem; } }

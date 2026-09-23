@@ -1,7 +1,7 @@
 id,claim,status,evidence,where_used
 C-CSPO,Certified Scrum Product Owner,DOC,Scrum Alliance certification,Projects
 C-SQL,SQL-driven product and user-behavior analysis on a B2B fintech working-capital platform,STATED,Employment record; no public artifact,Experience
-E-IDEM,Database provisioning made idempotent with failure guards; about one hour of manual work removed per request,STATED,Owner account documented in docs/exponenthr-accomplishments.md; no annual extrapolation,Experience; Hero; Production systems
+E-IDEM,Database provisioning made idempotent with failure guards; about one hour of manual work removed per request,STATED,Owner account documented in docs/exponenthr-accomplishments.md; no annual extrapolation,Experience; Production systems
 E-LIVEREC,Live CDC incremental-load failure diagnosed and restored in place under production pressure,STATED,Employment record; no public artifact,Experience
 E-OBS,SSIS execution history rebuilt in SQL; control-table-driven validation making data drift alertable,STATED,Employment record; no public artifact,Experience
 E-PTO,Payroll accrual defect root-caused in SQL and shipped to every client tenant through change-request review,STATED,Employment record; no public artifact,Experience
@@ -9,8 +9,8 @@ E-REPORTAUTO,Git and Azure DevOps API workflows automated in Python: 15+ hrs/spr
 E-RETENTION,Change history recovered through fn_cdc_get_all_changes before the CDC retention window closed,STATED,Employment record; no public artifact,Experience
 E-SECURE2,SECURE 2.0 retirement-plan compliance delivered against a legislated deadline,STATED,Employment record; no public artifact,Experience
 E-SELFHEAL,"Self-healing monitoring for production SQL Agent jobs across missed, stuck, and silent failures",STATED,Employment record; no public artifact,Experience
-E1-CDC,"CDC ETL from full reloads to idempotent incremental merge-upserts: 30 min to under 8, compute -67%, freshness SLA held",STATED,Employment record; no public artifact,Experience; Hero; Production systems
-E2-CICD,Release cycle 3 months to 14 days through end-to-end Azure DevOps ownership; ~11 weeks idle removed per release,STATED,Employment record; no public artifact,Experience; Hero; Production systems
+E1-CDC,"CDC ETL from full reloads to idempotent incremental merge-upserts: 30 min to under 8, compute -67%, freshness SLA held",STATED,Employment record; no public artifact,Experience; Production systems
+E2-CICD,Release cycle 3 months to 14 days through end-to-end Azure DevOps ownership; ~11 weeks idle removed per release,STATED,Employment record; no public artifact,Experience; Production systems
 E3-FABRIC,"Reporting migrated to Microsoft Fabric semantic models with OLAP tuning: 12s to under 4s, support tickets -40%",STATED,Employment record; ticket derivation in GROUND_TRUTH.md,Experience; Production systems
 E5-RECOVERY,"CDC capture restored under one hour after an availability-group failover, on a documented runbook",STATED,Employment record; no public artifact,Experience; Production systems
 M1,Azure AI Anomaly Detector pipelines at 95%+ accuracy; production memory leak caught 4 hrs before outage,STATED,Employment record; no public artifact,Experience
