@@ -418,7 +418,14 @@ def test_hero_claims_carry_ground_truth_ids(html: str) -> None:
     # to clear the fold on a 390px phone, and five chips did not. The
     # requirement that survives is that every chip cites its evidence.
     chips = re.findall(r"<li\b[^>]*>", hero)
-    assert len(chips) >= 3, f"expected >= 3 hero proof chips, found {len(chips)}"
+    # Proof moved into the immediately following production outcomes section.
+    cards = re.findall(r'<article class="outcome-card"[^>]*>', html)
+    assert len(cards) == 3, f"expected 3 production outcome cards, found {len(cards)}"
+    evidence = {re.search(r'data-gt-id="([^"]+)"', card).group(1)
+                for card in cards if re.search(r'data-gt-id="([^"]+)"', card)}
+    assert evidence == {"E1-CDC", "E-IDEM", "E2-CICD"}, (
+        f"production outcomes must cite their verified source IDs, found {evidence}"
+    )
     unsourced = [c for c in chips if "data-gt-id=" not in c]
     assert not unsourced, (
         "hero proof chip with no GROUND_TRUTH id:\n  "
