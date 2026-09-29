@@ -146,10 +146,19 @@ JSON_SCHEMA = {
 
 # ------- Helpers -------
 def count_pdf_pages(pdf_bytes: bytes) -> int:
-    """Count pages by regex over PDF object catalog. No external deps.
-    Robust enough for hand-authored resumes (1-3 pages); falls back to 1
-    on encrypted/compressed PDFs where the page tree is hidden.
-    """
+    """Count pages from the PDF catalog, with a stdlib fallback for smoke tests."""
+    try:
+        import pikepdf
+
+        with pikepdf.open(io.BytesIO(pdf_bytes)) as pdf:
+            return len(pdf.pages)
+    except ImportError:
+        pass
+    except pikepdf.PdfError:
+        # The self-test's minimal PDF lacks a complete xref table.
+        pass
+
+    # The stdlib fallback supports the synthetic PDF used by CI without pikepdf.
     matches = re.findall(rb"/Type\s*/Page(?![s/])", pdf_bytes)
     return max(1, len(matches))
 
@@ -285,21 +294,21 @@ def render_page1_preview(
     draw = ImageDraw.Draw(canvas)
     draw.rectangle([0, 0, width - 1, height - 1], outline=(230, 230, 230), width=1)
 
-    # Quantize to a 256-colour adaptive palette → PNG-8. For a downscaled
-    # mostly-white-plus-black-text thumbnail this is visually indistinguishable
-    # from the RGB original but cuts the file size by ~4× (LANCZOS produces
-    # lots of subtle grays during text AA which inflate RGB PNG payloads).
-    paletted = canvas.quantize(colors=256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
-
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    # Empty PngInfo strips text/tIME chunks → no PDF-rendering-toolchain leak.
-    paletted.save(
-        output_path,
-        format="PNG",
-        optimize=True,
-        compress_level=9,
-        pnginfo=PngInfo(),
-    )
+    # Dense two-page resumes can exceed the preview byte budget at 256 colours.
+    # Try smaller PNG-8 palettes until the committed thumbnail fits.
+    for colors in (256, 128, 64, 32):
+        paletted = canvas.quantize(colors=colors, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
+        # Empty PngInfo strips text/tIME chunks → no PDF-rendering-toolchain leak.
+        paletted.save(
+            output_path,
+            format="PNG",
+            optimize=True,
+            compress_level=9,
+            pnginfo=PngInfo(),
+        )
+        if output_path.stat().st_size <= PREVIEW_BYTE_BUDGET:
+            break
     return output_path.stat().st_size
 
 
