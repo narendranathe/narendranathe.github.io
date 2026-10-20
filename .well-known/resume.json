@@ -1,12 +1,12 @@
 {
   "$schema": "https://narendranathe.github.io/static/resume.schema.json",
-  "byte_size": 48985,
-  "last_updated": "2026-10-03",
-  "page_count": 2,
-  "preview_hash": "2f345461",
+  "byte_size": 38805,
+  "last_updated": "2026-10-20",
+  "page_count": 1,
+  "preview_hash": "f4aaef71",
   "preview_path": "/static/resume-page1-preview.png",
-  "sha256": "f1d885884dba6566ac8128bd2e99450add38b5f00ce9b4a18849a318f2b3bcf3",
+  "sha256": "114eb79b665cba35a7188d08e5c98a316bd5564d74daa6d32ca3c0759ab99c14",
   "spec_version": "0.1.0-experimental",
   "url": "https://narendranathe.github.io/static/resume.pdf",
-  "version_hash": "f1d88588"
+  "version_hash": "114eb79b"
 }
