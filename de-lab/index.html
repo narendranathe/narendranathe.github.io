@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore how reliable data platforms are built. Run interactive CDC and data-quality simulations, learn the architecture, and examine real production outcomes.">
+  <meta name="author" content="Narendranath Edara">
+  <meta name="theme-color" content="#0a0e12">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Data Engineering Systems Lab | Narendranath Edara">
+  <meta property="og:description" content="Don't just read the architecture. Break it, inspect it, and learn why it works. An interactive data engineering systems portfolio.">
+  <meta property="og:url" content="https://narendranathe.github.io/de-lab/">
+  <meta property="og:image" content="https://narendranathe.github.io/static/og-image.jpg">
+  <link rel="canonical" href="https://narendranathe.github.io/de-lab/">
+  <link rel="icon" href="../static/favicon-32.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./core.js" defer></script>
+  <script src="./app.js" defer></script>
+  <title>Data Engineering Systems Lab | Narendranath Edara</title>
+</head>
+<body id="top">
+<a class="skip" href="#main">Skip to content</a>
+<div class="topline">
+  <div class="wrap topline-inner"><span class="led" aria-hidden="true"></span><span>PUBLIC SYSTEMS LAB <span class="topline-muted">//</span> EXPERIMENT WITH FAILURE, NOT CUSTOMER DATA</span><a href="#lab">Open the simulations <span aria-hidden="true">↗</span></a></div>
+</div>
+<header class="site-header" id="site-header">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Data Engineering Systems Lab home"><span class="brand-mark">N<span class="brand-dot">.</span></span><span class="brand-words">DATA ENGINEERING<br><strong>SYSTEMS LAB</strong></span></a>
+    <button class="nav-toggle" type="button" aria-controls="nav-links" aria-expanded="false" aria-label="Open navigation"><span></span><span></span><span></span></button>
+    <nav id="nav-links" class="nav-links" aria-label="Main navigation">
+      <a href="#lab">Simulators</a><a href="#systems">Systems map</a><a href="#evidence">Evidence</a><a href="#about">About</a><a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn nav-cta" href="../index.html">View portfolio <span aria-hidden="true">↗</span></a>
+  </div>
+</header>
+<main id="main">
+  <section class="hero section">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-square"></span> ORIGINAL INTERACTIVE PORTFOLIO / V1.0</div>
+        <h1>Data platforms<br>aren't diagrams.<br><em>They're decisions.</em></h1>
+        <p class="hero-desc">From change data capture and warehouse correctness to recovery under failure. See the engineering trade-offs, run a synthetic workload, and inspect what breaks.</p>
+        <div class="hero-actions"><a href="#lab" class="btn btn-primary">Launch the lab <span aria-hidden="true">↗</span></a><a href="#evidence" class="text-link">See production outcomes <span aria-hidden="true">↘</span></a></div>
+        <div class="hero-foot"><div class="mini-line"><span class="mini-line-active"></span></div><p>BUILT BY NARENDRANATH EDARA <span class="hero-sep">/</span> DATA ENGINEER</p></div>
+      </div>
+      <div class="hero-console" aria-label="Illustrative architecture of an incremental data platform">
+        <div class="console-head"><span class="console-dots"><i></i><i></i><i></i></span><span>architecture / streaming-cdc.yaml</span><span class="console-live"><span class="led"></span> DEMO</span></div>
+        <div class="console-body">
+          <div class="diagram-heading"><span>FIG 01</span><strong>FROM CHANGE TO TRUSTED DATA</strong><span>REV / 01</span></div>
+          <div class="diagram-top">
+            <div class="diagram-node source"><span class="node-icon">01 / SOURCE</span><strong>OLTP</strong><small>Change log</small><span class="node-sub">INSERT · UPDATE · DELETE</span></div>
+            <div class="diagram-arrow" aria-hidden="true"><span></span><small>CDC</small></div>
+            <div class="diagram-node"><span class="node-icon">02 / TRANSPORT</span><strong>Event stream</strong><small>Ordered changes</small><span class="node-sub">KEY · OFFSET · RETRY</span></div>
+          </div>
+          <div class="diagram-vertical" aria-hidden="true">↓</div>
+          <div class="diagram-top">
+            <div class="diagram-node green-node"><span class="node-icon">03 / CONTRACTS</span><strong>Validate</strong><small>Grain · schema · checks</small><span class="node-sub">QUARANTINE ON FAIL</span></div>
+            <div class="diagram-arrow" aria-hidden="true"><span></span><small>MERGE</small></div>
+            <div class="diagram-node"><span class="node-icon">04 / SERVING</span><strong>Warehouse</strong><small>Incremental upsert</small><span class="node-sub">READY FOR ANALYTICS</span></div>
+          </div>
+          <div class="console-output">
+            <div><span class="console-output-label">PIPELINE MODE</span><strong>INCREMENTAL</strong></div>
+            <div><span class="console-output-label">DATA CONTRACT</span><strong class="green-text">ENFORCED ✓</strong></div>
+            <div><span class="console-output-label">OBSERVABILITY</span><strong>ENABLED</strong></div>
+          </div>
+          <p class="diagram-disclaimer">Conceptual architecture, not a production console or live telemetry.</p>
+        </div>
+      </div>
+    </div>
+    <div class="wrap scroll-hint"><span>SCROLL TO DECONSTRUCT THE SYSTEM</span><span aria-hidden="true">↓</span></div>
+  </section>
+
+  <section class="proof-bar" aria-label="Selected reported production outcomes">
+    <div class="wrap proof-grid">
+      <div class="proof-item"><strong>30 <span>→</span> &lt;8 <small>min</small></strong><p>CDC ETL RUNTIME</p></div>
+      <div class="proof-item"><strong>67<small>%</small></strong><p>LESS COMPUTE COST</p></div>
+      <div class="proof-item"><strong>3 <small>mo</small> <span>→</span> 14 <small>days</small></strong><p>RELEASE CYCLE</p></div>
+      <div class="proof-caption"><span>VERIFIED WITHIN PORTFOLIO RECORD</span><p>Reported production outcomes, not simulator benchmarks. See underlying context in the portfolio.</p></div>
+    </div>
+  </section>
+
+  <section class="section gap-section">
+    <div class="wrap">
+      <div class="section-kicker"><span>01 / THE DIFFERENCE</span><span>FROM THEORY TO ENGINEERING</span></div>
+      <div class="gap-grid">
+        <div><h2>Knowing the pattern<br>isn't the same as<br><em>owning the failure.</em></h2><p class="section-lead">A diagram tells you the happy path. Production asks what happens when an event is duplicated, a schema changes, or a row becomes financially incorrect.</p></div>
+        <div class="contrast">
+          <div class="contrast-row"><span class="contrast-number">01</span><div><strong>From "use CDC"</strong><p>To choosing an incremental strategy, handling retries and defending idempotency.</p></div><span class="contrast-plus">+</span></div>
+          <div class="contrast-row"><span class="contrast-number">02</span><div><strong>From "add data quality"</strong><p>To explicit rules for record grain, sentinel values and error quarantine.</p></div><span class="contrast-plus">+</span></div>
+          <div class="contrast-row"><span class="contrast-number">03</span><div><strong>From "automate deployment"</strong><p>To repeatable change control, tests and recovery-oriented release gates.</p></div><span class="contrast-plus">+</span></div>
+          <div class="contrast-row"><span class="contrast-number">04</span><div><strong>From "monitor the pipeline"</strong><p>To signals that expose late events, schema failures and broken contracts.</p></div><span class="contrast-plus">+</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section lab-section" id="lab">
+    <div class="wrap">
+      <div class="section-kicker"><span>02 / INTERACTIVE SYSTEMS</span><span>NO LOGIN · NO BACKEND · NO REAL DATA</span></div>
+      <div class="section-head spread"><div><h2>Don't just read it.<br><em>Run the failure.</em></h2><p class="section-lead">Two small, deterministic simulators built to make distributed data trade-offs visible.</p></div><div class="stamp"><span>FREE TO EXPLORE</span><strong>02 / 02</strong><span>WORKING LABS</span></div></div>
+      <div class="lab-shell">
+        <div class="lab-tabs" role="tablist" aria-label="Choose a data engineering simulation">
+          <button class="lab-tab active" role="tab" id="tab-cdc" aria-selected="true" aria-controls="panel-cdc" tabindex="0" data-panel="cdc" type="button"><span class="tab-index">01</span> CDC Pipeline <span class="tab-tag">LIVE</span></button>
+          <button class="lab-tab" role="tab" id="tab-dq" aria-selected="false" aria-controls="panel-dq" tabindex="-1" data-panel="dq" type="button"><span class="tab-index">02</span> Data Contracts <span class="tab-tag">LIVE</span></button>
+        </div>
+        <section class="lab-panel" id="panel-cdc" role="tabpanel" aria-labelledby="tab-cdc">
+          <div class="lab-panel-intro"><div><span class="mono muted">SIMULATOR / 001</span><h3>Incremental CDC under pressure.</h3><p>Change the workload, inject a failure and compare an incremental upsert with a full refresh. The engine separates applied, duplicate, late and quarantined events.</p></div><span class="synthetic-label">SYNTHETIC MODEL<br>NOT A BENCHMARK</span></div>
+          <div class="lab-inner">
+            <div class="lab-controls">
+              <div class="field"><span class="field-label">01 / PROCESSING STRATEGY</span><div class="option-grid" aria-label="Processing strategy"><button class="option selected" type="button" aria-pressed="true" data-mode="incremental">Incremental merge</button><button class="option" type="button" aria-pressed="false" data-mode="full">Full refresh</button></div></div>
+              <div class="field"><label class="field-label" for="event-volume">02 / INPUT VOLUME <strong id="volume-readout">1,200 events</strong></label><input id="event-volume" type="range" min="100" max="10000" step="100" value="1200"><div class="range-ends"><span>100</span><span>10K</span></div></div>
+              <div class="field"><span class="field-label">03 / INJECT A FAILURE</span><div class="scenario-list" aria-label="Failure scenarios"><button class="scenario active" type="button" aria-pressed="true" data-issue="none"><span class="radio-dot"></span>Healthy stream</button><button class="scenario" type="button" aria-pressed="false" data-issue="duplicates"><span class="radio-dot"></span>Duplicate delivery</button><button class="scenario" type="button" aria-pressed="false" data-issue="schema"><span class="radio-dot"></span>Schema drift</button><button class="scenario" type="button" aria-pressed="false" data-issue="late"><span class="radio-dot"></span>Late-arriving events</button></div></div>
+              <button class="btn btn-primary run-button" id="run-cdc" type="button">Run pipeline <span aria-hidden="true">→</span></button>
+            </div>
+            <div class="lab-results">
+              <div class="results-heading"><span><span class="led"></span> SIMULATED RUN OUTPUT</span><span id="run-status">RUN 001 / COMPLETED</span></div>
+              <div class="result-metrics" aria-live="polite" aria-atomic="true"><div><span>APPLIED</span><strong id="metric-applied">1,200</strong><small>rows</small></div><div><span>QUARANTINED</span><strong id="metric-rejected">0</strong><small>events</small></div><div><span>ELAPSED</span><strong id="metric-seconds">1.47</strong><small>sim. s</small></div></div>
+              <div class="flow-strip" aria-label="Pipeline stages"><div class="flow-unit"><span>01</span><strong>Capture</strong><small id="flow-capture">1,200 received</small></div><span class="flow-chevron" aria-hidden="true">→</span><div class="flow-unit"><span>02</span><strong>Check</strong><small id="flow-check">0 blocked</small></div><span class="flow-chevron" aria-hidden="true">→</span><div class="flow-unit"><span>03</span><strong>Merge</strong><small id="flow-merge">1,200 applied</small></div></div>
+              <div class="terminal"><div class="terminal-head"><span>EVENT TRACE</span><span>local simulation</span></div><ol id="cdc-log" aria-live="polite"><li><span>00:00</span> Source emitted 1,200 change events.</li><li><span>00:01</span> Data contract checks passed.</li><li><span>00:02</span> Incremental merge applied 1,200 rows.</li></ol></div>
+              <p class="result-note" id="cdc-insight">Incremental updates touch changed records rather than rebuilding every row.</p>
+              <div class="run-meta" id="cdc-meta">Additional: 0 duplicates · 0 late arrivals · 106 ms synthetic lag.</div>
+            </div>
+          </div>
+        </section>
+        <section class="lab-panel" id="panel-dq" role="tabpanel" aria-labelledby="tab-dq" hidden>
+          <div class="lab-panel-intro"><div><span class="mono muted">SIMULATOR / 002</span><h3>When a row is valid SQL but wrong data.</h3><p>Inspect a tiny synthetic dataset. Check uniqueness at the business grain, reject sentinel dates, and enforce required values before the warehouse is updated.</p></div><span class="synthetic-label">SYNTHETIC DATA<br>NO PRIVATE RECORDS</span></div>
+          <div class="dq-controls"><span class="field-label">SELECT A DATASET</span><div class="dq-options" aria-label="Dataset scenario"><button class="option selected" aria-pressed="true" data-dataset="clean" type="button">Healthy input</button><button class="option" aria-pressed="false" data-dataset="duplicates" type="button">Duplicate grain</button><button class="option" aria-pressed="false" data-dataset="sentinel" type="button">Sentinel + missing</button></div><button class="btn btn-primary" id="run-dq" type="button">Validate records <span aria-hidden="true">→</span></button></div>
+          <div class="dq-layout">
+            <div class="data-table-wrap"><div class="terminal-head"><span>incoming_rows.csv</span><span>sample / 4 rows</span></div><table class="data-table"><thead><tr><th scope="col">BUSINESS_KEY</th><th scope="col">EFFECTIVE_DATE</th><th scope="col">AMOUNT</th><th scope="col">CHECK</th></tr></thead><tbody id="dq-rows"></tbody></table></div>
+            <div class="dq-result"><span class="field-label">CONTRACT REPORT</span><div id="dq-summary" class="dq-summary" role="status" aria-live="polite">4 / 4 PASSED</div><p>Rules enforced locally</p><div class="dq-rule"><span>01</span><strong>UNIQUE_GRAIN</strong><small>One row per business key</small></div><div class="dq-rule"><span>02</span><strong>VALID_DATE</strong><small>No sentinel or invalid dates</small></div><div class="dq-rule"><span>03</span><strong>REQUIRED_AMOUNT</strong><small>Missing values are blocked</small></div><div class="dq-findings" id="dq-findings">No violations detected. Ready for merge.</div></div>
+          </div>
+        </section>
+        <div class="lab-bottom"><span><span class="led"></span> ALL PROCESSING HAPPENS IN YOUR BROWSER</span><a href="https://github.com/narendranathe/narendranathe.github.io/tree/main/de-lab">Read the simulation source ↗</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section systems-section" id="systems">
+    <div class="wrap">
+      <div class="section-kicker"><span>03 / SYSTEMS MAP</span><span>6 COMPONENTS · 1 RELIABLE PLATFORM</span></div>
+      <div class="section-head"><h2>Build the pipeline.<br><em>Defend the trade-offs.</em></h2><p class="section-lead">A compact architecture curriculum: what each layer is responsible for, the failure it prevents, and the decision it forces.</p></div>
+      <div class="systems-grid">
+        <details class="system-module" open><summary><span class="module-num">01</span><span class="module-main"><span class="module-tag">INGEST</span><strong>Change Data Capture</strong><small>Log-based replication, offsets, duplicates, idempotency</small></span><span class="module-expand" aria-hidden="true">+</span></summary><div class="module-body"><p>Move only changed records. Keep ordered offsets, use stable business keys, replay safely, and never assume at-least-once delivery means exactly once.</p><div class="module-tags"><span>CDC</span><span>UPSERT</span><span>REPLAY</span></div></div></details>
+        <details class="system-module"><summary><span class="module-num">02</span><span class="module-main"><span class="module-tag">MODEL</span><strong>Grain & Data Contracts</strong><small>Keys, schema evolution, nulls, sentinel values</small></span><span class="module-expand" aria-hidden="true">+</span></summary><div class="module-body"><p>Choose and test record grain first. Make invalid data visible as a failed contract, not a silently wrong report.</p><div class="module-tags"><span>UNIQUENESS</span><span>SCHEMA</span><span>QUARANTINE</span></div></div></details>
+        <details class="system-module"><summary><span class="module-num">03</span><span class="module-main"><span class="module-tag">COMPUTE</span><strong>Incremental Transformations</strong><small>Merge strategies, late data, backfills, cost</small></span><span class="module-expand" aria-hidden="true">+</span></summary><div class="module-body"><p>Compare write amplification and read windows, then select a load strategy based on correctness and measured workload.</p><div class="module-tags"><span>INCREMENTAL</span><span>MERGE</span><span>BACKFILL</span></div></div></details>
+        <details class="system-module"><summary><span class="module-num">04</span><span class="module-main"><span class="module-tag">OPERATE</span><strong>Observability & Recovery</strong><small>Freshness, lineage, drift, retries, incident signals</small></span><span class="module-expand" aria-hidden="true">+</span></summary><div class="module-body"><p>Monitoring matters when it supports an action. Alert on broken freshness and contract drift, keep traceable runs, and rehearse recovery.</p><div class="module-tags"><span>FRESHNESS</span><span>LINEAGE</span><span>RETRY</span></div></div></details>
+        <details class="system-module"><summary><span class="module-num">05</span><span class="module-main"><span class="module-tag">SHIP</span><strong>CI/CD & Release Gates</strong><small>Migration order, tests, rollback, change control</small></span><span class="module-expand" aria-hidden="true">+</span></summary><div class="module-body"><p>Promote code and schema with tested, repeatable gates. A reliable release has a known recovery path.</p><div class="module-tags"><span>TESTS</span><span>DEPLOY</span><span>ROLLBACK</span></div></div></details>
+        <details class="system-module"><summary><span class="module-num">06</span><span class="module-main"><span class="module-tag">SCALE</span><strong>Cost & Platform Design</strong><small>Workload shapes, scheduling, reusable foundations</small></span><span class="module-expand" aria-hidden="true">+</span></summary><div class="module-body"><p>Optimize the shape of the work before buying more compute. Treat a saved engineer-hour as part of platform value.</p><div class="module-tags"><span>PERFORMANCE</span><span>COST</span><span>REUSE</span></div></div></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section evidence-section" id="evidence">
+    <div class="wrap">
+      <div class="section-kicker"><span>04 / EVIDENCE, NOT JUST THEORY</span><span>BUILD → MEASURE → IMPROVE</span></div>
+      <div class="section-head"><h2>Production is<br><em>the real test suite.</em></h2><p class="section-lead">The lab is an illustration. These are selected outcomes documented in the existing engineering portfolio.</p></div>
+      <div class="case-grid">
+        <article class="case-card"><div class="case-top"><span>CASE 01 / PERFORMANCE</span><span>DATA PIPELINES ↗</span></div><div class="case-number">30 <small>min</small><span>→</span>&lt;8 <small>min</small></div><h3>Incremental beats a full rebuild.</h3><p>Reengineered CDC ETL using merge-upserts, with reported compute spend reduced by 67%.</p><div class="case-foot"><span>CDC · SQL · COST</span><a href="../index.html#experience">Experience context <span aria-hidden="true">↗</span></a></div></article>
+        <article class="case-card"><div class="case-top"><span>CASE 02 / DELIVERY</span><span>PLATFORM ENGINEERING ↗</span></div><div class="case-number">14 <small>days</small></div><h3>Make reliable releases repeatable.</h3><p>Reported release cadence moved from approximately three months to 14 days through CI/CD ownership.</p><div class="case-foot"><span>CI/CD · AUTOMATION · GATES</span><a href="../index.html#experience">Experience context <span aria-hidden="true">↗</span></a></div></article>
+        <article class="case-card"><div class="case-top"><span>CASE 03 / CORRECTNESS</span><span>DATA QUALITY ↗</span></div><div class="case-number case-text">FIX THE<br>MODEL.</div><h3>Stop errors before the report.</h3><p>Built a control-table-driven data validation framework and investigated schema evolution under formal change control.</p><div class="case-foot"><span>CONTRACTS · VALIDATION · TRUST</span><a href="../index.html#projects">Explore the portfolio <span aria-hidden="true">↗</span></a></div></article>
+      </div>
+      <p class="proof-note">Production outcomes summarized from portfolio documentation. Metrics belong to real work; simulator values are made-up educational examples.</p>
+    </div>
+  </section>
+
+  <section class="section about-section" id="about">
+    <div class="wrap about-grid">
+      <div class="about-label"><span class="section-kicker"><span>05 / THE BUILDER</span></span><div class="portrait-mark" aria-hidden="true">N<span>.</span></div></div>
+      <div class="about-copy"><span class="mono muted">NARENDRANATH EDARA / DATA ENGINEER</span><h2>Systems worth<br><em>trusting.</em></h2><p>I work on data platforms where correctness, release control and recoverability matter. My practice spans CDC, SQL, automation and applied AI systems - connecting the architecture to a measurable outcome.</p><p>This lab is deliberately small: an interactive explanation of the engineering decisions behind dependable pipelines, without pretending a browser demo is a production platform.</p><div class="about-links"><a href="../index.html" class="btn btn-outline">Full portfolio <span aria-hidden="true">↗</span></a><a href="https://github.com/narendranathe" class="text-link">GitHub ↗</a><a href="https://www.linkedin.com/in/narendranathe/" class="text-link">LinkedIn ↗</a></div></div>
+    </div>
+  </section>
+
+  <section class="section faq-section" id="faq"><div class="wrap faq-grid"><div><div class="section-kicker"><span>06 / QUICK ANSWERS</span></div><h2>Questions,<br><em>answered.</em></h2></div><div class="faq-items">
+    <details><summary>Are the simulations running on actual cloud infrastructure?<span>+</span></summary><p>No. They are transparent, deterministic JavaScript models running locally in your browser. All records and timings are synthetic.</p></details>
+    <details><summary>Are the production statistics simulated too?<span>+</span></summary><p>No. The outcome strip cites selected reported work results from the existing portfolio. It is intentionally separate from the educational simulator.</p></details>
+    <details><summary>Can I inspect the code or reproduce the behavior?<span>+</span></summary><p>Yes. The small simulation engine and its unit tests live alongside this page in the public repository. Use the source link in the lab footer.</p></details>
+    <details><summary>Is this a paid class or sign-up funnel?<span>+</span></summary><p>No. It is a free interactive engineering portfolio. There is no account, price, checkout or collection of visitor input.</p></details>
+    <details><summary>How does the product get built and improved?<span>+</span></summary><p>Using a product requirements document, explicit acceptance criteria, independent simulations, native unit tests, and a reviewable GitHub pull request before deployment.</p></details>
+  </div></div></section>
+
+  <section class="footer-cta"><div class="wrap"><span class="eyebrow"><span class="eyebrow-square"></span> FROM DEMO TO DELIVERY</span><h2>Good architecture is<br><em>measurable.</em></h2><div class="footer-cta-actions"><p>Explore the systems I've shipped, the trade-offs I've made, and what I would build next.</p><a class="btn btn-primary" href="../index.html">Explore the full portfolio <span aria-hidden="true">↗</span></a></div></div></section>
+</main>
+<footer class="footer"><div class="wrap footer-inner"><a class="brand" href="#top"><span class="brand-mark">N<span class="brand-dot">.</span></span><span class="brand-words">DATA ENGINEERING<br><strong>SYSTEMS LAB</strong></span></a><span>© <span id="year">2026</span> NARENDRANATH EDARA. BUILT WITH HTML, CSS & JS.</span><a href="#top">BACK TO TOP ↑</a></div></footer>
+</body>
+</html>
