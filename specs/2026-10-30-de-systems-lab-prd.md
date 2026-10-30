@@ -1,6 +1,6 @@
 # PRD: Data Engineering Systems Lab
 
-**Status:** Implemented as reviewable MVP on \`feat/de-systems-lab\`
+**Status:** Implemented as reviewable MVP on `feat/de-systems-lab`
 **Date:** 2026-10-30
 **Product owner:** Portfolio owner
 **Proposed URL:** https://narendranathe.github.io/de-lab/
@@ -25,14 +25,14 @@ When evaluating a data/platform engineer, a visitor can interact with miniature,
 ## 5. MVP features
 | ID | Priority | Requirement | Acceptance criterion |
 |---|---|---|---|
-| F01 | P0 | Self-contained static page at \`/de-lab/\` | Browser serves HTML and local assets without build or package install |
+| F01 | P0 | Self-contained static page at `/de-lab/` | Browser serves HTML and local assets without build or package install |
 | F02 | P0 | Distinctive narrative and architecture visualization | Hero, pipeline diagram, measurable outcomes, systems map, evidence and CTA |
 | F03 | P0 | CDC simulation | Controls for mode, input volume, disruption; metrics and step trace update coherently |
 | F04 | P0 | Data quality simulation | Clean, duplicate-grain and sentinel-value datasets; explicit data contract failures |
 | F05 | P0 | Truthfulness | All simulator metrics identified as synthetic; actual career metrics identified as reported outcomes |
 | F06 | P0 | Navigation | Skip link, anchored sections, accessible focus styles, mobile nav; no dead CTAs |
-| F07 | P0 | Isolation | Root \`index.html\`, CSS and JS are not modified |
-| F08 | P0 | Core tests | \`node --test de-lab/tests/core.test.cjs\` passes |
+| F07 | P0 | Isolation | Root `index.html`, CSS and JS are not modified |
+| F08 | P0 | Core tests | `node --test de-lab/tests/core.test.cjs` passes |
 | F09 | P1 | Curriculum-style systems map | Six learning modules, accessible native accordion details |
 | F10 | P1 | Search and share metadata | Unique title, canonical URL, OG description and image (existing site image) |
 
@@ -48,9 +48,9 @@ Visual direction: dark midnight canvas, off-white typography, electric lime acce
 
 ## 8. Architecture and decisions
 - **ADR-01 / Static hosting:** Keep HTML + CSS + vanilla JavaScript to match the repository and GitHub Pages deployment. No extra repo, build system, framework or server.
-- **ADR-02 / Simulation engine:** Place deterministic, pure simulation logic in \`de-lab/core.js\`. UI consumes a browser global; Node's native test runner consumes CommonJS, avoiding npm.
+- **ADR-02 / Simulation engine:** Place deterministic, pure simulation logic in `de-lab/core.js`. UI consumes a browser global; Node's native test runner consumes CommonJS, avoiding npm.
 - **ADR-03 / Safety and privacy:** All data is synthetic, local and client-side. No forms, signups, telemetry, third-party API calls or storage of visitor inputs.
-- **ADR-04 / Deployment:** Create PR for review. Existing \`.github/workflows/deploy.yml\` publishes the repository root on \`main\`, including \`de-lab/\`; merge is required before public Pages deployment.
+- **ADR-04 / Deployment:** Create PR for review. Existing `.github/workflows/deploy.yml` publishes the repository root on `main`, including `de-lab/`; merge is required before public Pages deployment.
 - **ADR-05 / Product differentiation:** No third-party trademarks as branding, no misrepresentation of instructor/course ownership, no reused logos or creative assets.
 
 ## 9. Risks and mitigations
@@ -58,16 +58,16 @@ Visual direction: dark midnight canvas, off-white typography, electric lime acce
 |---|---|
 | Reference copyrighted content | Recreate design patterns with original copy and UI, not one-to-one code or asset copying |
 | Synthetic numbers mistaken for production | Label simulations at module, panel and result level |
-| Broken GitHub Pages relative paths | Use relative \`./\` assets, \`../\` portfolio links and explicit canonical URL |
+| Broken GitHub Pages relative paths | Use relative `./` assets, `../` portfolio links and explicit canonical URL |
 | Portfolio outage from release | Work in separate directory on feature branch; deploy after PR merge |
 | Accessibility regressions | Native buttons, labels, details, skip link, status regions and reduced-motion support |
 
 ## 10. Test and release plan
-1. Run \`node --test de-lab/tests/core.test.cjs\` (native Node, no dependencies).
+1. Run `node --test de-lab/tests/core.test.cjs` (native Node, no dependencies).
 2. Validate page anchors, script/style references, responsive viewports and keyboard controls in a browser.
 3. Review security (no secrets, no visitor data capture, no innerHTML from untrusted inputs).
 4. Merge PR only after visual and mobile review.
-5. Verify \`https://narendranathe.github.io/de-lab/\` after the existing Pages workflow completes.
+5. Verify `https://narendranathe.github.io/de-lab/` after the existing Pages workflow completes.
 
 ## 11. Future product increments
 - Phase 2: Interactive lineage graph and replayable incident scenarios with shareable state.
