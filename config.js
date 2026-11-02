@@ -103,7 +103,7 @@ const CONFIG = {
     social: {
         linkedin: 'https://linkedin.com/in/narendranathe',
         github:   'https://github.com/narendranathe',
-        email:    'edara.narendranath@gmail.com'
+        email:    'narendranath.ed@gmail.com'
     }
 };
 
@@ -122,7 +122,7 @@ window.PORTFOLIO_CONFIG = {
         linkedin: 'https://www.linkedin.com/in/narendranathe/',
         github:   'https://github.com/narendranathe',
         substack: 'https://narendranathe.substack.com',
-        email:    'mailto:edara.narendranath@gmail.com'
+        email:    'mailto:narendranath.ed@gmail.com'
     },
     identity: {
         name:             CONFIG.name,
@@ -130,7 +130,7 @@ window.PORTFOLIO_CONFIG = {
         footerStatement:  'Data engineering on payroll-critical systems: CDC pipelines, change-controlled releases, and the detection and recovery layer underneath.'
     },
     contactLinks: [
-        { label: 'Email',    href: 'mailto:edara.narendranath@gmail.com' },
+        { label: 'Email',    href: 'mailto:narendranath.ed@gmail.com' },
         { label: 'LinkedIn', href: 'https://www.linkedin.com/in/narendranathe/' },
         { label: 'GitHub',   href: 'https://github.com/narendranathe' },
         { label: 'Substack', href: 'https://narendranathe.substack.com' },
