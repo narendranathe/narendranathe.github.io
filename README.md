@@ -206,7 +206,7 @@ This site is deployed through GitHub Pages from the `main` branch.
 
 ## Contact
 
-- Email: `edara.narendranath@gmail.com`
+- Email: `narendranath.ed@gmail.com`
 - LinkedIn: `https://www.linkedin.com/in/narendranathe/`
 - GitHub: `https://github.com/narendranathe`
 
