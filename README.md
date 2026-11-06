@@ -20,6 +20,12 @@ This repository is the public source for my portfolio and career positioning, al
 
 The site highlights the kind of work I want to keep doing: production data and AI systems with strong engineering discipline, not one-off demos.
 
+## Historical role titles and work history
+
+The official titles for my commercial-operations experience are **Sales Manager at Zomato (March 2018–September 2020)** and **Area Lead at Udaan (September 2020–March 2021)**. My work included recurring SQL/Excel-based reporting, commercial KPI analysis, and demand/inventory reporting.
+
+This portfolio describes analytical responsibilities but is **not a contemporaneous employer record**. Specific technical platforms recalled retrospectively are identified separately from source-backed historical records in [historical experience provenance notes](docs/historical-experience-provenance-2026-11-01.md). My modern GitHub projects demonstrate current technical skills, not proof that those tools were used at the historical employers.
+
 ## Featured Proof Points
 
 ### ExponentHR (production)
