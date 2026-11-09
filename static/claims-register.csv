@@ -16,7 +16,7 @@ E5-RECOVERY,"CDC capture restored under one hour after an availability-group fai
 M1,Azure AI Anomaly Detector pipelines at 95%+ accuracy; production memory leak caught 4 hrs before outage,STATED,Employment record; no public artifact,Experience
 M2,"Tunable per-service alert thresholds: ~250 weekly P3 alerts filtered, signal-to-noise 1:5 to 1:1.2",STATED,Employment record; no public artifact,Experience; Production systems
 M3,"Static D-series VMs to AKS with horizontal pod autoscaling: -$3,200/mo, CPU 12% to 64%",STATED,Employment record; no public artifact,Experience; Production systems
-M4,"NLP pipelines over 10,000+ reviews, published in the Journal of Nonprofit & Public Sector Marketing",DOC,DOI 10.1080/10495142.2025.2525123,Experience
+M4,Co-authored study comparing VADER and RoBERTa sentiment analysis of museum reviews,DOC,DOI 10.1080/10495142.2025.2525123,Experience
 P-AUTOAPPLY,"AutoApply AI: Chrome extension, FastAPI, React dashboard, retrieval and provider fallback; personal project with public-launch gates in README",STATED,"github.com/narendranathe/autoapply-ai is public, so the code can be read; the counts themselves are unverified here and the deployment is not reachable",Projects
 P-FINTUNE,"FinTune: QLoRA 4-bit NF4, PII redaction, KL-divergence drift monitoring, 3-state breaker, 35+ tests across 7 modules",DOC,github.com/narendranathe/fintune tests/ + README,Projects
 P-FRAUD,Fraud platform: Kafka-fed LightGBM model serving on synthetic transactions; local latency figures withheld pending reproducible benchmark,DOC,github.com/narendranathe/fraud-detection-ml-platform README + data generator,Projects
@@ -25,9 +25,11 @@ P-JOBSCOUT,"JobScout: six ATS API adapters, retries and failure isolation, Flask
 P-RISK,"Portfolio Risk Analytics: Kafka to Spark Structured Streaming on 5s tumbling windows with a 10s watermark, Delta bronze layer, FastAPI historical-simulation VaR at 95% and 99%",DOC,github.com/narendranathe/portfolio-risk-analytics src/. Architecture and method only. The throughput and latency figures are withheld under P-RISK-METRICS and absent from the page; the seeded API fallback is disclosed there.,Projects
 P-TAILOR,"tailor-resume: document pipeline across CLI, PyPI, Streamlit, MCP; test count not reverified",STATED,pypi.org/project/tailor-resume is published and openable; the test count itself is unverified here,Projects
 U-BCP,Business continuity plan devised and executed to keep delivery cycles running through application downtime,DOC,2021 resume,Experience
+U-DATA-TOOLS,"Operational data integration and reporting with SQL, Excel automation, Azure Synapse Analytics, SSIS and SSRS",STATED,Owner-confirmed; no public artifact,Experience
 U-FORECAST,"Demand-forecasting and inventory models in Power BI, Excel macros, Google Data Studio: allocation ROI +7%",STATED,Employment record; the dollar total is BLOCKED and absent,Experience
 U-FULFILL,Statistical demand analysis for capacity planning: 99.3% order fulfillment sustained,STATED,Employment record; no public artifact,Experience
 Z-COMP,Real-time competitor analytics platform: 9% market share gain in contested metros,STATED,Employment record; no public artifact,Experience
+Z-DATA-TOOLS,"Data preparation and reporting using SQL, Python, Excel/VBA, Google BigQuery, SSIS, SSRS, Periscope, Redash and Tableau",STATED,Owner-confirmed; no public artifact,Experience
 Z-ES,Elasticsearch index over 100K+ internal documents: support desk volume down ~80%,STATED,Employment record; no public artifact,Experience
 Z-PNL,Portfolio contribution from -18 to +2 rupees per order across 300 restaurants,DOC,2021 resume,Experience
 Z-SEARCH,"Contextual signals supplied and evaluated for search ranking (analyst side, not model training)",STATED,Employment record; scope deliberately narrowed on the page,Experience

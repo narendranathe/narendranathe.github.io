@@ -64,17 +64,19 @@ EVIDENCE: dict[str, tuple[str, str, str]] = {
     "M1": ("Azure AI Anomaly Detector pipelines at 95%+ accuracy; production memory leak caught 4 hrs before outage", "STATED", "Employment record; no public artifact"),
     "M2": ("Tunable per-service alert thresholds: ~250 weekly P3 alerts filtered, signal-to-noise 1:5 to 1:1.2", "STATED", "Employment record; no public artifact"),
     "M3": ("Static D-series VMs to AKS with horizontal pod autoscaling: -$3,200/mo, CPU 12% to 64%", "STATED", "Employment record; no public artifact"),
-    "M4": ("NLP pipelines over 10,000+ reviews, published in the Journal of Nonprofit & Public Sector Marketing", "DOC", "DOI 10.1080/10495142.2025.2525123"),
+    "M4": ("Co-authored study comparing VADER and RoBERTa sentiment analysis of museum reviews", "DOC", "DOI 10.1080/10495142.2025.2525123"),
     # --- C2FO ---
     "C-SQL": ("SQL-driven product and user-behavior analysis on a B2B fintech working-capital platform", "STATED", "Employment record; no public artifact"),
     "C-PRD": ("Requirement documents from stakeholder interviews; resource-allocation time -50%", "STATED", "Self-reported; labeled as such on the page"),
     "C-CSPO": ("Certified Scrum Product Owner", "DOC", "Scrum Alliance certification"),
     # --- Udaan ---
+    "U-DATA-TOOLS": ("Operational data integration and reporting with SQL, Excel automation, Azure Synapse Analytics, SSIS and SSRS", "STATED", "Owner-confirmed; no public artifact"),
     "U-FORECAST": ("Demand-forecasting and inventory models in Power BI, Excel macros, Google Data Studio: allocation ROI +7%", "STATED", "Employment record; the dollar total is BLOCKED and absent"),
     "U-FULFILL": ("Statistical demand analysis for capacity planning: 99.3% order fulfillment sustained", "STATED", "Employment record; no public artifact"),
     "U-RCA": ("Root-cause analysis on recurring value-chain failures with process flows rewritten", "DOC", "2021 resume"),
     "U-BCP": ("Business continuity plan devised and executed to keep delivery cycles running through application downtime", "DOC", "2021 resume"),
     # --- Zomato ---
+    "Z-DATA-TOOLS": ("Data preparation and reporting using SQL, Python, Excel/VBA, Google BigQuery, SSIS, SSRS, Periscope, Redash and Tableau", "STATED", "Owner-confirmed; no public artifact"),
     "Z-COMP": ("Real-time competitor analytics platform: 9% market share gain in contested metros", "STATED", "Employment record; no public artifact"),
     "Z-SEARCH": ("Contextual signals supplied and evaluated for search ranking (analyst side, not model training)", "STATED", "Employment record; scope deliberately narrowed on the page"),
     "Z-ES": ("Elasticsearch index over 100K+ internal documents: support desk volume down ~80%", "STATED", "Employment record; no public artifact"),
