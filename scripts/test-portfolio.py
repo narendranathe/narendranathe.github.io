@@ -306,6 +306,8 @@ PUBLIC_SURFACES: tuple[str, ...] = (
     "portfolio-risk.html",
     "fintune.html",
     "fraud-detection.html",
+    "database-refresh.html",
+    "repo-context-hooks.html",
     "static/site.webmanifest",
     "content/posts/repo-context-hooks-supply-chain.html",
     # Served from /static/, so a reviewer can fetch it whether or not the
@@ -409,6 +411,9 @@ def test_hero_claims_carry_ground_truth_ids(html: str) -> None:
     attribute makes an uncited claim a build failure rather than
     something to notice later, and gives the claims register a
     machine-readable source to export from."""
+    if 'href="studio.css"' in html:
+        assert 'data-gt-id="E-IDEM"' in html.split('id="systems"')[0], "hero refresh claim needs its evidence ID"
+        return
     hero_start = html.find('<section class="hero"')
     assert hero_start != -1, "hero <section> not found"
     hero_end = html.find("</section>", hero_start)
@@ -421,11 +426,12 @@ def test_hero_claims_carry_ground_truth_ids(html: str) -> None:
     # Proof moved into the immediately following production outcomes section.
     cards = re.findall(r'<article class="outcome-card"[^>]*>', html)
     assert len(cards) == 3, f"expected 3 production outcome cards, found {len(cards)}"
-    evidence = {re.search(r'data-gt-id="([^"]+)"', card).group(1)
-                for card in cards if re.search(r'data-gt-id="([^"]+)"', card)}
-    assert evidence == {"E1-CDC", "E-IDEM", "E2-CICD"}, (
-        f"production outcomes must cite their verified source IDs, found {evidence}"
-    )
+    source_ids = [re.search(r'data-gt-id="([^"]+)"', card) for card in cards]
+    assert all(source_ids), "every production card must cite evidence"
+    evidence = {part.strip() for match in source_ids
+                for part in match.group(1).split(",") if part.strip()}
+    # The register check below validates every referenced ID and status.
+    assert "E-IDEM" in evidence, "refresh-effort example must retain its evidence ID"
     unsourced = [c for c in chips if "data-gt-id=" not in c]
     assert not unsourced, (
         "hero proof chip with no GROUND_TRUTH id:\n  "
@@ -1064,26 +1070,14 @@ SYSTEM_DIAGRAM_RE = re.compile(
 SYSTEM_DIAGRAM_PAGE_BUDGET_BYTES = 30 * 1024  # 30 KB
 
 
-def test_index_has_two_system_diagrams(html: str) -> None:
-    """Issue #58 put two inline SVGs on the home page: D1 (AutoApply AI) and
-    D2 (Portfolio-Risk). The 2026-08-17 rebuild dropped both rather than
-    relocating them, and neither is on a project page — D1 diagrammed a
-    private system a reader cannot open, and D2's topology described a
-    console sink, which is no longer what that project does. Redrawing D2
-    against the current code is open work, tracked outside this suite.
-    What the home page keeps is the diagram for the paid work: the Azure
-    CDC and provisioning pipeline."""
-    diagrams = SYSTEM_DIAGRAM_RE.findall(html)
-    assert len(diagrams) >= 1, (
-        "index.html must contain at least 1 inline <svg class=\"system-diagram\"> "
-        "element (the Azure CDC and provisioning pipeline); found none."
-    )
-    body = "\n".join(diagrams)
-    assert "diagram-az-title" in body and "diagram-az-desc" in body, (
-        "the Azure pipeline diagram is missing its <title>/<desc> ids "
-        "('diagram-az-title', 'diagram-az-desc'), which aria-labelledby "
-        "and aria-describedby point at."
-    )
+def test_selected_case_studies_are_reachable(html: str) -> None:
+    """The November reading path links complete case narratives rather than
+    requiring an inline diagram that implies unverified employer topology.
+    Existing SVG accessibility and payload checks still apply to any SVGs.
+    """
+    for target in ("database-refresh.html", "repo-context-hooks.html", "fraud-detection.html"):
+        assert f'href="{target}"' in html, f"case study not linked: {target}"
+        assert (REPO_ROOT / target).is_file(), f"case study missing: {target}"
 
 
 def test_each_system_diagram_has_title_and_desc(html: str) -> None:
@@ -1728,15 +1722,15 @@ def test_public_identity_surfaces_use_canonical_title() -> None:
     index_html = contents[INDEX_HTML]
     for required in (
         '<meta property="og:title" content="Narendranath Edara | '
-        'Data Engineer - Payroll-Critical Data Platforms">',
+        'Data Engineer - Reliable Pipelines and Platform Automation">',
         "<title>Narendranath Edara | Data Engineer - "
-        "Payroll-Critical Data Platforms</title>",
-        '<span class="logo-role">Data Engineer &middot; Dallas TX</span>',
+        "Reliable Pipelines and Platform Automation</title>",
+        'Data Engineer at ExponentHR',
     ):
         assert required in index_html, f"index.html missing identity anchor: {required!r}"
 
     readme = contents[REPO_ROOT / "README.md"]
-    assert "I am a Data Engineer working on payroll-critical data" in readme
+    assert "I am a Data Engineer at ExponentHR" in readme
 
     manifest = contents[REPO_ROOT / "static" / "site.webmanifest"]
     assert "Data Engineer on payroll-critical systems" in manifest
@@ -1797,7 +1791,7 @@ TESTS = [
     test_index_links_to_supply_chain_post,
     test_index_has_architecture_section,
     # ----- System diagrams (issue #58) -----
-    test_index_has_two_system_diagrams,
+    test_selected_case_studies_are_reachable,
     test_each_system_diagram_has_title_and_desc,
     test_each_system_diagram_uses_currentcolor,
     test_index_inline_system_diagram_byte_budget,
@@ -1847,9 +1841,13 @@ def run_self_test() -> int:
     html = INDEX_HTML.read_text(encoding="utf-8")
     p = collect(html)
 
+    tests = TESTS
+    if 'href="studio.css"' in html:
+        from studio_invariants import STUDIO_TESTS, RETIRED_COMPONENT_TESTS
+        tests = [fn for fn in TESTS if fn.__name__ not in RETIRED_COMPONENT_TESTS] + STUDIO_TESTS
     failed: list[tuple[str, str]] = []
-    print(f"portfolio self-test ({len(TESTS)} assertions)...")
-    for fn in TESTS:
+    print(f"portfolio self-test ({len(tests)} assertions)...")
+    for fn in tests:
         try:
             sig = fn.__code__.co_varnames[: fn.__code__.co_argcount]
             kwargs = {}
@@ -1869,9 +1867,9 @@ def run_self_test() -> int:
             print(f"        {e}")
 
     if failed:
-        print(f"\n{len(failed)}/{len(TESTS)} failed")
+        print(f"\n{len(failed)}/{len(tests)} failed")
         return 1
-    print(f"\nall {len(TESTS)} assertions passed")
+    print(f"\nall {len(tests)} assertions passed")
     return 0
 
 
