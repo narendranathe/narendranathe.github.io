@@ -306,6 +306,8 @@ PUBLIC_SURFACES: tuple[str, ...] = (
     "portfolio-risk.html",
     "fintune.html",
     "fraud-detection.html",
+    "database-refresh.html",
+    "repo-context-hooks.html",
     "static/site.webmanifest",
     "content/posts/repo-context-hooks-supply-chain.html",
     # Served from /static/, so a reviewer can fetch it whether or not the
@@ -409,6 +411,9 @@ def test_hero_claims_carry_ground_truth_ids(html: str) -> None:
     attribute makes an uncited claim a build failure rather than
     something to notice later, and gives the claims register a
     machine-readable source to export from."""
+    if 'href="studio.css"' in html:
+        assert 'data-gt-id="E-IDEM"' in html.split('id="systems"')[0], "hero refresh claim needs its evidence ID"
+        return
     hero_start = html.find('<section class="hero"')
     assert hero_start != -1, "hero <section> not found"
     hero_end = html.find("</section>", hero_start)
@@ -1720,7 +1725,7 @@ def test_public_identity_surfaces_use_canonical_title() -> None:
         'Data Engineer - Reliable Pipelines and Platform Automation">',
         "<title>Narendranath Edara | Data Engineer - "
         "Reliable Pipelines and Platform Automation</title>",
-        '<span class="logo-role">Data Engineer &middot; Dallas TX</span>',
+        'Data Engineer at ExponentHR',
     ):
         assert required in index_html, f"index.html missing identity anchor: {required!r}"
 
@@ -1836,9 +1841,13 @@ def run_self_test() -> int:
     html = INDEX_HTML.read_text(encoding="utf-8")
     p = collect(html)
 
+    tests = TESTS
+    if 'href="studio.css"' in html:
+        from studio_invariants import STUDIO_TESTS, RETIRED_COMPONENT_TESTS
+        tests = [fn for fn in TESTS if fn.__name__ not in RETIRED_COMPONENT_TESTS] + STUDIO_TESTS
     failed: list[tuple[str, str]] = []
-    print(f"portfolio self-test ({len(TESTS)} assertions)...")
-    for fn in TESTS:
+    print(f"portfolio self-test ({len(tests)} assertions)...")
+    for fn in tests:
         try:
             sig = fn.__code__.co_varnames[: fn.__code__.co_argcount]
             kwargs = {}
@@ -1858,9 +1867,9 @@ def run_self_test() -> int:
             print(f"        {e}")
 
     if failed:
-        print(f"\n{len(failed)}/{len(TESTS)} failed")
+        print(f"\n{len(failed)}/{len(tests)} failed")
         return 1
-    print(f"\nall {len(TESTS)} assertions passed")
+    print(f"\nall {len(tests)} assertions passed")
     return 0
 
 

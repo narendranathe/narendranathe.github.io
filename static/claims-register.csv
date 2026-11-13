@@ -1,16 +1,6 @@
 id,claim,status,evidence,where_used
-C-PRD,"Stakeholder interviews, product requirements, and acceptance criteria for preferred-offers withdrawal workflow",STATED,Owner account and public manager recommendation; no planning-cycle percentage,Experience
-C-SQL,SQL-driven product and user-behavior analysis on a B2B fintech working-capital platform,STATED,Employment record; no public artifact,Experience
-E-AICTX,Team-used Claude Code context harness combining schema-derived relationships/grain and manual business annotations,STATED,"Owner confirmations September30 and October1,2026; no trained-model or quantified productivity claim",Experience
-E-IDEM,Database refresh tool built and deployed for testing and IT; about one hour manual work saved per request across20+ daily refreshes,STATED,Owner-confirmed effort estimate; no annual or cash extrapolation,Production systems; Projects
-E-OBS,Control-table-driven validation with checks defined as configuration,STATED,"Owner account; public-safe delivery narrative, no measured defect-rate claim",Production systems
-E-SSISDB,Separate SSISDB-backed execution-evidence procedure for failed-job investigation; not automatic retries,STATED,"Owner clarification September30,2026; no quantified diagnostic result",Production systems
-E1-CDC,Full reloads changed to rerunnable incremental merge-upserts; performance comparison held pending comparable workload and SLA evidence,STATED,Owner account; no public employer logs,Experience
-E2-CICD,"Azure DevOps release automation and reporting deployment steps, coordinated across development,test,IT,and business",STATED,Owner account; cadence/idle-time comparison withheld,Production systems
-E5-RECOVERY,Production diagnosis and documented CDC/availability-group recovery procedures,STATED,Owner account; no all-incident MTTR or SLA promise,Experience
-M1,Azure anomaly-detection and observability workflow work,STATED,Owner account; accuracy and counterfactual outage-timing claims withheld,Experience
+E-AICTX,Team-used Claude Code context harness combining schema-derived relationships/grain and manual business annotations,STATED,"Owner confirmations September30 and October1,2026; no trained-model or quantified productivity claim",Projects
+E-IDEM,Database refresh tool built and deployed for testing and IT; about one hour manual work saved per request across20+ daily refreshes,STATED,Owner-confirmed effort estimate; no annual or cash extrapolation,Hero; Production systems; Projects
 M4,Co-authored study comparing VADER and RoBERTa sentiment analysis of museum reviews,DOC,DOI 10.1080/10495142.2025.2525123,Projects
 P-FRAUD,Independent synthetic-data demonstration with batch FastAPI scoring and idempotent PostgreSQL inserts; current performance not benchmarked,DOC,Reviewed source c0ad3141; auto-committed offsets do not imply exactly-once; no Airflow DAG,Projects
 P-HOOKS,"Independent Python coding-agent handoff tool; Claude lifecycle integration, partial other-platform integrations, public source and delivery evidence",DOC,"Reviewed source cb9fd0f8 and CI31838570074; savings are estimates, release workflow is not downloaded-wheel verification",Projects
-U-DATA-TOOLS,"Operational data integration and reporting with SQL, Excel automation, Azure Synapse Analytics, SSIS and SSRS",STATED,Owner-confirmed; no public artifact,Experience
-Z-DATA-TOOLS,"Data preparation and reporting using SQL, Python, Excel/VBA, Google BigQuery, SSIS, SSRS, Periscope, Redash and Tableau",STATED,Owner-confirmed; no public artifact,Experience
