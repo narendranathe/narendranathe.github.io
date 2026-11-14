@@ -1,8 +1,44 @@
 {
   "publication": "Narendranath Edara",
   "url": "https://narendranathe.substack.com",
-  "fetched_at": "2026-05-02T01:19:27.118911Z",
+  "fetched_at": "2026-11-14T12:43:32.978510Z",
   "posts": [
+    {
+      "title": "The road to repo-context-hooks 1.1 - and the 3 things I want your help on",
+      "url": "https://narendranathe.substack.com/p/the-road-to-repo-context-hooks-11",
+      "published_at": "2026-05-28T12:47:16Z",
+      "excerpt": "Two weeks of installs, 9 adapters, 6 starter templates, and the three concrete places I want your help before v1.2."
+    },
+    {
+      "title": "What repo-context-hooks looks like under its own telescope - live numbers",
+      "url": "https://narendranathe.substack.com/p/what-repo-context-hooks-looks-like",
+      "published_at": "2026-05-26T12:25:50Z",
+      "excerpt": "Three days of dogfooding repo-context-hooks against its own repo. The score, the cost, the methodology, and what I am watching next."
+    },
+    {
+      "title": "repo-context-hooks: a git-tracked workspace contract for your AI coding agent",
+      "url": "https://narendranathe.substack.com/p/repo-context-hooks-a-git-tracked",
+      "published_at": "2026-05-21T12:42:54Z",
+      "excerpt": "Ten things this does that CLAUDE.md, Auto Memory, claude-mem, and Context Mode each do partially, or not at all."
+    },
+    {
+      "title": "The 20-30% you lose every time Claude Code compacts",
+      "url": "https://narendranathe.substack.com/p/the-20-30-you-lose-every-time-claude",
+      "published_at": "2026-05-19T12:52:44Z",
+      "excerpt": "Compaction is not summarization. Here is what actually disappears, why CLAUDE.md and Auto Memory each fix only half, and the file I built to close the gap."
+    },
+    {
+      "title": "Your coding agent has amnesia. I tried solving this problem with an open-source Python package.",
+      "url": "https://narendranathe.substack.com/p/your-coding-agent-has-amnesia-i-shipped",
+      "published_at": "2026-05-18T12:41:02Z",
+      "excerpt": "Origin story for repo-context-hooks."
+    },
+    {
+      "title": "JobScout: Building a Self-Recovering Job Aggregation Platform",
+      "url": "https://narendranathe.substack.com/p/jobscout-building-a-self-recovering",
+      "published_at": "2026-05-15T21:25:34Z",
+      "excerpt": "How I turned manual job hunting into a 387-job, 15-company pipeline that scrapes itself, scores itself, and ships itself in Python, on a $0 budget."
+    },
     {
       "title": "Karpathy’s LLM Wiki, applied to a multi-repo system - what changes and what doesn’t",
       "url": "https://narendranathe.substack.com/p/karpathys-llm-wiki-applied-to-a-multi",
@@ -26,42 +62,6 @@
       "url": "https://narendranathe.substack.com/p/building-my-portfolio-a-journey-through",
       "published_at": "2026-01-30T14:34:16Z",
       "excerpt": "From a blank HTML file to a dynamic, config-driven portfolio — here’s everything that worked, everything that broke, and what I learned along the way."
-    },
-    {
-      "title": "Building Real-Time Portfolio Risk Analytics",
-      "url": "https://narendranathe.substack.com/p/building-real-time-portfolio-risk",
-      "published_at": "2025-12-31T16:09:37Z",
-      "excerpt": "From 24-Hour Batch Jobs to 5-Second Insights"
-    },
-    {
-      "title": "Compute Cost ≠ Cloud Cost: Fix Architecture, Save Budget",
-      "url": "https://narendranathe.substack.com/p/compute-cost-cloud-cost-fix-architecture",
-      "published_at": "2025-12-08T14:21:49Z",
-      "excerpt": "A real incident that shows why workload isolation, observability, and replica testing matter more than chasing costs."
-    },
-    {
-      "title": "Row-Level Security (RLS) in SQL",
-      "url": "https://narendranathe.substack.com/p/row-level-security-rls-in-sql",
-      "published_at": "2025-09-29T12:57:24Z",
-      "excerpt": "Ensuring Fine-Grained Data Access Control"
-    },
-    {
-      "title": "Cross-Database Queries and Linked Servers",
-      "url": "https://narendranathe.substack.com/p/cross-database-queries-and-linked",
-      "published_at": "2025-09-26T12:49:26Z",
-      "excerpt": "Practical Patterns, Pitfalls, and Playbooks"
-    },
-    {
-      "title": "Temporal Tables and System-Versioned Tables",
-      "url": "https://narendranathe.substack.com/p/temporal-tables-and-system-versioned",
-      "published_at": "2025-09-24T13:07:48Z",
-      "excerpt": "Making Time Your Data’s Ally"
-    },
-    {
-      "title": "Window Frame Specification in SQL",
-      "url": "https://narendranathe.substack.com/p/window-frame-specification-in-sql",
-      "published_at": "2025-09-22T12:44:23Z",
-      "excerpt": "Precision Analytics at Scale"
     }
   ]
 }
