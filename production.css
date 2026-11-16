@@ -176,3 +176,5 @@
 .studio-nav nav a{min-height:44px;display:inline-flex;align-items:center;gap:6px}
 .production-copy .text-link,.delivery-band .text-link{min-height:44px;align-items:center}
 .project-copy .secondary-story-link{display:block;font-size:11px;margin-top:13px}
+/* Keep secondary navigation hidden after the shared anchor target rule. */
+@media(max-width:600px){.studio-nav nav a.nav-contact,.studio-nav nav a.nav-projects{display:none}}

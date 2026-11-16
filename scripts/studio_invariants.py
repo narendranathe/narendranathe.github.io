@@ -130,7 +130,23 @@ def test_career_titles_and_order_are_preserved():
     assert text.count('>Data Engineer <')==2
     assert 'Senior Data Engineer' not in text
 
-STUDIO_TESTS=[test_career_titles_and_order_are_preserved,test_studio_production_scope_is_visible,test_studio_work_precedes_biography,
+def test_case_html_boundaries_are_balanced():
+    class Balanced(HTMLParser):
+        void={'meta','link','br','img','input','hr','source','wbr','path','circle','ellipse','rect'}
+        def __init__(self):
+            super().__init__();self.stack=[];self.errors=[]
+        def handle_starttag(self,tag,attrs):
+            if tag not in self.void:self.stack.append(tag)
+        def handle_endtag(self,tag):
+            if tag in self.void:return
+            if not self.stack or self.stack[-1]!=tag:
+                self.errors.append((tag,self.stack[-3:]))
+            if tag in self.stack:self.stack=self.stack[:len(self.stack)-1-self.stack[::-1].index(tag)]
+    for name in ['index.html','data-reliability.html','database-refresh.html','schema-context.html','repo-context-hooks.html','fraud-detection.html']:
+        parsed=Balanced();parsed.feed((ROOT/name).read_text())
+        assert not parsed.errors and not parsed.stack, (name,parsed.errors,parsed.stack)
+
+STUDIO_TESTS=[test_case_html_boundaries_are_balanced,test_career_titles_and_order_are_preserved,test_studio_production_scope_is_visible,test_studio_work_precedes_biography,
 test_studio_portrait_is_local_and_immediately_visible,test_studio_figures_have_accessible_names,
 test_studio_refresh_stages_and_default_explanation,test_studio_case_studies_explain_different_systems,
 test_studio_demos_are_labeled_and_controls_use_native_buttons,test_studio_resume_links_keep_the_current_binary_hash,
