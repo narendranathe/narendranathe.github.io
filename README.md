@@ -1,6 +1,6 @@
 # Narendranath Edara Portfolio
 
-I am a Data Engineer at ExponentHR. I build and operate SQL Server and Azure workflows for HR and payroll reporting: incremental loads, validation, provisioning, release delivery, and recovery. I also build independent Python tools for AI-assisted development.
+I am a Data Engineer at ExponentHR. I build and operate data pipelines and tools using SQL Server, Python and Azure: idempotent incremental ETL, data quality, database provisioning, CI/CD and incident recovery. I also build independent Python tools for AI-assisted development.
 
 [Portfolio](https://narendranathe.github.io) | [LinkedIn](https://www.linkedin.com/in/narendranathe/) | [GitHub](https://github.com/narendranathe)
 
@@ -8,7 +8,7 @@ I am a Data Engineer at ExponentHR. I build and operate SQL Server and Azure wor
 
 - **Employer work:** [CDC, validation and recovery](data-reliability.html), with separate ingestion, configurable checks, and SSISDB investigation paths.
 - **Team tooling:** [schema and business-context harness](schema-context.html), built internally for Claude Code CLI and used by my team.
-- **Employer automation:** [database refresh automation](database-refresh.html), built and deployed for testing and IT. The reported result is about one hour of manual work saved per request across 20+ daily refreshes. This is not an annual cash-saving claim.
+- **Employer automation:** [database refresh automation](database-refresh.html), built and deployed for testing and IT. The reported result is about one hour of manual work saved per request across 20+ daily refreshes. Restore duration is separate from manual effort saved.
 - **Independent software:** [repo-context-hooks](repo-context-hooks.html), a Python CLI and coding-agent handoff tool with public source, tests, and a package release. Dashboard savings are estimates.
 - **Independent demonstration:** [fraud scoring](fraud-detection.html), built on synthetic transactions. Idempotent inserts, batching, and monitoring are implemented; production usage and current throughput are not claimed.
 
@@ -16,7 +16,7 @@ I am a Data Engineer at ExponentHR. I build and operate SQL Server and Azure wor
 
 ## Reading and maintenance
 
-The homepage prioritizes production ownership, then public software with explicit limits. Existing role dates are retained while the Missouri S&T start-date conflict is resolved. No runtime application behavior or deployment workflow changes are part of this editorial revision.
+The homepage prioritizes production ownership, then public software with explicit limits. Existing role dates are retained while the Missouri S&T start-date conflict is resolved. Interactive architecture workboards run locally and use labeled conceptual or fictional examples. No employer services are connected. The deployment workflow is unchanged.
 
 ## Stack
 
@@ -30,8 +30,8 @@ The site is intentionally simple and fast: no framework, no build step, and no r
 ## Repository Structure
 
 - `index.html`: site structure, portfolio sections, copy, and project cards
-- `studio.css` / `production.css`: shared studio styling and production-story composition
-- `studio.js`: local refresh, handoff, and duplicate-insert illustrations
+- `studio.css` / `production.css` / `workboards.css`: shared styling, story composition and interactive diagrams
+- `studio.js`: local workboard selection, ETL replay, refresh stages, grain comparison, handoff and duplicate-insert illustrations
 - `data-reliability.html`, `database-refresh.html`, `schema-context.html`: employer case studies
 - `repo-context-hooks.html`, `fraud-detection.html`: independent work
 - `content/posts/`: long-form writing and supporting portfolio content

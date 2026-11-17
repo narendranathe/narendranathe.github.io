@@ -85,22 +85,22 @@ def test_studio_refresh_stages_and_default_explanation():
         assert {a['data-refresh-mode'] for a in page.buttons if 'data-refresh-mode' in a}=={'manual','automated'}
 
 def test_studio_case_studies_explain_different_systems():
-    expected={'data-reliability.html':'responsibility-map','schema-context.html':'schema-figure','database-refresh.html':'data-refresh-demo','repo-context-hooks.html':'data-context-demo','fraud-detection.html':'data-replay-demo'}
+    expected={'data-reliability.html':'data-etl-demo','schema-context.html':'schema-figure','database-refresh.html':'data-refresh-demo','repo-context-hooks.html':'data-context-demo','fraud-detection.html':'data-replay-demo'}
     for name,marker in expected.items():
         text=(ROOT/name).read_text()
         assert marker in text and 'decision-grid' in text
         assert len([1 for t,a in Page(text).tags if t=='h1'])==1
-        assert 'class="case-note"' in text and '<details' in text
+        assert 'class="case-note"' in text
 
 def test_studio_demos_are_labeled_and_controls_use_native_buttons():
     context=(ROOT/'repo-context-hooks.html').read_text()
     fraud=(ROOT/'fraud-detection.html').read_text()
-    assert 'frontend explanation' in context and 'Frontend simulation' in fraud
-    assert 'not a live agent session' in context and 'No model or database runs' in fraud
+    assert 'Illustrative handoff content' in context and 'Local simulation' in fraud
+    assert 'no coding agent is running' in context and 'No model or database runs' in fraud
     for name in ['index.html','data-reliability.html','database-refresh.html','schema-context.html','repo-context-hooks.html','fraud-detection.html']:
         for button in Page((ROOT/name).read_text()).buttons:
             assert button.get('type')=='button', name
-            if any(k in button for k in ['data-step','data-refresh-mode','data-context']):
+            if any(k in button for k in ['data-step','data-refresh-mode','data-context','data-board-tab','data-grain']):
                 assert button.get('aria-pressed') in ['true','false'], name
 
 def test_studio_resume_links_keep_the_current_binary_hash():
@@ -146,7 +146,17 @@ def test_case_html_boundaries_are_balanced():
         parsed=Balanced();parsed.feed((ROOT/name).read_text())
         assert not parsed.errors and not parsed.stack, (name,parsed.errors,parsed.stack)
 
-STUDIO_TESTS=[test_case_html_boundaries_are_balanced,test_career_titles_and_order_are_preserved,test_studio_production_scope_is_visible,test_studio_work_precedes_biography,
+def test_workboard_controls_reference_unique_local_panels():
+    for filename in ['index.html','data-reliability.html','database-refresh.html']:
+        page=Page((ROOT/filename).read_text())
+        for attrs in page.buttons:
+            if 'data-board-tab' in attrs:
+                target=attrs.get('aria-controls')
+                assert target and page.ids.count(target)==1, (filename,target)
+    assert 'data-grain-demo' in (ROOT/'schema-context.html').read_text()
+    assert 'Fictional records' in (ROOT/'schema-context.html').read_text()
+
+STUDIO_TESTS=[test_workboard_controls_reference_unique_local_panels,test_case_html_boundaries_are_balanced,test_career_titles_and_order_are_preserved,test_studio_production_scope_is_visible,test_studio_work_precedes_biography,
 test_studio_portrait_is_local_and_immediately_visible,test_studio_figures_have_accessible_names,
 test_studio_refresh_stages_and_default_explanation,test_studio_case_studies_explain_different_systems,
 test_studio_demos_are_labeled_and_controls_use_native_buttons,test_studio_resume_links_keep_the_current_binary_hash,
