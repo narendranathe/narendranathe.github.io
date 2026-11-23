@@ -1,42 +1,20 @@
 # Narendranath Edara Portfolio
 
-This repository powers my public portfolio: a focused story around data engineering, AI-enabled workflow systems, and production platform work.
+I am a Data Engineer at ExponentHR. I build SQL Server and Azure workflows for reliable data movement, database refreshes, validation, and release delivery. I also build independent Python tools for AI-assisted development.
 
-I am a Data Engineer working on payroll-critical data. It is a correctness problem before it is a scale problem: a silent defect becomes someone's paycheck, so the work is change control, detection, and recovery as much as it is pipelines. On top of that foundation I build applied AI systems - RAG pipelines, multi-provider LLM routing, document intelligence - that can be tested, deployed, and monitored.
+[Portfolio](https://narendranathe.github.io) | [LinkedIn](https://www.linkedin.com/in/narendranathe/) | [GitHub](https://github.com/narendranathe)
 
-The central story: I own the path from data foundation to shipped product - CDC and ETL, SQL, CI/CD, testing, observability - and I can explain to the business why any of it mattered, having spent three years on that side of the table first.
+## Selected evidence
 
-[Live site](https://narendranathe.github.io) | [LinkedIn](https://www.linkedin.com/in/narendranathe/) | [GitHub](https://github.com/narendranathe)
+- **Employer work:** [database refresh automation](database-refresh.html), built and deployed for testing and IT. The reported result is about one hour of manual work saved per request across 20+ daily refreshes. This is not an annual cash-saving claim.
+- **Independent software:** [repo-context-hooks](repo-context-hooks.html), a Python CLI and coding-agent handoff tool with public source, tests, and a package release. Dashboard savings are estimates.
+- **Independent demonstration:** [fraud scoring](fraud-detection.html), built on synthetic transactions. Idempotent inserts, batching, and monitoring are implemented; production usage and current throughput are not claimed.
 
-## What This Repo Represents
+[Portfolio risk analytics](portfolio-risk.html) remains in progress because the streaming output and API input are not integrated. Employer source and data are not published. Earlier `docs/` research is retained as historical material; it is not independent evidence for new public claims.
 
-Data Engineer on a multi-tenant payroll platform. I modernize CDC, ETL, SQL, and CI/CD foundations under formal change control, and build the detection and recovery layer that keeps them running - then applied AI layers on top where the workflow has real context. My strongest value is owning the path from data foundation to shipped product with baselines, testing, observability, and cost discipline.
+## Reading and maintenance
 
-This repository is the public source for my portfolio and career positioning, aligned to the roles I am targeting:
-
-- Data Engineer / Data Platform Engineer
-- Selected senior data engineering roles
-- Analytics Engineering roles with platform ownership
-
-The site highlights the kind of work I want to keep doing: production data and AI systems with strong engineering discipline, not one-off demos.
-
-## Featured Proof Points
-
-### ExponentHR (production)
-
-Deployment cycles compressed from 3 months to 14 days, CDC ETL reengineered from full reloads to incremental merge-upserts (30min to 8min runtime, -67% compute cost), and payroll-critical AAG database automation on Azure.
-
-### AutoApply AI
-
-AI workflow automation platform: Chrome MV3 + FastAPI connecting job discovery, document tailoring, form-state management, LLM routing, and application tracking. Adapter-based integrations, provider fallback, and application-state tracking. Private deployment on Fly.io; public launch gated by tracked security fixes.
-
-### tailor-resume
-
-Document intelligence engine extracted from AutoApply AI. Available through a Python package, MCP server, Streamlit, and CLI, with a constraint against adding unsupported candidate claims.
-
-### JobScout
-
-Direct-source job discovery across 130+ company career pages and 6 ATS platforms - data quality over aggregator noise.
+The homepage prioritizes production ownership, then public software with explicit limits. Existing role dates are retained while the Missouri S&T start-date conflict is resolved. No runtime application behavior or deployment workflow changes are part of this editorial revision.
 
 ## Stack
 
